@@ -13,6 +13,7 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
+					<Add option="-DDEBUG" />
 				</Compiler>
 			</Target>
 			<Target title="Release">
@@ -31,11 +32,19 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
+			<Add directory="/usr/include/libxml2/" />
 		</Compiler>
+		<Linker>
+			<Add library="xml2" />
+		</Linker>
 		<Unit filename="MessageDatabase.cpp" />
 		<Unit filename="MessageDatabase.h" />
 		<Unit filename="PrivateMessage.cpp" />
 		<Unit filename="PrivateMessage.h" />
+		<Unit filename="XMLDocument.cpp" />
+		<Unit filename="XMLDocument.h" />
+		<Unit filename="XMLNode.cpp" />
+		<Unit filename="XMLNode.h" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />

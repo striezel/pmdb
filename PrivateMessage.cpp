@@ -19,6 +19,7 @@
 */
 
 #include "PrivateMessage.h"
+#include <sstream>
 
 PrivateMessage::PrivateMessage()
 {
@@ -43,4 +44,21 @@ void PrivateMessage::normalise()
     message.replace(pos, 2, "\n");
     pos = message.find("\r\n");
   }//while
+}
+
+void PrivateMessage::updateHash()
+{
+  //that will get messy...
+  /*const std::string uid_string = uintToString(fromUserID);
+  const size_t len = datestamp.length()+1
+                    +title.length()+1
+                    +fromUser.length()+1
+                    +uid_string.length()+1
+                    +toUser.length()+1
+                    +message.length()+1;
+  uint8_t * data = new uint8_t[len];
+  memcpy...
+  updatedHash = SHA256::computeFromBufferSource(...);
+  */
+  #warning Not implemented yet!
 }

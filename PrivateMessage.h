@@ -34,6 +34,8 @@ class PrivateMessage
 
     void normalise();
 
+    void updateHash();
+
     std::string datestamp;
     std::string title;
     std::string fromUser;

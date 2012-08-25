@@ -46,6 +46,10 @@
 		<Unit filename="XMLNode.cpp" />
 		<Unit filename="XMLNode.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="random-thoro/cpp/hashfunctions/sha-256.cpp" />
+		<Unit filename="random-thoro/cpp/hashfunctions/sha-256.h" />
+		<Unit filename="random-thoro/cpp/hashfunctions/sha-256_aux.cpp" />
+		<Unit filename="random-thoro/cpp/hashfunctions/sha-256_aux.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />

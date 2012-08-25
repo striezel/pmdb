@@ -1,0 +1,3 @@
+[submodule "random-thoro"]
+	path = random-thoro
+	url = git://random-thoro.git.sourceforge.net/gitroot/random-thoro/random-thoro

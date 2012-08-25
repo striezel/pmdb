@@ -24,6 +24,9 @@
 #include "PrivateMessage.h"
 #include <vector>
 
+//forward declaration
+class XMLNode;
+
 class MessageDatabase
 {
   public:
@@ -35,6 +38,20 @@ class MessageDatabase
 
     /* returns the number of messages that are in the database */
     unsigned int getNumberOfMessages() const;
+
+    /* tries to import messages from a XML file and returns true in case of
+       success, false in case of error. In either case, readPMs will hold the
+       number of messages that were successfully read from the file.
+
+       parameters:
+           fileName - path to the XML file
+           readPMs  - will hold the number of PMs that were read from the file
+    */
+    bool importFromFile(const std::string& fileName, uint32_t& readPMs);
+
+  protected:
+    bool processFolderNode(const XMLNode& node, uint32_t& readPMs);
+    bool processPrivateMessageNode(const XMLNode& node, uint32_t& readPMs);
 
   //private:
       std::vector<PrivateMessage> m_Messages;

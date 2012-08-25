@@ -22,6 +22,11 @@
 
 PrivateMessage::PrivateMessage()
 {
+  clear();
+}
+
+void PrivateMessage::clear()
+{
   datestamp = "";
   title = "";
   fromUser = "";

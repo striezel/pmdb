@@ -30,6 +30,8 @@ class PrivateMessage
     /* constructor */
     PrivateMessage();
 
+    void clear();
+
     void normalise();
 
     std::string datestamp;

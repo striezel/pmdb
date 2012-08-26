@@ -19,10 +19,22 @@
 */
 
 #include <iostream>
+#include <set>
+#include <string>
 #include "MessageDatabase.h"
 
 //return codes
 const int rcInvalidParameter = 1;
+
+#if defined(_WIN32)
+  const char cDirSeparator = '\\';
+#elif defined(__linux__) || defined(linux)
+  const char cDirSeparator = '/';
+#else
+  #error Unknown operating system!
+#endif
+
+const std::string defaultSaveDirectory = std::string(".pmdb")+cDirSeparator;
 
 void showGPLNotice()
 {
@@ -46,7 +58,7 @@ void showGPLNotice()
 
 void showVersion()
 {
-  std::cout << "Private Message Database, version 0.04, 2012-08-26\n";
+  std::cout << "Private Message Database, version 0.05, 2012-08-26\n";
 }
 
 void showHelp(const std::string& name)
@@ -60,13 +72,20 @@ void showHelp(const std::string& name)
             << "  -xml FILENAME    - sets the name of the XML file that contains the private\n"
             << "                     messages to FILENAME. Must not be omitted.\n"
             << "  --xml=FILENAME   - same as -xml\n"
-            << "  --save           - all messages will be saved after the XML file was read.\n";
+            << "  --load           - tries to load messages from the default directory.\n"
+            << "  --load=DIR       - tries to load all messages saved in the directory DIR.\n"
+            << "                     This option can be given more than once, however the\n"
+            << "                     directory has to be different every time.\n"
+            << "  --save           - all messages will be saved after the XML files were read\n"
+            << "                     and the messages from the load directories have been\n"
+            << "                     loaded.\n";
 }
 
 int main(int argc, char **argv)
 {
   showGPLNotice();
-  std::string pathToXML = "";
+  std::set<std::string> pathXML;
+  std::set<std::string> loadDirs;
   bool doSave = false;
   if ((argc>1) and (argv!=NULL))
   {
@@ -92,14 +111,15 @@ int main(int argc, char **argv)
         {
           if ((i+1<argc) and (argv[i+1]!=NULL))
           {
-            if (!pathToXML.empty())
+            const std::string pathToXML = std::string(argv[i+1]);
+            if (pathXML.find(pathToXML)!=pathXML.end())
             {
-              std::cout << "Parameter "<<param<<" must not occur more than once!\n";
+              std::cout << "Parameter "<<param<<" must not occur more than once for the same file!\n";
               return rcInvalidParameter;
             }
-            pathToXML = std::string(argv[i+1]);
+            pathXML.insert(pathToXML);
             ++i; //skip next parameter, because it's used as file name already
-            std::cout << "XML file was set to \""<<pathToXML<<"\".\n";
+            std::cout << "XML file \""<<pathToXML<<"\" was chained for loading.\n";
           }
           else
           {
@@ -110,13 +130,14 @@ int main(int argc, char **argv)
         }//param == xml
         else if ((param.substr(0,6)=="--xml=") and (param.length()>6))
         {
-          if (!pathToXML.empty())
+          const std::string pathToXML = param.substr(6);
+          if (pathXML.find(pathToXML)!=pathXML.end())
           {
-            std::cout << "Parameter --xml must not occur more than once!\n";
+            std::cout << "Parameter --xml must not occur more than once for the same XML file!\n";
             return rcInvalidParameter;
           }
-          pathToXML = param.substr(6);
-          std::cout << "XML file was set to \""<<pathToXML<<"\".\n";
+          pathXML.insert(pathToXML);
+          std::cout << "XML file \""<<pathToXML<<"\" was chained for loading.\n";
         }//param == xml (single parameter version)
         else if (param=="--save")
         {
@@ -128,6 +149,32 @@ int main(int argc, char **argv)
           doSave = true;
           std::cout << "Files will be saved as requested via "<<param<<".\n";
         }//param == save
+        else if (param=="--load")
+        {
+          if (loadDirs.find(defaultSaveDirectory)!=loadDirs.end())
+          {
+            std::cout << "Parameter --load must not occur more than once!\n";
+            return rcInvalidParameter;
+          }
+          loadDirs.insert(defaultSaveDirectory);
+          std::cout << "Directory \""<<defaultSaveDirectory<<"\" was chained for loading.\n";
+        }//param == load
+        else if ((param.substr(0,7)=="--load=") and (param.length()>7))
+        {
+          std::string pathToDir = param.substr(7);
+          //Does it have a trailing (back)slash?
+          if (pathToDir[pathToDir.length()-1]!=cDirSeparator)
+          {
+            pathToDir = pathToDir + cDirSeparator;
+          }
+          if (loadDirs.find(pathToDir)!=loadDirs.end())
+          {
+            std::cout << "Parameter --load must not occur more than once for the same directory!\n";
+            return rcInvalidParameter;
+          }
+          loadDirs.insert(pathToDir);
+          std::cout << "Directory \""<<pathToDir<<"\" was chained for loading.\n";
+        }//param == 'load=...'
         else
         {
           //unknown or wrong parameter
@@ -145,7 +192,7 @@ int main(int argc, char **argv)
     }//while
   }//if arguments present
 
-  if (pathToXML.empty())
+  if (pathXML.empty())
   {
     std::cout << "You have to specify certain parameters for this programme to run properly.\n"
               << "Use --help to get a list of valid parameters.\n";
@@ -154,37 +201,46 @@ int main(int argc, char **argv)
 
   MessageDatabase mdb;
   uint32_t PMs_done, PMs_new;
-  if (mdb.importFromFile(pathToXML, PMs_done, PMs_new))
+  std::set<std::string>::const_iterator set_iter = pathXML.begin();
+  while (set_iter!=pathXML.end())
   {
-    std::cout << "Import of private messages from \""<<pathToXML<<"\" was successful!\n"
-              << PMs_done<<" PMs read, new PMs: "<<PMs_new<<"\n";
-  }
-  else
+    if (mdb.importFromFile(*set_iter, PMs_done, PMs_new))
+    {
+      std::cout << "Import of private messages from \""<< *set_iter <<"\" was successful!\n  "
+                << PMs_done<<" PMs read, new PMs: "<<PMs_new<<"\n";
+    }
+    else
+    {
+      std::cout << "Import of private messages from \""<< *set_iter <<"\" failed!\n"
+                << "  PMs read from file so far: "<<PMs_done<<"\nNew PMs: "<<PMs_new<<"\n";
+    }
+    ++set_iter;
+  }//while
+
+  //try to load data from directories
+  set_iter = loadDirs.begin();
+  while (set_iter!=loadDirs.end())
   {
-    std::cout << "Import of private messages from \""<<pathToXML<<"\" failed!\n"
-              << "PMs read so far: "<<PMs_done<<"\nNew PMs: "<<PMs_new<<"\n";
-  }
+    if (!mdb.loadMessages(*set_iter, PMs_done, PMs_new))
+    {
+      std::cout << "Could not load all messages from \""<< *set_iter <<"\"!\nRead so far: "<<PMs_done<<"; new: "<<PMs_new<<"\n";
+      return 0;
+    }
+    std::cout << "All messages from \""<< *set_iter <<"\" loaded! Read: "<<PMs_done<<"; new: "<<PMs_new<<"\n";
+    ++set_iter;
+  }//while
+
   std::cout << "PMs in the database: "<<mdb.getNumberOfMessages()<<"\n";
 
   if (doSave)
   {
-    if (!mdb.saveMessages(".pmdb/"))
+    if (!mdb.saveMessages(defaultSaveDirectory))
     {
       std::cout << "Could not save messages!\n";
       return 0;
     }
     std::cout << "Messages saved successfully!\n";
   }//if save requested
-
-  //trying to load them again
-  if (!mdb.loadMessages(".pmdb/", PMs_done, PMs_new))
-  {
-    std::cout << "Could not load messages!\nRead: "<<PMs_done<<"; new: "<<PMs_new<<"\n";
-    return 0;
-  }
-  std::cout << "Messages loaded! Read: "<<PMs_done<<"; new: "<<PMs_new<<"\n";
-
-  std::cout << "Nothing more to be done here yet. That's what you get for trying a very early version of that programme.\n";
 
   return 0;
 }

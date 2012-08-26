@@ -23,6 +23,7 @@
 
 #include <string>
 #include <stdint.h>
+#include "random-thoro/cpp/hashfunctions/sha-256.h"
 
 class PrivateMessage
 {
@@ -30,18 +31,66 @@ class PrivateMessage
     /* constructor */
     PrivateMessage();
 
+    /* clears/resets all data members */
     void clear();
 
+    /* normalises the line breaks in the message text */
     void normalise();
 
-    void updateHash();
+    //access to data members
+    inline const std::string& getDatestamp() const
+    {
+      return datestamp;
+    }
 
+    inline const std::string& getTitle() const
+    {
+      return title;
+    }
+
+    inline const std::string& getFromUser() const
+    {
+      return fromUser;
+    }
+
+    inline uint32_t getFromUserID() const
+    {
+      return fromUserID;
+    }
+
+    inline const std::string& getToUser() const
+    {
+      return toUser;
+    }
+
+    inline const std::string& getMessage() const
+    {
+      return message;
+    }
+
+    const SHA256::MessageDigest& getHash();
+
+    //functions to set various data members
+    void setDatestamp(const std::string& ds);
+
+    void setTitle(const std::string& t);
+
+    void setFromUser(const std::string& from);
+
+    void setFromUserID(const uint32_t uid);
+
+    void setToUser(const std::string& to);
+
+    void setMessage(const std::string& msg);
+  private:
     std::string datestamp;
     std::string title;
     std::string fromUser;
     uint32_t fromUserID;
     std::string toUser;
     std::string message;
+    bool m_NeedsHashUpdate;
+    SHA256::MessageDigest m_Hash;
 };//class
 
 #endif // PRIVATEMESSAGE_H

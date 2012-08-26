@@ -46,7 +46,7 @@ void showGPLNotice()
 
 void showVersion()
 {
-  std::cout << "Private Message Database, version 0.02, 2012-08-25\n";
+  std::cout << "Private Message Database, version 0.03, 2012-08-26\n";
 }
 
 void showHelp(const std::string& name)
@@ -58,7 +58,8 @@ void showHelp(const std::string& name)
             << "  --version        - displays the version of the programme and quits\n"
             << "  -v               - same as --version\n"
             << "  -xml FILENAME    - sets the name of the XML file that contains the private\n"
-            << "                     messages to FILENAME. Must not be omitted.\n";
+            << "                     messages to FILENAME. Must not be omitted.\n"
+            << "  --xml=FILENAME   - same as -xml\n";
 }
 
 int main(int argc, char **argv)
@@ -140,8 +141,8 @@ int main(int argc, char **argv)
   }
 
   MessageDatabase mdb;
-  uint32_t PMs_done;
-  if (mdb.importFromFile(pathToXML, PMs_done))
+  uint32_t PMs_done, PMs_new;
+  if (mdb.importFromFile(pathToXML, PMs_done, PMs_new))
   {
     std::cout << "import success!\n";
   }
@@ -149,7 +150,8 @@ int main(int argc, char **argv)
   {
     std::cout << "import failed!\n";
   }
-  std::cout << "PMs read so far: "<<PMs_done<<"\n";
+  std::cout << "PMs read so far: "<<PMs_done<<"\nNew PMs: "<<PMs_new<<"\n";
+  std::cout << "PMs in the database: "<<mdb.getNumberOfMessages()<<"\n";
 
   std::cout << "Nothing more to be done here yet. That's what you get for trying a very early version of that programme.\n";
 

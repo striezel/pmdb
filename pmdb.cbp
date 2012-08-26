@@ -37,8 +37,11 @@
 		<Linker>
 			<Add library="xml2" />
 		</Linker>
+		<Unit filename="BufferStream.h" />
 		<Unit filename="MessageDatabase.cpp" />
 		<Unit filename="MessageDatabase.h" />
+		<Unit filename="PMSource.cpp" />
+		<Unit filename="PMSource.h" />
 		<Unit filename="PrivateMessage.cpp" />
 		<Unit filename="PrivateMessage.h" />
 		<Unit filename="XMLDocument.cpp" />
@@ -46,6 +49,8 @@
 		<Unit filename="XMLNode.cpp" />
 		<Unit filename="XMLNode.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="random-thoro/cpp/common/StringUtils.cpp" />
+		<Unit filename="random-thoro/cpp/common/StringUtils.h" />
 		<Unit filename="random-thoro/cpp/hashfunctions/sha-256.cpp" />
 		<Unit filename="random-thoro/cpp/hashfunctions/sha-256.h" />
 		<Unit filename="random-thoro/cpp/hashfunctions/sha-256_aux.cpp" />

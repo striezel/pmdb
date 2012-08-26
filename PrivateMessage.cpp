@@ -20,6 +20,7 @@
 
 #include "PrivateMessage.h"
 #include <sstream>
+#include "PMSource.h"
 
 PrivateMessage::PrivateMessage()
 {
@@ -34,6 +35,8 @@ void PrivateMessage::clear()
   fromUserID = 0;
   toUser = "";
   message = "";
+  m_NeedsHashUpdate = true;
+  m_Hash.setToNull();
 }
 
 void PrivateMessage::normalise()
@@ -42,23 +45,54 @@ void PrivateMessage::normalise()
   while (pos!=std::string::npos)
   {
     message.replace(pos, 2, "\n");
+    m_NeedsHashUpdate = true;
     pos = message.find("\r\n");
   }//while
 }
 
-void PrivateMessage::updateHash()
+const SHA256::MessageDigest& PrivateMessage::getHash()
 {
-  //that will get messy...
-  /*const std::string uid_string = uintToString(fromUserID);
-  const size_t len = datestamp.length()+1
-                    +title.length()+1
-                    +fromUser.length()+1
-                    +uid_string.length()+1
-                    +toUser.length()+1
-                    +message.length()+1;
-  uint8_t * data = new uint8_t[len];
-  memcpy...
-  updatedHash = SHA256::computeFromBufferSource(...);
-  */
-  #warning Not implemented yet!
+  if (m_NeedsHashUpdate)
+  {
+    SHA256::PMSource pms(*this);
+    m_Hash = SHA256::computeFromSource(pms);
+    m_NeedsHashUpdate = false;
+  }
+  return m_Hash;
+}
+
+void PrivateMessage::setDatestamp(const std::string& ds)
+{
+  datestamp = ds;
+  m_NeedsHashUpdate = true;
+}
+
+void PrivateMessage::setTitle(const std::string& t)
+{
+  title = t;
+  m_NeedsHashUpdate = true;
+}
+
+void PrivateMessage::setFromUser(const std::string& from)
+{
+  fromUser = from;
+  m_NeedsHashUpdate = true;
+}
+
+void PrivateMessage::setFromUserID(const uint32_t uid)
+{
+  fromUserID = uid;
+  m_NeedsHashUpdate = true;
+}
+
+void PrivateMessage::setToUser(const std::string& to)
+{
+  toUser = to;
+  m_NeedsHashUpdate = true;
+}
+
+void PrivateMessage::setMessage(const std::string& msg)
+{
+  message = msg;
+  m_NeedsHashUpdate = true;
 }

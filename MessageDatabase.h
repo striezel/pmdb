@@ -22,7 +22,7 @@
 #define MESSAGEDATABASE_H
 
 #include "PrivateMessage.h"
-#include <vector>
+#include <map>
 
 //forward declaration
 class XMLNode;
@@ -33,11 +33,17 @@ class MessageDatabase
     /* constructor */
     MessageDatabase();
 
-    /* adds a message to the database */
-    void addMessage(const PrivateMessage& pm);
+    /* adds a message to the database and returns true, if the message was
+       added. If the message already exists in the database, the function will
+       return false and leave the DB unchanged.
+    */
+    bool addMessage(PrivateMessage& pm);
 
     /* returns the number of messages that are in the database */
     unsigned int getNumberOfMessages() const;
+
+    /* returns true, if the given message is in the database */
+    bool hasMessage(PrivateMessage& pm) const;
 
     /* tries to import messages from a XML file and returns true in case of
        success, false in case of error. In either case, readPMs will hold the
@@ -46,15 +52,23 @@ class MessageDatabase
        parameters:
            fileName - path to the XML file
            readPMs  - will hold the number of PMs that were read from the file
+           newPMs   - will hold the number of new PMs that were stored in the DB
     */
-    bool importFromFile(const std::string& fileName, uint32_t& readPMs);
+    bool importFromFile(const std::string& fileName, uint32_t& readPMs, uint32_t& newPMs);
 
-  protected:
-    bool processFolderNode(const XMLNode& node, uint32_t& readPMs);
-    bool processPrivateMessageNode(const XMLNode& node, uint32_t& readPMs);
+    typedef std::map<SHA256::MessageDigest, PrivateMessage>::const_iterator Iterator;
 
-  //private:
-      std::vector<PrivateMessage> m_Messages;
+    /* return iterator to the start of the DB's element list */
+    Iterator getBegin() const;
+
+    /* return iterator to the end of the DB's PM list */
+    Iterator getEnd()   const;
+
+  private:
+    bool processFolderNode(const XMLNode& node, uint32_t& readPMs, uint32_t& newPMs);
+    bool processPrivateMessageNode(const XMLNode& node, uint32_t& readPMs, uint32_t& newPMs);
+
+    std::map<SHA256::MessageDigest, PrivateMessage> m_Messages;
 };//class
 
 #endif // MESSAGEDATABASE_H

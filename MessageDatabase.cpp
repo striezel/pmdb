@@ -29,9 +29,12 @@ MessageDatabase::MessageDatabase()
   m_Messages.clear();
 }
 
-void MessageDatabase::addMessage(const PrivateMessage& pm)
+bool MessageDatabase::addMessage(PrivateMessage& pm)
 {
-  m_Messages.push_back(pm);
+  if (m_Messages.find(pm.getHash())!=m_Messages.end())
+    return false;
+  m_Messages[pm.getHash()] = pm;
+  return true;
 }
 
 unsigned int MessageDatabase::getNumberOfMessages() const
@@ -39,9 +42,15 @@ unsigned int MessageDatabase::getNumberOfMessages() const
   return m_Messages.size();
 }
 
-bool MessageDatabase::importFromFile(const std::string& fileName, uint32_t& readPMs)
+bool MessageDatabase::hasMessage(PrivateMessage& pm) const
+{
+  return (m_Messages.find(pm.getHash())!=m_Messages.end());
+}
+
+bool MessageDatabase::importFromFile(const std::string& fileName, uint32_t& readPMs, uint32_t& newPMs)
 {
   readPMs = 0;
+  newPMs = 0;
   //parse XML file
   XMLDocument doc(fileName);
   if (!doc.isParsed())
@@ -83,8 +92,7 @@ bool MessageDatabase::importFromFile(const std::string& fileName, uint32_t& read
       return false;
     }
 
-    bool success = processFolderNode(node, readPMs);
-    if (!success)
+    if (!processFolderNode(node, readPMs, newPMs))
     {
       std::cout << "Error while processing folder!\n";
       return false;
@@ -97,7 +105,17 @@ bool MessageDatabase::importFromFile(const std::string& fileName, uint32_t& read
   return true;
 }
 
-bool MessageDatabase::processFolderNode(const XMLNode& node, uint32_t& readPMs)
+MessageDatabase::Iterator MessageDatabase::getBegin() const
+{
+  return m_Messages.begin();
+}
+
+MessageDatabase::Iterator MessageDatabase::getEnd() const
+{
+  return m_Messages.end();
+}
+
+bool MessageDatabase::processFolderNode(const XMLNode& node, uint32_t& readPMs, uint32_t& newPMs)
 {
   if (!node.hasChild()) return false;
 
@@ -117,7 +135,7 @@ bool MessageDatabase::processFolderNode(const XMLNode& node, uint32_t& readPMs)
                 << current.getNameAsString() << "\" instead!\n";
       return false;
     }
-    if (!processPrivateMessageNode(current, readPMs))
+    if (!processPrivateMessageNode(current, readPMs, newPMs))
     {
       std::cout << "Error while processing <privatemessage> element!\n";
       return false;
@@ -131,7 +149,7 @@ bool MessageDatabase::processFolderNode(const XMLNode& node, uint32_t& readPMs)
   return true;
 }
 
-bool MessageDatabase::processPrivateMessageNode(const XMLNode& node, uint32_t& readPMs)
+bool MessageDatabase::processPrivateMessageNode(const XMLNode& node, uint32_t& readPMs, uint32_t& newPMs)
 {
   if (!node.hasChild()) return false;
 
@@ -150,80 +168,82 @@ bool MessageDatabase::processPrivateMessageNode(const XMLNode& node, uint32_t& r
     const std::string curName = current.getNameAsString();
     if (curName=="datestamp")
     {
-      if (!pm.datestamp.empty())
+      if (!pm.getDatestamp().empty())
       {
         std::cout << "Error: More than one datestamp node in private message!\n";
         return false;
       }
-      pm.datestamp = current.getPlainTextContent();
+      pm.setDatestamp(current.getPlainTextContent());
       #ifdef DEBUG
-      std::cout << "DEBUG: datestamp content is \""<<pm.datestamp<<"\".\n";
+      std::cout << "DEBUG: datestamp content is \""<<pm.getDatestamp()<<"\".\n";
       #endif
     }//if "datestamp"
     else if (curName=="title")
     {
-      if (!pm.title.empty())
+      if (!pm.getTitle().empty())
       {
         std::cout << "Error: More than one title node in private message!\n";
         return false;
       }
-      pm.title = current.getContentBoth();
+      pm.setTitle(current.getContentBoth());
       #ifdef DEBUG
-      std::cout << "DEBUG: title content is \""<<pm.title<<"\".\n";
+      std::cout << "DEBUG: title content is \""<<pm.getTitle()<<"\".\n";
       #endif
     }//if "title"
     else if (curName=="fromuser")
     {
-      if (!pm.fromUser.empty())
+      if (!pm.getFromUser().empty())
       {
         std::cout << "Error: More than one fromuser node in private message!\n";
         return false;
       }
-      pm.fromUser = current.getContentBoth();
+      pm.setFromUser(current.getContentBoth());
       #ifdef DEBUG
-      std::cout << "DEBUG: fromUser content is \""<<pm.fromUser<<"\".\n";
+      std::cout << "DEBUG: fromUser content is \""<<pm.getFromUser()<<"\".\n";
       #endif
     }//if "fromuser"
     else if (curName=="fromuserid")
     {
-      if (pm.fromUserID!=0)
+      if (pm.getFromUserID()!=0)
       {
         std::cout << "Error: More than one fromuserid node in private message!\n";
         return false;
       }
 
       const std::string temp = current.getPlainTextContent();
-      if (!(std::stringstream (temp) >> pm.fromUserID))
+      uint32_t tempUint;
+      if (!(std::stringstream (temp) >> tempUint))
       {
         std::cout << "Error: could not convert \""<<temp<<"\" to integer!\n";
         return false;
       }
+      pm.setFromUserID(tempUint);
       #ifdef DEBUG
-      std::cout << "DEBUG: fromUserID is \""<<pm.fromUserID<<"\".\n";
+      std::cout << "DEBUG: fromUserID is \""<<pm.getFromUserID()<<"\".\n";
       #endif
     }//if "fromuserid"
     else if (curName=="touser")
     {
-      if (!pm.toUser.empty())
+      if (!pm.getToUser().empty())
       {
         std::cout << "Error: More than one touser node in private message!\n";
         return false;
       }
-      pm.toUser = current.getContentBoth();
+      pm.setToUser(current.getContentBoth());
       #ifdef DEBUG
-      std::cout << "DEBUG: toUser content is \""<<pm.toUser<<"\".\n";
+      std::cout << "DEBUG: toUser content is \""<<pm.getToUser()<<"\".\n";
       #endif
     }//if "touser"
     else if (curName=="message")
     {
-      if (!pm.message.empty())
+      if (!pm.getMessage().empty())
       {
         std::cout << "Error: More than one message node in private message!\n";
         return false;
       }
-      pm.message = current.getContentBoth();
+      pm.setMessage(current.getContentBoth());
       #ifdef DEBUG
-      std::cout << "DEBUG: message content is \""<<pm.message<<"\".\n";
+      std::cout << "DEBUG: message content is \""<<pm.getMessage()<<"\".\n";
       #endif
     }//if "message"
     else
@@ -235,33 +255,36 @@ bool MessageDatabase::processPrivateMessageNode(const XMLNode& node, uint32_t& r
   }//while (outer)
 
   //check data members
-  if (pm.message.empty())
+  if (pm.getMessage().empty())
   {
     std::cout << "Error: PM message is empty!\n";
     return false;
   }
-  if (pm.title.empty())
+  if (pm.getTitle().empty())
   {
     std::cout << "Error: PM title is empty!\n";
     return false;
   }
-  if (pm.datestamp.empty())
+  if (pm.getDatestamp().empty())
   {
     std::cout << "Error: PM datestamp is empty!\n";
     return false;
   }
-  if (pm.fromUser.empty())
+  if (pm.getFromUser().empty())
   {
     std::cout << "Error: PM fromuser is empty!\n";
     return false;
   }
-  if (pm.toUser.empty())
+  if (pm.getToUser().empty())
   {
     std::cout << "Error: PM touser is empty!\n";
     return false;
   }
 
   ++readPMs;
-  addMessage(pm);
+  if (addMessage(pm))
+  {
+    ++newPMs;
+  }
   return true;
 }

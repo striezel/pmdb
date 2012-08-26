@@ -20,7 +20,7 @@
 
 #include "PMSource.h"
 #include <cstring>
-#if DEBUG
+#ifdef DEBUG
   #include <iostream>
 #endif
 #include "random-thoro/cpp/common/StringUtils.h"
@@ -58,7 +58,7 @@ PMSource::PMSource(const PrivateMessage& pm)
   //copy message
   memcpy(&m_PaddingBuffer[done], pm.getMessage().c_str(), pm.getMessage().length()+1);
   done = done + pm.getMessage().length()+1;
-  #if DEBUG
+  #ifdef DEBUG
   if (done!=origLen)
   {
     std::cout << "Number of written bytes does not match expected number!\n";

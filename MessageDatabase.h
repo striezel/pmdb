@@ -64,6 +64,15 @@ class MessageDatabase
     /* return iterator to the end of the DB's PM list */
     Iterator getEnd()   const;
 
+    /* tries to save all messages in the database to the given directory and
+       returns true in case of success
+    */
+    bool saveMessages(const std::string& directory) const;
+
+    /* tries to load all messages in the given directory into the database and
+       returns true in case of success
+    */
+    bool loadMessages(const std::string& directory, uint32_t& readPMs, uint32_t& newPMs);
   private:
     bool processFolderNode(const XMLNode& node, uint32_t& readPMs, uint32_t& newPMs);
     bool processPrivateMessageNode(const XMLNode& node, uint32_t& readPMs, uint32_t& newPMs);

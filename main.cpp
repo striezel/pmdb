@@ -46,7 +46,7 @@ void showGPLNotice()
 
 void showVersion()
 {
-  std::cout << "Private Message Database, version 0.03, 2012-08-26\n";
+  std::cout << "Private Message Database, version 0.04, 2012-08-26\n";
 }
 
 void showHelp(const std::string& name)
@@ -59,13 +59,15 @@ void showHelp(const std::string& name)
             << "  -v               - same as --version\n"
             << "  -xml FILENAME    - sets the name of the XML file that contains the private\n"
             << "                     messages to FILENAME. Must not be omitted.\n"
-            << "  --xml=FILENAME   - same as -xml\n";
+            << "  --xml=FILENAME   - same as -xml\n"
+            << "  --save           - all messages will be saved after the XML file was read.\n";
 }
 
 int main(int argc, char **argv)
 {
   showGPLNotice();
   std::string pathToXML = "";
+  bool doSave = false;
   if ((argc>1) and (argv!=NULL))
   {
     int i=1;
@@ -116,6 +118,16 @@ int main(int argc, char **argv)
           pathToXML = param.substr(6);
           std::cout << "XML file was set to \""<<pathToXML<<"\".\n";
         }//param == xml (single parameter version)
+        else if (param=="--save")
+        {
+          if (doSave)
+          {
+            std::cout << "Parameter --save must not occur more than once!\n";
+            return rcInvalidParameter;
+          }
+          doSave = true;
+          std::cout << "Files will be saved as requested via "<<param<<".\n";
+        }//param == save
         else
         {
           //unknown or wrong parameter
@@ -144,14 +156,33 @@ int main(int argc, char **argv)
   uint32_t PMs_done, PMs_new;
   if (mdb.importFromFile(pathToXML, PMs_done, PMs_new))
   {
-    std::cout << "import success!\n";
+    std::cout << "Import of private messages from \""<<pathToXML<<"\" was successful!\n"
+              << PMs_done<<" PMs read, new PMs: "<<PMs_new<<"\n";
   }
   else
   {
-    std::cout << "import failed!\n";
+    std::cout << "Import of private messages from \""<<pathToXML<<"\" failed!\n"
+              << "PMs read so far: "<<PMs_done<<"\nNew PMs: "<<PMs_new<<"\n";
   }
-  std::cout << "PMs read so far: "<<PMs_done<<"\nNew PMs: "<<PMs_new<<"\n";
   std::cout << "PMs in the database: "<<mdb.getNumberOfMessages()<<"\n";
+
+  if (doSave)
+  {
+    if (!mdb.saveMessages(".pmdb/"))
+    {
+      std::cout << "Could not save messages!\n";
+      return 0;
+    }
+    std::cout << "Messages saved successfully!\n";
+  }//if save requested
+
+  //trying to load them again
+  if (!mdb.loadMessages(".pmdb/", PMs_done, PMs_new))
+  {
+    std::cout << "Could not load messages!\nRead: "<<PMs_done<<"; new: "<<PMs_new<<"\n";
+    return 0;
+  }
+  std::cout << "Messages loaded! Read: "<<PMs_done<<"; new: "<<PMs_new<<"\n";
 
   std::cout << "Nothing more to be done here yet. That's what you get for trying a very early version of that programme.\n";
 

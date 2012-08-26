@@ -19,8 +19,13 @@
 */
 
 #include "PrivateMessage.h"
+#include <fstream>
+#ifdef DEBUG
+  #include <iostream>
+#endif
 #include <sstream>
 #include "PMSource.h"
+#include "random-thoro/cpp/common/StringUtils.h"
 
 PrivateMessage::PrivateMessage()
 {
@@ -95,4 +100,157 @@ void PrivateMessage::setMessage(const std::string& msg)
 {
   message = msg;
   m_NeedsHashUpdate = true;
+}
+
+bool PrivateMessage::saveToFile(const std::string& fileName) const
+{
+  std::ofstream output;
+  output.open(fileName.c_str(), std::ios_base::out | std::ios_base::binary);
+  if (!output)
+  {
+    return false;
+  }
+  //write datestamp
+  output.write(datestamp.c_str(), datestamp.length()+1);
+  //write title
+  output.write(title.c_str(), title.length()+1);
+  //write fromUser
+  output.write(fromUser.c_str(), fromUser.length()+1);
+  //write fromUserID
+  const std::string uid_string = uintToString(fromUserID);
+  output.write(uid_string.c_str(), uid_string.length()+1);
+  //write toUser
+  output.write(toUser.c_str(), toUser.length()+1);
+  //write message text
+  output.write(message.c_str(), message.length()+1);
+  return output.good();
+}
+
+bool PrivateMessage::loadFromFile(const std::string& fileName)
+{
+  std::ifstream input;
+  input.open(fileName.c_str(), std::ios_base::in | std::ios_base::binary);
+  if (!input)
+  {
+    return false;
+  }
+  input.seekg(0, std::ios_base::end);
+  const std::streamsize len = input.tellg();
+  input.seekg(0, std::ios_base::beg);
+  if (!input.good())
+  {
+    #ifdef DEBUG
+    std::cout << "Error while reading private message: seek operation(s) failed!\n";
+    #endif
+    input.close();
+    return false;
+  }
+  if (len>1024*1024)
+  {
+    #ifdef DEBUG
+    std::cout << "Error while reading private message: unexpected file size!\n";
+    #endif
+    input.close();
+    return false;
+  }
+  //assume worst case for buffer size: all file content should fit into it
+  char * buffer = new char[len+1];
+
+  //read datestamp
+  input.getline(buffer, len, '\0');
+  if (!input.good())
+  {
+    #ifdef DEBUG
+    std::cout << "Error while reading private message's datestamp part!\n";
+    #endif
+    delete[] buffer;
+    input.close();
+    return false;
+  }
+  buffer[input.gcount()] = '\0';
+  datestamp = std::string(buffer);
+  m_NeedsHashUpdate = true;
+
+  //read title
+  input.getline(buffer, len, '\0');
+  if (!input.good())
+  {
+    #ifdef DEBUG
+    std::cout << "Error while reading private message's title part!\n";
+    #endif
+    delete[] buffer;
+    input.close();
+    return false;
+  }
+  buffer[input.gcount()] = '\0';
+  title = std::string(buffer);
+
+  //read fromUser
+  input.getline(buffer, len, '\0');
+  if (!input.good())
+  {
+    #ifdef DEBUG
+    std::cout << "Error while reading private message's sender part!\n";
+    #endif
+    delete[] buffer;
+    input.close();
+    return false;
+  }
+  buffer[input.gcount()] = '\0';
+  fromUser = std::string(buffer);
+
+  //read fromUserID
+  input.getline(buffer, len, '\0');
+  if (!input.good())
+  {
+    #ifdef DEBUG
+    std::cout << "Error while reading private message's user ID!\n";
+    #endif
+    delete[] buffer;
+    input.close();
+    return false;
+  }
+  buffer[input.gcount()] = '\0';
+  const std::string tempStr = std::string(buffer);
+  if (!(std::stringstream (tempStr) >> fromUserID))
+  {
+    #ifdef DEBUG
+    std::cout << "Error while converting private message's user ID string to integer!\n";
+    #endif
+    delete[] buffer;
+    input.close();
+    return false;
+  }
+
+  //read toUser
+  input.getline(buffer, len, '\0');
+  if (!input.good())
+  {
+    #ifdef DEBUG
+    std::cout << "Error while reading private message's receiver!\n";
+    #endif
+    delete[] buffer;
+    input.close();
+    return false;
+  }
+  buffer[input.gcount()] = '\0';
+  toUser = std::string(buffer);
+
+  //read message text
+  input.getline(buffer, len, '\0');
+  if (!input.good())
+  {
+    #ifdef DEBUG
+    std::cout << "Error while reading private message's text!\n";
+    #endif
+    delete[] buffer;
+    input.close();
+    return false;
+  }
+  buffer[input.gcount()] = '\0';
+  message = std::string(buffer);
+  m_NeedsHashUpdate = true;
+
+  input.close();
+  return true;
 }

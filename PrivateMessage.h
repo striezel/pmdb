@@ -82,6 +82,14 @@ class PrivateMessage
     void setToUser(const std::string& to);
 
     void setMessage(const std::string& msg);
+
+    /* tries to save the message to the given file and returns true in case of
+       success, or false if an error occured */
+    bool saveToFile(const std::string& fileName) const;
+
+    /* tries to load the message to the given file and returns true in case of
+       success, or false if an error occured */
+    bool loadFromFile(const std::string& fileName);
   private:
     std::string datestamp;
     std::string title;

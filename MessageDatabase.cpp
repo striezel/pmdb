@@ -23,6 +23,40 @@
 #include <sstream>
 #include "XMLDocument.h"
 #include "XMLNode.h"
+#include "random-thoro/cpp/common/DirectoryFileList.h"
+
+bool isValidSHA256Hash(const std::string& hash)
+{
+  if (hash.length()!=64) return false;
+  unsigned int i;
+  for (i=0; i<64; ++i)
+  {
+    switch (hash[i])
+    {
+      case '0':
+      case '1':
+      case '2':
+      case '3':
+      case '4':
+      case '5':
+      case '6':
+      case '7':
+      case '8':
+      case '9':
+      case 'a':
+      case 'b':
+      case 'c':
+      case 'd':
+      case 'e':
+      case 'f':
+           break;
+      default:
+           return false;
+           break;
+    }//swi
+  }//for
+  return true;
+}
 
 MessageDatabase::MessageDatabase()
 {
@@ -281,10 +315,65 @@ bool MessageDatabase::processPrivateMessageNode(const XMLNode& node, uint32_t& r
     return false;
   }
 
+  pm.normalise();
+
   ++readPMs;
   if (addMessage(pm))
   {
     ++newPMs;
   }
+  return true;
+}
+
+bool MessageDatabase::saveMessages(const std::string& directory) const
+{
+  std::map<SHA256::MessageDigest, PrivateMessage>::const_iterator iter =m_Messages.begin();
+  while (iter!=m_Messages.end())
+  {
+    if (!iter->second.saveToFile(directory+iter->first.toHexString()))
+      return false;
+    ++iter;
+  }//while
+  return true;
+}
+
+bool MessageDatabase::loadMessages(const std::string& directory, uint32_t& readPMs, uint32_t& newPMs)
+{
+  readPMs = 0;
+  newPMs = 0;
+  std::vector<FileEntry> files;
+  if (!getDirectoryFileList(directory, files, std::string(""), false))
+  {
+    return false;
+  }
+
+  PrivateMessage tempPM;
+
+  std::vector<FileEntry>::const_iterator iter = files.begin();
+  while (iter!=files.end())
+  {
+    if (!(iter->IsDirectory))
+    {
+      if (isValidSHA256Hash(iter->FileName))
+      {
+        if (!tempPM.loadFromFile(directory+iter->FileName))
+        {
+          std::cout << "Error while loading message from file \""<< directory+iter->FileName <<"\"!\n";
+          return false;
+        }
+        if (iter->FileName!=tempPM.getHash().toHexString())
+        {
+          std::cout << "Error: Content of message file has been altered!\n";
+          return false;
+        }
+        ++readPMs;
+        if (addMessage(tempPM))
+        {
+          ++newPMs;
+        }
+      }//if
+    }//if
+    ++iter;
+  }//while
   return true;
 }

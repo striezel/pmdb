@@ -22,6 +22,7 @@
 #include <set>
 #include <string>
 #include "MessageDatabase.h"
+#include "random-thoro/cpp/common/DirectoryFunctions.h"
 
 //return codes
 const int rcInvalidParameter = 1;
@@ -58,7 +59,7 @@ void showGPLNotice()
 
 void showVersion()
 {
-  std::cout << "Private Message Database, version 0.05, 2012-08-26\n";
+  std::cout << "Private Message Database, version 0.06, 2012-08-29\n";
 }
 
 void showHelp(const std::string& name)
@@ -78,7 +79,9 @@ void showHelp(const std::string& name)
             << "                     directory has to be different every time.\n"
             << "  --save           - all messages will be saved after the XML files were read\n"
             << "                     and the messages from the load directories have been\n"
-            << "                     loaded.\n";
+            << "                     loaded. Enabled by default.\n"
+            << "  --no-save        - prevents the programme from saving any read meassages.\n"
+            << "                     Mutually exclusive with --save.\n";
 }
 
 int main(int argc, char **argv)
@@ -86,7 +89,8 @@ int main(int argc, char **argv)
   showGPLNotice();
   std::set<std::string> pathXML;
   std::set<std::string> loadDirs;
-  bool doSave = false;
+  bool doSave = true;
+  bool saveModeSpecified = false;
   if ((argc>1) and (argv!=NULL))
   {
     int i=1;
@@ -141,14 +145,28 @@ int main(int argc, char **argv)
         }//param == xml (single parameter version)
         else if (param=="--save")
         {
-          if (doSave)
+          if (saveModeSpecified)
           {
-            std::cout << "Parameter --save must not occur more than once!\n";
+            std::cout << "Parameter --save must not occur more than once and "
+                      << "is mutually exclusive with --no-save!\n";
             return rcInvalidParameter;
           }
           doSave = true;
+          saveModeSpecified = true;
           std::cout << "Files will be saved as requested via "<<param<<".\n";
         }//param == save
+        else if ((param=="--no-save") or (param=="--nosave"))
+        {
+          if (saveModeSpecified)
+          {
+            std::cout << "Parameter "<<param<<" must not occur more than once "
+                      << "and is mutually exclusive with --save!\n";
+            return rcInvalidParameter;
+          }
+          doSave = false;
+          saveModeSpecified = true;
+          std::cout << "Files will NOT be saved as requested via "<<param<<".\n";
+        }//param == no-save
         else if (param=="--load")
         {
           if (loadDirs.find(defaultSaveDirectory)!=loadDirs.end())
@@ -234,6 +252,24 @@ int main(int argc, char **argv)
 
   if (doSave)
   {
+    //directory creation - only necessary, if there are any messages
+    if (mdb.getNumberOfMessages()!=0)
+    {
+      const std::string realDir = (defaultSaveDirectory[defaultSaveDirectory.length()-1]==cDirSeparator)
+                                   ?  defaultSaveDirectory.substr(0, defaultSaveDirectory.length()-1)
+                                   : defaultSaveDirectory;
+      if (!directoryExists(realDir))
+      {
+        std::cout << "Trying to create directory \""<<realDir<<"\"...";
+        if (!createDirectoryRecursive(realDir))
+        {
+          std::cout <<"failed!\nAborting.\n";
+          return 0;
+        }
+        std::cout << "success!\n";
+      }
+    }//if more than zero messages
+
     if (!mdb.saveMessages(defaultSaveDirectory))
     {
       std::cout << "Could not save messages!\n";

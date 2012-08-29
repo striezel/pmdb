@@ -327,7 +327,7 @@ bool MessageDatabase::processPrivateMessageNode(const XMLNode& node, uint32_t& r
 
 bool MessageDatabase::saveMessages(const std::string& directory) const
 {
-  std::map<SHA256::MessageDigest, PrivateMessage>::const_iterator iter =m_Messages.begin();
+  std::map<SHA256::MessageDigest, PrivateMessage>::const_iterator iter = m_Messages.begin();
   while (iter!=m_Messages.end())
   {
     if (!iter->second.saveToFile(directory+iter->first.toHexString()))

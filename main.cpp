@@ -22,7 +22,7 @@
 #include <set>
 #include <string>
 #include "MessageDatabase.h"
-#include "random-thoro/cpp/common/DirectoryFunctions.h"
+#include "libthoro/common/DirectoryFunctions.h"
 
 //return codes
 const int rcInvalidParameter = 1;

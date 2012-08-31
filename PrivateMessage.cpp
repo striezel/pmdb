@@ -25,7 +25,7 @@
 #endif
 #include <sstream>
 #include "PMSource.h"
-#include "random-thoro/cpp/common/StringUtils.h"
+#include "libthoro/common/StringUtils.h"
 
 PrivateMessage::PrivateMessage()
 {

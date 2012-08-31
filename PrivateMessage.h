@@ -23,7 +23,7 @@
 
 #include <string>
 #include <stdint.h>
-#include "random-thoro/cpp/hashfunctions/sha-256.h"
+#include "libthoro/hashfunctions/sha-256.h"
 
 class PrivateMessage
 {

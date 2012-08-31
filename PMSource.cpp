@@ -23,8 +23,8 @@
 #ifdef DEBUG
   #include <iostream>
 #endif
-#include "random-thoro/cpp/common/StringUtils.h"
-#include "BufferStream.h"
+#include "libthoro/common/StringUtils.h"
+#include "libthoro/common/BufferStream.h"
 
 namespace SHA256
 {

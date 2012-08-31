@@ -23,7 +23,7 @@
 #include <sstream>
 #include "XMLDocument.h"
 #include "XMLNode.h"
-#include "random-thoro/cpp/common/DirectoryFileList.h"
+#include "libthoro/common/DirectoryFileList.h"
 
 bool isValidSHA256Hash(const std::string& hash)
 {

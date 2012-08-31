@@ -37,7 +37,7 @@
 		<Linker>
 			<Add library="xml2" />
 		</Linker>
-		<Unit filename="BufferStream.h" />
+		<Unit filename="libthoro/common/BufferStream.h" />
 		<Unit filename="MessageDatabase.cpp" />
 		<Unit filename="MessageDatabase.h" />
 		<Unit filename="PMSource.cpp" />

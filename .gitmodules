@@ -1,3 +1,3 @@
-[submodule "random-thoro"]
-	path = random-thoro
-	url = git://random-thoro.git.sourceforge.net/gitroot/random-thoro/random-thoro
+[submodule "libthoro"]
+	path = libthoro
+	url = git://git.code.sf.net/p/libthoro/code

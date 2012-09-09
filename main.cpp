@@ -27,16 +27,6 @@
 //return codes
 const int rcInvalidParameter = 1;
 
-#if defined(_WIN32)
-  const char cDirSeparator = '\\';
-#elif defined(__linux__) || defined(linux)
-  const char cDirSeparator = '/';
-#else
-  #error Unknown operating system!
-#endif
-
-const std::string defaultSaveDirectory = std::string(".pmdb")+cDirSeparator;
-
 void showGPLNotice()
 {
   std::cout << "Private Message Database\n"
@@ -91,6 +81,16 @@ int main(int argc, char **argv)
   std::set<std::string> loadDirs;
   bool doSave = true;
   bool saveModeSpecified = false;
+  std::string defaultSaveDirectory;
+  if (getHomeDirectory(defaultSaveDirectory))
+  {
+    defaultSaveDirectory = slashify(defaultSaveDirectory) + std::string(".pmdb") + Thoro::pathDelimiter;
+  }
+  else
+  {
+    defaultSaveDirectory = std::string(".pmdb") + Thoro::pathDelimiter;
+  }
+
   if ((argc>1) and (argv!=NULL))
   {
     int i=1;
@@ -180,11 +180,7 @@ int main(int argc, char **argv)
         else if ((param.substr(0,7)=="--load=") and (param.length()>7))
         {
           std::string pathToDir = param.substr(7);
-          //Does it have a trailing (back)slash?
-          if (pathToDir[pathToDir.length()-1]!=cDirSeparator)
-          {
-            pathToDir = pathToDir + cDirSeparator;
-          }
+          pathToDir = slashify(pathToDir); //Does it have a trailing (back)slash?
           if (loadDirs.find(pathToDir)!=loadDirs.end())
           {
             std::cout << "Parameter --load must not occur more than once for the same directory!\n";
@@ -255,12 +251,10 @@ int main(int argc, char **argv)
     //directory creation - only necessary, if there are any messages
     if (mdb.getNumberOfMessages()!=0)
     {
-      const std::string realDir = (defaultSaveDirectory[defaultSaveDirectory.length()-1]==cDirSeparator)
-                                   ?  defaultSaveDirectory.substr(0, defaultSaveDirectory.length()-1)
-                                   : defaultSaveDirectory;
+      const std::string realDir = unslashify(defaultSaveDirectory);
       if (!directoryExists(realDir))
       {
-        std::cout << "Trying to create directory \""<<realDir<<"\"...";
+        std::cout << "Trying to create save directory \""<<realDir<<"\"...";
         if (!createDirectoryRecursive(realDir))
         {
           std::cout <<"failed!\nAborting.\n";
@@ -270,7 +264,7 @@ int main(int argc, char **argv)
       }
     }//if more than zero messages
 
-    if (!mdb.saveMessages(defaultSaveDirectory))
+    if (!mdb.saveMessages(slashify(defaultSaveDirectory)))
     {
       std::cout << "Could not save messages!\n";
       return 0;

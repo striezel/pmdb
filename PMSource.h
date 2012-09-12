@@ -23,7 +23,7 @@
 
 #include "PrivateMessage.h"
 #include "libthoro/common/BufferStream.h"
-#include "libthoro/hashfunctions/sha-256_aux.h"
+#include "libthoro/hashfunctions/sha-256_sources.h"
 
 namespace SHA256
 {

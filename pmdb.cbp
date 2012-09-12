@@ -22,7 +22,7 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
-					<Add option="-O2" />
+					<Add option="-O3" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -37,7 +37,6 @@
 		<Linker>
 			<Add library="xml2" />
 		</Linker>
-		<Unit filename="libthoro/common/BufferStream.h" />
 		<Unit filename="MessageDatabase.cpp" />
 		<Unit filename="MessageDatabase.h" />
 		<Unit filename="PMSource.cpp" />
@@ -48,17 +47,20 @@
 		<Unit filename="XMLDocument.h" />
 		<Unit filename="XMLNode.cpp" />
 		<Unit filename="XMLNode.h" />
-		<Unit filename="main.cpp" />
+		<Unit filename="libthoro/common/BufferStream.h" />
 		<Unit filename="libthoro/common/DirectoryFileList.cpp" />
 		<Unit filename="libthoro/common/DirectoryFileList.h" />
 		<Unit filename="libthoro/common/DirectoryFunctions.cpp" />
 		<Unit filename="libthoro/common/DirectoryFunctions.h" />
 		<Unit filename="libthoro/common/StringUtils.cpp" />
 		<Unit filename="libthoro/common/StringUtils.h" />
+		<Unit filename="libthoro/hashfunctions/sha-1-256_functions.h" />
 		<Unit filename="libthoro/hashfunctions/sha-256.cpp" />
 		<Unit filename="libthoro/hashfunctions/sha-256.h" />
-		<Unit filename="libthoro/hashfunctions/sha-256_aux.cpp" />
-		<Unit filename="libthoro/hashfunctions/sha-256_aux.h" />
+		<Unit filename="libthoro/hashfunctions/sha-256_functions.h" />
+		<Unit filename="libthoro/hashfunctions/sha-256_sources.cpp" />
+		<Unit filename="libthoro/hashfunctions/sha-256_sources.h" />
+		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />

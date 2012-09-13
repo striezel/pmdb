@@ -22,10 +22,14 @@
 #include <set>
 #include <string>
 #include "MessageDatabase.h"
+#include "MsgTemplate.h"
+#include "bbcode/BBCodeParser.h"
 #include "libthoro/common/DirectoryFunctions.h"
+#include "libthoro/common/StringUtils.h"
 
 //return codes
 const int rcInvalidParameter = 1;
+const int rcFileError        = 2;
 
 void showGPLNotice()
 {
@@ -49,7 +53,7 @@ void showGPLNotice()
 
 void showVersion()
 {
-  std::cout << "Private Message Database, version 0.06, 2012-08-29\n";
+  std::cout << "Private Message Database, version 0.07, 2012-09-14\n";
 }
 
 void showHelp(const std::string& name)
@@ -71,7 +75,8 @@ void showHelp(const std::string& name)
             << "                     and the messages from the load directories have been\n"
             << "                     loaded. Enabled by default.\n"
             << "  --no-save        - prevents the programme from saving any read meassages.\n"
-            << "                     Mutually exclusive with --save.\n";
+            << "                     Mutually exclusive with --save.\n"
+            << "  --html           - creates HTML files for every message.\n";
 }
 
 int main(int argc, char **argv)
@@ -90,6 +95,7 @@ int main(int argc, char **argv)
   {
     defaultSaveDirectory = std::string(".pmdb") + Thoro::pathDelimiter;
   }
+  bool doHTML = false;
 
   if ((argc>1) and (argv!=NULL))
   {
@@ -189,6 +195,15 @@ int main(int argc, char **argv)
           loadDirs.insert(pathToDir);
           std::cout << "Directory \""<<pathToDir<<"\" was chained for loading.\n";
         }//param == 'load=...'
+        else if (param=="--html")
+        {
+          if (doHTML)
+          {
+            std::cout << "Parameter --html must not occur more than once!\n";
+            return rcInvalidParameter;
+          }
+          doHTML = true;
+        }//param == html
         else
         {
           //unknown or wrong parameter
@@ -271,6 +286,68 @@ int main(int argc, char **argv)
     }
     std::cout << "Messages saved successfully!\n";
   }//if save requested
+
+  if (doHTML)
+  {
+    MessageDatabase::Iterator msgIter = mdb.getBegin();
+    if (msgIter!=mdb.getEnd())
+    {
+      //directory creation
+      std::string htmlDir = slashify(defaultSaveDirectory)+"html";
+      if (!directoryExists(htmlDir))
+      {
+        std::cout << "Trying to create HTML directory \""<<htmlDir<<"\"...";
+        if (!createDirectoryRecursive(htmlDir))
+        {
+          std::cout <<"failed!\nAborting.\n";
+          return 0;
+        }
+        std::cout << "success!\n";
+      }//if html directory does not exist
+      htmlDir = slashify(htmlDir);
+
+      //load template for HTML files
+      MsgTemplate theTemplate;
+      if (!theTemplate.loadFromFile("message.tpl"))
+      {
+        std::cout << "Error: could not load template file for messages\n";
+        return rcFileError;
+      }
+      //create HTML files
+      while (msgIter!=mdb.getEnd())
+      {
+        theTemplate.addReplacement("date", msgIter->second.getDatestamp(), true);
+        theTemplate.addReplacement("title", msgIter->second.getTitle(), true);
+        theTemplate.addReplacement("fromuser", msgIter->second.getFromUser(), true);
+        theTemplate.addReplacement("fromuserid", intToString(msgIter->second.getFromUserID()), true);
+        theTemplate.addReplacement("touser", msgIter->second.getToUser(), true);
+        theTemplate.addReplacement("message", BBCodeParser::parse(msgIter->second.getMessage()), false);
+        const std::string output = theTemplate.show();
+        std::ofstream htmlFile;
+        htmlFile.open((htmlDir+msgIter->first.toHexString()+".html").c_str(),
+                      std::ios_base::out | std::ios_base::binary | std::ios_base::trunc);
+        if (!htmlFile.is_open())
+        {
+          std::cout << "Failed to open file "<<htmlDir<<msgIter->first.toHexString()<<".html!\n";
+          return rcFileError;
+        }
+        htmlFile.write(output.c_str(), output.length());
+        if (!htmlFile.good())
+        {
+          std::cout << "Error while writing to file "<<htmlDir<<msgIter->first.toHexString()<<".html!\n";
+          htmlFile.close();
+          return rcFileError;
+        }
+        htmlFile.close();
+        ++msgIter;
+      }//while
+      std::cout << "All HTML files were created successfully!\n";
+    }//if
+    else
+    {
+      std::cout << "There are no messages, thus no HTML files were created.\n";
+    }
+  }//if doHTML
 
   return 0;
 }

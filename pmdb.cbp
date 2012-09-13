@@ -49,6 +49,8 @@
 		<Unit filename="XMLDocument.h" />
 		<Unit filename="XMLNode.cpp" />
 		<Unit filename="XMLNode.h" />
+		<Unit filename="bbcode/BBCodeParser.cpp" />
+		<Unit filename="bbcode/BBCodeParser.h" />
 		<Unit filename="libthoro/common/BufferStream.h" />
 		<Unit filename="libthoro/common/DirectoryFileList.cpp" />
 		<Unit filename="libthoro/common/DirectoryFileList.h" />

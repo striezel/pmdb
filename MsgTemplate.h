@@ -33,16 +33,32 @@ class MsgTemplate
     /* destructor */
     ~MsgTemplate();
 
-    /* loads template from a given file */
+    /* loads template from a given file and returns true in case of success
+
+       parameters:
+           fileName - path to the template file
+    */
     bool loadFromFile(const std::string& fileName);
 
-    void addReplacement(const std::string& tag, const std::string& replacement);
+    /* adds a new replacement for a certain tag
 
+       parameters:
+           tag         - name of the tag that shall be replaced
+           replacement - replacement for the given tag
+           killHTML    - if set to true, HTML code will be escaped in the
+                         replacement string
+    */
+    void addReplacement(const std::string& tag, const std::string& replacement, const bool killHTML);
+
+    /* clears the replacement list */
     void clearReplacements();
 
+    /* returns a string that contains the final template with all replacement
+       tags replaced by their proper content
+    */
     std::string show() const;
   private:
-    std::string prepareReplacement(std::string content);
+    std::string prepareReplacement(std::string content, const bool killHTML);
     std::map<std::string, std::string> m_Tags;
     std::string m_Template;
 }; //class

@@ -63,9 +63,9 @@ bool MsgTemplate::loadFromFile(const std::string& fileName)
   return true;
 }
 
-void MsgTemplate::addReplacement(const std::string& tag, const std::string& replacement)
+void MsgTemplate::addReplacement(const std::string& tag, const std::string& replacement, const bool killHTML)
 {
-  m_Tags[tag] = prepareReplacement(replacement);
+  m_Tags[tag] = prepareReplacement(replacement, killHTML);
 }
 
 void MsgTemplate::clearReplacements()
@@ -92,9 +92,34 @@ std::string MsgTemplate::show() const
   return result;
 }
 
-std::string MsgTemplate::prepareReplacement(std::string content)
+std::string MsgTemplate::prepareReplacement(std::string content, const bool killHTML)
 {
-  std::string::size_type pos = content.find("{..");
+  std::string::size_type pos = std::string::npos;
+  if (killHTML)
+  {
+    pos = content.find("&");
+    while (pos!=std::string::npos)
+    {
+      content.replace(pos, 1, "&amp;");
+      pos = content.find("&", pos+1);
+    }//while
+
+    pos = content.find("<");
+    while (pos!=std::string::npos)
+    {
+      content.replace(pos, 1, "&lt;");
+      pos = content.find("<");
+    }//while
+
+    pos = content.find(">");
+    while (pos!=std::string::npos)
+    {
+      content.replace(pos, 1, "&gt;");
+      pos = content.find(">");
+    }//while
+  }//if escape HTML tags
+
+  pos = content.find("{..");
   while (pos!=std::string::npos)
   {
     content.replace(pos, 3, "&#x7B;..");
@@ -106,20 +131,6 @@ std::string MsgTemplate::prepareReplacement(std::string content)
   {
     content.replace(pos, 3, "..&#x7D;");
     pos = content.find("..}");
-  }//while
-
-  pos = content.find("<");
-  while (pos!=std::string::npos)
-  {
-    content.replace(pos, 1, "&lt;");
-    pos = content.find("<");
-  }//while
-
-  pos = content.find(">");
-  while (pos!=std::string::npos)
-  {
-    content.replace(pos, 1, "&gt;");
-    pos = content.find(">");
   }//while
 
   return content;

@@ -39,6 +39,8 @@
 		</Linker>
 		<Unit filename="MessageDatabase.cpp" />
 		<Unit filename="MessageDatabase.h" />
+		<Unit filename="MsgTemplate.cpp" />
+		<Unit filename="MsgTemplate.h" />
 		<Unit filename="PMSource.cpp" />
 		<Unit filename="PMSource.h" />
 		<Unit filename="PrivateMessage.cpp" />

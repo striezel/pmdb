@@ -31,7 +31,7 @@ class BBCodeParser
        parameters:
            text - the original text
     */
-    static std::string parse(std::string text);
+    static std::string parse(std::string text, const std::string& forumURL);
 };//class
 
 #endif // BBCODEPARSER_H

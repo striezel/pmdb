@@ -53,7 +53,7 @@ void showGPLNotice()
 
 void showVersion()
 {
-  std::cout << "Private Message Database, version 0.07, 2012-09-14\n";
+  std::cout << "Private Message Database, version 0.08, 2012-09-14\n";
 }
 
 void showHelp(const std::string& name)
@@ -314,6 +314,7 @@ int main(int argc, char **argv)
         return rcFileError;
       }
       //create HTML files
+      const std::string forumURL = "http://www.example.com/forum/";
       while (msgIter!=mdb.getEnd())
       {
         theTemplate.addReplacement("date", msgIter->second.getDatestamp(), true);
@@ -321,7 +322,7 @@ int main(int argc, char **argv)
         theTemplate.addReplacement("fromuser", msgIter->second.getFromUser(), true);
         theTemplate.addReplacement("fromuserid", intToString(msgIter->second.getFromUserID()), true);
         theTemplate.addReplacement("touser", msgIter->second.getToUser(), true);
-        theTemplate.addReplacement("message", BBCodeParser::parse(msgIter->second.getMessage()), false);
+        theTemplate.addReplacement("message", BBCodeParser::parse(msgIter->second.getMessage(), forumURL), false);
         const std::string output = theTemplate.show();
         std::ofstream htmlFile;
         htmlFile.open((htmlDir+msgIter->first.toHexString()+".html").c_str(),

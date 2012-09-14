@@ -19,8 +19,9 @@
 */
 
 #include "BBCodeParser.h"
+#include "quotes.h"
 
-std::string BBCodeParser::parse(std::string text)
+std::string BBCodeParser::parse(std::string text, const std::string& forumURL)
 {
   std::string::size_type pos = text.find("\n");
   //handle line breaks
@@ -29,5 +30,7 @@ std::string BBCodeParser::parse(std::string text)
     text.replace(pos, 1, "<br>");
     pos = text.find("\n");
   }//while
-  return text;
+
+  //handle quotes
+  return handleQuotes(text, forumURL);
 }

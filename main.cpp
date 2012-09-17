@@ -53,7 +53,7 @@ void showGPLNotice()
 
 void showVersion()
 {
-  std::cout << "Private Message Database, version 0.08, 2012-09-14\n";
+  std::cout << "Private Message Database, version 0.09, 2012-09-17\n";
 }
 
 void showHelp(const std::string& name)
@@ -313,6 +313,49 @@ int main(int argc, char **argv)
         std::cout << "Error: could not load template file for messages\n";
         return rcFileError;
       }
+
+      //prepare BB code parser
+      BBCodeParser parser;
+      // [b], [u], [i], [s] codes
+      SimpleBBCode b("b");
+      SimpleBBCode u("u");
+      SimpleBBCode i("i");
+      CustomizedSimpleBBCode s("s",
+                               "<span style=\"text-decoration:line-through;\">",
+                               "</span>");
+      //[sup] and [sub] tags
+      SimpleBBCode sup("sup");
+      SimpleBBCode sub("sub");
+      //indent tags
+      CustomizedSimpleBBCode indent("indent", "<blockquote>", "</blockquote>");
+      //alignment stuff
+      SimpleBBCode center("center");
+      CustomizedSimpleBBCode left("left", "<div align=\"left\">", "</div>");
+      CustomizedSimpleBBCode right("right", "<div align=\"right\">", "</div>");
+      //image tags
+      CustomizedSimpleBBCode img_simple("img", "<img src=\"", "\" border=\"0\">");
+      //code tags
+      CustomizedSimpleBBCode code("code",
+                                  std::string("<div style=\"margin:20px; margin-top:5px\">\n")
+                                  +"<div class=\"smallfont\" style=\"margin-bottom:2px; font: 10px verdana,"
+                                  +" geneva, lucida, 'lucida grande', arial, helvetica, sans-serif;\n"
+                                  +"font-size:7pt;\">Code:</div>\n"
+                                  +"<pre dir=\"ltr\" style=\"margin: 0px; padding: 6px; border: 1px inset;"
+                                  +" width: 620px; text-align: left; overflow: auto\">",
+                                  "</pre></div>");
+      parser.addCode(&b);
+      parser.addCode(&u);
+      parser.addCode(&i);
+      parser.addCode(&s);
+      parser.addCode(&sup);
+      parser.addCode(&sub);
+      parser.addCode(&indent);
+      parser.addCode(&center);
+      parser.addCode(&left);
+      parser.addCode(&right);
+      parser.addCode(&img_simple);
+      parser.addCode(&code);
+
       //create HTML files
       const std::string forumURL = "http://www.example.com/forum/";
       while (msgIter!=mdb.getEnd())
@@ -322,7 +365,7 @@ int main(int argc, char **argv)
         theTemplate.addReplacement("fromuser", msgIter->second.getFromUser(), true);
         theTemplate.addReplacement("fromuserid", intToString(msgIter->second.getFromUserID()), true);
         theTemplate.addReplacement("touser", msgIter->second.getToUser(), true);
-        theTemplate.addReplacement("message", BBCodeParser::parse(msgIter->second.getMessage(), forumURL), false);
+        theTemplate.addReplacement("message", parser.parse(msgIter->second.getMessage(), forumURL), false);
         const std::string output = theTemplate.show();
         std::ofstream htmlFile;
         htmlFile.open((htmlDir+msgIter->first.toHexString()+".html").c_str(),

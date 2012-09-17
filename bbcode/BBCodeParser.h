@@ -22,6 +22,8 @@
 #define BBCODEPARSER_H
 
 #include <string>
+#include <vector>
+#include "BBCode.h"
 
 class BBCodeParser
 {
@@ -31,7 +33,24 @@ class BBCodeParser
        parameters:
            text - the original text
     */
-    static std::string parse(std::string text, const std::string& forumURL);
+    std::string parse(std::string text, const std::string& forumURL) const;
+
+    /* adds a new bb code to the parser
+
+       parameters:
+           code - pointer to the BB code object
+
+       remarks:
+           The passed pointers must live for the whole lifetime of the
+           BBCodeParser instance they are passed to. Otherwise parse() will
+           fail.
+    */
+    void addCode(BBCode* code);
+
+    /* clears all added BB codes */
+    void clearCodes();
+  private:
+    std::vector<BBCode*> m_Codes;
 };//class
 
 #endif // BBCODEPARSER_H

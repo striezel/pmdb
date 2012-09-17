@@ -21,7 +21,7 @@
 #include "BBCodeParser.h"
 #include "quotes.h"
 
-std::string BBCodeParser::parse(std::string text, const std::string& forumURL)
+std::string BBCodeParser::parse(std::string text, const std::string& forumURL) const
 {
   std::string::size_type pos = text.find("\n");
   //handle line breaks
@@ -31,6 +31,24 @@ std::string BBCodeParser::parse(std::string text, const std::string& forumURL)
     pos = text.find("\n");
   }//while
 
+  //handle bb codes
+  std::vector<BBCode*>::const_iterator iter = m_Codes.begin();
+  while (iter!=m_Codes.end())
+  {
+    (*iter)->applyToText(text);
+    ++iter;
+  }//while
+
   //handle quotes
   return handleQuotes(text, forumURL);
+}
+
+void BBCodeParser::addCode(BBCode* code)
+{
+  m_Codes.push_back(code);
+}
+
+void BBCodeParser::clearCodes()
+{
+  m_Codes.clear();
 }

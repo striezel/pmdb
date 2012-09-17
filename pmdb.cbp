@@ -49,6 +49,8 @@
 		<Unit filename="XMLDocument.h" />
 		<Unit filename="XMLNode.cpp" />
 		<Unit filename="XMLNode.h" />
+		<Unit filename="bbcode/BBCode.cpp" />
+		<Unit filename="bbcode/BBCode.h" />
 		<Unit filename="bbcode/BBCodeParser.cpp" />
 		<Unit filename="bbcode/BBCodeParser.h" />
 		<Unit filename="bbcode/quotes.cpp" />

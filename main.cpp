@@ -22,10 +22,16 @@
 #include <set>
 #include <string>
 #include "MessageDatabase.h"
+#include "MsgTemplate.h"
+#include "Config.h"
+#include "bbcode/BBCodeParser.h"
 #include "libthoro/common/DirectoryFunctions.h"
+#include "libthoro/common/DirectoryFileList.h"
+#include "libthoro/common/StringUtils.h"
 
 //return codes
 const int rcInvalidParameter = 1;
+const int rcFileError        = 2;
 
 void showGPLNotice()
 {
@@ -49,7 +55,7 @@ void showGPLNotice()
 
 void showVersion()
 {
-  std::cout << "Private Message Database, version 0.06, 2012-08-29\n";
+  std::cout << "Private Message Database, version 0.14, 2012-09-21\n";
 }
 
 void showHelp(const std::string& name)
@@ -71,7 +77,8 @@ void showHelp(const std::string& name)
             << "                     and the messages from the load directories have been\n"
             << "                     loaded. Enabled by default.\n"
             << "  --no-save        - prevents the programme from saving any read meassages.\n"
-            << "                     Mutually exclusive with --save.\n";
+            << "                     Mutually exclusive with --save.\n"
+            << "  --html           - creates HTML files for every message.\n";
 }
 
 int main(int argc, char **argv)
@@ -81,15 +88,20 @@ int main(int argc, char **argv)
   std::set<std::string> loadDirs;
   bool doSave = true;
   bool saveModeSpecified = false;
+  std::string homeDirectory;
   std::string defaultSaveDirectory;
-  if (getHomeDirectory(defaultSaveDirectory))
+
+  if (getHomeDirectory(homeDirectory))
   {
-    defaultSaveDirectory = slashify(defaultSaveDirectory) + std::string(".pmdb") + Thoro::pathDelimiter;
+    homeDirectory = slashify(homeDirectory);
+    defaultSaveDirectory = homeDirectory + std::string(".pmdb") + Thoro::pathDelimiter;
   }
   else
   {
+    homeDirectory = std::string(".") + Thoro::pathDelimiter;
     defaultSaveDirectory = std::string(".pmdb") + Thoro::pathDelimiter;
   }
+  bool doHTML = false;
 
   if ((argc>1) and (argv!=NULL))
   {
@@ -189,6 +201,15 @@ int main(int argc, char **argv)
           loadDirs.insert(pathToDir);
           std::cout << "Directory \""<<pathToDir<<"\" was chained for loading.\n";
         }//param == 'load=...'
+        else if (param=="--html")
+        {
+          if (doHTML)
+          {
+            std::cout << "Parameter --html must not occur more than once!\n";
+            return rcInvalidParameter;
+          }
+          doHTML = true;
+        }//param == html
         else
         {
           //unknown or wrong parameter
@@ -206,7 +227,7 @@ int main(int argc, char **argv)
     }//while
   }//if arguments present
 
-  if (pathXML.empty())
+  if (pathXML.empty() and loadDirs.empty())
   {
     std::cout << "You have to specify certain parameters for this programme to run properly.\n"
               << "Use --help to get a list of valid parameters.\n";
@@ -271,6 +292,142 @@ int main(int argc, char **argv)
     }
     std::cout << "Messages saved successfully!\n";
   }//if save requested
+
+  if (doHTML)
+  {
+    MessageDatabase::Iterator msgIter = mdb.getBegin();
+    if (msgIter!=mdb.getEnd())
+    {
+      //directory creation
+      std::string htmlDir = slashify(defaultSaveDirectory)+"html";
+      if (!directoryExists(htmlDir))
+      {
+        std::cout << "Trying to create HTML directory \""<<htmlDir<<"\"...";
+        if (!createDirectoryRecursive(htmlDir))
+        {
+          std::cout <<"failed!\nAborting.\n";
+          return 0;
+        }
+        std::cout << "success!\n";
+      }//if html directory does not exist
+      htmlDir = slashify(htmlDir);
+
+      BBCodeParser parser;
+      std::string forumURL = "http://www.example.com/forum/";
+      std::string tplFile = "message.tpl";
+      //try to load configuration file
+      if (FileExists(defaultSaveDirectory+"pmdb.conf"))
+      {
+        if (!loadConfigFile(defaultSaveDirectory+"pmdb.conf", parser, forumURL, tplFile))
+        {
+          std::cout << "Could not load pmdb.conf, using default/incomplete values instead.\n";
+          tplFile = "message.tpl";
+        }
+        else std::cout << "Loading pmdb.conf was successful.\n";
+      }
+
+      //load template for HTML files
+      MsgTemplate theTemplate;
+      if (!theTemplate.loadFromFile(tplFile))
+      {
+        std::cout << "Error: could not load template file \""<<tplFile<<"\" for messages!\n";
+        return rcFileError;
+      }
+
+      /* prepare BB code parser with BB codes */
+      // [b], [u], [i], [s] codes
+      SimpleBBCode b("b");
+      SimpleBBCode u("u");
+      SimpleBBCode i("i");
+      CustomizedSimpleBBCode s("s",
+                               "<span style=\"text-decoration:line-through;\">",
+                               "</span>");
+      //[sup] and [sub] tags
+      SimpleBBCode sup("sup");
+      SimpleBBCode sub("sub");
+      //indent tags
+      CustomizedSimpleBBCode indent("indent", "<blockquote>", "</blockquote>");
+      //alignment stuff
+      SimpleBBCode center("center");
+      CustomizedSimpleBBCode left("left", "<div align=\"left\">", "</div>");
+      CustomizedSimpleBBCode right("right", "<div align=\"right\">", "</div>");
+      //image tags
+      CustomizedSimpleBBCode img_simple("img", "<img src=\"", "\" border=\"0\">");
+      //simple url tag
+      MsgTemplate tpl;
+      tpl.loadFromString("<a href=\"{..inner..}\" target=\"_blank\">{..inner..}</a>");
+      SimpleTemplateBBCode url_simple("url", tpl, "inner");
+      //advanced url tag
+      tpl.loadFromString("<a href=\"{..attribute..}\" target=\"_blank\">{..inner..}</a>");
+      AdvancedTemplateBBCode url_advanced("url", tpl, "inner", "attribute");
+      //color tags
+      tpl.loadFromString("<font color=\"{..attr..}\">{..inner..}</font>");
+      AdvancedTemplateBBCode color("color", tpl, "inner", "attr");
+      //size tags
+      tpl.loadFromString("<font size=\"{..attr..}\">{..inner..}</font>");
+      AdvancedTemplateBBCode size("size", tpl, "inner", "attr");
+      //code tags
+      CustomizedSimpleBBCode code("code",
+                                  std::string("<div style=\"margin:20px; margin-top:5px\">\n")
+                                  +"<div class=\"smallfont\" style=\"margin-bottom:2px; font: 10px verdana,"
+                                  +" geneva, lucida, 'lucida grande', arial, helvetica, sans-serif;\n"
+                                  +"font-size:7pt;\">Code:</div>\n"
+                                  +"<pre dir=\"ltr\" style=\"margin: 0px; padding: 6px; border: 1px inset;"
+                                  +" width: 620px; text-align: left; overflow: auto\">",
+                                  "</pre></div>");
+      parser.addCode(&b);
+      parser.addCode(&u);
+      parser.addCode(&i);
+      parser.addCode(&s);
+      parser.addCode(&sup);
+      parser.addCode(&sub);
+      parser.addCode(&indent);
+      parser.addCode(&center);
+      parser.addCode(&left);
+      parser.addCode(&right);
+      parser.addCode(&img_simple);
+      parser.addCode(&url_simple);
+      parser.addCode(&url_advanced);
+      parser.addCode(&color);
+      parser.addCode(&size);
+      parser.addCode(&code);
+
+      //create HTML files
+      theTemplate.addReplacement("forum_url", forumURL, false);
+      while (msgIter!=mdb.getEnd())
+      {
+        theTemplate.addReplacement("date", msgIter->second.getDatestamp(), true);
+        theTemplate.addReplacement("title", msgIter->second.getTitle(), true);
+        theTemplate.addReplacement("fromuser", msgIter->second.getFromUser(), true);
+        theTemplate.addReplacement("fromuserid", intToString(msgIter->second.getFromUserID()), true);
+        theTemplate.addReplacement("touser", msgIter->second.getToUser(), true);
+        theTemplate.addReplacement("message", parser.parse(msgIter->second.getMessage(), forumURL), false);
+        const std::string output = theTemplate.show();
+        std::ofstream htmlFile;
+        htmlFile.open((htmlDir+msgIter->first.toHexString()+".html").c_str(),
+                      std::ios_base::out | std::ios_base::binary | std::ios_base::trunc);
+        if (!htmlFile.is_open())
+        {
+          std::cout << "Failed to open file "<<htmlDir<<msgIter->first.toHexString()<<".html!\n";
+          return rcFileError;
+        }
+        htmlFile.write(output.c_str(), output.length());
+        if (!htmlFile.good())
+        {
+          std::cout << "Error while writing to file "<<htmlDir<<msgIter->first.toHexString()<<".html!\n";
+          htmlFile.close();
+          return rcFileError;
+        }
+        htmlFile.close();
+        ++msgIter;
+      }//while
+      std::cout << "All HTML files were created successfully!\n";
+    }//if
+    else
+    {
+      std::cout << "There are no messages, thus no HTML files were created.\n";
+    }
+  }//if doHTML
 
   return 0;
 }

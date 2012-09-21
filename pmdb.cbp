@@ -37,8 +37,12 @@
 		<Linker>
 			<Add library="xml2" />
 		</Linker>
+		<Unit filename="Config.cpp" />
+		<Unit filename="Config.h" />
 		<Unit filename="MessageDatabase.cpp" />
 		<Unit filename="MessageDatabase.h" />
+		<Unit filename="MsgTemplate.cpp" />
+		<Unit filename="MsgTemplate.h" />
 		<Unit filename="PMSource.cpp" />
 		<Unit filename="PMSource.h" />
 		<Unit filename="PrivateMessage.cpp" />
@@ -47,6 +51,14 @@
 		<Unit filename="XMLDocument.h" />
 		<Unit filename="XMLNode.cpp" />
 		<Unit filename="XMLNode.h" />
+		<Unit filename="bbcode/BBCode.cpp" />
+		<Unit filename="bbcode/BBCode.h" />
+		<Unit filename="bbcode/BBCodeParser.cpp" />
+		<Unit filename="bbcode/BBCodeParser.h" />
+		<Unit filename="bbcode/Smilie.cpp" />
+		<Unit filename="bbcode/Smilie.h" />
+		<Unit filename="bbcode/quotes.cpp" />
+		<Unit filename="bbcode/quotes.h" />
 		<Unit filename="libthoro/common/BufferStream.h" />
 		<Unit filename="libthoro/common/DirectoryFileList.cpp" />
 		<Unit filename="libthoro/common/DirectoryFileList.h" />

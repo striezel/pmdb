@@ -133,9 +133,6 @@ bool MessageDatabase::importFromFile(const std::string& fileName, uint32_t& read
     }
     node = node.getNextSibling();
   }//while (outer one)
-  #ifdef DEBUG
-  std::cout << "DEBUG: (importFromFile) Going to return now!\n";
-  #endif
   return true;
 }
 
@@ -177,9 +174,6 @@ bool MessageDatabase::processFolderNode(const XMLNode& node, uint32_t& readPMs, 
 
     current = current.getNextSibling();
   }
-  #ifdef DEBUG
-  std::cout << "DEBUG: Another folder done!\n";
-  #endif
   return true;
 }
 
@@ -208,9 +202,6 @@ bool MessageDatabase::processPrivateMessageNode(const XMLNode& node, uint32_t& r
         return false;
       }
       pm.setDatestamp(current.getPlainTextContent());
-      #ifdef DEBUG
-      std::cout << "DEBUG: datestamp content is \""<<pm.getDatestamp()<<"\".\n";
-      #endif
     }//if "datestamp"
     else if (curName=="title")
     {
@@ -220,9 +211,6 @@ bool MessageDatabase::processPrivateMessageNode(const XMLNode& node, uint32_t& r
         return false;
       }
       pm.setTitle(current.getContentBoth());
-      #ifdef DEBUG
-      std::cout << "DEBUG: title content is \""<<pm.getTitle()<<"\".\n";
-      #endif
     }//if "title"
     else if (curName=="fromuser")
     {
@@ -232,9 +220,6 @@ bool MessageDatabase::processPrivateMessageNode(const XMLNode& node, uint32_t& r
         return false;
       }
       pm.setFromUser(current.getContentBoth());
-      #ifdef DEBUG
-      std::cout << "DEBUG: fromUser content is \""<<pm.getFromUser()<<"\".\n";
-      #endif
     }//if "fromuser"
     else if (curName=="fromuserid")
     {
@@ -252,9 +237,6 @@ bool MessageDatabase::processPrivateMessageNode(const XMLNode& node, uint32_t& r
         return false;
       }
       pm.setFromUserID(tempUint);
-      #ifdef DEBUG
-      std::cout << "DEBUG: fromUserID is \""<<pm.getFromUserID()<<"\".\n";
-      #endif
     }//if "fromuserid"
     else if (curName=="touser")
     {
@@ -264,9 +246,6 @@ bool MessageDatabase::processPrivateMessageNode(const XMLNode& node, uint32_t& r
         return false;
       }
       pm.setToUser(current.getContentBoth());
-      #ifdef DEBUG
-      std::cout << "DEBUG: toUser content is \""<<pm.getToUser()<<"\".\n";
-      #endif
     }//if "touser"
     else if (curName=="message")
     {
@@ -276,9 +255,6 @@ bool MessageDatabase::processPrivateMessageNode(const XMLNode& node, uint32_t& r
         return false;
       }
       pm.setMessage(current.getContentBoth());
-      #ifdef DEBUG
-      std::cout << "DEBUG: message content is \""<<pm.getMessage()<<"\".\n";
-      #endif
     }//if "message"
     else
     {

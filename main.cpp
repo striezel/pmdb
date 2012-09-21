@@ -55,7 +55,7 @@ void showGPLNotice()
 
 void showVersion()
 {
-  std::cout << "Private Message Database, version 0.12, 2012-09-21\n";
+  std::cout << "Private Message Database, version 0.13, 2012-09-21\n";
 }
 
 void showHelp(const std::string& name)
@@ -390,6 +390,7 @@ int main(int argc, char **argv)
       }
 
       //create HTML files
+      theTemplate.addReplacement("forum_url", forumURL, false);
       while (msgIter!=mdb.getEnd())
       {
         theTemplate.addReplacement("date", msgIter->second.getDatestamp(), true);

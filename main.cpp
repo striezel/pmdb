@@ -53,7 +53,7 @@ void showGPLNotice()
 
 void showVersion()
 {
-  std::cout << "Private Message Database, version 0.10, 2012-09-21\n";
+  std::cout << "Private Message Database, version 0.11, 2012-09-21\n";
 }
 
 void showHelp(const std::string& name)
@@ -338,6 +338,15 @@ int main(int argc, char **argv)
       MsgTemplate tpl;
       tpl.loadFromString("<a href=\"{..inner..}\" target=\"_blank\">{..inner..}</a>");
       SimpleTemplateBBCode url_simple("url", tpl, "inner");
+      //advanced url tag
+      tpl.loadFromString("<a href=\"{..attribute..}\" target=\"_blank\">{..inner..}</a>");
+      AdvancedTemplateBBCode url_advanced("url", tpl, "inner", "attribute");
+      //color tags
+      tpl.loadFromString("<font color=\"{..attr..}\">{..inner..}</font>");
+      AdvancedTemplateBBCode color("color", tpl, "inner", "attr");
+      //size tags
+      tpl.loadFromString("<font size=\"{..attr..}\">{..inner..}</font>");
+      AdvancedTemplateBBCode size("size", tpl, "inner", "attr");
       //code tags
       CustomizedSimpleBBCode code("code",
                                   std::string("<div style=\"margin:20px; margin-top:5px\">\n")
@@ -359,6 +368,9 @@ int main(int argc, char **argv)
       parser.addCode(&right);
       parser.addCode(&img_simple);
       parser.addCode(&url_simple);
+      parser.addCode(&url_advanced);
+      parser.addCode(&color);
+      parser.addCode(&size);
       parser.addCode(&code);
 
       //create HTML files

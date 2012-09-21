@@ -129,9 +129,48 @@ struct SimpleTemplateBBCode: public BBCode
            text - the message text that (may) contain the BB code
     */
     virtual void applyToText(std::string& text) const;
+
+    /* returns the current template */
+    inline const MsgTemplate& getTemplate() const
+    {
+      return m_Template;
+    }
+
+    /* returns the name of the template tag for the inner code */
+    inline const std::string& getInnerName() const
+    {
+      return m_InnerName;
+    }
   private:
     MsgTemplate m_Template;
     std::string m_InnerName;
+};//struct
+
+
+struct AdvancedTemplateBBCode: public SimpleTemplateBBCode
+{
+  /* constructor
+
+       parameters:
+           code  - "name" of the code, i.e. "b" for [B]bold text[/B]
+           tpl   - the template that shall be used
+           inner - name of the template tag for the inner code
+           attr  - name of the template tag for the attribute value
+    */
+    AdvancedTemplateBBCode(const std::string& code, const MsgTemplate& tpl, const std::string& inner="inner", const std::string& attr="attribute");
+
+    /* destructor */
+    virtual ~AdvancedTemplateBBCode() {}
+
+    /* "applies" the BB code to the given text, i.e. transforms the BB code
+       into its HTML representation
+
+       parameters:
+           text - the message text that (may) contain the BB code
+    */
+    virtual void applyToText(std::string& text) const;
+  private:
+    std::string m_AttrName;
 };//struct
 
 #endif // BBCODE_H

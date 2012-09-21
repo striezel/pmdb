@@ -87,3 +87,40 @@ void SimpleTemplateBBCode::applyToText(std::string& text) const
     pos = find_ci(text, code);
   }//while
 }
+
+AdvancedTemplateBBCode::AdvancedTemplateBBCode(const std::string& code, const MsgTemplate& tpl, const std::string& inner, const std::string& attr)
+: SimpleTemplateBBCode(code, tpl, inner), m_AttrName(attr)
+{
+
+}
+
+void AdvancedTemplateBBCode::applyToText(std::string& text) const
+{
+  const std::string code = "["+getName()+"=";
+  const std::string end_code = "[/"+getName()+"]";
+  std::string::size_type pos = find_ci(text, code);
+  std::string::size_type bracket_pos = std::string::npos;
+  std::string::size_type end_pos = std::string::npos;
+  MsgTemplate tpl = getTemplate();
+  while (pos!=std::string::npos)
+  {
+    bracket_pos = find_ci(text, "]", pos+1);
+    if (bracket_pos==std::string::npos) return;
+    end_pos = find_ci(text, end_code, bracket_pos+1);
+    if (end_pos==std::string::npos) return;
+    std::string attr_text = text.substr(pos+code.length(), bracket_pos-(pos+code.length()));
+    if (attr_text.length()>1)
+    {
+      if ((attr_text[0]=='"') and (attr_text[attr_text.length()-1]=='"'))
+      {
+        attr_text.erase(attr_text.length()-1, 1);
+        attr_text.erase(0, 1);
+      }
+    }
+    const std::string inner_text = text.substr(bracket_pos+1, end_pos-(bracket_pos+1));
+    tpl.addReplacement(getInnerName(), inner_text, false);
+    tpl.addReplacement(m_AttrName, attr_text, false);
+    text.replace(pos, end_pos+end_code.length()-pos, tpl.show());
+    pos = find_ci(text, code);
+  }//while
+}

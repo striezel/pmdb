@@ -37,6 +37,8 @@
 		<Linker>
 			<Add library="xml2" />
 		</Linker>
+		<Unit filename="Config.cpp" />
+		<Unit filename="Config.h" />
 		<Unit filename="MessageDatabase.cpp" />
 		<Unit filename="MessageDatabase.h" />
 		<Unit filename="MsgTemplate.cpp" />

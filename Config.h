@@ -18,23 +18,12 @@
  -------------------------------------------------------------------------------
 */
 
-#include "Smilie.h"
+#ifndef CONFIG_H
+#define CONFIG_H
 
-Smilie::Smilie(const std::string& code, const std::string& url, const bool relative)
-: m_Code(code), m_URL(url), m_Relative(relative)
-{
+#include <string>
+#include "bbcode/BBCodeParser.h"
 
-}
+bool loadConfigFile(const std::string& fileName, BBCodeParser& parser, std::string& forumURL);
 
-void Smilie::applyToText(std::string& text, const std::string& forumURL) const
-{
-  std::string::size_type pos = text.find(m_Code);
-  const std::string replacement = m_Relative
-                                 ? "<img src=\""+forumURL+m_URL+"\" alt=\""+m_Code+"\" border=\"0\">"
-                                 : "<img src=\""+m_URL+"\" alt=\""+m_Code+"\" border=\"0\">";
-  while (pos!=std::string::npos)
-  {
-    text.replace(pos, m_Code.length(), replacement);
-    pos = text.find(m_Code, pos+replacement.length()-1);
-  }//while
-}
+#endif // CONFIG_H

@@ -23,8 +23,10 @@
 #include <string>
 #include "MessageDatabase.h"
 #include "MsgTemplate.h"
+#include "Config.h"
 #include "bbcode/BBCodeParser.h"
 #include "libthoro/common/DirectoryFunctions.h"
+#include "libthoro/common/DirectoryFileList.h"
 #include "libthoro/common/StringUtils.h"
 
 //return codes
@@ -53,7 +55,7 @@ void showGPLNotice()
 
 void showVersion()
 {
-  std::cout << "Private Message Database, version 0.11, 2012-09-21\n";
+  std::cout << "Private Message Database, version 0.12, 2012-09-21\n";
 }
 
 void showHelp(const std::string& name)
@@ -86,13 +88,17 @@ int main(int argc, char **argv)
   std::set<std::string> loadDirs;
   bool doSave = true;
   bool saveModeSpecified = false;
+  std::string homeDirectory;
   std::string defaultSaveDirectory;
-  if (getHomeDirectory(defaultSaveDirectory))
+
+  if (getHomeDirectory(homeDirectory))
   {
-    defaultSaveDirectory = slashify(defaultSaveDirectory) + std::string(".pmdb") + Thoro::pathDelimiter;
+    homeDirectory = slashify(homeDirectory);
+    defaultSaveDirectory = homeDirectory + std::string(".pmdb") + Thoro::pathDelimiter;
   }
   else
   {
+    homeDirectory = std::string(".") + Thoro::pathDelimiter;
     defaultSaveDirectory = std::string(".pmdb") + Thoro::pathDelimiter;
   }
   bool doHTML = false;
@@ -373,8 +379,17 @@ int main(int argc, char **argv)
       parser.addCode(&size);
       parser.addCode(&code);
 
+      std::string forumURL = "http://www.example.com/forum/";
+      if (FileExists(defaultSaveDirectory+"pmdb.conf"))
+      {
+        if (!loadConfigFile(defaultSaveDirectory+"pmdb.conf", parser, forumURL))
+        {
+          std::cout << "Could not load pmdb.conf, using default/incomplete values instead.\n";
+        }
+        else std::cout << "Loading pmdb.conf was successful.\n";
+      }
+
       //create HTML files
-      const std::string forumURL = "http://www.example.com/forum/";
       while (msgIter!=mdb.getEnd())
       {
         theTemplate.addReplacement("date", msgIter->second.getDatestamp(), true);

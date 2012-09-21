@@ -63,6 +63,12 @@ bool MsgTemplate::loadFromFile(const std::string& fileName)
   return true;
 }
 
+bool MsgTemplate::loadFromString(const std::string& tplText)
+{
+  m_Template = tplText;
+  return true;
+}
+
 void MsgTemplate::addReplacement(const std::string& tag, const std::string& replacement, const bool killHTML)
 {
   m_Tags[tag] = prepareReplacement(replacement, killHTML);

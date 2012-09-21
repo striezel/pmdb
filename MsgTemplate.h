@@ -40,6 +40,13 @@ class MsgTemplate
     */
     bool loadFromFile(const std::string& fileName);
 
+    /* "loads" template from a given string and returns true in case of succes.
+
+       parameters:
+           tplText - the template text
+    */
+    bool loadFromString(const std::string& tplText);
+
     /* adds a new replacement for a certain tag
 
        parameters:

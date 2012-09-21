@@ -22,6 +22,7 @@
 #define BBCODE_H
 
 #include <string>
+#include "../MsgTemplate.h"
 
 struct BBCode
 {
@@ -103,6 +104,34 @@ struct CustomizedSimpleBBCode: public BBCode
     virtual void applyToText(std::string& text) const;
   private:
     std::string m_Before, m_After;
+};//struct
+
+
+struct SimpleTemplateBBCode: public BBCode
+{
+  public:
+    /* constructor
+
+       parameters:
+           code  - "name" of the code, i.e. "b" for [B]bold text[/B]
+           tpl   - the template that shall be used
+           inner - name of the template tag for the inner code
+    */
+    SimpleTemplateBBCode(const std::string& code, const MsgTemplate& tpl, const std::string& inner="inner");
+
+    /* destructor */
+    virtual ~SimpleTemplateBBCode() {}
+
+    /* "applies" the BB code to the given text, i.e. transforms the BB code
+       into its HTML representation
+
+       parameters:
+           text - the message text that (may) contain the BB code
+    */
+    virtual void applyToText(std::string& text) const;
+  private:
+    MsgTemplate m_Template;
+    std::string m_InnerName;
 };//struct
 
 #endif // BBCODE_H

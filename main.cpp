@@ -53,7 +53,7 @@ void showGPLNotice()
 
 void showVersion()
 {
-  std::cout << "Private Message Database, version 0.09, 2012-09-17\n";
+  std::cout << "Private Message Database, version 0.10, 2012-09-21\n";
 }
 
 void showHelp(const std::string& name)
@@ -334,6 +334,10 @@ int main(int argc, char **argv)
       CustomizedSimpleBBCode right("right", "<div align=\"right\">", "</div>");
       //image tags
       CustomizedSimpleBBCode img_simple("img", "<img src=\"", "\" border=\"0\">");
+      //simple url tag
+      MsgTemplate tpl;
+      tpl.loadFromString("<a href=\"{..inner..}\" target=\"_blank\">{..inner..}</a>");
+      SimpleTemplateBBCode url_simple("url", tpl, "inner");
       //code tags
       CustomizedSimpleBBCode code("code",
                                   std::string("<div style=\"margin:20px; margin-top:5px\">\n")
@@ -354,6 +358,7 @@ int main(int argc, char **argv)
       parser.addCode(&left);
       parser.addCode(&right);
       parser.addCode(&img_simple);
+      parser.addCode(&url_simple);
       parser.addCode(&code);
 
       //create HTML files

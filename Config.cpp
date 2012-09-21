@@ -22,7 +22,7 @@
 #include <fstream>
 #include <iostream>
 
-bool loadConfigFile(const std::string& fileName, BBCodeParser& parser, std::string& forumURL)
+bool loadConfigFile(const std::string& fileName, BBCodeParser& parser, std::string& forumURL, std::string& tplFile)
 {
   std::ifstream input;
   input.open(fileName.c_str(), std::ios::in | std::ios::binary);
@@ -63,6 +63,10 @@ bool loadConfigFile(const std::string& fileName, BBCodeParser& parser, std::stri
       if (name=="forum")
       {
         forumURL = line.substr(sep_pos+1);
+      }
+      else if (name=="template")
+      {
+        tplFile = line.substr(sep_pos+1);
       }
       else if ((name=="smilie") or (name=="smilie_r"))
       {

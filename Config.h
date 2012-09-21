@@ -24,6 +24,6 @@
 #include <string>
 #include "bbcode/BBCodeParser.h"
 
-bool loadConfigFile(const std::string& fileName, BBCodeParser& parser, std::string& forumURL);
+bool loadConfigFile(const std::string& fileName, BBCodeParser& parser, std::string& forumURL, std::string& tplFile);
 
 #endif // CONFIG_H

@@ -55,7 +55,7 @@ void showGPLNotice()
 
 void showVersion()
 {
-  std::cout << "Private Message Database, version 0.13, 2012-09-21\n";
+  std::cout << "Private Message Database, version 0.14, 2012-09-21\n";
 }
 
 void showHelp(const std::string& name)
@@ -227,7 +227,7 @@ int main(int argc, char **argv)
     }//while
   }//if arguments present
 
-  if (pathXML.empty())
+  if (pathXML.empty() and loadDirs.empty())
   {
     std::cout << "You have to specify certain parameters for this programme to run properly.\n"
               << "Use --help to get a list of valid parameters.\n";
@@ -312,16 +312,29 @@ int main(int argc, char **argv)
       }//if html directory does not exist
       htmlDir = slashify(htmlDir);
 
+      BBCodeParser parser;
+      std::string forumURL = "http://www.example.com/forum/";
+      std::string tplFile = "message.tpl";
+      //try to load configuration file
+      if (FileExists(defaultSaveDirectory+"pmdb.conf"))
+      {
+        if (!loadConfigFile(defaultSaveDirectory+"pmdb.conf", parser, forumURL, tplFile))
+        {
+          std::cout << "Could not load pmdb.conf, using default/incomplete values instead.\n";
+          tplFile = "message.tpl";
+        }
+        else std::cout << "Loading pmdb.conf was successful.\n";
+      }
+
       //load template for HTML files
       MsgTemplate theTemplate;
-      if (!theTemplate.loadFromFile("message.tpl"))
+      if (!theTemplate.loadFromFile(tplFile))
       {
-        std::cout << "Error: could not load template file for messages\n";
+        std::cout << "Error: could not load template file \""<<tplFile<<"\" for messages!\n";
         return rcFileError;
       }
 
-      //prepare BB code parser
-      BBCodeParser parser;
+      /* prepare BB code parser with BB codes */
       // [b], [u], [i], [s] codes
       SimpleBBCode b("b");
       SimpleBBCode u("u");
@@ -378,16 +391,6 @@ int main(int argc, char **argv)
       parser.addCode(&color);
       parser.addCode(&size);
       parser.addCode(&code);
-
-      std::string forumURL = "http://www.example.com/forum/";
-      if (FileExists(defaultSaveDirectory+"pmdb.conf"))
-      {
-        if (!loadConfigFile(defaultSaveDirectory+"pmdb.conf", parser, forumURL))
-        {
-          std::cout << "Could not load pmdb.conf, using default/incomplete values instead.\n";
-        }
-        else std::cout << "Loading pmdb.conf was successful.\n";
-      }
 
       //create HTML files
       theTemplate.addReplacement("forum_url", forumURL, false);

@@ -18,51 +18,35 @@
  -------------------------------------------------------------------------------
 */
 
-#ifndef BBCODEPARSER_H
-#define BBCODEPARSER_H
+#ifndef SMILIE_H
+#define SMILIE_H
 
 #include <string>
-#include <vector>
-#include "BBCode.h"
-#include "Smilie.h"
 
-class BBCodeParser
+struct Smilie
 {
   public:
-    /* transforms BB codes in text to HTML codes (still incomplete)
+    /* constructor
 
        parameters:
-           text - the original text
+           code     - code for that smilie
+           url      - URL of the smilie image
+           relative - set to true, if the URL is relative to the forum URL
     */
-    std::string parse(std::string text, const std::string& forumURL) const;
+    Smilie(const std::string& code, const std::string& url, const bool relative);
 
-    /* adds a new bb code to the parser
+    /* "applies" the smilie to the given text, i.e. transforms the smilie code
+       into its HTML representation
 
        parameters:
-           code - pointer to the BB code object
-
-       remarks:
-           The passed pointers must live for the whole lifetime of the
-           BBCodeParser instance they are passed to. Otherwise parse() will
-           fail.
+           text     - the message text that (may) contain the smilie code
+           forumURL - base URL of the forum
     */
-    void addCode(BBCode* code);
-
-    /* adds a new smilie to the parser
-
-       parameters:
-           sm - the smilie
-    */
-    void addSmilie(const Smilie& sm);
-
-    /* clears all added BB codes */
-    void clearCodes();
-
-    /* clears all added smilies */
-    void clearSmilies();
+    void applyToText(std::string& text, const std::string& forumURL) const;
   private:
-    std::vector<BBCode*> m_Codes;
-    std::vector<Smilie>  m_Smilies;
-};//class
+    std::string m_Code;
+    std::string m_URL;
+    bool m_Relative;
+};//struct
 
-#endif // BBCODEPARSER_H
+#endif // SMILIE_H

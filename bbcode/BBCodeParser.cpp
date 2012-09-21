@@ -39,6 +39,14 @@ std::string BBCodeParser::parse(std::string text, const std::string& forumURL) c
     ++iter;
   }//while
 
+  //handle smilies
+  std::vector<Smilie>::const_iterator sm_iter = m_Smilies.begin();
+  while (sm_iter!=m_Smilies.end())
+  {
+    sm_iter->applyToText(text, forumURL);
+    ++sm_iter;
+  }//while
+
   //handle quotes
   return handleQuotes(text, forumURL);
 }
@@ -48,7 +56,17 @@ void BBCodeParser::addCode(BBCode* code)
   m_Codes.push_back(code);
 }
 
+void BBCodeParser::addSmilie(const Smilie& sm)
+{
+  m_Smilies.push_back(sm);
+}
+
 void BBCodeParser::clearCodes()
 {
   m_Codes.clear();
+}
+
+void BBCodeParser::clearSmilies()
+{
+  m_Smilies.clear();
 }

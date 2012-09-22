@@ -22,6 +22,7 @@
 #define MESSAGEDATABASE_H
 
 #include "PrivateMessage.h"
+#include "MsgTemplate.h"
 #include <map>
 
 //forward declaration
@@ -44,6 +45,11 @@ class MessageDatabase
 
     /* returns true, if the given message is in the database */
     bool hasMessage(PrivateMessage& pm) const;
+
+    /* returns the message with the given digest, if it exists. Throws exception
+       otherwise.
+    */
+    const PrivateMessage& getMessage(const SHA256::MessageDigest& digest) const;
 
     /* tries to import messages from a XML file and returns true in case of
        success, false in case of error. In either case, readPMs will hold the
@@ -73,6 +79,13 @@ class MessageDatabase
        returns true in case of success
     */
     bool loadMessages(const std::string& directory, uint32_t& readPMs, uint32_t& newPMs);
+
+    /* creates an index file (HTML) for all messages
+
+       parameters:
+           fileName - path to the file
+    */
+    bool saveIndexFile(const std::string& fileName, MsgTemplate index, MsgTemplate entry) const;
   private:
     bool processFolderNode(const XMLNode& node, uint32_t& readPMs, uint32_t& newPMs);
     bool processPrivateMessageNode(const XMLNode& node, uint32_t& readPMs, uint32_t& newPMs);

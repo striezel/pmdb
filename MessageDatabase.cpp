@@ -21,9 +21,11 @@
 #include "MessageDatabase.h"
 #include <iostream>
 #include <sstream>
+#include <algorithm>
 #include "XMLDocument.h"
 #include "XMLNode.h"
 #include "libthoro/common/DirectoryFileList.h"
+#include "libthoro/common/StringUtils.h"
 
 bool isValidSHA256Hash(const std::string& hash)
 {
@@ -79,6 +81,13 @@ unsigned int MessageDatabase::getNumberOfMessages() const
 bool MessageDatabase::hasMessage(PrivateMessage& pm) const
 {
   return (m_Messages.find(pm.getHash())!=m_Messages.end());
+}
+
+const PrivateMessage& MessageDatabase::getMessage(const SHA256::MessageDigest& digest) const
+{
+  const Iterator iter = m_Messages.find(digest);
+  if (iter!=m_Messages.end()) return iter->second;
+  throw 42;
 }
 
 bool MessageDatabase::importFromFile(const std::string& fileName, uint32_t& readPMs, uint32_t& newPMs)
@@ -352,4 +361,57 @@ bool MessageDatabase::loadMessages(const std::string& directory, uint32_t& readP
     ++iter;
   }//while
   return true;
+}
+
+//aux. type
+struct SortType
+{
+  std::string datestamp;
+  SHA256::MessageDigest md;
+
+  SortType(const std::string& ds, const SHA256::MessageDigest& dig)
+  : datestamp(ds), md(dig)
+  {
+  }
+};//struct
+
+bool ST_greater(const SortType& __x, const SortType& __y)
+{
+  if (__x.datestamp>__y.datestamp) return true;
+  if (__x.datestamp<__y.datestamp) return false;
+  return __x.md.toHexString() > __y.md.toHexString();
+}
+
+bool MessageDatabase::saveIndexFile(const std::string& fileName, MsgTemplate index, MsgTemplate entry) const
+{
+  std::vector<SortType> sortedList;
+  Iterator pm_iter = m_Messages.begin();
+  while (pm_iter!=m_Messages.end())
+  {
+    sortedList.push_back(SortType(pm_iter->second.getDatestamp(), pm_iter->first));
+    ++pm_iter;
+  }//while
+  std::sort(sortedList.begin(), sortedList.end(), ST_greater);
+  std::string theEntries = "";
+  std::vector<SortType>::const_iterator vecIter = sortedList.begin();
+  while (vecIter!=sortedList.end())
+  {
+    const PrivateMessage& currMessage = getMessage(vecIter->md);
+    entry.addReplacement("date",       vecIter->datestamp, true);
+    entry.addReplacement("pm_url",     vecIter->md.toHexString()+".html", false);
+    entry.addReplacement("title",      currMessage.getTitle(), true);
+    entry.addReplacement("fromuserid", intToString(currMessage.getFromUserID()), true);
+    entry.addReplacement("fromuser",   currMessage.getFromUser(), true);
+    theEntries += entry.show();
+    ++vecIter;
+  }//while
+  index.addReplacement("entries", theEntries, false);
+  const std::string indexText = index.show();
+  std::ofstream indexFile;
+  indexFile.open(fileName.c_str(), std::ios_base::out | std::ios_base::binary);
+  if (!indexFile) return false;
+  indexFile.write(indexText.c_str(), indexText.length());
+  const bool success = indexFile.good();
+  indexFile.close();
+  return success;
 }

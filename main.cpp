@@ -352,7 +352,7 @@ int main(int argc, char **argv)
       CustomizedSimpleBBCode left("left", "<div align=\"left\">", "</div>");
       CustomizedSimpleBBCode right("right", "<div align=\"right\">", "</div>");
       //image tags
-      CustomizedSimpleBBCode img_simple("img", "<img src=\"", "\" border=\"0\">");
+      CustomizedSimpleBBCode img_simple("img", "<img src=\"", "\" border=\"0\" alt="">");
       //simple url tag
       MsgTemplate tpl;
       tpl.loadFromString("<a href=\"{..inner..}\" target=\"_blank\">{..inner..}</a>");
@@ -421,6 +421,25 @@ int main(int argc, char **argv)
         htmlFile.close();
         ++msgIter;
       }//while
+      //create index file
+      MsgTemplate tplIndex, tplEntry;
+      if (!tplIndex.loadFromFile("index.tpl"))
+      {
+        std::cout << "Could not load index.tpl!\n";
+        return rcFileError;
+      }
+      if (!tplEntry.loadFromFile("index_entry.tpl"))
+      {
+        std::cout << "Could not load index_entry.tpl!\n";
+        return rcFileError;
+      }
+      tplIndex.addReplacement("forum_url", forumURL, true);
+      tplEntry.addReplacement("forum_url", forumURL, true);
+      if (!mdb.saveIndexFile(htmlDir+"index.html", tplIndex, tplEntry))
+      {
+        std::cout << "Could not write index.html!\n";
+        return rcFileError;
+      }
       std::cout << "All HTML files were created successfully!\n";
     }//if
     else

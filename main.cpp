@@ -55,6 +55,7 @@ void showGPLNotice()
 
 void showVersion()
 {
+  showGPLNotice();
   std::cout << "Private Message Database, version 0.15d, 2012-09-25\n";
 }
 
@@ -84,7 +85,6 @@ void showHelp(const std::string& name)
 
 int main(int argc, char **argv)
 {
-  showGPLNotice();
   std::set<std::string> pathXML;
   std::set<std::string> loadDirs;
   bool doSave = true;

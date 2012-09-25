@@ -39,7 +39,7 @@ void SimpleBBCode::applyToText(std::string& text) const
     if (end_pos==std::string::npos) return;
     text.replace(pos, code.length(), "<"+getName()+">");
     text.replace(end_pos, end_code.length(), "</"+getName()+">");
-    pos = find_ci(text, code);
+    pos = find_ci(text, code, pos);
   }//while
 }
 
@@ -60,7 +60,7 @@ void CustomizedSimpleBBCode::applyToText(std::string& text) const
     if (end_pos==std::string::npos) return;
     text.replace(end_pos, end_code.length(), m_After);
     text.replace(pos, code.length(), m_Before);
-    pos = find_ci(text, code);
+    pos = find_ci(text, code, pos);
   }//while
 }
 
@@ -84,7 +84,7 @@ void SimpleTemplateBBCode::applyToText(std::string& text) const
     const std::string inner_text = text.substr(pos+code.length(), end_pos-(pos+code.length()));
     tpl.addReplacement(m_InnerName, inner_text, false);
     text.replace(pos, end_pos+end_code.length()-pos, tpl.show());
-    pos = find_ci(text, code);
+    pos = find_ci(text, code, pos);
   }//while
 }
 
@@ -121,6 +121,6 @@ void AdvancedTemplateBBCode::applyToText(std::string& text) const
     tpl.addReplacement(getInnerName(), inner_text, false);
     tpl.addReplacement(m_AttrName, attr_text, false);
     text.replace(pos, end_pos+end_code.length()-pos, tpl.show());
-    pos = find_ci(text, code);
+    pos = find_ci(text, code, pos);
   }//while
 }

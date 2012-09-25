@@ -55,7 +55,7 @@ void showGPLNotice()
 
 void showVersion()
 {
-  std::cout << "Private Message Database, version 0.15, 2012-09-22\n";
+  std::cout << "Private Message Database, version 0.15b, 2012-09-25\n";
 }
 
 void showHelp(const std::string& name)
@@ -78,7 +78,8 @@ void showHelp(const std::string& name)
             << "                     loaded. Enabled by default.\n"
             << "  --no-save        - prevents the programme from saving any read meassages.\n"
             << "                     Mutually exclusive with --save.\n"
-            << "  --html           - creates HTML files for every message.\n";
+            << "  --html           - creates HTML files for every message.\n"
+            << "  --xhtml          - like --html, but use XHTML instead of HTML\n";
 }
 
 int main(int argc, char **argv)
@@ -102,6 +103,7 @@ int main(int argc, char **argv)
     defaultSaveDirectory = std::string(".pmdb") + Thoro::pathDelimiter;
   }
   bool doHTML = false;
+  bool forceXHTML = false;
 
   if ((argc>1) and (argv!=NULL))
   {
@@ -210,6 +212,17 @@ int main(int argc, char **argv)
           }
           doHTML = true;
         }//param == html
+        else if ((param=="--xhtml") or (param=="--XHTML"))
+        {
+          if (doHTML or forceXHTML)
+          {
+            std::cout << "Parameter "<<param<<" must not occur more than once "
+                      << "or in combination with --html!\n";
+            return rcInvalidParameter;
+          }
+          doHTML = true;
+          forceXHTML = true;
+        }//param == xhtml
         else
         {
           //unknown or wrong parameter
@@ -227,6 +240,7 @@ int main(int argc, char **argv)
     }//while
   }//if arguments present
 
+  //no files to load?
   if (pathXML.empty() and loadDirs.empty())
   {
     std::cout << "You have to specify certain parameters for this programme to run properly.\n"
@@ -352,7 +366,8 @@ int main(int argc, char **argv)
       CustomizedSimpleBBCode left("left", "<div align=\"left\">", "</div>");
       CustomizedSimpleBBCode right("right", "<div align=\"right\">", "</div>");
       //image tags
-      CustomizedSimpleBBCode img_simple("img", "<img src=\"", "\" border=\"0\" alt="">");
+      CustomizedSimpleBBCode img_simple("img", "<img border=\"0\" src=\"",
+                                        forceXHTML ? "\" alt=\"\" />" : "\" alt=\"\">");
       //simple url tag
       MsgTemplate tpl;
       tpl.loadFromString("<a href=\"{..inner..}\" target=\"_blank\">{..inner..}</a>");
@@ -401,7 +416,7 @@ int main(int argc, char **argv)
         theTemplate.addReplacement("fromuser", msgIter->second.getFromUser(), true);
         theTemplate.addReplacement("fromuserid", intToString(msgIter->second.getFromUserID()), true);
         theTemplate.addReplacement("touser", msgIter->second.getToUser(), true);
-        theTemplate.addReplacement("message", parser.parse(msgIter->second.getMessage(), forumURL), false);
+        theTemplate.addReplacement("message", parser.parse(msgIter->second.getMessage(), forumURL, forceXHTML), false);
         const std::string output = theTemplate.show();
         std::ofstream htmlFile;
         htmlFile.open((htmlDir+msgIter->first.toHexString()+".html").c_str(),

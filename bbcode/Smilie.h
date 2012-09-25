@@ -23,6 +23,9 @@
 
 #include <string>
 
+/* struct Smilie:
+       represents a smilie code and its replacement image
+*/
 struct Smilie
 {
   public:
@@ -41,8 +44,10 @@ struct Smilie
        parameters:
            text     - the message text that (may) contain the smilie code
            forumURL - base URL of the forum
+           isXHTML  - if set to true, the replacement will XHTML code. Otherwise
+                      HTML code is used.
     */
-    void applyToText(std::string& text, const std::string& forumURL) const;
+    void applyToText(std::string& text, const std::string& forumURL, const bool isXHTML) const;
   private:
     std::string m_Code;
     std::string m_URL;

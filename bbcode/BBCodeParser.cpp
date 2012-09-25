@@ -21,7 +21,7 @@
 #include "BBCodeParser.h"
 #include "quotes.h"
 
-std::string BBCodeParser::parse(std::string text, const std::string& forumURL) const
+std::string BBCodeParser::parse(std::string text, const std::string& forumURL, const bool isXHTML) const
 {
   std::string::size_type pos = text.find("\n");
   //handle line breaks
@@ -43,7 +43,7 @@ std::string BBCodeParser::parse(std::string text, const std::string& forumURL) c
   std::vector<Smilie>::const_iterator sm_iter = m_Smilies.begin();
   while (sm_iter!=m_Smilies.end())
   {
-    sm_iter->applyToText(text, forumURL);
+    sm_iter->applyToText(text, forumURL, isXHTML);
     ++sm_iter;
   }//while
 

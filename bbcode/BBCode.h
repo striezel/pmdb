@@ -24,6 +24,7 @@
 #include <string>
 #include "../MsgTemplate.h"
 
+/* struct BBCode: basic interface for BB code structs/classes */
 struct BBCode
 {
   public:
@@ -57,6 +58,11 @@ struct BBCode
 };//struct
 
 
+/* struct SimpleBBCode:
+       handles "simple" BB codes, where the square brackets can be transformed
+       to < or > to produce the proper HTML code, e.g. where
+       "[TAG]content[/TAG]" becomes "<tag>content</tag>"
+*/
 struct SimpleBBCode: public BBCode
 {
   public:
@@ -80,6 +86,10 @@ struct SimpleBBCode: public BBCode
 };//struct SimpleBBCode
 
 
+/* struct CustomizedSimpleBBCode:
+       like SimpleBBCode, but with a custom replacement for opening and closing
+       tags.
+*/
 struct CustomizedSimpleBBCode: public BBCode
 {
   public:
@@ -107,6 +117,13 @@ struct CustomizedSimpleBBCode: public BBCode
 };//struct
 
 
+/* struct SimpleTemplateBBCode:
+       struct for BB codes that use templates (class MsgTemplate) for the
+       proper replacement of BB code. However, this class will just handle
+       "simple" BB codes of the form "[TAG]content[/TAG]" and NOT codes of the
+       form "[TAG=value]content[/TAG]". See AdvancedTemplateBBCode for the
+       later variant.
+*/
 struct SimpleTemplateBBCode: public BBCode
 {
   public:
@@ -147,6 +164,13 @@ struct SimpleTemplateBBCode: public BBCode
 };//struct
 
 
+/* struct AdvancedTemplateBBCode:
+       struct for BB codes that use templates (class MsgTemplate) for the
+       proper replacement of BB code. However, this class will just handle
+       "advanced" BB codes of the form "[TAG_value]content[/TAG]" and NOT the
+       simpler codes of the form "[TAG]content[/TAG]". See SimpleTemplateBBCode
+       for the later variant.
+*/
 struct AdvancedTemplateBBCode: public SimpleTemplateBBCode
 {
   /* constructor

@@ -26,12 +26,16 @@ Smilie::Smilie(const std::string& code, const std::string& url, const bool relat
 
 }
 
-void Smilie::applyToText(std::string& text, const std::string& forumURL) const
+void Smilie::applyToText(std::string& text, const std::string& forumURL, const bool isXHTML) const
 {
   std::string::size_type pos = text.find(m_Code);
-  const std::string replacement = m_Relative
+
+  const std::string replacement = "<img src=\""
+                                 +(m_Relative ? forumURL+m_URL : m_URL)+"\" alt=\""+m_Code
+                                 +(isXHTML ? "\" border=\"0\" />" : "\" border=\"0\">");
+  /*const std::string replacement = m_Relative
                                  ? "<img src=\""+forumURL+m_URL+"\" alt=\""+m_Code+"\" border=\"0\">"
-                                 : "<img src=\""+m_URL+"\" alt=\""+m_Code+"\" border=\"0\">";
+                                 : "<img src=\""+m_URL+"\" alt=\""+m_Code+"\" border=\"0\">";*/
   while (pos!=std::string::npos)
   {
     text.replace(pos, m_Code.length(), replacement);

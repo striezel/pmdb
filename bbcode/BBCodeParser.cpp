@@ -27,7 +27,7 @@ std::string BBCodeParser::parse(std::string text, const std::string& forumURL, c
   //handle line breaks
   while (pos!=std::string::npos)
   {
-    text.replace(pos, 1, "<br>");
+    text.replace(pos, 1, isXHTML ? "<br />" : "<br>");
     pos = text.find("\n");
   }//while
 

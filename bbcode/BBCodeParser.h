@@ -24,7 +24,9 @@
 #include <string>
 #include <vector>
 #include "BBCode.h"
-#include "Smilie.h"
+#ifndef NO_SMILIES_IN_PARSER
+  #include "Smilie.h"
+#endif
 
 /* class BBCodeParser:
        transforms a given text containing BB codes to HTML code via the
@@ -67,12 +69,14 @@ class BBCodeParser
     */
     void addCode(BBCode* code);
 
+    #ifndef NO_SMILIES_IN_PARSER
     /* adds a new smilie to the parser
 
        parameters:
            sm - the smilie
     */
     void addSmilie(const Smilie& sm);
+    #endif
 
     /* clears all added BB codes
 
@@ -83,6 +87,7 @@ class BBCodeParser
     */
     void clearCodes();
 
+    #ifndef NO_SMILIES_IN_PARSER
     /* clears all added smilies
 
        remarks:
@@ -91,9 +96,12 @@ class BBCodeParser
            BB codes might still get parsed, if they are present.
     */
     void clearSmilies();
+    #endif
   private:
     std::vector<BBCode*> m_Codes;
+    #ifndef NO_SMILIES_IN_PARSER
     std::vector<Smilie>  m_Smilies;
+    #endif
 };//class
 
 #endif // BBCODEPARSER_H

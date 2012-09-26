@@ -56,7 +56,7 @@ void showGPLNotice()
 void showVersion()
 {
   showGPLNotice();
-  std::cout << "Private Message Database, version 0.15d, 2012-09-25\n";
+  std::cout << "Private Message Database, version 0.15e, 2012-09-26\n";
 }
 
 void showHelp(const std::string& name)
@@ -80,7 +80,9 @@ void showHelp(const std::string& name)
             << "  --no-save        - prevents the programme from saving any read meassages.\n"
             << "                     Mutually exclusive with --save.\n"
             << "  --html           - creates HTML files for every message.\n"
-            << "  --xhtml          - like --html, but use XHTML instead of HTML\n";
+            << "  --xhtml          - like --html, but use XHTML instead of HTML\n"
+            << "  --no-br          - do not convert new line characters to line breaks in\n"
+            << "                     (X)HTML output.\n";
 }
 
 int main(int argc, char **argv)
@@ -104,6 +106,7 @@ int main(int argc, char **argv)
   }
   bool doHTML = false;
   bool forceXHTML = false;
+  bool nl2br = true;
 
   if ((argc>1) and (argv!=NULL))
   {
@@ -223,6 +226,15 @@ int main(int argc, char **argv)
           doHTML = true;
           forceXHTML = true;
         }//param == xhtml
+        else if ((param=="--no-br") or (param=="--no-breaks"))
+        {
+          if (!nl2br)
+          {
+            std::cout << "Parameter "<<param<<" must not occur more than once!\n";
+            return rcInvalidParameter;
+          }
+          nl2br = false;
+        }//param == no-br
         else
         {
           //unknown or wrong parameter
@@ -416,7 +428,7 @@ int main(int argc, char **argv)
         theTemplate.addReplacement("fromuser", msgIter->second.getFromUser(), true);
         theTemplate.addReplacement("fromuserid", intToString(msgIter->second.getFromUserID()), true);
         theTemplate.addReplacement("touser", msgIter->second.getToUser(), true);
-        theTemplate.addReplacement("message", parser.parse(msgIter->second.getMessage(), forumURL, forceXHTML), false);
+        theTemplate.addReplacement("message", parser.parse(msgIter->second.getMessage(), forumURL, forceXHTML, nl2br), false);
         const std::string output = theTemplate.show();
         std::ofstream htmlFile;
         htmlFile.open((htmlDir+msgIter->first.toHexString()+".html").c_str(),

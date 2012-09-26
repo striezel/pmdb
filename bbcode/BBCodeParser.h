@@ -45,8 +45,10 @@ class BBCodeParser
                       this URL for proper transformation of code to HTML)
            isXHTML  - if set to true, smilie transformations will produce XHTML
                       image tags
+           nl2br    - if set to true, new line characters will be converted to
+                      the corresponding (X)HTML code for line breaks
     */
-    std::string parse(std::string text, const std::string& forumURL, const bool isXHTML) const;
+    std::string parse(std::string text, const std::string& forumURL, const bool isXHTML, const bool nl2br) const;
 
     /* adds a new bb code to the parser
 

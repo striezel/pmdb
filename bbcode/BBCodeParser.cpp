@@ -21,15 +21,18 @@
 #include "BBCodeParser.h"
 #include "quotes.h"
 
-std::string BBCodeParser::parse(std::string text, const std::string& forumURL, const bool isXHTML) const
+std::string BBCodeParser::parse(std::string text, const std::string& forumURL, const bool isXHTML, const bool nl2br) const
 {
-  std::string::size_type pos = text.find("\n");
-  //handle line breaks
-  while (pos!=std::string::npos)
+  if (nl2br)
   {
-    text.replace(pos, 1, isXHTML ? "<br />" : "<br>");
-    pos = text.find("\n", pos+3);
-  }//while
+    std::string::size_type pos = text.find("\n");
+    //handle line breaks
+    while (pos!=std::string::npos)
+    {
+      text.replace(pos, 1, isXHTML ? "<br />" : "<br>");
+      pos = text.find("\n", pos+3);
+    }//while
+  }//if
 
   //handle bb codes
   std::vector<BBCode*>::const_iterator iter = m_Codes.begin();

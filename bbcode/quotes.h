@@ -39,17 +39,7 @@ struct NameAndPost
   std::string name;
   std::string post;
 
-  NameAndPost()
-  {
-    name = ""; post = "";
-  }
-
-  NameAndPost(const std::string& theName)
-  {
-    name = theName; post = "";
-  }
-
-  NameAndPost(const std::string& theName, const std::string& thePost)
+  NameAndPost(const std::string& theName="", const std::string& thePost="")
   {
     name = theName; post = thePost;
   }

@@ -158,6 +158,17 @@ struct SimpleTemplateBBCode: public BBCode
     {
       return m_InnerName;
     }
+  protected:
+    /* applies a transformation (if any) to the inner content of the BB code
+       during translation
+
+       parameters:
+           inner - the content
+    */
+    inline virtual std::string transformInner(const std::string& inner) const
+    {
+      return inner;
+    }
   private:
     MsgTemplate m_Template;
     std::string m_InnerName;
@@ -173,7 +184,8 @@ struct SimpleTemplateBBCode: public BBCode
 */
 struct AdvancedTemplateBBCode: public SimpleTemplateBBCode
 {
-  /* constructor
+  public:
+    /* constructor
 
        parameters:
            code  - "name" of the code, i.e. "b" for [B]bold text[/B]
@@ -193,8 +205,96 @@ struct AdvancedTemplateBBCode: public SimpleTemplateBBCode
            text - the message text that (may) contain the BB code
     */
     virtual void applyToText(std::string& text) const;
+  protected:
+    /* applies a transformation (if any) to the attribute value of the BB code
+       during translation
+
+       parameters:
+           attr - the attribute value
+    */
+    inline virtual std::string transformAttribute(const std::string& attr) const
+    {
+      return attr;
+    }
   private:
     std::string m_AttrName;
+};//struct
+
+
+/* struct SimpleTplAmpTransformBBCode:
+       like SimpleTemplateBBCode, but "&" in content will be replaced with
+       "&amp;"
+*/
+struct SimpleTplAmpTransformBBCode: public SimpleTemplateBBCode
+{
+  public:
+    /* constructor
+
+       parameters:
+           code  - "name" of the code, i.e. "b" for [B]bold text[/B]
+           tpl   - the template that shall be used
+           inner - name of the template tag for the inner code
+    */
+    SimpleTplAmpTransformBBCode(const std::string& code, const MsgTemplate& tpl, const std::string& inner="inner")
+    : SimpleTemplateBBCode(code, tpl, inner)
+    { }
+  protected:
+    /* applies a transformation (if any) to the inner content of the BB code
+       during translation
+
+       parameters:
+           inner - the content
+    */
+    inline virtual std::string transformInner(const std::string& inner) const
+    {
+      std::string result(inner);
+      std::string::size_type pos = result.find("&");
+      while (pos!=std::string::npos)
+      {
+        result.replace(pos, 1, "&amp;");
+        pos = result.find("&", pos+4);
+      }//while
+      return result;
+    }
+};//struct
+
+
+/* struct AdvancedTplAmpTransformBBCode:
+       like AdvancedTemplateBBCode, but "&" in attribute value will be replaced
+       with "&amp;"
+*/
+struct AdvancedTplAmpTransformBBCode: public AdvancedTemplateBBCode
+{
+  public:
+    /* constructor
+
+       parameters:
+           code  - "name" of the code, i.e. "b" for [B]bold text[/B]
+           tpl   - the template that shall be used
+           inner - name of the template tag for the inner code
+           attr  - name of the template tag for the attribute value
+    */
+    AdvancedTplAmpTransformBBCode(const std::string& code, const MsgTemplate& tpl, const std::string& inner="inner", const std::string& attr="attribute")
+    : AdvancedTemplateBBCode(code, tpl, inner, attr)
+    { }
+  protected:
+    /* applies a transformation (if any) to the attribute value of the BB code
+       during translation
+
+       parameters:
+           attr - the attribute value
+    */
+    inline virtual std::string transformAttribute(const std::string& attr) const
+    {
+      std::string result(attr);
+      std::string::size_type pos = result.find("&");
+      while (pos!=std::string::npos)
+      {
+        result.replace(pos, 1, "&amp;");
+        pos = result.find("&", pos+4);
+      }//while
+      return result;
+    }
 };//struct
 
 #endif // BBCODE_H

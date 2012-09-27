@@ -82,7 +82,7 @@ void SimpleTemplateBBCode::applyToText(std::string& text) const
     end_pos = find_ci(text, end_code, pos+1);
     if (end_pos==std::string::npos) return;
     const std::string inner_text = text.substr(pos+code.length(), end_pos-(pos+code.length()));
-    tpl.addReplacement(m_InnerName, inner_text, false);
+    tpl.addReplacement(m_InnerName, transformInner(inner_text), false);
     text.replace(pos, end_pos+end_code.length()-pos, tpl.show());
     pos = find_ci(text, code, pos);
   }//while
@@ -118,8 +118,8 @@ void AdvancedTemplateBBCode::applyToText(std::string& text) const
       }
     }
     const std::string inner_text = text.substr(bracket_pos+1, end_pos-(bracket_pos+1));
-    tpl.addReplacement(getInnerName(), inner_text, false);
-    tpl.addReplacement(m_AttrName, attr_text, false);
+    tpl.addReplacement(getInnerName(), transformInner(inner_text), false);
+    tpl.addReplacement(m_AttrName, transformAttribute(attr_text), false);
     text.replace(pos, end_pos+end_code.length()-pos, tpl.show());
     pos = find_ci(text, code, pos);
   }//while

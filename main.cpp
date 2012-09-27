@@ -56,7 +56,7 @@ void showGPLNotice()
 void showVersion()
 {
   showGPLNotice();
-  std::cout << "Private Message Database, version 0.15e, 2012-09-26\n";
+  std::cout << "Private Message Database, version 0.15f, 2012-09-27\n";
 }
 
 void showHelp(const std::string& name)
@@ -383,10 +383,10 @@ int main(int argc, char **argv)
       //simple url tag
       MsgTemplate tpl;
       tpl.loadFromString("<a href=\"{..inner..}\" target=\"_blank\">{..inner..}</a>");
-      SimpleTemplateBBCode url_simple("url", tpl, "inner");
+      SimpleTplAmpTransformBBCode url_simple("url", tpl, "inner");
       //advanced url tag
       tpl.loadFromString("<a href=\"{..attribute..}\" target=\"_blank\">{..inner..}</a>");
-      AdvancedTemplateBBCode url_advanced("url", tpl, "inner", "attribute");
+      AdvancedTplAmpTransformBBCode url_advanced("url", tpl, "inner", "attribute");
       //color tags
       tpl.loadFromString("<font color=\"{..attr..}\">{..inner..}</font>");
       AdvancedTemplateBBCode color("color", tpl, "inner", "attr");

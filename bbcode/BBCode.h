@@ -297,4 +297,41 @@ struct AdvancedTplAmpTransformBBCode: public AdvancedTemplateBBCode
     }
 };//struct
 
+
+/* struct ListBBCode:
+       struct for list BB code
+*/
+struct ListBBCode: public BBCode
+{
+  /* constructor
+
+       parameters:
+           code      - "name" of the code, i.e. "list"
+                         for "[LIST][*]item 1[*]2nd item[/LIST]"
+           unordered - if set to true, this code will produce an unordered list.
+                       Otherwise it will create an ordered list.
+    */
+    ListBBCode(const std::string& code, bool unordered=true);
+
+    /* destructor */
+    virtual ~ListBBCode() {}
+
+    /* "applies" the BB code to the given text, i.e. transforms the BB code
+       into its HTML representation
+
+       parameters:
+           text - the message text that (may) contain the BB code
+    */
+    virtual void applyToText(std::string& text) const;
+
+    /* returns true, if the code creates an unordered list */
+    inline bool createsUnordered() const
+    {
+      return m_Unordered;
+    }
+  private:
+    bool actualApply(std::string& text, const std::string::size_type offset) const;
+    bool m_Unordered;
+};//struct
+
 #endif // BBCODE_H

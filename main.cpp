@@ -56,7 +56,7 @@ void showGPLNotice()
 void showVersion()
 {
   showGPLNotice();
-  std::cout << "Private Message Database, version 0.15f, 2012-09-27\n";
+  std::cout << "Private Message Database, version 0.16c, 2012-09-28\n";
 }
 
 void showHelp(const std::string& name)
@@ -82,7 +82,8 @@ void showHelp(const std::string& name)
             << "  --html           - creates HTML files for every message.\n"
             << "  --xhtml          - like --html, but use XHTML instead of HTML\n"
             << "  --no-br          - do not convert new line characters to line breaks in\n"
-            << "                     (X)HTML output.\n";
+            << "                     (X)HTML output.\n"
+            << "  --no-list        - do not parse [LIST] codes when creating HTML files.\n";
 }
 
 int main(int argc, char **argv)
@@ -107,6 +108,7 @@ int main(int argc, char **argv)
   bool doHTML = false;
   bool forceXHTML = false;
   bool nl2br = true;
+  bool noList = false;
 
   if ((argc>1) and (argv!=NULL))
   {
@@ -235,6 +237,15 @@ int main(int argc, char **argv)
           }
           nl2br = false;
         }//param == no-br
+        else if (param=="--no-list")
+        {
+          if (noList)
+          {
+            std::cout << "Parameter --no-list must not occur more than once!\n";
+            return rcInvalidParameter;
+          }
+          noList = true;
+        }//param == no-list
         else
         {
           //unknown or wrong parameter
@@ -402,6 +413,9 @@ int main(int argc, char **argv)
                                   +"<pre dir=\"ltr\" style=\"margin: 0px; padding: 6px; border: 1px inset;"
                                   +" width: 620px; text-align: left; overflow: auto\">",
                                   "</pre></div>");
+      //tag for unordered lists
+      ListBBCode list_unordered("list", true);
+
       parser.addCode(&b);
       parser.addCode(&u);
       parser.addCode(&i);
@@ -418,6 +432,7 @@ int main(int argc, char **argv)
       parser.addCode(&color);
       parser.addCode(&size);
       parser.addCode(&code);
+      if (!noList) parser.addCode(&list_unordered);
 
       //create HTML files
       theTemplate.addReplacement("forum_url", forumURL, false);

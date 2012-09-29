@@ -120,4 +120,27 @@ struct KillSpacesBeforeNewline: public TextProcessor
     }
 };//struct
 
+
+/* struct ShortenDoubleSpaces:
+      replaces occurences of two or more consecutive spaces by one single space
+*/
+struct ShortenDoubleSpaces: public TextProcessor
+{
+  public:
+    /* processes the given text, i.e. performs transformations
+
+       parameters:
+           text - the message text that should be processed
+    */
+    virtual void applyToText(std::string& text) const
+    {
+      std::string::size_type pos = text.find("  ");
+      while (pos!=std::string::npos)
+      {
+        text.replace(pos, 1, "");
+        pos = text.find("  ", (pos==0) ? 0 : pos-1);
+      }//while
+    }
+};//struct
+
 #endif // BBCODE_TEXTPROCESSOR_H

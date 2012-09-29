@@ -21,11 +21,26 @@
 #ifndef BBCODEPARSER_H
 #define BBCODEPARSER_H
 
+
+/* Note on C-preprocessor constants:
+     The BBCodeParser code recognises certain preprocessor constants.
+     - NO_PREPROCESSORS_IN_PARSER
+           If defined, the BBCodeParser won't contains text preprocessors.
+     - NO_POSTPROCESSORS_IN_PARSER
+           If defined, the BBCodeParser won't contains text postprocessors.
+     - NO_SMILIES_IN_PARSER
+           If defined, the BBCodeParser won't have the capabilities to handle
+           smilie structs. (I guess one could still substitute smilies via a
+           custom BBCode class in that case.)
+*/
 #include <string>
 #include <vector>
 #include "BBCode.h"
 #ifndef NO_SMILIES_IN_PARSER
   #include "Smilie.h"
+#endif
+#if !defined(NO_PREPROCESSORS_IN_PARSER) && !defined(NO_POSTPROCESSORS_IN_PARSER)
+#include "TextProcessor.h"
 #endif
 
 /* class BBCodeParser:
@@ -49,6 +64,30 @@ class BBCodeParser
                       the corresponding (X)HTML code for line breaks
     */
     std::string parse(std::string text, const std::string& forumURL, const bool isXHTML, const bool nl2br) const;
+
+    #ifndef NO_PREPROCESSORS_IN_PARSER
+    /* adds a new text preprocessor to the parser
+
+       parameters:
+           preProc - pointer to the text processor object that should be added
+
+       remarks:
+           The passed pointers must live for the whole lifetime of the
+           BBCodeParser instance they are passed to. Otherwise parse() will
+           fail. Alternatively call clearPreProcessors() before you delete/free
+           those TextProcessor objects.
+
+           The parsing process during parse() calls will handle preprocessors
+           in the order they are passed to addPreProcessor().
+
+           Passing identical TextProcessor objects to this function without
+           clearing old preprocessor in between will not do any harm, it just
+           causes this TextProcessors to be applied twice.
+
+           Preprocessors are applied before the BB codes are handled.
+    */
+    void addPreProcessor(TextProcessor* preProc);
+    #endif
 
     /* adds a new bb code to the parser
 
@@ -80,6 +119,38 @@ class BBCodeParser
     void addSmilie(const Smilie& sm);
     #endif
 
+    #ifndef NO_POSTPROCESSORS_IN_PARSER
+    /* adds a new text postprocessor to the parser
+
+       parameters:
+           postProc - pointer to the text processor object that should be added
+
+       remarks:
+           The passed pointers must live for the whole lifetime of the
+           BBCodeParser instance they are passed to. Otherwise parse() will
+           fail. Alternatively call clearPostProcessors() before you delete/free
+           those TextProcessor objects.
+
+           The parsing process during parse() calls will handle postprocessors
+           in the order they are passed to addPostProcessor().
+
+           Passing identical TextProcessor objects to this function without
+           clearing old postprocessor in between will not do any harm, it just
+           causes this TextProcessor to be applied twice.
+
+           Postprocessors are applied after the BB codes are handled.
+    */
+    void addPostProcessor(TextProcessor* postProc);
+    #endif
+
+    #ifndef NO_PREPROCESSORS_IN_PARSER
+    /* clears all added preprocessors */
+    inline void clearPreProcessors()
+    {
+      m_PreProcs.clear();
+    }
+    #endif
+
     /* clears all added BB codes
 
        remarks:
@@ -99,10 +170,24 @@ class BBCodeParser
     */
     void clearSmilies();
     #endif
+
+    #ifndef NO_POSTPROCESSORS_IN_PARSER
+    /* clears all added postprocessors */
+    inline void clearPostProcessors()
+    {
+      m_PostProcs.clear();
+    }
+    #endif
   private:
+    #ifndef NO_PREPROCESSORS_IN_PARSER
+    std::vector<TextProcessor*> m_PreProcs;
+    #endif
     std::vector<BBCode*> m_Codes;
     #ifndef NO_SMILIES_IN_PARSER
     std::vector<Smilie>  m_Smilies;
+    #endif
+    #ifndef NO_POSTPROCESSORS_IN_PARSER
+    std::vector<TextProcessor*> m_PostProcs;
     #endif
 };//class
 

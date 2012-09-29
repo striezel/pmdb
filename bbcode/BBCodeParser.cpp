@@ -23,10 +23,20 @@
 
 std::string BBCodeParser::parse(std::string text, const std::string& forumURL, const bool isXHTML, const bool nl2br) const
 {
+  #ifndef NO_PREPROCESSORS_IN_PARSER
+  //handle pre processors
+  std::vector<TextProcessor*>::const_iterator pre_iter = m_PreProcs.begin();
+  while (pre_iter!=m_PreProcs.end())
+  {
+    (*pre_iter)->applyToText(text);
+    ++pre_iter;
+  }//while
+  #endif
+
+  //handle line breaks
   if (nl2br)
   {
     std::string::size_type pos = text.find("\n");
-    //handle line breaks
     while (pos!=std::string::npos)
     {
       text.replace(pos, 1, isXHTML ? "<br />" : "<br>");
@@ -53,18 +63,47 @@ std::string BBCodeParser::parse(std::string text, const std::string& forumURL, c
   #endif
 
   //handle quotes
-  return handleQuotes(text, forumURL);
+  text = handleQuotes(text, forumURL);
+
+  #ifndef NO_POSTPROCESSORS_IN_PARSER
+  //handle post processors
+  std::vector<TextProcessor*>::const_iterator post_iter = m_PostProcs.begin();
+  while (post_iter!=m_PostProcs.end())
+  {
+    (*post_iter)->applyToText(text);
+    ++post_iter;
+  }//while
+  #endif
+
+  return text;
 }
+
+#ifndef NO_PREPROCESSORS_IN_PARSER
+void BBCodeParser::addPreProcessor(TextProcessor* preProc)
+{
+  if (preProc!=NULL)
+    m_PreProcs.push_back(preProc);
+}
+#endif
 
 void BBCodeParser::addCode(BBCode* code)
 {
-  m_Codes.push_back(code);
+  if (code!=NULL)
+    m_Codes.push_back(code);
 }
 
 #ifndef NO_SMILIES_IN_PARSER
 void BBCodeParser::addSmilie(const Smilie& sm)
 {
   m_Smilies.push_back(sm);
+}
+#endif
+
+#ifndef NO_POSTPROCESSORS_IN_PARSER
+void BBCodeParser::addPostProcessor(TextProcessor* postProc)
+{
+  if (postProc!=NULL)
+    m_PostProcs.push_back(postProc);
 }
 #endif
 

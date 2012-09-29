@@ -57,6 +57,7 @@
 		<Unit filename="bbcode/BBCodeParser.h" />
 		<Unit filename="bbcode/Smilie.cpp" />
 		<Unit filename="bbcode/Smilie.h" />
+		<Unit filename="bbcode/TextProcessor.h" />
 		<Unit filename="bbcode/quotes.cpp" />
 		<Unit filename="bbcode/quotes.h" />
 		<Unit filename="libthoro/common/BufferStream.h" />

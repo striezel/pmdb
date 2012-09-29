@@ -56,7 +56,7 @@ void showGPLNotice()
 void showVersion()
 {
   showGPLNotice();
-  std::cout << "Private Message Database, version 0.16c, 2012-09-28\n";
+  std::cout << "Private Message Database, version 0.17, 2012-09-29\n";
 }
 
 void showHelp(const std::string& name)
@@ -433,6 +433,11 @@ int main(int argc, char **argv)
       parser.addCode(&size);
       parser.addCode(&code);
       if (!noList) parser.addCode(&list_unordered);
+
+      KillSpacesBeforeNewline eatRedundantSpaces;
+      ListNewlinePreProcessor preProc_List;
+      parser.addPreProcessor(&eatRedundantSpaces);
+      if (nl2br and !noList) parser.addPreProcessor(&preProc_List);
 
       //create HTML files
       theTemplate.addReplacement("forum_url", forumURL, false);

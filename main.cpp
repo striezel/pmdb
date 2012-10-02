@@ -56,7 +56,7 @@ void showGPLNotice()
 void showVersion()
 {
   showGPLNotice();
-  std::cout << "Private Message Database, version 0.17, 2012-09-29\n";
+  std::cout << "Private Message Database, version 0.18, 2012-10-03\n";
 }
 
 void showHelp(const std::string& name)
@@ -413,6 +413,18 @@ int main(int argc, char **argv)
                                   +"<pre dir=\"ltr\" style=\"margin: 0px; padding: 6px; border: 1px inset;"
                                   +" width: 620px; text-align: left; overflow: auto\">",
                                   "</pre></div>");
+      //thread tag - simple variant
+      tpl.loadFromString("<a target=\"_blank\" href=\""+forumURL+"showthread.php?t={..inner..}\">"
+                        +forumURL+"showthread.php?t={..inner..}</a>");
+      SimpleTemplateBBCode thread_simple("thread", tpl, "inner");
+      //thread tag - advanced variant
+      tpl.loadFromString("<a target=\"_blank\" href=\""+forumURL+"showthread.php?t={..attr..}\">{..inner..}</a>");
+      AdvancedTemplateBBCode thread_advanced("thread", tpl, "inner", "attr");
+      // tt tag
+      CustomizedSimpleBBCode tt("tt", "<tt style=\"font-size: medium\">", "</tt>");
+      //wiki tag
+      tpl.loadFromString("<a href=\"http://de.wikipedia.org/wiki/{..inner..}\" target=\"_blank\" title=\"Wikipediareferenz zu '{..inner..}'\">{..inner..}</a>");
+      SimpleTemplateBBCode wiki("wiki", tpl, "inner");
       //tag for unordered lists
       ListBBCode list_unordered("list", true);
 
@@ -432,6 +444,10 @@ int main(int argc, char **argv)
       parser.addCode(&color);
       parser.addCode(&size);
       parser.addCode(&code);
+      parser.addCode(&thread_simple);
+      parser.addCode(&thread_advanced);
+      parser.addCode(&tt);
+      parser.addCode(&wiki);
       if (!noList) parser.addCode(&list_unordered);
 
       KillSpacesBeforeNewline eatRedundantSpaces;

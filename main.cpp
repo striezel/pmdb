@@ -376,19 +376,8 @@ int main(int argc, char **argv)
       //image tags
       CustomizedSimpleBBCode img_simple("img", "<img border=\"0\" src=\"",
                                         forceXHTML ? "\" alt=\"\" />" : "\" alt=\"\">");
-      //simple url tag
+
       MsgTemplate tpl;
-      tpl.loadFromString("<a href=\"{..inner..}\" target=\"_blank\">{..inner..}</a>");
-      SimpleTplAmpTransformBBCode url_simple("url", tpl, "inner");
-      //advanced url tag
-      tpl.loadFromString("<a href=\"{..attribute..}\" target=\"_blank\">{..inner..}</a>");
-      AdvancedTplAmpTransformBBCode url_advanced("url", tpl, "inner", "attribute");
-      //color tags
-      tpl.loadFromString("<font color=\"{..attr..}\">{..inner..}</font>");
-      AdvancedTemplateBBCode color("color", tpl, "inner", "attr");
-      //size tags
-      tpl.loadFromString("<font size=\"{..attr..}\">{..inner..}</font>");
-      AdvancedTemplateBBCode size("size", tpl, "inner", "attr");
       //thread tag - simple variant
       tpl.loadFromString("<a target=\"_blank\" href=\""+forumURL+"showthread.php?t={..inner..}\">"
                         +forumURL+"showthread.php?t={..inner..}</a>");
@@ -404,10 +393,6 @@ int main(int argc, char **argv)
 
       bbcode_default::addDefaultCodes(parser);
       parser.addCode(&img_simple);
-      parser.addCode(&url_simple);
-      parser.addCode(&url_advanced);
-      parser.addCode(&color);
-      parser.addCode(&size);
       parser.addCode(&thread_simple);
       parser.addCode(&thread_advanced);
       parser.addCode(&wiki);

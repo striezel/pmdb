@@ -58,6 +58,15 @@ namespace bbcode_default
   // tt tag
   CustomizedSimpleBBCode tt("tt", "<tt style=\"font-size: medium\">", "</tt>");
 
+  //simple url tag
+  SimpleTplAmpTransformBBCode url_simple("url", MsgTemplate("<a href=\"{..inner..}\" target=\"_blank\">{..inner..}</a>"), "inner");
+  //advanced url tag
+  AdvancedTplAmpTransformBBCode url_advanced("url", MsgTemplate("<a href=\"{..attribute..}\" target=\"_blank\">{..inner..}</a>"), "inner", "attribute");
+  //color tag
+  AdvancedTemplateBBCode color("color", MsgTemplate("<font color=\"{..attr..}\">{..inner..}</font>"), "inner", "attr");
+  //size tag
+  AdvancedTemplateBBCode size("size", MsgTemplate("<font size=\"{..attr..}\">{..inner..}</font>"), "inner", "attr");
+
   /* this function adds the default */
   inline void addDefaultCodes(BBCodeParser& parser)
   {
@@ -71,6 +80,10 @@ namespace bbcode_default
     parser.addCode(&bbcode_default::center);
     parser.addCode(&bbcode_default::left);
     parser.addCode(&bbcode_default::right);
+    parser.addCode(&bbcode_default::url_simple);
+    parser.addCode(&bbcode_default::url_advanced);
+    parser.addCode(&bbcode_default::color);
+    parser.addCode(&bbcode_default::size);
     parser.addCode(&bbcode_default::code);
     parser.addCode(&bbcode_default::tt);
   }

@@ -30,6 +30,12 @@ class MsgTemplate
     /* constructor */
     MsgTemplate();
 
+    explicit MsgTemplate(const std::string& str1)
+    : m_Template(str1)
+    {
+      m_Tags.clear();
+    }
+
     /* destructor */
     ~MsgTemplate();
 

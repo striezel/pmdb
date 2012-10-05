@@ -22,9 +22,9 @@
 #include <set>
 #include <string>
 #include "MessageDatabase.h"
-#include "MsgTemplate.h"
 #include "Config.h"
 #include "bbcode/BBCodeParser.h"
+#include "bbcode/DefaultCodes.h"
 #include "libthoro/common/DirectoryFunctions.h"
 #include "libthoro/common/DirectoryFileList.h"
 #include "libthoro/common/StringUtils.h"
@@ -371,23 +371,8 @@ int main(int argc, char **argv)
         return rcFileError;
       }
 
+
       /* prepare BB code parser with BB codes */
-      // [b], [u], [i], [s] codes
-      SimpleBBCode b("b");
-      SimpleBBCode u("u");
-      SimpleBBCode i("i");
-      CustomizedSimpleBBCode s("s",
-                               "<span style=\"text-decoration:line-through;\">",
-                               "</span>");
-      //[sup] and [sub] tags
-      SimpleBBCode sup("sup");
-      SimpleBBCode sub("sub");
-      //indent tags
-      CustomizedSimpleBBCode indent("indent", "<blockquote>", "</blockquote>");
-      //alignment stuff
-      SimpleBBCode center("center");
-      CustomizedSimpleBBCode left("left", "<div align=\"left\">", "</div>");
-      CustomizedSimpleBBCode right("right", "<div align=\"right\">", "</div>");
       //image tags
       CustomizedSimpleBBCode img_simple("img", "<img border=\"0\" src=\"",
                                         forceXHTML ? "\" alt=\"\" />" : "\" alt=\"\">");
@@ -404,15 +389,6 @@ int main(int argc, char **argv)
       //size tags
       tpl.loadFromString("<font size=\"{..attr..}\">{..inner..}</font>");
       AdvancedTemplateBBCode size("size", tpl, "inner", "attr");
-      //code tags
-      CustomizedSimpleBBCode code("code",
-                                  std::string("<div style=\"margin:20px; margin-top:5px\">\n")
-                                  +"<div class=\"smallfont\" style=\"margin-bottom:2px; font: 10px verdana,"
-                                  +" geneva, lucida, 'lucida grande', arial, helvetica, sans-serif;\n"
-                                  +"font-size:7pt;\">Code:</div>\n"
-                                  +"<pre dir=\"ltr\" style=\"margin: 0px; padding: 6px; border: 1px inset;"
-                                  +" width: 620px; text-align: left; overflow: auto\">",
-                                  "</pre></div>");
       //thread tag - simple variant
       tpl.loadFromString("<a target=\"_blank\" href=\""+forumURL+"showthread.php?t={..inner..}\">"
                         +forumURL+"showthread.php?t={..inner..}</a>");
@@ -420,33 +396,20 @@ int main(int argc, char **argv)
       //thread tag - advanced variant
       tpl.loadFromString("<a target=\"_blank\" href=\""+forumURL+"showthread.php?t={..attr..}\">{..inner..}</a>");
       AdvancedTemplateBBCode thread_advanced("thread", tpl, "inner", "attr");
-      // tt tag
-      CustomizedSimpleBBCode tt("tt", "<tt style=\"font-size: medium\">", "</tt>");
       //wiki tag
       tpl.loadFromString("<a href=\"http://de.wikipedia.org/wiki/{..inner..}\" target=\"_blank\" title=\"Wikipediareferenz zu '{..inner..}'\">{..inner..}</a>");
       SimpleTemplateBBCode wiki("wiki", tpl, "inner");
       //tag for unordered lists
       ListBBCode list_unordered("list", true);
 
-      parser.addCode(&b);
-      parser.addCode(&u);
-      parser.addCode(&i);
-      parser.addCode(&s);
-      parser.addCode(&sup);
-      parser.addCode(&sub);
-      parser.addCode(&indent);
-      parser.addCode(&center);
-      parser.addCode(&left);
-      parser.addCode(&right);
+      bbcode_default::addDefaultCodes(parser);
       parser.addCode(&img_simple);
       parser.addCode(&url_simple);
       parser.addCode(&url_advanced);
       parser.addCode(&color);
       parser.addCode(&size);
-      parser.addCode(&code);
       parser.addCode(&thread_simple);
       parser.addCode(&thread_advanced);
-      parser.addCode(&tt);
       parser.addCode(&wiki);
       if (!noList) parser.addCode(&list_unordered);
 

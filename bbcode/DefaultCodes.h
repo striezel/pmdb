@@ -1,0 +1,80 @@
+/*
+ -------------------------------------------------------------------------------
+    This file is part of the Private Message Database.
+    Copyright (C) 2012  Thoronador
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ -------------------------------------------------------------------------------
+*/
+
+#ifndef BBCODE_DEFAULTCODES_H
+#define BBCODE_DEFAULTCODES_H
+
+#include "BBCode.h"
+
+namespace bbcode_default
+{
+  // [b], [u], [i], [s] codes
+  SimpleBBCode b("b");
+  SimpleBBCode u("u");
+  SimpleBBCode i("i");
+  CustomizedSimpleBBCode s("s",
+                               "<span style=\"text-decoration:line-through;\">",
+                               "</span>");
+
+  //[sup] and [sub] tags
+  SimpleBBCode sup("sup");
+  SimpleBBCode sub("sub");
+
+  //indent
+  CustomizedSimpleBBCode indent("indent", "<blockquote>", "</blockquote>");
+
+  //alignment stuff
+  SimpleBBCode center("center");
+  CustomizedSimpleBBCode left("left", "<div align=\"left\">", "</div>");
+  CustomizedSimpleBBCode right("right", "<div align=\"right\">", "</div>");
+
+  //code tag
+  CustomizedSimpleBBCode code("code",
+                               std::string("<div style=\"margin:20px; margin-top:5px\">\n")
+                               +"<div class=\"smallfont\" style=\"margin-bottom:2px; font: 10px verdana,"
+                               +" geneva, lucida, 'lucida grande', arial, helvetica, sans-serif;\n"
+                               +"font-size:7pt;\">Code:</div>\n"
+                               +"<pre dir=\"ltr\" style=\"margin: 0px; padding: 6px; border: 1px inset;"
+                               +" width: 620px; text-align: left; overflow: auto\">",
+                               "</pre></div>");
+
+  // tt tag
+  CustomizedSimpleBBCode tt("tt", "<tt style=\"font-size: medium\">", "</tt>");
+
+  /* this function adds the default */
+  inline void addDefaultCodes(BBCodeParser& parser)
+  {
+    parser.addCode(&bbcode_default::b);
+    parser.addCode(&bbcode_default::u);
+    parser.addCode(&bbcode_default::i);
+    parser.addCode(&bbcode_default::s);
+    parser.addCode(&bbcode_default::sup);
+    parser.addCode(&bbcode_default::sub);
+    parser.addCode(&bbcode_default::indent);
+    parser.addCode(&bbcode_default::center);
+    parser.addCode(&bbcode_default::left);
+    parser.addCode(&bbcode_default::right);
+    parser.addCode(&bbcode_default::code);
+    parser.addCode(&bbcode_default::tt);
+  }
+
+} //namespace
+
+#endif // BBCODE_DEFAULTCODES_H

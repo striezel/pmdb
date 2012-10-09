@@ -66,6 +66,8 @@ namespace bbcode_default
   AdvancedTemplateBBCode color("color", MsgTemplate("<font color=\"{..attr..}\">{..inner..}</font>"), "inner", "attr");
   //size tag
   AdvancedTemplateBBCode size("size", MsgTemplate("<font size=\"{..attr..}\">{..inner..}</font>"), "inner", "attr");
+  //font tag
+  AdvancedTemplateBBCode font("font", MsgTemplate("<span style=\"font-family: {..attr..}\">{..inner..}</span>"), "inner", "attr");
 
   /* this function adds the default */
   inline void addDefaultCodes(BBCodeParser& parser)
@@ -84,6 +86,7 @@ namespace bbcode_default
     parser.addCode(&bbcode_default::url_advanced);
     parser.addCode(&bbcode_default::color);
     parser.addCode(&bbcode_default::size);
+    parser.addCode(&bbcode_default::font);
     parser.addCode(&bbcode_default::code);
     parser.addCode(&bbcode_default::tt);
   }

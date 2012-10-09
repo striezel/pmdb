@@ -24,6 +24,7 @@
 #include "MessageDatabase.h"
 #include "Config.h"
 #include "bbcode/BBCodeParser.h"
+#include "bbcode/BBCode_Table.h"
 #include "bbcode/DefaultCodes.h"
 #include "libthoro/common/DirectoryFunctions.h"
 #include "libthoro/common/DirectoryFileList.h"
@@ -56,7 +57,7 @@ void showGPLNotice()
 void showVersion()
 {
   showGPLNotice();
-  std::cout << "Private Message Database, version 0.18, 2012-10-03\n";
+  std::cout << "Private Message Database, version 0.18~experimental-table, 2012-10-09\n";
 }
 
 void showHelp(const std::string& name)
@@ -390,6 +391,8 @@ int main(int argc, char **argv)
       SimpleTemplateBBCode wiki("wiki", tpl, "inner");
       //tag for unordered lists
       ListBBCode list_unordered("list", true);
+      //tag for tables
+      TableBBCode table("table");
 
       bbcode_default::addDefaultCodes(parser);
       parser.addCode(&img_simple);
@@ -397,6 +400,7 @@ int main(int argc, char **argv)
       parser.addCode(&thread_advanced);
       parser.addCode(&wiki);
       if (!noList) parser.addCode(&list_unordered);
+      parser.addCode(&table);
 
       KillSpacesBeforeNewline eatRedundantSpaces;
       ListNewlinePreProcessor preProc_List;

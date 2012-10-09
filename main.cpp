@@ -404,8 +404,10 @@ int main(int argc, char **argv)
 
       KillSpacesBeforeNewline eatRedundantSpaces;
       ListNewlinePreProcessor preProc_List;
+      TablePreprocessor table_killLF("tr", "td");
       parser.addPreProcessor(&eatRedundantSpaces);
       if (nl2br and !noList) parser.addPreProcessor(&preProc_List);
+      if (nl2br) parser.addPreProcessor(&table_killLF);
 
       //create HTML files
       theTemplate.addReplacement("forum_url", forumURL, false);

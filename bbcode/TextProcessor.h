@@ -22,6 +22,7 @@
 #define BBCODE_TEXTPROCESSOR_H
 
 #include <string>
+#include "../libthoro/common/StringUtils.h"
 
 /* struct TextProcessor:
        basic interface for BB code pre- and post-processing structs
@@ -139,6 +140,45 @@ struct ShortenDoubleSpaces: public TextProcessor
       {
         text.replace(pos, 1, "");
         pos = text.find("  ", (pos==0) ? 0 : pos-1);
+      }//while
+    }
+};//struct
+
+/* struct TablePreprocessor:
+      removes occurences of line feeds after table-related codes
+*/
+struct TablePreprocessor: public TextProcessor
+{
+  public:
+    TablePreprocessor(const std::string& row, const std::string& cell)
+    : m_Row(row), m_Cell(cell)
+    { }
+
+    /* processes the given text, i.e. performs transformations
+
+       parameters:
+           text - the message text that should be processed
+    */
+    virtual void applyToText(std::string& text) const
+    {
+      auxApply(text, "[/"+m_Row+"] ");
+      auxApply(text, "[/"+m_Row+"]\n");
+      auxApply(text, "["+m_Row+"] ");
+      auxApply(text, "["+m_Row+"]\n");
+      auxApply(text, "[/"+m_Cell+"] ");
+      auxApply(text, "[/"+m_Cell+"]\n");
+    }
+  private:
+    std::string m_Row, m_Cell;
+
+    /* aux. function */
+    inline void auxApply(std::string& text, const std::string& needle) const
+    {
+      std::string::size_type pos = find_ci(text, needle);
+      while (pos!=std::string::npos)
+      {
+        text.replace(pos+needle.length()-1, 1, "");
+        pos = find_ci(text, needle, pos);
       }//while
     }
 };//struct

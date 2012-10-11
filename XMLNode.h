@@ -37,9 +37,17 @@ class XMLNode
     */
     XMLNode(const xmlNodePtr node);
 
-    /* returns the node's name */
-    const xmlChar* getName() const;
-    std::string getNameAsString() const;
+    /* returns the node's name as pointer to a C-style string */
+    inline const xmlChar* getName() const
+    {
+      return m_Node->name;
+    }
+
+    /* returns the node's name as an STL string */
+    inline std::string getNameAsString() const
+    {
+      return reinterpret_cast<const char*>(m_Node->name);
+    }
 
     /* returns true, if the node has at least one child node */
     inline bool hasChild() const
@@ -68,22 +76,34 @@ class XMLNode
     /* returns the first child of the node. Throws an exception, if there is no
        child node.
     */
-    XMLNode getChild() const;
+    inline XMLNode getChild() const
+    {
+      return m_Node->children;
+    }
 
     /* returns the next sibling of the node. Throws an exception, if there is no
        next sibling.
     */
-    XMLNode getNextSibling() const;
+    inline XMLNode getNextSibling() const
+    {
+      return m_Node->next;
+    }
 
     /* returns the previous sibling of the node. Throws an exception, if there
        is no previous sibling.
     */
-    XMLNode getPrevSibling() const;
+    inline XMLNode getPrevSibling() const
+    {
+      return m_Node->prev;
+    }
 
     /* returns the parent of the node. Throws an exception, if there is no
        parent node.
     */
-    XMLNode getParent() const;
+    inline XMLNode getParent() const
+    {
+      return m_Node->parent;
+    }
 
     /* returns true, if the node is an element node */
     inline bool isElementNode() const
@@ -103,13 +123,21 @@ class XMLNode
       return (m_Node->type==XML_TEXT_NODE);
     }
 
-    /* returns the text contained in the node, if it's a text node */
+    /* returns the text contained in the node, if it's a text node.  If there is no
+       text node (or any child node), the function will return an empty string.
+    */
     std::string getPlainTextContent() const;
 
-    /* returns the text contained in the node's CDATA section */
+    /* returns the text contained in the node's CDATA section. If there is no
+       CDATA section (or any child node), the function will return an empty
+       string.
+    */
     std::string getCDATAText() const;
 
-    /* get content for both - either CDATA or text node */
+    /* get content for both - either CDATA or text node. If there is no child
+       node, or the child node is neither e CDATA nor a text node, the function
+       will return an empty string.
+    */
     std::string getContentBoth() const;
   private:
     xmlNodePtr m_Node;

@@ -27,36 +27,6 @@ XMLNode::XMLNode(const xmlNodePtr node)
   m_Node = node;
 }
 
-const xmlChar* XMLNode::getName() const
-{
-  return m_Node->name;
-}
-
-std::string XMLNode::getNameAsString() const
-{
-  return reinterpret_cast<const char*>(m_Node->name);
-}
-
-XMLNode XMLNode::getChild() const
-{
-  return m_Node->children;
-}
-
-XMLNode XMLNode::getNextSibling() const
-{
-  return m_Node->next;
-}
-
-XMLNode XMLNode::getPrevSibling() const
-{
-  return m_Node->prev;
-}
-
-XMLNode XMLNode::getParent() const
-{
-  return m_Node->parent;
-}
-
 std::string XMLNode::getPlainTextContent() const
 {
   //text is a child node of current node, so it has to have a child

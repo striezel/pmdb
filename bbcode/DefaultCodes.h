@@ -69,7 +69,11 @@ namespace bbcode_default
   //font tag
   AdvancedTemplateBBCode font("font", MsgTemplate("<span style=\"font-family: {..attr..}\">{..inner..}</span>"), "inner", "attr");
 
-  /* this function adds the default */
+  /* this function adds the "default" BB codes to the given parser
+
+     parameters:
+         parser - the parser to which those codes should be added
+  */
   inline void addDefaultCodes(BBCodeParser& parser)
   {
     parser.addCode(&bbcode_default::b);

@@ -40,8 +40,8 @@ struct NameAndPost
   std::string post;
 
   NameAndPost(const std::string& theName="", const std::string& thePost="")
+  : name(theName), post(thePost)
   {
-    name = theName; post = thePost;
   }
 };//struct
 

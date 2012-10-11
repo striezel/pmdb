@@ -163,8 +163,6 @@ std::string handleQuotes(std::string msg_content, const std::string& forumURL)
 
     while ((std::string::npos!=(second=getOpeningTagPosition(msg_content, first+1, second_type, second_end_pos)))
           && (second_end_pos<last))
-    //while ((false!==($second=getOpeningTagPosition($msg_content, $first+1, $second_type, $second_end_pos)))
-    //      && ($second_end_pos<$last))
     {
       //set stuff to newly found, inner quote tag's stuff
       first = second;
@@ -212,12 +210,8 @@ std::string handleQuotes(std::string msg_content, const std::string& forumURL)
 +"        </div>\n"
 +"        <div style=\"font-style:italic\">"
         +msg_content.substr(end_pos+1, last-end_pos-1) //inner text of quote
-        +"</div>\n"
-+"      </td>\n"
-+"    </tr>\n"
-+"    </table>\n"
-+"  </td></tr>\n"
-+"</table>" //replacement for closing part
+        +"</div>\n      </td>\n    </tr>\n"
++"    </table>\n  </td></tr>\n</table>" //replacement for closing part
                            +msg_content.substr(last+8, msg_content.length()-last-8); //rest of text
            }//if post number is set
            else

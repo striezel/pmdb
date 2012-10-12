@@ -334,4 +334,31 @@ struct ListBBCode: public BBCode
     bool m_Unordered;
 };//struct
 
+
+/* struct HorizontalRuleBBCode:
+       struct for hr BB code
+*/
+struct HorizontalRuleBBCode: public BBCode
+{
+  public:
+    /* constructor
+
+       parameters:
+           code - "name" of the code, i.e. "b" for [B]bold text[/B]
+    */
+    HorizontalRuleBBCode(const std::string& code, const bool isXHTML)
+    : BBCode(code), m_isXHTML(isXHTML)
+    { }
+
+    /* "applies" the BB code to the given text, i.e. transforms the BB code
+       into its HTML representation
+
+       parameters:
+           text - the message text that (may) contain the BB code
+    */
+    virtual void applyToText(std::string& text) const;
+  private:
+    bool m_isXHTML;
+};//struct HorizontalRuleBBCode
+
 #endif // BBCODE_H

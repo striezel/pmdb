@@ -188,3 +188,14 @@ void ListBBCode::applyToText(std::string& text) const
   if (!text.empty())
     actualApply(text, 0);
 }
+
+void HorizontalRuleBBCode::applyToText(std::string& text) const
+{
+  const std::string code = "["+getName()+"][/"+getName()+"]";
+  std::string::size_type pos = find_ci(text, code);
+  while (pos!=std::string::npos)
+  {
+    text.replace(pos, code.length(), m_isXHTML ? "<hr />" : "<hr>");
+    pos = find_ci(text, code);
+  }//while
+}

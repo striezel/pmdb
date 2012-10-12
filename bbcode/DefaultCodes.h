@@ -69,6 +69,9 @@ namespace bbcode_default
   //font tag
   AdvancedTemplateBBCode font("font", MsgTemplate("<span style=\"font-family: {..attr..}\">{..inner..}</span>"), "inner", "attr");
 
+  //highlight code
+  CustomizedSimpleBBCode highlight("highlight", "<span style=\"color: red; font-weight: bold;\">", "</span>");
+
   /* this function adds the "default" BB codes to the given parser
 
      parameters:
@@ -93,6 +96,7 @@ namespace bbcode_default
     parser.addCode(&bbcode_default::font);
     parser.addCode(&bbcode_default::code);
     parser.addCode(&bbcode_default::tt);
+    parser.addCode(&bbcode_default::highlight);
   }
 
 } //namespace

@@ -57,7 +57,7 @@ void showGPLNotice()
 void showVersion()
 {
   showGPLNotice();
-  std::cout << "Private Message Database, version 0.19, 2012-10-12\n";
+  std::cout << "Private Message Database, version 0.19b, 2012-10-12\n";
 }
 
 void showHelp(const std::string& name)
@@ -441,6 +441,8 @@ int main(int argc, char **argv)
       ListBBCode list_unordered("list", true);
       //tag for tables
       TableBBCode table("table", useTableClasses, classTable, classRow, classCell);
+      //hr code
+      HorizontalRuleBBCode hr("hr", forceXHTML);
 
       bbcode_default::addDefaultCodes(parser);
       parser.addCode(&img_simple);
@@ -449,6 +451,7 @@ int main(int argc, char **argv)
       parser.addCode(&wiki);
       if (!noList) parser.addCode(&list_unordered);
       parser.addCode(&table);
+      parser.addCode(&hr);
 
       KillSpacesBeforeNewline eatRedundantSpaces;
       ListNewlinePreProcessor preProc_List;

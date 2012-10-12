@@ -167,6 +167,14 @@ struct TablePreprocessor: public TextProcessor
       auxApply(text, "["+m_Row+"]\n");
       auxApply(text, "[/"+m_Cell+"] ");
       auxApply(text, "[/"+m_Cell+"]\n");
+
+      const std::string needle = "]\n["+m_Row;
+      std::string::size_type pos = find_ci(text, needle);
+      while (pos!=std::string::npos)
+      {
+        text.replace(pos+1, 1, "");
+        pos = find_ci(text, needle, pos);
+      }//while
     }
   private:
     std::string m_Row, m_Cell;

@@ -57,7 +57,7 @@ void showGPLNotice()
 void showVersion()
 {
   showGPLNotice();
-  std::cout << "Private Message Database, version 0.18b~experimental-table, 2012-10-12\n";
+  std::cout << "Private Message Database, version 0.18c~experimental-table, 2012-10-12\n";
 }
 
 void showHelp(const std::string& name)

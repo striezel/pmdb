@@ -27,12 +27,30 @@
 struct TableBBCode: public BBCode
 {
   public:
+    //constants for default class names used in constructor
+    static const std::string DefaultTableClass;
+    static const std::string DefaultRowClass;
+    static const std::string DefaultCellClass;
+
     /* constructor
 
        parameters:
-           code - "name" of the code, i.e. "b" for [B]bold text[/B]
+           code           - "name" of the code, i.e. "b" for [B]bold text[/B]
+           useGridClasses - if set to true, the generated HTML code will use
+                            classes (as in CSS class) instead of a somewhat
+                            bloated style attribute to generate the grids around
+                            the table elements, if such the grids are required
+           tableClass     - name of the class for grids on <table> tags
+           rowClass       - name of the class for grids on <tr> tags
+           cellClass      - name of the class for grids on <td> tags
+
+       remarks:
+           If useGridClasses is set to false, the last three parameters do not
+           have any effect on the generated HTML code.
     */
-    TableBBCode(const std::string& code);
+    TableBBCode(const std::string& code, const bool useGridClasses=false,
+                const std::string& tableClass=DefaultTableClass, const std::string& rowClass=DefaultRowClass,
+                const std::string& cellClass=DefaultCellClass);
 
     /* "applies" the BB code to the given text, i.e. transforms the BB code
        into its HTML representation
@@ -53,6 +71,15 @@ struct TableBBCode: public BBCode
       }
     }; //struct
   private:
+    bool m_UseClasses;
+    std::string m_TableClass;
+    std::string m_RowClass;
+    std::string m_CellClass;
+
+    enum TableElementType {tetTable, tetRow, tetCell};
+
+    void appendGridAttributes(std::string& text, const TableElementType eleType) const;
+
     bool actualApplyToText(std::string& text, const std::string::size_type offset) const;
 
     struct TableElem: public OpeningElem
@@ -67,7 +94,10 @@ struct TableBBCode: public BBCode
 
     static std::map<std::string, std::string> explodeAttributes(std::string attr);
 
-    static std::string attributesToString(const std::map<std::string, std::string>& attrs);
+    std::string attributesToString(const TableElementType eleType,
+                                   const std::map<std::string, std::string>& attrs,
+                                   const std::map<std::string, std::string>& parent_attrs = std::map<std::string, std::string>(),
+                                   const std::map<std::string, std::string>& grandparent_attrs  = std::map<std::string, std::string>()) const;
 }; //struct
 
 #endif // BBCODE_TABLE_H

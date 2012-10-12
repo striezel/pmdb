@@ -57,7 +57,7 @@ void showGPLNotice()
 void showVersion()
 {
   showGPLNotice();
-  std::cout << "Private Message Database, version 0.18~experimental-table, 2012-10-09\n";
+  std::cout << "Private Message Database, version 0.18b~experimental-table, 2012-10-12\n";
 }
 
 void showHelp(const std::string& name)
@@ -84,7 +84,18 @@ void showHelp(const std::string& name)
             << "  --xhtml          - like --html, but use XHTML instead of HTML\n"
             << "  --no-br          - do not convert new line characters to line breaks in\n"
             << "                     (X)HTML output.\n"
-            << "  --no-list        - do not parse [LIST] codes when creating HTML files.\n";
+            << "  --no-list        - do not parse [LIST] codes when creating HTML files.\n"
+            << "  --table=CLASS    - sets the class for grids in <table> to CLASS.\n"
+            << "                     Must occur together with --row and --cell.\n"
+            << "  --row=CLASS      - sets the class for grids in <tr> to CLASS.\n"
+            << "                     Must occur together with --table and --cell.\n"
+            << "  --cell=CLASS     - sets the class for grids in <td> to CLASS.\n"
+            << "                     Must occur together with --table and --row.\n"
+            << "  --std-classes    - sets the 'standard' classes for the three class options.\n"
+            << "                     This is equivalent to specifying all these parameters:\n"
+            << "                         --table="<<TableBBCode::DefaultTableClass<<"\n"
+            << "                         --row="<<TableBBCode::DefaultRowClass<<"\n"
+            << "                         --cell="<<TableBBCode::DefaultCellClass<<"\n";
 }
 
 int main(int argc, char **argv)
@@ -110,6 +121,11 @@ int main(int argc, char **argv)
   bool forceXHTML = false;
   bool nl2br = true;
   bool noList = false;
+
+  bool useTableClasses = false;
+  std::string classTable;
+  std::string classRow;
+  std::string classCell;
 
   if ((argc>1) and (argv!=NULL))
   {
@@ -247,6 +263,28 @@ int main(int argc, char **argv)
           }
           noList = true;
         }//param == no-list
+        else if ((param.substr(0,8)=="--table=") and (param.length()>8))
+        {
+          classTable = param.substr(8);
+          useTableClasses = true;
+        }//param == 'table=...'
+        else if ((param.substr(0,6)=="--row=") and (param.length()>6))
+        {
+          classRow = param.substr(6);
+          useTableClasses = true;
+        }//param == 'row=...'
+        else if ((param.substr(0,7)=="--cell=") and (param.length()>7))
+        {
+          classCell = param.substr(7);
+          useTableClasses = true;
+        }//param == 'cell=...'
+        else if ((param=="--std-classes") or (param=="--classes") or (param=="--default-classes"))
+        {
+          classTable = TableBBCode::DefaultTableClass;
+          classRow   = TableBBCode::DefaultRowClass;
+          classCell  = TableBBCode::DefaultCellClass;
+          useTableClasses = true;
+        }//param == std-classes
         else
         {
           //unknown or wrong parameter
@@ -271,6 +309,16 @@ int main(int argc, char **argv)
               << "Use --help to get a list of valid parameters.\n";
     return rcInvalidParameter;
   }
+
+  if (useTableClasses)
+  {
+    if (classTable.empty() or classRow.empty() or classCell.empty())
+    {
+      std::cout << "If at least one of the parameters --table, --row or --cell"
+                << " is given, the other two have to be specified, too!\n";
+      return rcInvalidParameter;
+    }
+  }//if
 
   MessageDatabase mdb;
   uint32_t PMs_done, PMs_new;
@@ -392,7 +440,7 @@ int main(int argc, char **argv)
       //tag for unordered lists
       ListBBCode list_unordered("list", true);
       //tag for tables
-      TableBBCode table("table");
+      TableBBCode table("table", useTableClasses, classTable, classRow, classCell);
 
       bbcode_default::addDefaultCodes(parser);
       parser.addCode(&img_simple);

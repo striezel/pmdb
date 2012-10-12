@@ -19,10 +19,21 @@
 */
 
 #include "BBCode_Table.h"
+#ifdef DEBUG
+  #include <iostream>
+#endif
 #include "../libthoro/common/StringUtils.h"
 
-TableBBCode::TableBBCode(const std::string& code)
-: BBCode(code)
+//constants for default class names used in constructor
+const std::string TableBBCode::DefaultTableClass = "grid_table";
+const std::string TableBBCode::DefaultRowClass   = "grid_tr";
+const std::string TableBBCode::DefaultCellClass  = "grid_td";
+
+TableBBCode::TableBBCode(const std::string& code, const bool useGridClasses,
+                const std::string& tableClass, const std::string& rowClass,
+                const std::string& cellClass)
+: BBCode(code), m_UseClasses(useGridClasses), m_TableClass(tableClass),
+  m_RowClass(rowClass), m_CellClass(cellClass)
 {
 
 }
@@ -50,6 +61,16 @@ bool TableBBCode::actualApplyToText(std::string& text, const std::string::size_t
     }//inner while
 
     /* all inner tables processed, go on with outermost in that scope */
+    #ifdef DEBUG
+    std::map<std::string, std::string>::const_iterator dbg_iter = elemOpener.attributes.begin();
+    std::cout << "table attributes:\n";
+    while (dbg_iter!=elemOpener.attributes.end())
+    {
+      std::cout << dbg_iter->first << " = " << dbg_iter->second <<"\n";
+      ++dbg_iter;
+    }//while
+    std::cout << "total: "<<elemOpener.attributes.size() <<"\n";
+    #endif
     //update end position
     end_pos = find_ci(text, end_code, elemOpener.open_end);
     if (end_pos==std::string::npos) return false;
@@ -67,7 +88,7 @@ bool TableBBCode::actualApplyToText(std::string& text, const std::string::size_t
         if ((cell_end==std::string::npos) or (cell_end>=row_end)) return false;
         //replace cell codes with HTML code
         text.replace(cell_end, 5, "</td>");
-        text.replace(cellOpener.open_pos, cellOpener.open_end-cellOpener.open_pos+1, "<td"+attributesToString(cellOpener.attributes)+">");
+        text.replace(cellOpener.open_pos, cellOpener.open_end-cellOpener.open_pos+1, "<td"+attributesToString(tetCell, cellOpener.attributes, rowOpener.attributes, elemOpener.attributes)+">");
         //update row end position
         row_end = find_ci(text, "[/tr]", rowOpener.open_end);
         //get next open cell position
@@ -75,7 +96,7 @@ bool TableBBCode::actualApplyToText(std::string& text, const std::string::size_t
       }//while cell opener
       //replace row codes with HTML code
       text.replace(row_end, 5, "</tr>");
-      text.replace(rowOpener.open_pos, rowOpener.open_end-rowOpener.open_pos+1, "<tr"+attributesToString(rowOpener.attributes)+">");
+      text.replace(rowOpener.open_pos, rowOpener.open_end-rowOpener.open_pos+1, "<tr"+attributesToString(tetRow, rowOpener.attributes, elemOpener.attributes)+">");
       //update table end position
       end_pos = find_ci(text, end_code, elemOpener.open_end);
       //get next open row position
@@ -83,7 +104,7 @@ bool TableBBCode::actualApplyToText(std::string& text, const std::string::size_t
     }//while row
     //replace "table" codes with HTML code
     text.replace(end_pos, end_code.length(), "</table>");
-    text.replace(elemOpener.open_pos, elemOpener.open_end-elemOpener.open_pos+1, "<table"+attributesToString(elemOpener.attributes)+">");
+    text.replace(elemOpener.open_pos, elemOpener.open_end-elemOpener.open_pos+1, "<table"+attributesToString(tetTable, elemOpener.attributes)+">");
     //get next table
     elemOpener = getNextOpeningElement(text, elemOpener.open_pos, getName());
   }//while
@@ -166,21 +187,49 @@ std::map<std::string, std::string> TableBBCode::explodeAttributes(std::string at
     std::string value = key_value.substr(sep_pos+1);
     trim(key); trim(value);
     result[key] = value;
-    attr.erase(0, pos);
+    attr.erase(0, pos!=std::string::npos ? pos+1 : pos);
     pos = attr.find(';');
   } while (!attr.empty());
   return result;
 }
 
-std::string TableBBCode::attributesToString(const std::map<std::string, std::string>& attrs)
+void TableBBCode::appendGridAttributes(std::string& text, const TableElementType eleType) const
+{
+  if (m_UseClasses)
+  {
+    text += " class=\"";
+    switch (eleType)
+    {
+      case tetTable:
+           text += m_TableClass;
+           break;
+      case tetRow:
+           text += m_RowClass;
+           break;
+      default:
+           text += m_CellClass;
+           break;
+    }//swi
+    text += "\"";
+  }//if
+  else
+    text += " style=\"border: 1px solid #000000; border-collapse: collapse;\"";
+}
+
+std::string TableBBCode::attributesToString(const TableElementType eleType,
+                                          const std::map<std::string, std::string>& attrs,
+                                          const std::map<std::string, std::string>& parent_attrs,
+                                          const std::map<std::string, std::string>& grandparent_attrs) const
 {
   std::string result;
   std::map<std::string, std::string>::const_iterator iter = attrs.begin();
+  bool got_grid = false;
   while (iter!=attrs.end())
   {
     if ((iter->first=="class") and (iter->second=="grid"))
     {
-      result += " style=\"border: 1px solid #000000; border-collapse: collapse;\"";
+      appendGridAttributes(result, eleType);
+      got_grid = true;
     }
     else if (iter->first=="width")
     {
@@ -200,5 +249,19 @@ std::string TableBBCode::attributesToString(const std::map<std::string, std::str
     }
     ++iter;
   }//while
+  if (!got_grid)
+  {
+    iter = parent_attrs.find("class");
+    if ((iter!=parent_attrs.end()) and (iter->second == "grid"))
+    {
+      appendGridAttributes(result, eleType);
+      got_grid = true;
+    }
+    iter = grandparent_attrs.find("class");
+    if (!got_grid and (iter!=grandparent_attrs.end()) and (iter->second == "grid"))
+    {
+      appendGridAttributes(result, eleType);
+    }
+  }//if no grid yet
   return result;
 }

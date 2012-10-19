@@ -51,7 +51,7 @@ void PrivateMessage::normalise()
   {
     message.replace(pos, 2, "\n");
     m_NeedsHashUpdate = true;
-    pos = message.find("\r\n");
+    pos = message.find("\r\n", pos);
   }//while
 }
 

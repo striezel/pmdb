@@ -39,8 +39,8 @@ std::string BBCodeParser::parse(std::string text, const std::string& forumURL, c
     std::string::size_type pos = text.find("\n");
     while (pos!=std::string::npos)
     {
-      text.replace(pos, 1, isXHTML ? "<br />" : "<br>");
-      pos = text.find("\n", pos+3);
+      text.replace(pos, 1, isXHTML ? "<br />\n" : "<br>\n");
+      pos = text.find("\n", isXHTML ? pos+7 : pos+5);
     }//while
   }//if
 

@@ -22,6 +22,7 @@
 #include <set>
 #include <string>
 #include "MessageDatabase.h"
+#include "Subsets.h"
 #include "Config.h"
 #include "bbcode/BBCodeParser.h"
 #include "bbcode/BBCode_Table.h"
@@ -57,7 +58,7 @@ void showGPLNotice()
 void showVersion()
 {
   showGPLNotice();
-  std::cout << "Private Message Database, version 0.19c, 2012-10-19\n";
+  std::cout << "Private Message Database, version 0.20, 2012-10-21\n";
 }
 
 void showHelp(const std::string& name)
@@ -95,7 +96,9 @@ void showHelp(const std::string& name)
             << "                     This is equivalent to specifying all these parameters:\n"
             << "                         --table="<<TableBBCode::DefaultTableClass<<"\n"
             << "                         --row="<<TableBBCode::DefaultRowClass<<"\n"
-            << "                         --cell="<<TableBBCode::DefaultCellClass<<"\n";
+            << "                         --cell="<<TableBBCode::DefaultCellClass<<"\n"
+            << " --subset-check    - search for messages with texts that are completely\n"
+            << "                     contained in other messages, too.\n";
 }
 
 int main(int argc, char **argv)
@@ -126,6 +129,8 @@ int main(int argc, char **argv)
   std::string classTable;
   std::string classRow;
   std::string classCell;
+
+  bool searchForSubsets = false;
 
   if ((argc>1) and (argv!=NULL))
   {
@@ -285,6 +290,15 @@ int main(int argc, char **argv)
           classCell  = TableBBCode::DefaultCellClass;
           useTableClasses = true;
         }//param == std-classes
+        else if ((param=="--subset-check") or (param=="--redundant-check"))
+        {
+          if (searchForSubsets)
+          {
+            std::cout << "Parameter "<<param<<" must not occur more than once!\n";
+            return rcInvalidParameter;
+          }
+          searchForSubsets = true;
+        }//param == subset-check
         else
         {
           //unknown or wrong parameter
@@ -515,6 +529,27 @@ int main(int argc, char **argv)
       std::cout << "There are no messages, thus no HTML files were created.\n";
     }
   }//if doHTML
+
+  if (searchForSubsets)
+  {
+    std::cout << "Searching for message texts that are contained in others. This may take a while...\n";
+    std::map<SHA256::MessageDigest, std::vector<SHA256::MessageDigest> > subsets = getTextSubsets(mdb);
+    std::map<SHA256::MessageDigest, std::vector<SHA256::MessageDigest> >::const_iterator subIter = subsets.begin();
+    while (subIter!=subsets.end())
+    {
+      const PrivateMessage & pm = mdb.getMessage(subIter->first);
+      std::cout << "Message \""<<pm.getTitle()<<"\" of "<<pm.getDatestamp()
+                << " contains the following "<<subIter->second.size() <<" message(s):\n";
+      std::vector<SHA256::MessageDigest>::const_iterator secondIter = subIter->second.begin();
+      while (secondIter!=subIter->second.end())
+      {
+        const PrivateMessage & contained = mdb.getMessage(*secondIter);
+        std::cout << "    \""<< contained.getTitle()<<"\" of "<<contained.getDatestamp()<<"\n";
+        ++secondIter;
+      }//while (inner)
+      ++subIter;
+    }//while
+  }//if search for duplicates/subsets
 
   return 0;
 }

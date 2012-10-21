@@ -47,6 +47,7 @@
 		<Unit filename="PMSource.h" />
 		<Unit filename="PrivateMessage.cpp" />
 		<Unit filename="PrivateMessage.h" />
+		<Unit filename="Subsets.h" />
 		<Unit filename="XMLDocument.cpp" />
 		<Unit filename="XMLDocument.h" />
 		<Unit filename="XMLNode.cpp" />

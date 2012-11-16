@@ -53,6 +53,14 @@ struct BBCode
            text - the message text that (may) contain the BB code
     */
     virtual void applyToText(std::string& text) const = 0;
+
+    #ifndef NO_BBCODE_NOTIFY
+    template<typename notifier>
+    void notify(const std::string& msg) const
+    {
+      notifier::put(msg);
+    }
+    #endif
   private:
     std::string m_Name;
 };//struct

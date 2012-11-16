@@ -23,6 +23,7 @@
   #include <iostream>
 #endif
 #include "../libthoro/common/StringUtils.h"
+#include "Notifier.h"
 
 //constants for default class names used in constructor
 const std::string TableBBCode::DefaultTableClass = "grid_table";
@@ -31,9 +32,10 @@ const std::string TableBBCode::DefaultCellClass  = "grid_td";
 
 TableBBCode::TableBBCode(const std::string& code, const bool useGridClasses,
                 const std::string& tableClass, const std::string& rowClass,
-                const std::string& cellClass)
+                const std::string& cellClass,
+                const unsigned int tableWidthMax)
 : BBCode(code), m_UseClasses(useGridClasses), m_TableClass(tableClass),
-  m_RowClass(rowClass), m_CellClass(cellClass)
+  m_RowClass(rowClass), m_CellClass(cellClass), m_TableWidthLimit(tableWidthMax)
 {
 
 }
@@ -233,7 +235,20 @@ std::string TableBBCode::attributesToString(const TableElementType eleType,
     }
     else if (iter->first=="width")
     {
-      result += " width=\""+iter->second+"\"";
+      if ((eleType==tetTable))
+      {
+        if (passesWidthLimit(iter->second))
+        {
+          result += " width=\""+iter->second+"\"";
+        }
+        else
+        {
+          //notify user about change
+          notify<DefaultNotifier>("Width value of "+iter->second+" pixels was ignored in table code, because the table width limit is set to "
+                                  +intToString(m_TableWidthLimit)+" pixels.");
+        }
+      }//if element==table
+      else result += " width=\""+iter->second+"\"";
     }
     else if (iter->first=="align")
     {
@@ -264,4 +279,17 @@ std::string TableBBCode::attributesToString(const TableElementType eleType,
     }
   }//if no grid yet
   return result;
+}
+
+bool TableBBCode::passesWidthLimit(const std::string& attrValue) const
+{
+  if (m_TableWidthLimit==0) return true; //zero means no limit
+  int iWidth = -1;
+  if (stringToInt(attrValue, iWidth))
+  {
+    return ((iWidth>=0) and (iWidth<=m_TableWidthLimit));
+  }
+  /* String conversion failed, so it's no plain integer value, but maybe a
+     percentage, and those don't need to be limited. */
+  return true;
 }

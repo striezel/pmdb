@@ -43,6 +43,8 @@ struct TableBBCode: public BBCode
            tableClass     - name of the class for grids on <table> tags
            rowClass       - name of the class for grids on <tr> tags
            cellClass      - name of the class for grids on <td> tags
+           tableWidthMax  - the maximum width value (in pixels) that is allowed
+                            in table attributes. Larger values will be ignored.
 
        remarks:
            If useGridClasses is set to false, the last three parameters do not
@@ -50,7 +52,8 @@ struct TableBBCode: public BBCode
     */
     TableBBCode(const std::string& code, const bool useGridClasses=false,
                 const std::string& tableClass=DefaultTableClass, const std::string& rowClass=DefaultRowClass,
-                const std::string& cellClass=DefaultCellClass);
+                const std::string& cellClass=DefaultCellClass,
+                const unsigned int tableWidthMax=0);
 
     /* "applies" the BB code to the given text, i.e. transforms the BB code
        into its HTML representation
@@ -76,6 +79,8 @@ struct TableBBCode: public BBCode
     std::string m_RowClass;
     std::string m_CellClass;
 
+    unsigned int m_TableWidthLimit;
+
     enum TableElementType {tetTable, tetRow, tetCell};
 
     void appendGridAttributes(std::string& text, const TableElementType eleType) const;
@@ -98,6 +103,14 @@ struct TableBBCode: public BBCode
                                    const std::map<std::string, std::string>& attrs,
                                    const std::map<std::string, std::string>& parent_attrs = std::map<std::string, std::string>(),
                                    const std::map<std::string, std::string>& grandparent_attrs  = std::map<std::string, std::string>()) const;
+
+    /* returns true, if the passed attribute value contains an integer value
+       that passes the table width limit
+
+       parameters:
+           attrValue - the attribute string (i.e. "650")
+    */
+    bool passesWidthLimit(const std::string& attrValue) const;
 }; //struct
 
 #endif // BBCODE_TABLE_H

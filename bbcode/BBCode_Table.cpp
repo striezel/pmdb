@@ -284,10 +284,10 @@ std::string TableBBCode::attributesToString(const TableElementType eleType,
 bool TableBBCode::passesWidthLimit(const std::string& attrValue) const
 {
   if (m_TableWidthLimit==0) return true; //zero means no limit
-  int iWidth = -1;
-  if (stringToInt(attrValue, iWidth))
+  unsigned int width = 0;
+  if (stringToUnsignedInt(attrValue, width))
   {
-    return ((iWidth>=0) and (iWidth<=m_TableWidthLimit));
+    return (width<=m_TableWidthLimit);
   }
   /* String conversion failed, so it's no plain integer value, but maybe a
      percentage, and those don't need to be limited. */

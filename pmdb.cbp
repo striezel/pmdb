@@ -59,6 +59,7 @@
 		<Unit filename="bbcode/BBCode_Table.cpp" />
 		<Unit filename="bbcode/BBCode_Table.h" />
 		<Unit filename="bbcode/DefaultCodes.h" />
+		<Unit filename="bbcode/Notifier.h" />
 		<Unit filename="bbcode/Smilie.cpp" />
 		<Unit filename="bbcode/Smilie.h" />
 		<Unit filename="bbcode/TextProcessor.h" />

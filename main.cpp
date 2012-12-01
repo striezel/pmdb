@@ -18,6 +18,7 @@
  -------------------------------------------------------------------------------
 */
 
+#include <algorithm>
 #include <iostream>
 #include <set>
 #include <string>
@@ -58,7 +59,7 @@ void showGPLNotice()
 void showVersion()
 {
   showGPLNotice();
-  std::cout << "Private Message Database, version 0.20, 2012-10-21\n";
+  std::cout << "Private Message Database, version 0.20b, 2012-12-01\n";
 }
 
 void showHelp(const std::string& name)
@@ -533,17 +534,18 @@ int main(int argc, char **argv)
   if (searchForSubsets)
   {
     std::cout << "Searching for message texts that are contained in others. This may take a while...\n";
-    std::map<SHA256::MessageDigest, std::vector<SHA256::MessageDigest> > subsets = getTextSubsets(mdb);
-    std::map<SHA256::MessageDigest, std::vector<SHA256::MessageDigest> >::const_iterator subIter = subsets.begin();
+    std::map<md_date, std::vector<md_date> > subsets = getTextSubsets(mdb);
+    std::map<md_date, std::vector<md_date> >::iterator subIter = subsets.begin();
     while (subIter!=subsets.end())
     {
-      const PrivateMessage & pm = mdb.getMessage(subIter->first);
+      const PrivateMessage & pm = mdb.getMessage(subIter->first.md);
       std::cout << "Message \""<<pm.getTitle()<<"\" of "<<pm.getDatestamp()
                 << " contains the following "<<subIter->second.size() <<" message(s):\n";
-      std::vector<SHA256::MessageDigest>::const_iterator secondIter = subIter->second.begin();
+      std::sort(subIter->second.begin(), subIter->second.end());
+      std::vector<md_date>::const_iterator secondIter = subIter->second.begin();
       while (secondIter!=subIter->second.end())
       {
-        const PrivateMessage & contained = mdb.getMessage(*secondIter);
+        const PrivateMessage & contained = mdb.getMessage(secondIter->md);
         std::cout << "    \""<< contained.getTitle()<<"\" of "<<contained.getDatestamp()<<"\n";
         ++secondIter;
       }//while (inner)

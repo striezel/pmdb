@@ -24,9 +24,27 @@
 #include <vector>
 #include "MessageDatabase.h"
 
-std::map<SHA256::MessageDigest, std::vector<SHA256::MessageDigest> > getTextSubsets(const MessageDatabase& mdb)
+struct md_date
 {
-  std::map<SHA256::MessageDigest, std::vector<SHA256::MessageDigest> > result;
+  SHA256::MessageDigest md;
+  std::string date;
+
+  md_date(const SHA256::MessageDigest& digest, const std::string& str)
+  : md(digest), date(str)
+  {}
+}; //struct
+
+bool operator<(const md_date& a, const md_date& b)
+{
+  const int cmp1 = a.date.compare(b.date);
+  if (cmp1<0) return true;
+  if (cmp1>0) return false;
+  return (a.md<b.md);
+}
+
+std::map<md_date, std::vector<md_date> > getTextSubsets(const MessageDatabase& mdb)
+{
+  std::map<md_date, std::vector<md_date> > result;
   MessageDatabase::Iterator iter = mdb.getBegin();
   while (iter!=mdb.getEnd())
   {
@@ -37,7 +55,7 @@ std::map<SHA256::MessageDigest, std::vector<SHA256::MessageDigest> > getTextSubs
       {
         if (iter->second.getMessage().find(innerIter->second.getMessage())!=std::string::npos)
         {
-          result[iter->first].push_back(innerIter->first);
+          result[md_date(iter->first, iter->second.getDatestamp())].push_back(md_date(innerIter->first, innerIter->second.getDatestamp()));
         }
       }
       ++innerIter;

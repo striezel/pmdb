@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2012  Thoronador
+    Copyright (C) 2012, 2013  Thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -90,6 +90,18 @@ const PrivateMessage& MessageDatabase::getMessage(const SHA256::MessageDigest& d
   throw 42;
 }
 
+bool MessageDatabase::hasFolderEntry(const SHA256::MessageDigest& pm_digest) const
+{
+  return (m_FolderMap.find(pm_digest)!=m_FolderMap.end());
+}
+
+const std::string& MessageDatabase::getFolderName(const SHA256::MessageDigest& pm_digest) const
+{
+  const std::map<SHA256::MessageDigest, std::string>::const_iterator iter = m_FolderMap.find(pm_digest);
+  if (iter!=m_FolderMap.end()) return iter->second;
+  throw 42;
+}
+
 bool MessageDatabase::importFromFile(const std::string& fileName, uint32_t& readPMs, uint32_t& newPMs)
 {
   readPMs = 0;
@@ -159,6 +171,16 @@ bool MessageDatabase::processFolderNode(const XMLNode& node, uint32_t& readPMs, 
 {
   if (!node.hasChild()) return false;
 
+  std::string folderName = "";
+
+  if (node.hasAttribute())
+  {
+    if (node.getFirstAttributeName()=="name")
+    {
+      folderName = node.getFirstAttributeValue();
+    }
+  }
+
   //get child node - should be private messages
   XMLNode current = node.getChild();
   while (current.hasNextSibling())
@@ -175,7 +197,7 @@ bool MessageDatabase::processFolderNode(const XMLNode& node, uint32_t& readPMs, 
                 << current.getNameAsString() << "\" instead!\n";
       return false;
     }
-    if (!processPrivateMessageNode(current, readPMs, newPMs))
+    if (!processPrivateMessageNode(current, readPMs, newPMs, folderName))
     {
       std::cout << "Error while processing <privatemessage> element!\n";
       return false;
@@ -186,7 +208,7 @@ bool MessageDatabase::processFolderNode(const XMLNode& node, uint32_t& readPMs, 
   return true;
 }
 
-bool MessageDatabase::processPrivateMessageNode(const XMLNode& node, uint32_t& readPMs, uint32_t& newPMs)
+bool MessageDatabase::processPrivateMessageNode(const XMLNode& node, uint32_t& readPMs, uint32_t& newPMs, const std::string& folder)
 {
   if (!node.hasChild()) return false;
 
@@ -303,10 +325,14 @@ bool MessageDatabase::processPrivateMessageNode(const XMLNode& node, uint32_t& r
   pm.normalise();
 
   ++readPMs;
+  //add message to DB
   if (addMessage(pm))
   {
     ++newPMs;
   }
+  //add entry to folder map
+  if (!folder.empty())
+    m_FolderMap[pm.getHash()] = folder;
   return true;
 }
 
@@ -363,6 +389,71 @@ bool MessageDatabase::loadMessages(const std::string& directory, uint32_t& readP
   return true;
 }
 
+bool MessageDatabase::saveFolderMap(const std::string& directory) const
+{
+  std::ofstream output;
+  output.open((directory+"foldermap").c_str(), std::ios_base::out | std::ios_base::binary | std::ios_base::trunc);
+  if (!output)
+  {
+    return false;
+  }
+  const char space = ' ';
+  const char end = '\n';
+  std::map<SHA256::MessageDigest, std::string>::const_iterator iter = m_FolderMap.begin();
+  while (iter!=m_FolderMap.end())
+  {
+    const std::string hexRepresentation = iter->first.toHexString();
+    //write hash
+    output.write(hexRepresentation.c_str(), hexRepresentation.length());
+    //write space
+    output.write(&space, 1);
+    //write folder name
+    output.write(iter->second.c_str(), iter->second.length());
+    //write end of line character
+    output.write(&end, 1);
+    ++iter;
+  }//while
+  const bool well = output.good();
+  output.close();
+  return well;
+}
+
+bool MessageDatabase::loadFolderMap(const std::string& directory)
+{
+  std::ifstream inFile;
+  inFile.open((directory+"foldermap").c_str(), std::ios_base::in | std::ios_base::binary);
+  if (!inFile)
+  {
+    std::cout << "Error: could not open folder map!\n";
+    return false;
+  }
+  SHA256::MessageDigest md;
+  const unsigned int cMaxLine = 1024;
+  char buffer[cMaxLine];
+  std::string line = "";
+  while (inFile.getline(buffer, cMaxLine-1))
+  {
+    buffer[cMaxLine-1] = '\0';
+    line = std::string(buffer);
+    if (!md.fromHexString(line.substr(0, 64)))
+    {
+      inFile.close();
+      std::cout << "Error: string \""<<line.substr(0,64)<<"\" is no valid hash!\n";
+      return false;
+    }
+    //remove hash
+    line.erase(0, 64);
+    //remove leading spaces
+    trimLeft(line);
+    if (!line.empty())
+    {
+      m_FolderMap[md] = line;
+    }//if
+  }//while
+  inFile.close();
+  return true;
+}
+
 //aux. type
 struct SortType
 {
@@ -415,3 +506,41 @@ bool MessageDatabase::saveIndexFile(const std::string& fileName, MsgTemplate ind
   indexFile.close();
   return success;
 }
+
+/*std::string MessageDatabase::escapeFolderName(std::string fName)
+{
+  //replace backslash with double backslash
+  std::string::size_type pos = fName.find('\\');
+  while (pos!=std::string::npos)
+  {
+    fName.replace(pos, 1, "\\\\");
+    pos = fName.find('\\', pos+2);
+  }//while
+  //replace end of line character with "backslash n" (\n)
+  pos = fName.find('\n');
+  while (pos!=std::string::npos)
+  {
+    fName.replace(pos, 1, "\\n");
+    pos = fName.find('\n', pos+2);
+  }//while
+  return fName;
+}
+
+std::string MessageDatabase::unescapeFolderName(std::string rawName)
+{
+  //replace double backslash with single backslash
+  std::string::size_type pos = rawName.find("\\\\");
+  while (pos!=std::string::npos)
+  {
+    rawName.replace(pos, 2, "\\");
+    pos = rawName.find("\\\\", pos+1);
+  }//while
+  //replace "backslash n" (\n) with end of line character
+  pos = rawName.find("\\n");
+  while (pos!=std::string::npos)
+  {
+    rawName.replace(pos, 2, "\n");
+    pos = rawName.find("\\n", pos+1);
+  }//while
+  return rawName;
+} */

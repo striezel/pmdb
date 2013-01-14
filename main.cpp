@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2012  Thoronador
+    Copyright (C) 2012, 2013  Thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -39,7 +39,7 @@ const int rcFileError        = 2;
 void showGPLNotice()
 {
   std::cout << "Private Message Database\n"
-            << "  Copyright (C) 2012 Thoronador\n"
+            << "  Copyright (C) 2012, 2013 Thoronador\n"
             << "\n"
             << "  This programme is free software: you can redistribute it and/or\n"
             << "  modify it under the terms of the GNU General Public License as published\n"
@@ -59,7 +59,7 @@ void showGPLNotice()
 void showVersion()
 {
   showGPLNotice();
-  std::cout << "Private Message Database, version 0.20b, 2012-12-01\n";
+  std::cout << "Private Message Database, version 0.20c, 2013-01-14\n";
 }
 
 void showHelp(const std::string& name)
@@ -363,6 +363,11 @@ int main(int argc, char **argv)
       return 0;
     }
     std::cout << "All messages from \""<< *set_iter <<"\" loaded! Read: "<<PMs_done<<"; new: "<<PMs_new<<"\n";
+    //try to load folder map, too, but don't return, if it failed
+    if (mdb.loadFolderMap(*set_iter))
+    {
+      std::cout << "Loaded folder map from \""<< *set_iter <<"\".\n";
+    }
     ++set_iter;
   }//while
 
@@ -392,6 +397,12 @@ int main(int argc, char **argv)
       return 0;
     }
     std::cout << "Messages saved successfully!\n";
+    if (!mdb.saveFolderMap(slashify(defaultSaveDirectory)))
+    {
+      std::cout << "Could not save folder map!\n";
+      return 0;
+    }
+    std::cout << "Folder map saved successfully!\n";
   }//if save requested
 
   if (doHTML)

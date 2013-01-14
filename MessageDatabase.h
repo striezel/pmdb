@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2012  Thoronador
+    Copyright (C) 2012, 2013  Thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -51,6 +51,18 @@ class MessageDatabase
     */
     const PrivateMessage& getMessage(const SHA256::MessageDigest& digest) const;
 
+    /* returns true, if there is a folder entry for a PM with the given digest
+
+       parameters:
+           pm_digest - SHA256 hash of the message
+    */
+    bool hasFolderEntry(const SHA256::MessageDigest& pm_digest) const;
+
+    /* returns the name of the folder wherein the message with the given digest
+       resides, if it has a folder entry. Throws exception otherwise.
+    */
+    const std::string& getFolderName(const SHA256::MessageDigest& pm_digest) const;
+
     /* tries to import messages from a XML file and returns true in case of
        success, false in case of error. In either case, readPMs will hold the
        number of messages that were successfully read from the file.
@@ -80,6 +92,16 @@ class MessageDatabase
     */
     bool loadMessages(const std::string& directory, uint32_t& readPMs, uint32_t& newPMs);
 
+    /* tries to save the folder map in the given directory and returns true in
+       case of success
+    */
+    bool saveFolderMap(const std::string& directory) const;
+
+    /* tries to load the folder map from the given directory and returns true
+       in case of success
+    */
+    bool loadFolderMap(const std::string& directory);
+
     /* creates an index file (HTML) for all messages
 
        parameters:
@@ -88,9 +110,13 @@ class MessageDatabase
     bool saveIndexFile(const std::string& fileName, MsgTemplate index, MsgTemplate entry) const;
   private:
     bool processFolderNode(const XMLNode& node, uint32_t& readPMs, uint32_t& newPMs);
-    bool processPrivateMessageNode(const XMLNode& node, uint32_t& readPMs, uint32_t& newPMs);
+    bool processPrivateMessageNode(const XMLNode& node, uint32_t& readPMs, uint32_t& newPMs, const std::string& folder);
+
+    //static std::string escapeFolderName(std::string fName);
+    //static std::string unescapeFolderName(std::string rawName);
 
     std::map<SHA256::MessageDigest, PrivateMessage> m_Messages;
+    std::map<SHA256::MessageDigest, std::string> m_FolderMap;
 };//class
 
 #endif // MESSAGEDATABASE_H

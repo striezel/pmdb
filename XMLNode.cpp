@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2012  Thoronador
+    Copyright (C) 2012, 2013  Thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -61,4 +61,21 @@ std::string XMLNode::getContentBoth() const
   std::string result = reinterpret_cast<const char*>(key);
   xmlFree(key);//free it, because xmlNodeListGetString() allocated memory
   return result;
+}
+
+std::string XMLNode::getFirstAttributeName() const
+{
+  //if there are no attribute nodes, return empty string
+  if (NULL==m_Node->properties) return "";
+  return reinterpret_cast<const char*>(m_Node->properties->name);
+}
+
+std::string XMLNode::getFirstAttributeValue() const
+{
+  //if there are no attribute nodes, return empty string
+  if (NULL==m_Node->properties) return "";
+  //if there is no content, return empty string
+  if (NULL==m_Node->properties->children) return "";
+  //return content of first attr node
+  return reinterpret_cast<const char*>(m_Node->properties->children->content);
 }

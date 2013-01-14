@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2012  Thoronador
+    Copyright (C) 2012, 2013  Thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -73,6 +73,12 @@ class XMLNode
       return (m_Node->parent!=NULL);
     }
 
+    /* returns true, if the node has a parent node */
+    inline bool hasAttribute() const
+    {
+      return (m_Node->properties!=NULL);
+    }
+
     /* returns the first child of the node. Throws an exception, if there is no
        child node.
     */
@@ -96,6 +102,16 @@ class XMLNode
     {
       return m_Node->prev;
     }
+
+    /* returns the name of the node's first attribute. Returns an empty string,
+       if there is no attribute for that node.
+    */
+    std::string getFirstAttributeName() const;
+
+    /* returns the value of the node's first attribute. Returns an empty string,
+       if there is no attribute for that node or the attribute has no value.
+    */
+    std::string getFirstAttributeValue() const;
 
     /* returns the parent of the node. Throws an exception, if there is no
        parent node.

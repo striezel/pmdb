@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2012  Thoronador
+    Copyright (C) 2012, 2013  Thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -245,7 +245,7 @@ std::string TableBBCode::attributesToString(const TableElementType eleType,
         {
           //notify user about change
           notify<DefaultNotifier>("Width value of "+iter->second+" pixels was ignored in table code, because the table width limit is set to "
-                                  +intToString(m_TableWidthLimit)+" pixels.");
+                                  +intToString(m_TableWidthLimit)+" pixels.\n");
         }
       }//if element==table
       else result += " width=\""+iter->second+"\"";

@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2012  Thoronador
+    Copyright (C) 2012, 2013  Thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -23,10 +23,8 @@
 #include <cstring>
 
 MsgTemplate::MsgTemplate()
-{
-  m_Template = "";
-  m_Tags.clear();
-}
+: m_Tags(std::map<std::string, std::string>()), m_Template("")
+{ }
 
 MsgTemplate::~MsgTemplate()
 {

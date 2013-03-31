@@ -31,10 +31,8 @@ class MsgTemplate
     MsgTemplate();
 
     explicit MsgTemplate(const std::string& str1)
-    : m_Template(str1)
-    {
-      m_Tags.clear();
-    }
+    : m_Tags(std::map<std::string, std::string>()), m_Template(str1)
+    { }
 
     /* destructor */
     ~MsgTemplate();

@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2012  Thoronador
+    Copyright (C) 2012, 2013  Thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -34,9 +34,8 @@ struct BBCode
            code - "name" of the code, i.e. "b" for [B]bold text[/B]
     */
     BBCode(const std::string& code)
-    {
-      m_Name = code;
-    }
+    : m_Name(code)
+    { }
 
     /* destructor */
     virtual ~BBCode() {}

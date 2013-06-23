@@ -21,19 +21,13 @@
 #include "XMLDocument.h"
 
 XMLDocument::XMLDocument(const std::string& fileName)
-{
-  //parse the XML file
-  m_Doc = xmlParseFile(fileName.c_str());
-}
+: //parse the XML file
+  m_Doc(xmlParseFile(fileName.c_str()))
+{}
 
 XMLDocument::XMLDocument(const XMLDocument& op)
+: m_Doc(op.m_Doc==NULL ? NULL : xmlCopyDoc(op.m_Doc, 1))
 {
-  if (op.m_Doc==NULL)
-    m_Doc = NULL;
-  else
-  {
-    m_Doc = xmlCopyDoc(op.m_Doc, 1);
-  }
 }
 
 XMLDocument& XMLDocument::operator=(const XMLDocument& op)
@@ -41,9 +35,7 @@ XMLDocument& XMLDocument::operator=(const XMLDocument& op)
   if (this==&op) return *this;
   xmlFreeDoc(m_Doc);
   m_Doc = NULL;
-  if (op.m_Doc==NULL)
-    m_Doc = NULL;
-  else
+  if (op.m_Doc!=NULL)
   {
     m_Doc = xmlCopyDoc(op.m_Doc, 1);
   }

@@ -68,6 +68,10 @@ struct TableBBCode: public BBCode
     {
       std::string::size_type open_pos, open_end;
       std::map<std::string, std::string> attributes;
+
+      /* constructor */
+      OpeningElem();
+
       virtual inline bool isValid() const
       {
         return ((open_pos!=std::string::npos) and (open_end!=std::string::npos));

@@ -61,8 +61,9 @@ bool isValidSHA256Hash(const std::string& hash)
 }
 
 MessageDatabase::MessageDatabase()
+:  m_Messages(std::map<SHA256::MessageDigest, PrivateMessage>()),
+   m_FolderMap(std::map<SHA256::MessageDigest, std::string>())
 {
-  m_Messages.clear();
 }
 
 bool MessageDatabase::addMessage(PrivateMessage& pm)

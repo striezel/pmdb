@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2012  Thoronador
+    Copyright (C) 2012, 2013  Thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -52,6 +52,9 @@
 class BBCodeParser
 {
   public:
+    /* constructor */
+    BBCodeParser();
+
     /* transforms BB codes in text to HTML codes (still incomplete)
 
        parameters:
@@ -182,13 +185,13 @@ class BBCodeParser
     #ifndef NO_PREPROCESSORS_IN_PARSER
     std::vector<TextProcessor*> m_PreProcs;
     #endif
-    std::vector<BBCode*> m_Codes;
     #ifndef NO_SMILIES_IN_PARSER
     std::vector<Smilie>  m_Smilies;
     #endif
     #ifndef NO_POSTPROCESSORS_IN_PARSER
     std::vector<TextProcessor*> m_PostProcs;
     #endif
+    std::vector<BBCode*> m_Codes;
 };//class
 
 #endif // BBCODEPARSER_H

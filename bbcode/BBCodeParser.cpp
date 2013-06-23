@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2012  Thoronador
+    Copyright (C) 2012, 2013  Thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -20,6 +20,21 @@
 
 #include "BBCodeParser.h"
 #include "quotes.h"
+
+BBCodeParser::BBCodeParser()
+:
+  #ifndef NO_PREPROCESSORS_IN_PARSER
+  m_PreProcs(std::vector<TextProcessor*>()),
+  #endif
+  #ifndef NO_SMILIES_IN_PARSER
+  m_Smilies(std::vector<Smilie>()),
+  #endif
+  #ifndef NO_POSTPROCESSORS_IN_PARSER
+  m_PostProcs(std::vector<TextProcessor*>()),
+  #endif
+  m_Codes(std::vector<BBCode*>())
+{
+}
 
 std::string BBCodeParser::parse(std::string text, const std::string& forumURL, const bool isXHTML, const bool nl2br) const
 {

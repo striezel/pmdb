@@ -21,10 +21,10 @@
 #include "XMLNode.h"
 
 XMLNode::XMLNode(const xmlNodePtr node)
+: m_Node(node)
 {
   if (NULL==node)
     throw 42; //NULL not allowed
-  m_Node = node;
 }
 
 std::string XMLNode::getPlainTextContent() const

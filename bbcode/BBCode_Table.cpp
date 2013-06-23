@@ -25,6 +25,12 @@
 #include "../libthoro/common/StringUtils.h"
 #include "Notifier.h"
 
+TableBBCode::OpeningElem::OpeningElem()
+: open_pos(std::string::npos), open_end(std::string::npos),
+  attributes(std::map<std::string, std::string>())
+{
+}
+
 //constants for default class names used in constructor
 const std::string TableBBCode::DefaultTableClass = "grid_table";
 const std::string TableBBCode::DefaultRowClass   = "grid_tr";
@@ -37,7 +43,6 @@ TableBBCode::TableBBCode(const std::string& code, const bool useGridClasses,
 : BBCode(code), m_UseClasses(useGridClasses), m_TableClass(tableClass),
   m_RowClass(rowClass), m_CellClass(cellClass), m_TableWidthLimit(tableWidthMax)
 {
-
 }
 
 void TableBBCode::applyToText(std::string& text) const

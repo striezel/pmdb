@@ -28,18 +28,25 @@
 #include "libthoro/common/StringUtils.h"
 
 PrivateMessage::PrivateMessage()
+: datestamp(""),
+  title(""),
+  fromUser(""),
+  fromUserID(0),
+  toUser(""),
+  message(""),
+  m_NeedsHashUpdate(true),
+  m_Hash(SHA256::MessageDigest())
 {
-  clear();
 }
 
 void PrivateMessage::clear()
 {
-  datestamp = "";
-  title = "";
-  fromUser = "";
+  datestamp.clear();
+  title.clear();
+  fromUser.clear();
   fromUserID = 0;
-  toUser = "";
-  message = "";
+  toUser.clear();
+  message.clear();
   m_NeedsHashUpdate = true;
   m_Hash.setToNull();
 }

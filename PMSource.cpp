@@ -93,7 +93,7 @@ bool PMSource::getNextMessageBlock(MessageBlock& mBlock)
          //not full block read
          m_BitsRead += (bytesRead * 8);
          //close file, we are done here with reading from file anyway
-         //m_BufStream.close(); // no close, since this will take care of itselt in desctructor
+         //m_BufStream.close(); // no close, since this will take care of itself in destructor
          //add 1-bit (start of message padding)
          ((uint8_t*) &(mBlock.words[0]))[bytesRead] = 0x80;
          //zero out rest of message block
@@ -114,7 +114,7 @@ bool PMSource::getNextMessageBlock(MessageBlock& mBlock)
          return true;
          break;
     case psPadded1024And512Read:
-         //fill all with zeroes (padding)
+         //fill all with zeros (padding)
          memset(&(mBlock.words[0]), 0, 64);
          //pad size value in there, too
          #if BYTE_ORDER == LITTLE_ENDIAN

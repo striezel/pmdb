@@ -21,7 +21,7 @@
 #ifndef BBCODE_TABLE_H
 #define BBCODE_TABLE_H
 
-#include "BBCode.h"
+#include "BBCode.hpp"
 #include <map>
 
 struct TableBBCode: public BBCode

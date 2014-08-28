@@ -18,7 +18,7 @@
  -------------------------------------------------------------------------------
 */
 
-#include "Smilie.h"
+#include "Smilie.hpp"
 
 Smilie::Smilie(const std::string& code, const std::string& url, const bool relative)
 : m_Code(code), m_URL(url), m_Relative(relative)

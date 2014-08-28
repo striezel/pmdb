@@ -16,7 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "quotes.h"
+#include "quotes.hpp"
 
 std::string::size_type getOpeningTagPosition(const std::string& text, const std::string::size_type offset, OpeningTagType &type, std::string::size_type &end)
 {

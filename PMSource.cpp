@@ -18,7 +18,7 @@
  -------------------------------------------------------------------------------
 */
 
-#include "PMSource.h"
+#include "PMSource.hpp"
 #include <cstring>
 #ifdef DEBUG
   #include <iostream>

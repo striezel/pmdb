@@ -18,7 +18,7 @@
  -------------------------------------------------------------------------------
 */
 
-#include "BBCode.h"
+#include "BBCode.hpp"
 #include "../libthoro/common/StringUtils.h"
 
 SimpleBBCode::SimpleBBCode(const std::string& code)

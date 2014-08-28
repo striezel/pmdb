@@ -18,7 +18,7 @@
  -------------------------------------------------------------------------------
 */
 
-#include "XMLDocument.h"
+#include "XMLDocument.hpp"
 
 XMLDocument::XMLDocument(const std::string& fileName)
 : //parse the XML file

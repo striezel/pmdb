@@ -18,13 +18,13 @@
  -------------------------------------------------------------------------------
 */
 
-#include "PrivateMessage.h"
+#include "PrivateMessage.hpp"
 #include <fstream>
 #ifdef DEBUG
   #include <iostream>
 #endif
 #include <sstream>
-#include "PMSource.h"
+#include "PMSource.hpp"
 #include "libthoro/common/StringUtils.h"
 
 PrivateMessage::PrivateMessage()

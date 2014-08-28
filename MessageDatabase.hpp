@@ -21,8 +21,8 @@
 #ifndef MESSAGEDATABASE_H
 #define MESSAGEDATABASE_H
 
-#include "PrivateMessage.h"
-#include "MsgTemplate.h"
+#include "PrivateMessage.hpp"
+#include "MsgTemplate.hpp"
 #include <map>
 
 //forward declaration

@@ -18,7 +18,7 @@
  -------------------------------------------------------------------------------
 */
 
-#include "XMLNode.h"
+#include "XMLNode.hpp"
 
 XMLNode::XMLNode(const xmlNodePtr node)
 : m_Node(node)

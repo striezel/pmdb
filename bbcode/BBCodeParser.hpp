@@ -35,12 +35,12 @@
 */
 #include <string>
 #include <vector>
-#include "BBCode.h"
+#include "BBCode.hpp"
 #ifndef NO_SMILIES_IN_PARSER
-  #include "Smilie.h"
+  #include "Smilie.hpp"
 #endif
 #if !defined(NO_PREPROCESSORS_IN_PARSER) && !defined(NO_POSTPROCESSORS_IN_PARSER)
-#include "TextProcessor.h"
+#include "TextProcessor.hpp"
 #endif
 
 /* class BBCodeParser:

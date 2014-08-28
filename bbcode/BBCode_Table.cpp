@@ -18,12 +18,12 @@
  -------------------------------------------------------------------------------
 */
 
-#include "BBCode_Table.h"
+#include "BBCode_Table.hpp"
 #ifdef DEBUG
   #include <iostream>
 #endif
 #include "../libthoro/common/StringUtils.h"
-#include "Notifier.h"
+#include "Notifier.hpp"
 
 TableBBCode::OpeningElem::OpeningElem()
 : open_pos(std::string::npos), open_end(std::string::npos),

@@ -18,12 +18,12 @@
  -------------------------------------------------------------------------------
 */
 
-#include "MessageDatabase.h"
+#include "MessageDatabase.hpp"
 #include <iostream>
 #include <sstream>
 #include <algorithm>
-#include "XMLDocument.h"
-#include "XMLNode.h"
+#include "XMLDocument.hpp"
+#include "XMLNode.hpp"
 #include "libthoro/common/DirectoryFileList.h"
 #include "libthoro/common/StringUtils.h"
 

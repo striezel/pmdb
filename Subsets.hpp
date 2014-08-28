@@ -22,7 +22,7 @@
 #define SUBSETS_H
 
 #include <vector>
-#include "MessageDatabase.h"
+#include "MessageDatabase.hpp"
 
 struct md_date
 {

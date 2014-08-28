@@ -23,7 +23,7 @@
 
 #include <string>
 #include <libxml/tree.h>
-#include "XMLNode.h"
+#include "XMLNode.hpp"
 
 /* class XMLDocument:
          This is a C++-style wrapper class for libxml(2)'s xmlDoc type

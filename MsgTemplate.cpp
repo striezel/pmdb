@@ -18,7 +18,7 @@
  -------------------------------------------------------------------------------
 */
 
-#include "MsgTemplate.h"
+#include "MsgTemplate.hpp"
 #include <fstream>
 #include <cstring>
 

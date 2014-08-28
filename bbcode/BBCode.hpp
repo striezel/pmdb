@@ -22,7 +22,7 @@
 #define BBCODE_H
 
 #include <string>
-#include "../MsgTemplate.h"
+#include "../MsgTemplate.hpp"
 
 /* struct BBCode: basic interface for BB code structs/classes */
 struct BBCode

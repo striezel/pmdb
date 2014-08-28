@@ -18,7 +18,7 @@
  -------------------------------------------------------------------------------
 */
 
-#include "Config.h"
+#include "Config.hpp"
 #include <fstream>
 #include <iostream>
 

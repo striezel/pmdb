@@ -21,7 +21,7 @@
 #ifndef BBCODE_DEFAULTCODES_H
 #define BBCODE_DEFAULTCODES_H
 
-#include "BBCode.h"
+#include "BBCode.hpp"
 
 namespace bbcode_default
 {

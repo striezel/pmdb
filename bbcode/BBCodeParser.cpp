@@ -18,8 +18,8 @@
  -------------------------------------------------------------------------------
 */
 
-#include "BBCodeParser.h"
-#include "quotes.h"
+#include "BBCodeParser.hpp"
+#include "quotes.hpp"
 
 BBCodeParser::BBCodeParser()
 :

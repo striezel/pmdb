@@ -21,7 +21,7 @@
 #ifndef PMSOURCE_H
 #define PMSOURCE_H
 
-#include "PrivateMessage.h"
+#include "PrivateMessage.hpp"
 #include "libthoro/common/BufferStream.h"
 #include "libthoro/hashfunctions/sha-256_sources.h"
 

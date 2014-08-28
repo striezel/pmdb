@@ -24,7 +24,7 @@
 #include <string>
 #include <vector>
 #ifndef NO_SMILIES_IN_PARSER
-#include "bbcode/Smilie.h"
+#include "bbcode/Smilie.hpp"
 #endif
 
 /** \brief class that holds the configuration settings

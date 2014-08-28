@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2012  Thoronador
+    Copyright (C) 2012, 2014  Thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -22,21 +22,76 @@
 #define CONFIG_H
 
 #include <string>
-#include "bbcode/BBCodeParser.h"
+#include <vector>
+#ifndef NO_SMILIES_IN_PARSER
+#include "bbcode/Smilie.h"
+#endif
 
-/* tries to read the cofiguration file from the given file name.
-   Returns true in case of success, or false if an error occured.
-   The parameters after the file name will be used to store the values that
-   have been read from the the configuration file.
+/** \brief class that holds the configuration settings
+ */
+class Config
+{
+  public:
+    /// constructor
+    Config();
 
-   parameters:
-       fileName - path to the configuration file
-       parser   - the parser that will be used (needed to add smilies)
-       forumURL - string that will hold the forum URL from the config file, if
-                  any was found
-       tplFile  - string that will hold the path to the basic template file for
-                  messages, if any was found
-*/
-bool loadConfigFile(const std::string& fileName, BBCodeParser& parser, std::string& forumURL, std::string& tplFile);
+
+     /** \brief returns the forum's base URL
+      *
+      * \return returns the forum's base URL. Returns an empty string,
+      *         if no URL was set/read yet.
+      */
+    const std::string& getForumURL() const;
+
+
+    /** \brief sets the forum's base URL
+     *
+     * \param newURL the new URL
+     */
+    void setForumURL(const std::string& newURL);
+
+
+    /** \brief path of the message template file
+     *
+     * \return returns the path of the message template file
+     */
+    const std::string& getTPL() const;
+
+
+    /** \brief sets the message template file path
+     *
+     * \param newTPL the new message template file path
+     */
+    void setTPLFile(const std::string& newTPL);
+
+
+    #ifndef NO_SMILIES_IN_PARSER
+    /** \brief retrieve vector of smilie configs
+     *
+     * \return Returns the list of smilie entries found in the configuration file.
+     */
+    const std::vector<Smilie>& getSmilies() const;
+    #endif
+
+
+    /** \brief clears/resets existing values
+     */
+    void clear();
+
+
+    /** \brief tries to read the configuration file from the given file name.
+     *
+     * \param fileName path to the configuration file
+     * \return Returns true in case of success, or false if an error occurred.
+     *
+     */
+    bool loadFromFile(const std::string& fileName);
+  private:
+    std::string forumURL;
+    std::string tplFile;
+    #ifndef NO_SMILIES_IN_PARSER
+    std::vector<Smilie> smilies;
+    #endif
+}; //class
 
 #endif // CONFIG_H

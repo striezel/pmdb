@@ -59,7 +59,7 @@ void showGPLNotice()
 void showVersion()
 {
   showGPLNotice();
-  std::cout << "Private Message Database, version 0.20c, 2013-01-14\n";
+  std::cout << "Private Message Database, version 0.20d, 2014-08-28\n";
 }
 
 void showHelp(const std::string& name)
@@ -425,24 +425,34 @@ int main(int argc, char **argv)
       htmlDir = slashify(htmlDir);
 
       BBCodeParser parser;
-      std::string forumURL = "http://www.example.com/forum/";
-      std::string tplFile = "message.tpl";
+      Config conf;
+      conf.setForumURL("http://www.example.com/forum/");
+      conf.setTPLFile("message.tpl");
       //try to load configuration file
       if (FileExists(defaultSaveDirectory+"pmdb.conf"))
       {
-        if (!loadConfigFile(defaultSaveDirectory+"pmdb.conf", parser, forumURL, tplFile))
+        if (!conf.loadFromFile(defaultSaveDirectory+"pmdb.conf"))
         {
           std::cout << "Could not load pmdb.conf, using default/incomplete values instead.\n";
-          tplFile = "message.tpl";
+          conf.setTPLFile("message.tpl");
         }
         else std::cout << "Loading pmdb.conf was successful.\n";
       }
 
+      #ifndef NO_SMILIES_IN_PARSER
+      const std::vector<Smilie>& smilies_from_config = conf.getSmilies();
+      std::vector<Smilie>::const_iterator iter = smilies_from_config.begin();
+      for (; iter!= smilies_from_config.end(); ++iter)
+      {
+        parser.addSmilie(*iter);
+      } //for
+      #endif
+
       //load template for HTML files
       MsgTemplate theTemplate;
-      if (!theTemplate.loadFromFile(tplFile))
+      if (!theTemplate.loadFromFile(conf.getTPL()))
       {
-        std::cout << "Error: could not load template file \""<<tplFile<<"\" for messages!\n";
+        std::cout << "Error: could not load template file \""<<conf.getTPL()<<"\" for messages!\n";
         return rcFileError;
       }
 
@@ -454,11 +464,11 @@ int main(int argc, char **argv)
 
       MsgTemplate tpl;
       //thread tag - simple variant
-      tpl.loadFromString("<a target=\"_blank\" href=\""+forumURL+"showthread.php?t={..inner..}\">"
-                        +forumURL+"showthread.php?t={..inner..}</a>");
+      tpl.loadFromString("<a target=\"_blank\" href=\""+conf.getForumURL()+"showthread.php?t={..inner..}\">"
+                        +conf.getForumURL()+"showthread.php?t={..inner..}</a>");
       SimpleTemplateBBCode thread_simple("thread", tpl, "inner");
       //thread tag - advanced variant
-      tpl.loadFromString("<a target=\"_blank\" href=\""+forumURL+"showthread.php?t={..attr..}\">{..inner..}</a>");
+      tpl.loadFromString("<a target=\"_blank\" href=\""+conf.getForumURL()+"showthread.php?t={..attr..}\">{..inner..}</a>");
       AdvancedTemplateBBCode thread_advanced("thread", tpl, "inner", "attr");
       //wiki tag
       tpl.loadFromString("<a href=\"http://de.wikipedia.org/wiki/{..inner..}\" target=\"_blank\" title=\"Wikipediareferenz zu '{..inner..}'\">{..inner..}</a>");
@@ -487,7 +497,7 @@ int main(int argc, char **argv)
       if (nl2br) parser.addPreProcessor(&table_killLF);
 
       //create HTML files
-      theTemplate.addReplacement("forum_url", forumURL, false);
+      theTemplate.addReplacement("forum_url", conf.getForumURL(), false);
       while (msgIter!=mdb.getEnd())
       {
         theTemplate.addReplacement("date", msgIter->second.getDatestamp(), true);
@@ -495,7 +505,7 @@ int main(int argc, char **argv)
         theTemplate.addReplacement("fromuser", msgIter->second.getFromUser(), true);
         theTemplate.addReplacement("fromuserid", intToString(msgIter->second.getFromUserID()), true);
         theTemplate.addReplacement("touser", msgIter->second.getToUser(), true);
-        theTemplate.addReplacement("message", parser.parse(msgIter->second.getMessage(), forumURL, forceXHTML, nl2br), false);
+        theTemplate.addReplacement("message", parser.parse(msgIter->second.getMessage(), conf.getForumURL(), forceXHTML, nl2br), false);
         const std::string output = theTemplate.show();
         std::ofstream htmlFile;
         htmlFile.open((htmlDir+msgIter->first.toHexString()+".html").c_str(),
@@ -527,8 +537,8 @@ int main(int argc, char **argv)
         std::cout << "Could not load index_entry.tpl!\n";
         return rcFileError;
       }
-      tplIndex.addReplacement("forum_url", forumURL, true);
-      tplEntry.addReplacement("forum_url", forumURL, true);
+      tplIndex.addReplacement("forum_url", conf.getForumURL(), true);
+      tplEntry.addReplacement("forum_url", conf.getForumURL(), true);
       if (!mdb.saveIndexFile(htmlDir+"index.html", tplIndex, tplEntry))
       {
         std::cout << "Could not write index.html!\n";

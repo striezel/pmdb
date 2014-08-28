@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2012  Thoronador
+    Copyright (C) 2012, 2014  Thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -22,7 +22,54 @@
 #include <fstream>
 #include <iostream>
 
-bool loadConfigFile(const std::string& fileName, BBCodeParser& parser, std::string& forumURL, std::string& tplFile)
+Config::Config()
+: forumURL(""),
+  tplFile("")
+  #ifndef NO_SMILIES_IN_PARSER
+  , smilies(std::vector<Smilie>())
+  #endif // NO_SMILIES_IN_PARSER,
+{
+}
+
+const std::string& Config::getForumURL() const
+{
+  return forumURL;
+}
+
+void Config::setForumURL(const std::string& newURL)
+{
+  if (!newURL.empty())
+    forumURL = newURL;
+}
+
+const std::string& Config::getTPL() const
+{
+  return tplFile;
+}
+
+void Config::setTPLFile(const std::string& newTPL)
+{
+  if (!newTPL.empty())
+    tplFile = newTPL;
+}
+
+#ifndef NO_SMILIES_IN_PARSER
+const std::vector<Smilie>& Config::getSmilies() const
+{
+  return smilies;
+}
+#endif
+
+void Config::clear()
+{
+  forumURL.clear();
+  tplFile.clear();
+  #ifndef NO_SMILIES_IN_PARSER
+  smilies.clear();
+  #endif
+}
+
+bool Config::loadFromFile(const std::string& fileName)
 {
   std::ifstream input;
   input.open(fileName.c_str(), std::ios::in | std::ios::binary);
@@ -30,6 +77,10 @@ bool loadConfigFile(const std::string& fileName, BBCodeParser& parser, std::stri
   {
     return false;
   }
+
+  //clear existing values
+  clear();
+
   const unsigned int cMaxLine = 1024;
   char buffer[cMaxLine];
   std::string line = "";
@@ -52,7 +103,7 @@ bool loadConfigFile(const std::string& fileName, BBCodeParser& parser, std::stri
       sep_pos = line.find('=');
       if (sep_pos == std::string::npos || sep_pos == 0)
       {
-        std::cout << "loadConfigFile: ERROR: Invalid line found: \""
+        std::cout << "Config::loadFromFile: ERROR: Invalid line found: \""
                   << line <<"\".\nGeneral format: \"Name of Setting=value\"\n"
                   << "Loading from file cancelled.\n";
         input.close();
@@ -68,13 +119,14 @@ bool loadConfigFile(const std::string& fileName, BBCodeParser& parser, std::stri
       {
         tplFile = line.substr(sep_pos+1);
       }
+      #ifndef NO_SMILIES_IN_PARSER
       else if ((name=="smilie") or (name=="smilie_r"))
       {
         line = line.substr(sep_pos+1);
         sep_pos = line.find('=');
         if (sep_pos == std::string::npos || sep_pos == 0)
         {
-          std::cout << "loadConfigFile: ERROR: Invalid smilie specification!\n";
+          std::cout << "Config::loadFromFile: ERROR: Invalid smilie specification!\n";
           input.close();
           return false;
         }
@@ -82,12 +134,13 @@ bool loadConfigFile(const std::string& fileName, BBCodeParser& parser, std::stri
         const std::string s_url = line.substr(sep_pos+1);
         if (s_url.empty())
         {
-          std::cout << "loadConfigFile: ERROR: Invalid smilie specification!\n";
+          std::cout << "Config::loadFromFile: ERROR: Invalid smilie specification!\n";
           input.close();
           return false;
         }
-        parser.addSmilie(Smilie(code, s_url, (name=="smilie_r")));
+        smilies.push_back(Smilie(code, s_url, (name=="smilie_r")));
       }//else if (smilie)
+      #endif
     }//if not empty
   }//while
   input.close();

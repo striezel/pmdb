@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2012  Thoronador
+    Copyright (C) 2012, 2014  Thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@
 #ifdef DEBUG
   #include <iostream>
 #endif
+#include <stdexcept>
 #include "libthoro/common/StringUtils.h"
 #include "libthoro/common/BufferStream.h"
 
@@ -62,7 +63,7 @@ PMSource::PMSource(const PrivateMessage& pm)
   if (done!=origLen)
   {
     std::cout << "Number of written bytes does not match expected number!\n";
-    throw 42;
+    throw std::runtime_error("PMSource::PMSource(): Number of written bytes does not match expected number!");
   }
   #endif
   m_BufStream.buffer((const char*) m_PaddingBuffer, origLen);
@@ -131,12 +132,12 @@ bool PMSource::getNextMessageBlock(MessageBlock& mBlock)
     case psPadded512:
     case psPadded1024:
          //We should never get to this point!
-         throw 42;
+         throw std::logic_error("PMSource::getNextMessageBlock(): Code execution should never get to this point!");
          return false;
          break;
   }//swi
   //We should never get to this point either!
-  throw 42;
+  throw std::logic_error("PMSource::getNextMessageBlock(): Code execution should never get to this point either!");
   return false;
 }
 

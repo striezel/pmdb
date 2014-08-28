@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2012, 2013  Thoronador
+    Copyright (C) 2012, 2013, 2014  Thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,12 +19,13 @@
 */
 
 #include "XMLNode.hpp"
+#include <stdexcept>
 
 XMLNode::XMLNode(const xmlNodePtr node)
 : m_Node(node)
 {
   if (NULL==node)
-    throw 42; //NULL not allowed
+    throw std::invalid_argument("NULL is not allowed as argument in XMLNode::XMLNode()!"); //NULL not allowed
 }
 
 std::string XMLNode::getPlainTextContent() const

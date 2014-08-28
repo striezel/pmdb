@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2012, 2013  Thoronador
+    Copyright (C) 2012, 2013, 2014  Thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@
 #include <iostream>
 #include <sstream>
 #include <algorithm>
+#include <stdexcept>
 #include "XMLDocument.hpp"
 #include "XMLNode.hpp"
 #include "libthoro/common/DirectoryFileList.h"
@@ -88,7 +89,7 @@ const PrivateMessage& MessageDatabase::getMessage(const SHA256::MessageDigest& d
 {
   const Iterator iter = m_Messages.find(digest);
   if (iter!=m_Messages.end()) return iter->second;
-  throw 42;
+  throw std::runtime_error("The message database has no message with the given hash "+digest.toHexString()+"!");
 }
 
 bool MessageDatabase::hasFolderEntry(const SHA256::MessageDigest& pm_digest) const
@@ -100,7 +101,7 @@ const std::string& MessageDatabase::getFolderName(const SHA256::MessageDigest& p
 {
   const std::map<SHA256::MessageDigest, std::string>::const_iterator iter = m_FolderMap.find(pm_digest);
   if (iter!=m_FolderMap.end()) return iter->second;
-  throw 42;
+  throw std::runtime_error("The message database's folder map has no message entry for the given hash "+pm_digest.toHexString()+"!");
 }
 
 bool MessageDatabase::importFromFile(const std::string& fileName, uint32_t& readPMs, uint32_t& newPMs)

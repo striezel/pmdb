@@ -22,6 +22,7 @@
 #define FOLDERMAP_HPP
 
 #include <map>
+#include <set>
 #include <string>
 #include "libthoro/hashfunctions/sha-256.h"
 
@@ -74,10 +75,14 @@ class FolderMap
      * \return returns true in case of success, or false if function failed
      */
     bool load(const std::string& directory);
-  private:
-    //static std::string escapeFolderName(std::string fName);
-    //static std::string unescapeFolderName(std::string rawName);
 
+
+    /** \brief get the names of the distinct folders in the folder map / DB
+     *
+     * \return Returns a set that contains the names of the distinct folders in the map.
+     */
+    std::set<std::string> getPresentFolders() const;
+  private:
     std::map<SHA256::MessageDigest, std::string> m_FolderMap;
 }; //class
 

@@ -389,6 +389,7 @@ bool MessageDatabase::saveIndexFile(const std::string& fileName, MsgTemplate ind
     sortedList.push_back(SortType(pm_iter->second.getDatestamp(), pm_iter->first));
     ++pm_iter;
   }//while
+  //sort PM list by datestamps - newest first
   std::sort(sortedList.begin(), sortedList.end(), ST_greater);
   std::string theEntries = "";
   std::vector<SortType>::const_iterator vecIter = sortedList.begin();

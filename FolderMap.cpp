@@ -110,40 +110,14 @@ bool FolderMap::load(const std::string& directory)
   return true;
 }
 
-/*std::string MessageDatabase::escapeFolderName(std::string fName)
+std::set<std::string> FolderMap::getPresentFolders() const
 {
-  //replace backslash with double backslash
-  std::string::size_type pos = fName.find('\\');
-  while (pos!=std::string::npos)
+  std::set<std::string> allFolders;
+  std::map<SHA256::MessageDigest, std::string>::const_iterator iter = m_FolderMap.begin();
+  while (iter!=m_FolderMap.end())
   {
-    fName.replace(pos, 1, "\\\\");
-    pos = fName.find('\\', pos+2);
+    allFolders.insert(iter->second);
+    ++iter;
   }//while
-  //replace end of line character with "backslash n" (\n)
-  pos = fName.find('\n');
-  while (pos!=std::string::npos)
-  {
-    fName.replace(pos, 1, "\\n");
-    pos = fName.find('\n', pos+2);
-  }//while
-  return fName;
+  return allFolders;
 }
-
-std::string MessageDatabase::unescapeFolderName(std::string rawName)
-{
-  //replace double backslash with single backslash
-  std::string::size_type pos = rawName.find("\\\\");
-  while (pos!=std::string::npos)
-  {
-    rawName.replace(pos, 2, "\\");
-    pos = rawName.find("\\\\", pos+1);
-  }//while
-  //replace "backslash n" (\n) with end of line character
-  pos = rawName.find("\\n");
-  while (pos!=std::string::npos)
-  {
-    rawName.replace(pos, 2, "\n");
-    pos = rawName.find("\\n", pos+1);
-  }//while
-  return rawName;
-} */

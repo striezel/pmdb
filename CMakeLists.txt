@@ -7,6 +7,7 @@ project(pmdb)
 
 set(pmdb_sources
     Config.cpp
+    FolderMap.cpp
     MessageDatabase.cpp
     MsgTemplate.cpp
     PMSource.cpp

@@ -39,6 +39,8 @@
 		</Linker>
 		<Unit filename="Config.cpp" />
 		<Unit filename="Config.hpp" />
+		<Unit filename="FolderMap.cpp" />
+		<Unit filename="FolderMap.hpp" />
 		<Unit filename="MessageDatabase.cpp" />
 		<Unit filename="MessageDatabase.hpp" />
 		<Unit filename="MsgTemplate.cpp" />

@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2012, 2013  Thoronador
+    Copyright (C) 2012, 2013, 2014  Thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,14 +18,15 @@
  -------------------------------------------------------------------------------
 */
 
-#ifndef MESSAGEDATABASE_H
-#define MESSAGEDATABASE_H
+#ifndef MESSAGEDATABASE_HPP
+#define MESSAGEDATABASE_HPP
 
+#include <map>
 #include "PrivateMessage.hpp"
 #include "MsgTemplate.hpp"
-#include <map>
+#include "FolderMap.hpp"
 
-//forward declaration
+//forward declaration of XMLNode
 class XMLNode;
 
 class MessageDatabase
@@ -34,89 +35,117 @@ class MessageDatabase
     /* constructor */
     MessageDatabase();
 
-    /* adds a message to the database and returns true, if the message was
-       added. If the message already exists in the database, the function will
-       return false and leave the DB unchanged.
-    */
+
+    /** \brief adds a message to the database
+     *
+     * \param pm the message that shall be added
+     * \return Returns true, if the message was added.
+     *         If the message already exists in the database, the function will
+     *         return false and leave the DB unchanged.
+     */
     bool addMessage(PrivateMessage& pm);
 
-    /* returns the number of messages that are in the database */
+
+    /** \brief returns the number of messages that are in the database
+     *
+     * \return returns the number of messages that are in the database
+     */
     unsigned int getNumberOfMessages() const;
 
-    /* returns true, if the given message is in the database */
+
+    /** \brief determines whether a given message is in the database.
+     *
+     * \param pm the message
+     * \return Returns true, if the given message is in the database.
+     *         Returns false otherwise.
+     */
     bool hasMessage(PrivateMessage& pm) const;
 
-    /* returns the message with the given digest, if it exists. Throws exception
-       otherwise.
-    */
+
+    /** \brief Returns a single message from the database.
+     *
+     * \param digest the SHA-256 hash of the required message
+     * \return Returns the message with the given digest, if it exists.
+     *         Throws exception otherwise.
+     */
     const PrivateMessage& getMessage(const SHA256::MessageDigest& digest) const;
 
-    /* returns true, if there is a folder entry for a PM with the given digest
 
-       parameters:
-           pm_digest - SHA256 hash of the message
-    */
-    bool hasFolderEntry(const SHA256::MessageDigest& pm_digest) const;
+    /** \brief tries to import messages from a XML file
+     *
+     * \param fileName path to the XML file
+     * \param readPMs  will hold the number of PMs that were read from the file
+     * \param newPMs   will hold the number of new PMs that were stored in the DB
+     * \param fm       reference to the folder map that will save folder information
+     * \return Returns true in case of success, false in case of error.
+     *         In either case, readPMs will hold the number of messages that
+     *         were successfully read from the file.
+     */
+    bool importFromFile(const std::string& fileName, uint32_t& readPMs, uint32_t& newPMs, FolderMap& fm);
 
-    /* returns the name of the folder wherein the message with the given digest
-       resides, if it has a folder entry. Throws exception otherwise.
-    */
-    const std::string& getFolderName(const SHA256::MessageDigest& pm_digest) const;
-
-    /* tries to import messages from a XML file and returns true in case of
-       success, false in case of error. In either case, readPMs will hold the
-       number of messages that were successfully read from the file.
-
-       parameters:
-           fileName - path to the XML file
-           readPMs  - will hold the number of PMs that were read from the file
-           newPMs   - will hold the number of new PMs that were stored in the DB
-    */
-    bool importFromFile(const std::string& fileName, uint32_t& readPMs, uint32_t& newPMs);
 
     typedef std::map<SHA256::MessageDigest, PrivateMessage>::const_iterator Iterator;
 
-    /* return iterator to the start of the DB's element list */
+
+    /** \brief return iterator to the start of the DB's element list */
     Iterator getBegin() const;
 
-    /* return iterator to the end of the DB's PM list */
+    /** \brief return iterator to the end of the DB's PM list */
     Iterator getEnd()   const;
 
-    /* tries to save all messages in the database to the given directory and
-       returns true in case of success
-    */
+
+    /** \brief tries to save all messages in the database to the given directory
+     *
+     * \param directory directory where the messages shall be saved
+     * \return Returns true in case of success, or false otherwise.
+     */
     bool saveMessages(const std::string& directory) const;
 
-    /* tries to load all messages in the given directory into the database and
-       returns true in case of success
-    */
+
+    /** \brief tries to load all messages in the given directory into the database
+     *
+     * \param directory the directory from which the messages shall be loaded
+     * \param readPMs   will hold the number of PMs that were read from the file
+     * \param newPMs    will hold the number of new PMs that were stored in the DB
+     * \return Returns true in case of success, or false otherwise.
+     */
     bool loadMessages(const std::string& directory, uint32_t& readPMs, uint32_t& newPMs);
 
-    /* tries to save the folder map in the given directory and returns true in
-       case of success
-    */
-    bool saveFolderMap(const std::string& directory) const;
 
-    /* tries to load the folder map from the given directory and returns true
-       in case of success
-    */
-    bool loadFolderMap(const std::string& directory);
-
-    /* creates an index file (HTML) for all messages
-
-       parameters:
-           fileName - path to the file
-    */
+    /** \brief creates an index file (HTML) for all messages
+     *
+     * \param fileName path to the file
+     * \param index    template for index file
+     * \param entry    template for message entry
+     * \return Returns true, if file was created successfully.
+     */
     bool saveIndexFile(const std::string& fileName, MsgTemplate index, MsgTemplate entry) const;
   private:
-    bool processFolderNode(const XMLNode& node, uint32_t& readPMs, uint32_t& newPMs);
-    bool processPrivateMessageNode(const XMLNode& node, uint32_t& readPMs, uint32_t& newPMs, const std::string& folder);
+    /** \brief processes a <folder> XML node
+     *
+     * \param node    the XML node
+     * \param readPMs will hold the number of PMs that were read from the node
+     * \param newPMs  will hold the number of new PMs that were stored in the DB
+     * \param fm      FolderMap that will be used to store folder information
+     * \return Returns true, if the node could be processed successfully.
+     *         Returns false, if an error occurred.
+     */
+    bool processFolderNode(const XMLNode& node, uint32_t& readPMs, uint32_t& newPMs, FolderMap& fm);
 
-    //static std::string escapeFolderName(std::string fName);
-    //static std::string unescapeFolderName(std::string rawName);
 
-    std::map<SHA256::MessageDigest, PrivateMessage> m_Messages;
-    std::map<SHA256::MessageDigest, std::string> m_FolderMap;
+    /** \brief processes a <privatemessage> XML node
+     *
+     * \param node    the XML node
+     * \param readPMs will hold the number of PMs that were read from the node
+     * \param newPMs  will hold the number of new PMs that were stored in the DB
+     * \param folder  name of the containing folder (or empty for no folder)
+     * \param fm      FolderMap that will be used to store folder information
+     * \return Returns true, if the node was processed successfully.
+     *         Returns false, if an error occurred.
+     */
+    bool processPrivateMessageNode(const XMLNode& node, uint32_t& readPMs, uint32_t& newPMs, const std::string& folder, FolderMap& fm);
+
+    std::map<SHA256::MessageDigest, PrivateMessage> m_Messages; /**< map that holds the messages */
 };//class
 
-#endif // MESSAGEDATABASE_H
+#endif // MESSAGEDATABASE_HPP

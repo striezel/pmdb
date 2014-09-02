@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2012, 2013  Thoronador
+    Copyright (C) 2012, 2013, 2014  Thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@
 #include <set>
 #include <string>
 #include "MessageDatabase.hpp"
+#include "FolderMap.hpp"
 #include "Subsets.hpp"
 #include "Config.hpp"
 #include "bbcode/BBCodeParser.hpp"
@@ -39,7 +40,7 @@ const int rcFileError        = 2;
 void showGPLNotice()
 {
   std::cout << "Private Message Database\n"
-            << "  Copyright (C) 2012, 2013 Thoronador\n"
+            << "  Copyright (C) 2012, 2013, 2014  Thoronador\n"
             << "\n"
             << "  This programme is free software: you can redistribute it and/or\n"
             << "  modify it under the terms of the GNU General Public License as published\n"
@@ -59,7 +60,7 @@ void showGPLNotice()
 void showVersion()
 {
   showGPLNotice();
-  std::cout << "Private Message Database, version 0.20d, 2014-08-28\n";
+  std::cout << "Private Message Database, version 0.20e, 2014-09-02\n";
 }
 
 void showHelp(const std::string& name)
@@ -336,11 +337,12 @@ int main(int argc, char **argv)
   }//if
 
   MessageDatabase mdb;
+  FolderMap fm;
   uint32_t PMs_done, PMs_new;
   std::set<std::string>::const_iterator set_iter = pathXML.begin();
   while (set_iter!=pathXML.end())
   {
-    if (mdb.importFromFile(*set_iter, PMs_done, PMs_new))
+    if (mdb.importFromFile(*set_iter, PMs_done, PMs_new, fm))
     {
       std::cout << "Import of private messages from \""<< *set_iter <<"\" was successful!\n  "
                 << PMs_done<<" PMs read, new PMs: "<<PMs_new<<"\n";
@@ -364,7 +366,7 @@ int main(int argc, char **argv)
     }
     std::cout << "All messages from \""<< *set_iter <<"\" loaded! Read: "<<PMs_done<<"; new: "<<PMs_new<<"\n";
     //try to load folder map, too, but don't return, if it failed
-    if (mdb.loadFolderMap(*set_iter))
+    if (fm.load(*set_iter))
     {
       std::cout << "Loaded folder map from \""<< *set_iter <<"\".\n";
     }
@@ -397,7 +399,7 @@ int main(int argc, char **argv)
       return 0;
     }
     std::cout << "Messages saved successfully!\n";
-    if (!mdb.saveFolderMap(slashify(defaultSaveDirectory)))
+    if (!fm.save(slashify(defaultSaveDirectory)))
     {
       std::cout << "Could not save folder map!\n";
       return 0;

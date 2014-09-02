@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2012  Thoronador
+    Copyright (C) 2012, 2014  Thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,8 +18,8 @@
  -------------------------------------------------------------------------------
 */
 
-#ifndef PMSOURCE_H
-#define PMSOURCE_H
+#ifndef PMSOURCE_HPP
+#define PMSOURCE_HPP
 
 #include "PrivateMessage.hpp"
 #include "libthoro/common/BufferStream.h"
@@ -28,22 +28,27 @@
 namespace SHA256
 {
 
+/** class that uses a PrivateMessage class instance as message source
+ *  for SHA-256 hash calculation
+ */
 class PMSource: public MessageSource
 {
   public:
-    /* constructor */
+    /** constructor */
     PMSource(const PrivateMessage& pm);
 
-    /* destructor */
+
+    /** destructor */
     virtual ~PMSource();
 
-    /* puts the next message block from the source in mBlock and returns true,
-       if there is at least one more message block. Returns false and leaves
-       mBlock unchanged, if there are no more message blocks.
 
-       parameters:
-           mBlock - reference to the message blocked that should be filled
-    */
+    /** \brief puts the next message block from the source in mBlock
+     *
+     * \param mBlock   reference to the message blocked that should be filled
+     * \return Returns true, if there is at least one more message block.
+     * Returns false and leaves mBlock unchanged, if there are no more
+     * message blocks.
+     */
     virtual bool getNextMessageBlock(MessageBlock& mBlock);
   private:
     Thoro::BufferStream m_BufStream;
@@ -51,4 +56,4 @@ class PMSource: public MessageSource
 
 } //namespace
 
-#endif // PMSOURCE_H
+#endif // PMSOURCE_HPP

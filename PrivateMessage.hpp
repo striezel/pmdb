@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2012  Thoronador
+    Copyright (C) 2012, 2014  Thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,24 +18,27 @@
  -------------------------------------------------------------------------------
 */
 
-#ifndef PRIVATEMESSAGE_H
-#define PRIVATEMESSAGE_H
+#ifndef PRIVATEMESSAGE_HPP
+#define PRIVATEMESSAGE_HPP
 
 #include <string>
 #include <stdint.h>
 #include "libthoro/hashfunctions/sha-256.h"
 
+/** holds information about a private message */
 class PrivateMessage
 {
   public:
-    /* constructor */
+    /** constructor */
     PrivateMessage();
 
-    /* clears/resets all data members */
+
+    /** clears/resets all data members */
     void clear();
 
-    /* normalises the line breaks in the message text */
+    /** normalises the line breaks in the message text */
     void normalise();
+
 
     //access to data members
     inline const std::string& getDatestamp() const
@@ -70,6 +73,7 @@ class PrivateMessage
 
     const SHA256::MessageDigest& getHash();
 
+
     //functions to set various data members
     void setDatestamp(const std::string& ds);
 
@@ -83,12 +87,19 @@ class PrivateMessage
 
     void setMessage(const std::string& msg);
 
-    /* tries to save the message to the given file and returns true in case of
-       success, or false if an error occured */
+
+    /** \brief tries to save the message to the given file
+     *
+     * \param fileName the file that shall be used to save the message
+     * \return Returns true in case of success, or false if an error occured.
+     */
     bool saveToFile(const std::string& fileName) const;
 
-    /* tries to load the message to the given file and returns true in case of
-       success, or false if an error occured */
+    /** \brief tries to load the message from the given file
+     *
+     * \param fileName file that shall be used to load the message
+     * \return Returns true in case of success, or false if an error occured.
+     */
     bool loadFromFile(const std::string& fileName);
   private:
     std::string datestamp;
@@ -101,4 +112,4 @@ class PrivateMessage
     SHA256::MessageDigest m_Hash;
 };//class
 
-#endif // PRIVATEMESSAGE_H
+#endif // PRIVATEMESSAGE_HPP

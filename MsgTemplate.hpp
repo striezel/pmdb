@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2012  Thoronador
+    Copyright (C) 2012, 2014  Thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,53 +18,60 @@
  -------------------------------------------------------------------------------
 */
 
-#ifndef MSGTEMPLATE_H
-#define MSGTEMPLATE_H
+#ifndef MSGTEMPLATE_HPP
+#define MSGTEMPLATE_HPP
 
 #include <string>
 #include <map>
 
+
+/** class for templates */
 class MsgTemplate
 {
   public:
-    /* constructor */
+    /** constructor */
     MsgTemplate();
 
     explicit MsgTemplate(const std::string& str1)
     : m_Tags(std::map<std::string, std::string>()), m_Template(str1)
     { }
 
-    /* destructor */
+
+    /** destructor */
     ~MsgTemplate();
 
-    /* loads template from a given file and returns true in case of success
 
-       parameters:
-           fileName - path to the template file
-    */
+    /** \brief loads template from a given file
+     *
+     * \param fileName   path to the template file
+     * \return Returns true in case of success.
+     */
     bool loadFromFile(const std::string& fileName);
 
-    /* "loads" template from a given string and returns true in case of succes.
 
-       parameters:
-           tplText - the template text
-    */
+    /** \brief "loads" template from a given string
+     *
+     * \param tplText   the template text
+     * \return Returns true in case of success.
+     */
     bool loadFromString(const std::string& tplText);
 
-    /* adds a new replacement for a certain tag
 
-       parameters:
-           tag         - name of the tag that shall be replaced
-           replacement - replacement for the given tag
-           killHTML    - if set to true, HTML code will be escaped in the
-                         replacement string
-    */
+    /** \brief adds a new replacement for a certain tag
+     *
+     * \param tag           name of the tag that shall be replaced
+     * \param replacement   replacement for the given tag
+     * \param killHTML      if set to true, HTML code will be escaped in the
+     *                      replacement string
+     */
     void addReplacement(const std::string& tag, const std::string& replacement, const bool killHTML);
 
-    /* clears the replacement list */
+
+    /** clears the replacement list */
     void clearReplacements();
 
-    /* returns a string that contains the final template with all replacement
+
+    /** returns a string that contains the final template with all replacement
        tags replaced by their proper content
     */
     std::string show() const;
@@ -74,4 +81,4 @@ class MsgTemplate
     std::string m_Template;
 }; //class
 
-#endif // MSGTEMPLATE_H
+#endif // MSGTEMPLATE_HPP

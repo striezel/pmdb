@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2012  Thoronador
+    Copyright (C) 2012, 2014  Thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,45 +18,47 @@
  -------------------------------------------------------------------------------
 */
 
-#ifndef XMLDOCUMENT_H
-#define XMLDOCUMENT_H
+#ifndef XMLDOCUMENT_HPP
+#define XMLDOCUMENT_HPP
 
 #include <string>
 #include <libxml/tree.h>
 #include "XMLNode.hpp"
 
-/* class XMLDocument:
-         This is a C++-style wrapper class for libxml(2)'s xmlDoc type
+/** \brief This is a C++-style wrapper class for libxml(2)'s xmlDoc type.
 */
 class XMLDocument
 {
   public:
-    /* constructor
-
-       parameters:
-           fileName - path to the XML document that shall be wrapped inside this class
-    */
+    /** \brief constructor
+     *
+     * \param fileName   path to the XML document that shall be wrapped inside this class
+     */
     XMLDocument(const std::string& fileName);
 
-    /* copy constructor */
+
+    /** copy constructor */
     XMLDocument(const XMLDocument& op);
 
-    /* assignment operator */
+
+    /** assignment operator */
     XMLDocument& operator=(const XMLDocument& op);
 
-    /* destructor */
+
+    /** destructor */
     virtual ~XMLDocument();
 
-    /* returns true, if the document is parsed (i.e. a valid document) */
+
+    /** returns true, if the document is parsed (i.e. a valid document) */
     bool isParsed() const;
 
-    /* returns true, if the document is empty */
+    /** returns true, if the document is empty */
     bool isEmpty() const;
 
-    /* returns true, if the document is well formed */
+    /** returns true, if the document is well formed */
     bool wellFormed() const;
 
-    /* returns the document's root node, or throws an exception if the document
+    /** returns the document's root node, or throws an exception if the document
        is either not parsed or empty
     */
     XMLNode getRootNode() const;
@@ -64,4 +66,4 @@ class XMLDocument
     xmlDocPtr m_Doc;
 };//class
 
-#endif // XMLDOCUMENT_H
+#endif // XMLDOCUMENT_HPP

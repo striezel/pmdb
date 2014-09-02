@@ -41,9 +41,9 @@ struct TableBBCode: public BBCode
      *                         classes (as in CSS class) instead of a somewhat
      *                         bloated style attribute to generate the grids around
      *                         the table elements, if such the grids are required
-     * \param tableClass       name of the class for grids on <table> tags
-     * \param rowClass         name of the class for grids on <tr> tags
-     * \param cellClass        name of the class for grids on <td> tags
+     * \param tableClass       name of the class for grids on &lt;table&gt; tags
+     * \param rowClass         name of the class for grids on &lt;tr&gt; tags
+     * \param cellClass        name of the class for grids on &lt;td&gt; tags
      * \param tableWidthMax    the maximum width value (in pixels) that is allowed
      *                         in table attributes. Larger values will be ignored.
      *

@@ -24,7 +24,6 @@
 #include <string>
 #include "MessageDatabase.hpp"
 #include "FolderMap.hpp"
-#include "Subsets.hpp"
 #include "Config.hpp"
 #include "bbcode/BBCodeParser.hpp"
 #include "bbcode/BBCode_Table.hpp"
@@ -60,7 +59,7 @@ void showGPLNotice()
 void showVersion()
 {
   showGPLNotice();
-  std::cout << "Private Message Database, version 0.20e, 2014-09-02\n";
+  std::cout << "Private Message Database, version 0.20f, 2014-09-02\n";
 }
 
 void showHelp(const std::string& name)
@@ -557,7 +556,7 @@ int main(int argc, char **argv)
   if (searchForSubsets)
   {
     std::cout << "Searching for message texts that are contained in others. This may take a while...\n";
-    std::map<md_date, std::vector<md_date> > subsets = getTextSubsets(mdb);
+    std::map<md_date, std::vector<md_date> > subsets = mdb.getTextSubsets();
     std::map<md_date, std::vector<md_date> >::iterator subIter = subsets.begin();
     while (subIter!=subsets.end())
     {

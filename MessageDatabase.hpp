@@ -22,9 +22,11 @@
 #define MESSAGEDATABASE_HPP
 
 #include <map>
+#include <vector>
 #include "PrivateMessage.hpp"
 #include "MsgTemplate.hpp"
 #include "FolderMap.hpp"
+#include "SortType.hpp"
 
 //forward declaration of XMLNode
 class XMLNode;
@@ -120,6 +122,15 @@ class MessageDatabase
      * \return Returns true, if file was created successfully.
      */
     bool saveIndexFile(const std::string& fileName, MsgTemplate index, MsgTemplate entry) const;
+
+
+    /** \brief finds messages whose texts "overlap"
+     *
+     * \return Returns a map where a hash-datestamp struct for a message is
+     *         mapped to a vector of hash-datestamp structs of messages whose
+     *         texts are contained in the key message.
+     */
+    std::map<md_date, std::vector<md_date> > getTextSubsets() const;
   private:
     /** \brief processes a <folder> XML node
      *

@@ -23,6 +23,7 @@
 #include <sstream>
 #include <algorithm>
 #include <stdexcept>
+#include "SortType.hpp"
 #include "XMLDocument.hpp"
 #include "XMLNode.hpp"
 #include "libthoro/common/DirectoryFileList.h"
@@ -379,25 +380,6 @@ bool MessageDatabase::loadMessages(const std::string& directory, uint32_t& readP
 }
 
 
-//aux. type
-struct SortType
-{
-  std::string datestamp;
-  SHA256::MessageDigest md;
-
-  SortType(const std::string& ds, const SHA256::MessageDigest& dig)
-  : datestamp(ds), md(dig)
-  {
-  }
-};//struct
-
-bool ST_greater(const SortType& __x, const SortType& __y)
-{
-  if (__x.datestamp>__y.datestamp) return true;
-  if (__x.datestamp<__y.datestamp) return false;
-  return __x.md.toHexString() > __y.md.toHexString();
-}
-
 bool MessageDatabase::saveIndexFile(const std::string& fileName, MsgTemplate index, MsgTemplate entry) const
 {
   std::vector<SortType> sortedList;
@@ -430,4 +412,28 @@ bool MessageDatabase::saveIndexFile(const std::string& fileName, MsgTemplate ind
   const bool success = indexFile.good();
   indexFile.close();
   return success;
+}
+
+
+std::map<md_date, std::vector<md_date> > MessageDatabase::getTextSubsets() const
+{
+  std::map<md_date, std::vector<md_date> > result;
+  Iterator iter = m_Messages.begin();
+  while (iter!=m_Messages.end())
+  {
+    Iterator innerIter = m_Messages.begin();
+    while (innerIter!=m_Messages.end())
+    {
+      if (iter!=innerIter)
+      {
+        if (iter->second.getMessage().find(innerIter->second.getMessage())!=std::string::npos)
+        {
+          result[md_date(iter->first, iter->second.getDatestamp())].push_back(md_date(innerIter->first, innerIter->second.getDatestamp()));
+        }
+      }
+      ++innerIter;
+    }
+    ++iter;
+  }//while
+  return result;
 }

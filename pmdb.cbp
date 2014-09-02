@@ -49,7 +49,8 @@
 		<Unit filename="PMSource.hpp" />
 		<Unit filename="PrivateMessage.cpp" />
 		<Unit filename="PrivateMessage.hpp" />
-		<Unit filename="Subsets.hpp" />
+		<Unit filename="SortType.cpp" />
+		<Unit filename="SortType.hpp" />
 		<Unit filename="XMLDocument.cpp" />
 		<Unit filename="XMLDocument.hpp" />
 		<Unit filename="XMLNode.cpp" />

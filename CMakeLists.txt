@@ -12,6 +12,7 @@ set(pmdb_sources
     MsgTemplate.cpp
     PMSource.cpp
     PrivateMessage.cpp
+    SortType.cpp
     XMLDocument.cpp
     XMLNode.cpp
     bbcode/BBCode.cpp

@@ -39,6 +39,7 @@
   </style>
 </head>
 <body>
+  {..folders..}
   {..entries..}
 </body>
 </html>

@@ -527,10 +527,10 @@ int main(int argc, char **argv)
         ++msgIter;
       }//while
       //create index file
-      MsgTemplate tplIndex, tplEntry;
-      if (!tplIndex.loadFromFile("index.tpl"))
+      MsgTemplate tplIndex, tplEntry, tplFolderList, tplFolderEntry;
+      if (!tplIndex.loadFromFile("folder.tpl"))
       {
-        std::cout << "Could not load index.tpl!\n";
+        std::cout << "Could not load folder.tpl!\n";
         return rcFileError;
       }
       if (!tplEntry.loadFromFile("index_entry.tpl"))
@@ -538,9 +538,19 @@ int main(int argc, char **argv)
         std::cout << "Could not load index_entry.tpl!\n";
         return rcFileError;
       }
+      if (!tplFolderList.loadFromFile("folder_list.tpl"))
+      {
+        std::cout << "Could not load folder_list.tpl!\n";
+        return rcFileError;
+      }
+      if (!tplFolderEntry.loadFromFile("folder_entry.tpl"))
+      {
+        std::cout << "Could not load folder_entry.tpl!\n";
+        return rcFileError;
+      }
       tplIndex.addReplacement("forum_url", conf.getForumURL(), true);
       tplEntry.addReplacement("forum_url", conf.getForumURL(), true);
-      if (!mdb.saveIndexFile(htmlDir+"index.html", tplIndex, tplEntry))
+      if (!mdb.saveIndexFiles(htmlDir, tplIndex, tplEntry, tplFolderList, tplFolderEntry, fm))
       {
         std::cout << "Could not write index.html!\n";
         return rcFileError;

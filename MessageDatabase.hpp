@@ -114,14 +114,17 @@ class MessageDatabase
     bool loadMessages(const std::string& directory, uint32_t& readPMs, uint32_t& newPMs);
 
 
-    /** \brief creates an index file (HTML) for all messages
+    /** \brief creates index files (HTML) for all message folders
      *
-     * \param fileName path to the file
-     * \param index    template for index file
-     * \param entry    template for message entry
+     * \param directory   path to the directory where the files are saved
+     * \param index       template for index file
+     * \param entry       template for message entry
+     * \param folderList  template for the folder list
+     * \param folderEntry template for a folder entry in the list
+     * \param fm          the current folder map
      * \return Returns true, if file was created successfully.
      */
-    bool saveIndexFile(const std::string& fileName, MsgTemplate index, MsgTemplate entry) const;
+    bool saveIndexFiles(const std::string& directory, MsgTemplate index, MsgTemplate entry, MsgTemplate folderList, MsgTemplate folderEntry, const FolderMap& fm) const;
 
 
     /** \brief finds messages whose texts "overlap"

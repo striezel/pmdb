@@ -7,4 +7,3 @@
   <a class="username" href="{..forum_url..}members/{..fromuserid..}">{..fromuser..}</a>
   <hr style="display:none; clear: both;">
 </div>
-

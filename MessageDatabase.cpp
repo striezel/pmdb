@@ -380,7 +380,7 @@ bool MessageDatabase::loadMessages(const std::string& directory, uint32_t& readP
 }
 
 
-bool MessageDatabase::saveIndexFile(const std::string& fileName, MsgTemplate index, MsgTemplate entry) const
+bool MessageDatabase::saveIndexFiles(const std::string& directory, MsgTemplate index, MsgTemplate entry, MsgTemplate folderList, MsgTemplate folderEntry, const FolderMap& fm) const
 {
   std::vector<SortType> sortedList;
   Iterator pm_iter = m_Messages.begin();
@@ -391,28 +391,86 @@ bool MessageDatabase::saveIndexFile(const std::string& fileName, MsgTemplate ind
   }//while
   //sort PM list by datestamps - newest first
   std::sort(sortedList.begin(), sortedList.end(), ST_greater);
-  std::string theEntries = "";
-  std::vector<SortType>::const_iterator vecIter = sortedList.begin();
-  while (vecIter!=sortedList.end())
+
+  //create folder maps for later use
+  std::map<std::string, std::vector<SortType> > folderContents;
+  while (!sortedList.empty())
   {
-    const PrivateMessage& currMessage = getMessage(vecIter->md);
-    entry.addReplacement("date",       vecIter->datestamp, true);
-    entry.addReplacement("pm_url",     vecIter->md.toHexString()+".html", false);
-    entry.addReplacement("title",      currMessage.getTitle(), true);
-    entry.addReplacement("fromuserid", intToString(currMessage.getFromUserID()), true);
-    entry.addReplacement("fromuser",   currMessage.getFromUser(), true);
-    theEntries += entry.show();
-    ++vecIter;
+    if (fm.hasEntry(sortedList[0].md))
+    {
+      //add to folder
+      folderContents[fm.getFolderName(sortedList[0].md)].push_back(SortType(sortedList[0].datestamp, sortedList[0].md));
+    }
+    else
+    {
+      //no folder, so add it with "" a folder name
+      folderContents[""].push_back(SortType(sortedList[0].datestamp, sortedList[0].md));
+    }
+    sortedList.erase(sortedList.begin());
   }//while
-  index.addReplacement("entries", theEntries, false);
-  const std::string indexText = index.show();
-  std::ofstream indexFile;
-  indexFile.open(fileName.c_str(), std::ios_base::out | std::ios_base::binary);
-  if (!indexFile) return false;
-  indexFile.write(indexText.c_str(), indexText.length());
-  const bool success = indexFile.good();
-  indexFile.close();
-  return success;
+
+  //folder hashes
+  std::map<std::string, std::string> folderHashes;
+  std::map<std::string, std::vector<SortType> >::const_iterator fcIter = folderContents.begin();
+  while (fcIter!=folderContents.end())
+  {
+    folderHashes[fcIter->first] = SHA256::computeFromBuffer((uint8_t*) fcIter->first.c_str(), fcIter->first.length()*8).toHexString();
+    ++fcIter;
+  }//while
+
+  //generate folder entries
+  std::string theEntries = "";
+  fcIter = folderContents.begin();
+  while (fcIter!=folderContents.end())
+  {
+    if (fcIter->first!="")
+    {
+      folderEntry.addReplacement("folder_link", "folder_"+folderHashes[fcIter->first]+".html", false);
+      folderEntry.addReplacement("folder_name", fcIter->first, true);
+      theEntries += folderEntry.show();
+    }
+    ++fcIter;
+  }//while
+
+  //put entries into folder list
+  folderList.addReplacement("folder_entries", theEntries, false);
+  const std::string cFolderList = folderList.show();
+
+  fcIter = folderContents.begin();
+  while (fcIter!=folderContents.end())
+  {
+    theEntries.clear();
+    std::vector<SortType>::const_iterator vecIter = fcIter->second.begin();
+    while (vecIter!=fcIter->second.end())
+    {
+      const PrivateMessage& currMessage = getMessage(vecIter->md);
+      entry.addReplacement("date",       vecIter->datestamp, true);
+      entry.addReplacement("pm_url",     vecIter->md.toHexString()+".html", false);
+      entry.addReplacement("title",      currMessage.getTitle(), true);
+      entry.addReplacement("fromuserid", intToString(currMessage.getFromUserID()), true);
+      entry.addReplacement("fromuser",   currMessage.getFromUser(), true);
+      theEntries += entry.show();
+      ++vecIter;
+    }//while
+    index.addReplacement("entries", theEntries, false);
+    index.addReplacement("folders", cFolderList, false);
+    const std::string indexText = index.show();
+    std::ofstream indexFile;
+    std::string fileName = directory;
+    if (fcIter->first!="")
+      fileName = fileName + "folder_"+folderHashes[fcIter->first]+".html";
+    else
+      fileName = fileName + "index.html";
+
+    indexFile.open(fileName.c_str(), std::ios_base::out | std::ios_base::binary);
+    if (!indexFile) return false;
+    indexFile.write(indexText.c_str(), indexText.length());
+    const bool success = indexFile.good();
+    indexFile.close();
+    if (!success) return false;
+    ++fcIter;
+  }//while
+  return true;
 }
 
 

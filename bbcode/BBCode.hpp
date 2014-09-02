@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2012, 2013  Thoronador
+    Copyright (C) 2012, 2013, 2014  Thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,39 +18,41 @@
  -------------------------------------------------------------------------------
 */
 
-#ifndef BBCODE_H
-#define BBCODE_H
+#ifndef BBCODE_HPP
+#define BBCODE_HPP
 
 #include <string>
 #include "../MsgTemplate.hpp"
 
-/* struct BBCode: basic interface for BB code structs/classes */
+/** \brief BBCode: basic interface for BB code structs/classes */
 struct BBCode
 {
   public:
-    /* constructor
-
-       parameters:
-           code - "name" of the code, i.e. "b" for [B]bold text[/B]
-    */
+    /** \brief constructor
+     *
+     * \param code   "name" of the code, i.e. "b" for [B]bold text[/B]
+     */
     BBCode(const std::string& code)
     : m_Name(code)
     { }
 
-    /* destructor */
+
+    /** destructor */
     virtual ~BBCode() {}
 
+
+    /** \brief returns the code's "name"
+     */
     inline const std::string& getName() const
     {
       return m_Name;
     }
 
-    /* "applies" the BB code to the given text, i.e. transforms the BB code
-       into its HTML representation
-
-       parameters:
-           text - the message text that (may) contain the BB code
-    */
+    /** \brief "applies" the BB code to the given text, i.e. transforms the BB code
+     * into its HTML representation
+     *
+     * \param text   the message text that (may) contain the BB code
+     */
     virtual void applyToText(std::string& text) const = 0;
 
     #ifndef NO_BBCODE_NOTIFY
@@ -73,58 +75,56 @@ struct BBCode
 struct SimpleBBCode: public BBCode
 {
   public:
-    /* constructor
-
-       parameters:
-           code - "name" of the code, i.e. "b" for [B]bold text[/B]
-    */
+    /** \brief constructor
+     *
+     * \param code   "name" of the code, i.e. "b" for [B]bold text[/B]
+     */
     SimpleBBCode(const std::string& code);
 
-    /* destructor */
+    /** destructor */
     virtual ~SimpleBBCode() {}
 
-    /* "applies" the BB code to the given text, i.e. transforms the BB code
-       into its HTML representation
-
-       parameters:
-           text - the message text that (may) contain the BB code
-    */
+    /** \brief "applies" the BB code to the given text, i.e. transforms the BB code
+     * into its HTML representation
+     *
+     * \param text - the message text that (may) contain the BB code
+     */
     virtual void applyToText(std::string& text) const;
 };//struct SimpleBBCode
 
 
-/* struct CustomizedSimpleBBCode:
+/** \brief CustomizedSimpleBBCode:
        like SimpleBBCode, but with a custom replacement for opening and closing
        tags.
 */
 struct CustomizedSimpleBBCode: public BBCode
 {
   public:
-    /* constructor
-
-       parameters:
-           code   - "name" of the code, i.e. "b" for [B]bold text[/B]
-           before - replacement for the opening code tag
-           after  - replacements for the closing code tag
-    */
+    /** \brief constructor
+     *
+     * \param code     "name" of the code, i.e. "b" for [B]bold text[/B]
+     * \param before   replacement for the opening code tag
+     * \param after    replacements for the closing code tag
+     */
     CustomizedSimpleBBCode(const std::string& code, const std::string& before, const std::string& after);
 
-    /* destructor */
+
+    /** destructor */
     virtual ~CustomizedSimpleBBCode() {}
 
-    /* "applies" the BB code to the given text, i.e. transforms the BB code
-       into its HTML representation
 
-       parameters:
-           text - the message text that (may) contain the BB code
-    */
+    /** \brief "applies" the BB code to the given text, i.e. transforms the BB code
+     * into its HTML representation
+     *
+     * \param text   the message text that (may) contain the BB code
+     */
     virtual void applyToText(std::string& text) const;
   private:
     std::string m_Before, m_After;
 };//struct
 
 
-/* struct SimpleTemplateBBCode:
+/** \brief SimpleTemplateBBCode:
        struct for BB codes that use templates (class MsgTemplate) for the
        proper replacement of BB code. However, this class will just handle
        "simple" BB codes of the form "[TAG]content[/TAG]" and NOT codes of the
@@ -134,44 +134,44 @@ struct CustomizedSimpleBBCode: public BBCode
 struct SimpleTemplateBBCode: public BBCode
 {
   public:
-    /* constructor
-
-       parameters:
-           code  - "name" of the code, i.e. "b" for [B]bold text[/B]
-           tpl   - the template that shall be used
-           inner - name of the template tag for the inner code
-    */
+    /** \brief constructor
+     *
+     * \param code    "name" of the code, i.e. "b" for [B]bold text[/B]
+     * \param tpl     the template that shall be used
+     * \param inner   name of the template tag for the inner code
+     */
     SimpleTemplateBBCode(const std::string& code, const MsgTemplate& tpl, const std::string& inner="inner");
 
-    /* destructor */
+
+    /** destructor */
     virtual ~SimpleTemplateBBCode() {}
 
-    /* "applies" the BB code to the given text, i.e. transforms the BB code
-       into its HTML representation
 
-       parameters:
-           text - the message text that (may) contain the BB code
-    */
+    /** \brief "applies" the BB code to the given text, i.e. transforms the BB code
+     * into its HTML representation
+     *
+     * \param text - the message text that (may) contain the BB code
+     */
     virtual void applyToText(std::string& text) const;
 
-    /* returns the current template */
+
+    /** returns the current template */
     inline const MsgTemplate& getTemplate() const
     {
       return m_Template;
     }
 
-    /* returns the name of the template tag for the inner code */
+    /** returns the name of the template tag for the inner code */
     inline const std::string& getInnerName() const
     {
       return m_InnerName;
     }
   protected:
-    /* applies a transformation (if any) to the inner content of the BB code
-       during translation
-
-       parameters:
-           inner - the content
-    */
+    /** \brief applies a transformation (if any) to the inner content of the BB code
+     * during translation
+     *
+     * \param inner   the content
+     */
     inline virtual std::string transformInner(const std::string& inner) const
     {
       return inner;
@@ -182,43 +182,42 @@ struct SimpleTemplateBBCode: public BBCode
 };//struct
 
 
-/* struct AdvancedTemplateBBCode:
+/** \brief AdvancedTemplateBBCode:
        struct for BB codes that use templates (class MsgTemplate) for the
        proper replacement of BB code. However, this class will just handle
-       "advanced" BB codes of the form "[TAG_value]content[/TAG]" and NOT the
+       "advanced" BB codes of the form "[TAG=value]content[/TAG]" and NOT the
        simpler codes of the form "[TAG]content[/TAG]". See SimpleTemplateBBCode
        for the later variant.
 */
 struct AdvancedTemplateBBCode: public SimpleTemplateBBCode
 {
   public:
-    /* constructor
-
-       parameters:
-           code  - "name" of the code, i.e. "b" for [B]bold text[/B]
-           tpl   - the template that shall be used
-           inner - name of the template tag for the inner code
-           attr  - name of the template tag for the attribute value
-    */
+    /** \brief constructor
+     *
+     * \param code    "name" of the code, i.e. "b" for [B]bold text[/B]
+     * \param tpl     the template that shall be used
+     * \param inner   name of the template tag for the inner code
+     * \param attr    name of the template tag for the attribute value
+     */
     AdvancedTemplateBBCode(const std::string& code, const MsgTemplate& tpl, const std::string& inner="inner", const std::string& attr="attribute");
 
-    /* destructor */
+
+    /** destructor */
     virtual ~AdvancedTemplateBBCode() {}
 
-    /* "applies" the BB code to the given text, i.e. transforms the BB code
-       into its HTML representation
 
-       parameters:
-           text - the message text that (may) contain the BB code
-    */
+    /** \brief "applies" the BB code to the given text, i.e. transforms the BB code
+     * into its HTML representation
+     *
+     * \param text   the message text that (may) contain the BB code
+     */
     virtual void applyToText(std::string& text) const;
   protected:
-    /* applies a transformation (if any) to the attribute value of the BB code
-       during translation
-
-       parameters:
-           attr - the attribute value
-    */
+    /** \brief applies a transformation (if any) to the attribute value of the BB code
+     * during translation
+     *
+     * \param attr   the attribute value
+     */
     inline virtual std::string transformAttribute(const std::string& attr) const
     {
       return attr;
@@ -235,23 +234,21 @@ struct AdvancedTemplateBBCode: public SimpleTemplateBBCode
 struct SimpleTplAmpTransformBBCode: public SimpleTemplateBBCode
 {
   public:
-    /* constructor
-
-       parameters:
-           code  - "name" of the code, i.e. "b" for [B]bold text[/B]
-           tpl   - the template that shall be used
-           inner - name of the template tag for the inner code
-    */
+    /** \brief constructor
+     *
+     * \param code    "name" of the code, i.e. "b" for [B]bold text[/B]
+     * \param tpl     the template that shall be used
+     * \param inner   name of the template tag for the inner code
+     */
     SimpleTplAmpTransformBBCode(const std::string& code, const MsgTemplate& tpl, const std::string& inner="inner")
     : SimpleTemplateBBCode(code, tpl, inner)
     { }
   protected:
-    /* applies a transformation (if any) to the inner content of the BB code
-       during translation
-
-       parameters:
-           inner - the content
-    */
+    /** \brief applies a transformation (if any) to the inner content of the BB code
+     * during translation
+     *
+     * \param inner - the content
+     */
     inline virtual std::string transformInner(const std::string& inner) const
     {
       std::string result(inner);
@@ -273,24 +270,22 @@ struct SimpleTplAmpTransformBBCode: public SimpleTemplateBBCode
 struct AdvancedTplAmpTransformBBCode: public AdvancedTemplateBBCode
 {
   public:
-    /* constructor
-
-       parameters:
-           code  - "name" of the code, i.e. "b" for [B]bold text[/B]
-           tpl   - the template that shall be used
-           inner - name of the template tag for the inner code
-           attr  - name of the template tag for the attribute value
-    */
+    /** \brief constructor
+     *
+     * \param code    "name" of the code, i.e. "b" for [B]bold text[/B]
+     * \param tpl     the template that shall be used
+     * \param inner   name of the template tag for the inner code
+     * \param attr    name of the template tag for the attribute value
+     */
     AdvancedTplAmpTransformBBCode(const std::string& code, const MsgTemplate& tpl, const std::string& inner="inner", const std::string& attr="attribute")
     : AdvancedTemplateBBCode(code, tpl, inner, attr)
     { }
   protected:
-    /* applies a transformation (if any) to the attribute value of the BB code
-       during translation
-
-       parameters:
-           attr - the attribute value
-    */
+    /** \brief applies a transformation (if any) to the attribute value of the BB code
+     * during translation
+     *
+     * \param attr   the attribute value
+     */
     inline virtual std::string transformAttribute(const std::string& attr) const
     {
       std::string result(attr);
@@ -305,33 +300,35 @@ struct AdvancedTplAmpTransformBBCode: public AdvancedTemplateBBCode
 };//struct
 
 
-/* struct ListBBCode:
+/** \brief ListBBCode:
        struct for list BB code
 */
 struct ListBBCode: public BBCode
 {
-  /* constructor
-
-       parameters:
-           code      - "name" of the code, i.e. "list"
-                         for "[LIST][*]item 1[*]2nd item[/LIST]"
-           unordered - if set to true, this code will produce an unordered list.
-                       Otherwise it will create an ordered list.
-    */
+  public:
+    /** \brief constructor
+     *
+     * \param code        "name" of the code, i.e. "list"
+                          for "[LIST][*]item 1[*]2nd item[/LIST]"
+     * \param unordered   if set to true, this code will produce an unordered list.
+                          Otherwise it will create an ordered list.
+     */
     ListBBCode(const std::string& code, bool unordered=true);
 
-    /* destructor */
+
+    /** destructor */
     virtual ~ListBBCode() {}
 
-    /* "applies" the BB code to the given text, i.e. transforms the BB code
-       into its HTML representation
 
-       parameters:
-           text - the message text that (may) contain the BB code
-    */
+    /** \brief "applies" the BB code to the given text, i.e. transforms the BB code
+     * into its HTML representation
+     *
+     * \param text   the message text that (may) contain the BB code
+     */
     virtual void applyToText(std::string& text) const;
 
-    /* returns true, if the code creates an unordered list */
+
+    /** returns true, if the code creates an unordered list */
     inline bool createsUnordered() const
     {
       return m_Unordered;
@@ -342,30 +339,29 @@ struct ListBBCode: public BBCode
 };//struct
 
 
-/* struct HorizontalRuleBBCode:
+/** \brief HorizontalRuleBBCode:
        struct for hr BB code
 */
 struct HorizontalRuleBBCode: public BBCode
 {
   public:
-    /* constructor
-
-       parameters:
-           code - "name" of the code, i.e. "b" for [B]bold text[/B]
-    */
+    /** constructor
+     *
+     * \param code   "name" of the code, i.e. "b" for [B]bold text[/B]
+     */
     HorizontalRuleBBCode(const std::string& code, const bool isXHTML)
     : BBCode(code), m_isXHTML(isXHTML)
     { }
 
-    /* "applies" the BB code to the given text, i.e. transforms the BB code
-       into its HTML representation
 
-       parameters:
-           text - the message text that (may) contain the BB code
-    */
+    /** \brief "applies" the BB code to the given text, i.e. transforms the BB code
+     * into its HTML representation
+     *
+     * \param text   the message text that (may) contain the BB code
+     */
     virtual void applyToText(std::string& text) const;
   private:
     bool m_isXHTML;
 };//struct HorizontalRuleBBCode
 
-#endif // BBCODE_H
+#endif // BBCODE_HPP

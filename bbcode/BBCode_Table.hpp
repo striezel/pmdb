@@ -18,12 +18,14 @@
  -------------------------------------------------------------------------------
 */
 
-#ifndef BBCODE_TABLE_H
-#define BBCODE_TABLE_H
+#ifndef BBCODE_TABLE_HPP
+#define BBCODE_TABLE_HPP
 
 #include "BBCode.hpp"
 #include <map>
 
+
+/** BBCode to handle table codes */
 struct TableBBCode: public BBCode
 {
   public:
@@ -32,44 +34,43 @@ struct TableBBCode: public BBCode
     static const std::string DefaultRowClass;
     static const std::string DefaultCellClass;
 
-    /* constructor
-
-       parameters:
-           code           - "name" of the code, i.e. "b" for [B]bold text[/B]
-           useGridClasses - if set to true, the generated HTML code will use
-                            classes (as in CSS class) instead of a somewhat
-                            bloated style attribute to generate the grids around
-                            the table elements, if such the grids are required
-           tableClass     - name of the class for grids on <table> tags
-           rowClass       - name of the class for grids on <tr> tags
-           cellClass      - name of the class for grids on <td> tags
-           tableWidthMax  - the maximum width value (in pixels) that is allowed
-                            in table attributes. Larger values will be ignored.
-
-       remarks:
-           If useGridClasses is set to false, the last three parameters do not
-           have any effect on the generated HTML code.
-    */
+    /** \brief constructor
+     *
+     * \param code             "name" of the code, i.e. "b" for [B]bold text[/B]
+     * \param useGridClasses   if set to true, the generated HTML code will use
+     *                         classes (as in CSS class) instead of a somewhat
+     *                         bloated style attribute to generate the grids around
+     *                         the table elements, if such the grids are required
+     * \param tableClass       name of the class for grids on <table> tags
+     * \param rowClass         name of the class for grids on <tr> tags
+     * \param cellClass        name of the class for grids on <td> tags
+     * \param tableWidthMax    the maximum width value (in pixels) that is allowed
+     *                         in table attributes. Larger values will be ignored.
+     *
+     * \remarks
+     * If useGridClasses is set to false, the last three parameters do not
+     * have any effect on the generated HTML code.
+     */
     TableBBCode(const std::string& code, const bool useGridClasses=false,
                 const std::string& tableClass=DefaultTableClass, const std::string& rowClass=DefaultRowClass,
                 const std::string& cellClass=DefaultCellClass,
                 const unsigned int tableWidthMax=0);
 
-    /* "applies" the BB code to the given text, i.e. transforms the BB code
-       into its HTML representation
-
-       parameters:
-           text - the message text that (may) contain the BB code
-    */
+    /** \brief "applies" the BB code to the given text, i.e. transforms the BB code
+     *         into its HTML representation
+     *
+     * \param text   the message text that (may) contain the BB code
+     */
     virtual void applyToText(std::string& text) const;
 
-    //aux. structure
+
+    ///aux. structure
     struct OpeningElem
     {
       std::string::size_type open_pos, open_end;
       std::map<std::string, std::string> attributes;
 
-      /* constructor */
+      /** constructor */
       OpeningElem();
 
       virtual inline bool isValid() const
@@ -108,13 +109,13 @@ struct TableBBCode: public BBCode
                                    const std::map<std::string, std::string>& parent_attrs = std::map<std::string, std::string>(),
                                    const std::map<std::string, std::string>& grandparent_attrs  = std::map<std::string, std::string>()) const;
 
-    /* returns true, if the passed attribute value contains an integer value
-       that passes the table width limit
 
-       parameters:
-           attrValue - the attribute string (i.e. "650")
-    */
+    /** \brief returns true, if the passed attribute value contains an integer value
+     *         that passes the table width limit
+     *
+     * \param attrValue   the attribute string (e.g. "650")
+     */
     bool passesWidthLimit(const std::string& attrValue) const;
 }; //struct
 
-#endif // BBCODE_TABLE_H
+#endif // BBCODE_TABLE_HPP

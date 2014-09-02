@@ -1,5 +1,5 @@
 /*
-    This file is part of the PM XML Interpreter.
+    This file is part of the Private Message Database.
     Copyright (C) 2008, 2011, 2012  Thoronador
 
     The PM XML Interpreter is free software: you can redistribute it
@@ -28,7 +28,7 @@ std::string::size_type getOpeningTagPosition(const std::string& text, const std:
     //nothing found
     return std::string::npos;
   }
-  std::string::size_type len = text.length();
+  const std::string::size_type len = text.length();
   //check for length
   if (len<start+7)
   {
@@ -90,6 +90,7 @@ std::string::size_type getOpeningTagPosition(const std::string& text, const std:
   end = possible_end;
   return start;
 }//getOpeningTagPosition
+
 
 NameAndPost extractNameAndPost(const std::string& msg_content, const std::string::size_type start, const OpeningTagType type, const std::string::size_type end)
 {
@@ -177,18 +178,18 @@ std::string handleQuotes(std::string msg_content, const std::string& forumURL)
       case ottNormal:
            //normal tags, no name or single quotes
            msg_content = msg_content.substr(0, first) //part before opening quote
-                         +"<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"20\">\n"
-                         +"<tr><td><div class=\"smallfont\" style=\"margin-bottom:2px\">Zitat:</div>\n"
-+"    <table cellpadding=\"6\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n"
-+"    <tr>\n"
-+"        <td style=\"border:1px inset\">" //replacement for first part of quote
-                         +msg_content.substr(end_pos+1, last-end_pos-1) //inner text of quote
-                         +"</td>\n"
-+"    </tr>\n"
-+"    </table>\n"
-+"</td></tr>\n"
-+"</table>" //replacement for closing part of tag
-                         +msg_content.substr(last+8, msg_content.length()-last-8); //rest of text
+                        +"<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"20\">\n"
+                        +"<tr><td><div class=\"smallfont\" style=\"margin-bottom:2px\">Zitat:</div>\n"
+                        +"    <table cellpadding=\"6\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n"
+                        +"    <tr>\n"
+                        +"        <td style=\"border:1px inset\">" //replacement for first part of quote
+                        +msg_content.substr(end_pos+1, last-end_pos-1) //inner text of quote
+                        +"</td>\n"
+                        +"    </tr>\n"
+                        +"    </table>\n"
+                        +"</td></tr>\n"
+                        +"</table>" //replacement for closing part of tag
+                        +msg_content.substr(last+8, msg_content.length()-last-8); //rest of text
            break;
       case ottNamed:
       case ottNamed+ottSingleQuoted:
@@ -197,45 +198,45 @@ std::string handleQuotes(std::string msg_content, const std::string& forumURL)
            {
              //quote with name and post number
              msg_content = msg_content.substr(0, first) //part before opening quote
-                           +"<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"20\">\n"
-+"  <tr><td>\n"
-+"    <div class=\"smallfont\" style=\"margin-bottom:2px\">Zitat:</div>\n"
-+"    <table cellpadding=\"6\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n"
-+"    <tr>\n"
-+"      <td class=\"alt2\" style=\"border:1px inset\">\n"
-+"        <div>\n"
-+"            Zitat von <strong>"+data.name+"</strong>\n"
-+"            <a href=\""+forumURL+"showthread.php?p="+data.post+"#post"+data.post
-            +"\" rel=\"nofollow\"><img class=\"inlineimg\" src=\"img/buttons/viewpost.gif\" border=\"0\" alt=\"Beitrag anzeigen\"></a>\n"
-+"        </div>\n"
-+"        <div style=\"font-style:italic\">"
-        +msg_content.substr(end_pos+1, last-end_pos-1) //inner text of quote
-        +"</div>\n      </td>\n    </tr>\n"
-+"    </table>\n  </td></tr>\n</table>" //replacement for closing part
-                           +msg_content.substr(last+8, msg_content.length()-last-8); //rest of text
+                          +"<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"20\">\n"
+                          +"  <tr><td>\n"
+                          +"    <div class=\"smallfont\" style=\"margin-bottom:2px\">Zitat:</div>\n"
+                          +"    <table cellpadding=\"6\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n"
+                          +"    <tr>\n"
+                          +"      <td class=\"alt2\" style=\"border:1px inset\">\n"
+                          +"        <div>\n"
+                          +"            Zitat von <strong>"+data.name+"</strong>\n"
+                          +"            <a href=\""+forumURL+"showthread.php?p="+data.post+"#post"+data.post
+                          +"\" rel=\"nofollow\"><img class=\"inlineimg\" src=\"img/buttons/viewpost.gif\" border=\"0\" alt=\"Beitrag anzeigen\"></a>\n"
+                          +"        </div>\n"
+                          +"        <div style=\"font-style:italic\">"
+                          +msg_content.substr(end_pos+1, last-end_pos-1) //inner text of quote
+                          +"</div>\n      </td>\n    </tr>\n"
+                          +"    </table>\n  </td></tr>\n</table>" //replacement for closing part
+                          +msg_content.substr(last+8, msg_content.length()-last-8); //rest of text
            }//if post number is set
            else
            {
              //quote with name only
              msg_content = msg_content.substr(0, first) //part before opening quote
-                           +"<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"20\">\n"
-+"  <tr><td>\n"
-+"    <div class=\"smallfont\" style=\"margin-bottom:2px\">Zitat:</div>\n"
-+"    <table cellpadding=\"6\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n"
-+"    <tr>\n"
-+"        <td style=\"border:1px inset\">\n"
-+"            <div>\n"
-+"                Zitat von <strong>"+data.name+"</strong>\n"
-+"           </div>\n"
-+"           <div style=\"font-style:italic\">"
-             +msg_content.substr(end_pos+1, last-end_pos-1) //inner text of quote
-           +"</div>\n"
-+"        </td>\n"
-+"    </tr>\n"
-+"    </table>\n"
-+"</td></tr>\n"
-+"</table>" //closing part
-             +msg_content.substr(last+8, msg_content.length()-last-8); //rest of text
+                          +"<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"20\">\n"
+                          +"  <tr><td>\n"
+                          +"    <div class=\"smallfont\" style=\"margin-bottom:2px\">Zitat:</div>\n"
+                          +"    <table cellpadding=\"6\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n"
+                          +"    <tr>\n"
+                          +"        <td style=\"border:1px inset\">\n"
+                          +"            <div>\n"
+                          +"                Zitat von <strong>"+data.name+"</strong>\n"
+                          +"           </div>\n"
+                          +"           <div style=\"font-style:italic\">"
+                          +msg_content.substr(end_pos+1, last-end_pos-1) //inner text of quote
+                          +"</div>\n"
+                          +"        </td>\n"
+                          +"    </tr>\n"
+                          +"    </table>\n"
+                          +"</td></tr>\n"
+                          +"</table>" //closing part
+                          +msg_content.substr(last+8, msg_content.length()-last-8); //rest of text
            }//if no post number is given
            break;
       default:

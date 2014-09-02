@@ -18,26 +18,26 @@
  -------------------------------------------------------------------------------
 */
 
-#ifndef BBCODE_TEXTPROCESSOR_H
-#define BBCODE_TEXTPROCESSOR_H
+#ifndef BBCODE_TEXTPROCESSOR_HPP
+#define BBCODE_TEXTPROCESSOR_HPP
 
 #include <string>
 #include "../libthoro/common/StringUtils.h"
 
-/* struct TextProcessor:
+/** \brief TextProcessor:
        basic interface for BB code pre- and post-processing structs
 */
 struct TextProcessor
 {
   public:
-    /* destructor */
+    /** destructor */
     virtual ~TextProcessor() {}
 
-    /* processes the given text, i.e. performs transformations
 
-       parameters:
-           text - the message text that should be processed
-    */
+    /** \brief processes the given text, i.e. performs transformations
+     *
+     * \param text   the message text that should be processed
+     */
     virtual void applyToText(std::string& text) const = 0;
 };//struct
 
@@ -76,11 +76,10 @@ struct TextProcessor
 struct ListNewlinePreProcessor: public TextProcessor
 {
   public:
-    /* processes the given text, i.e. performs transformations
-
-       parameters:
-           text - the message text that should be processed
-    */
+    /** \brief processes the given text, i.e. performs transformations
+     *
+     * \param text   the message text that should be processed
+     */
     virtual void applyToText(std::string& text) const
     {
       std::string::size_type pos = text.find("\n[*]");
@@ -92,17 +91,17 @@ struct ListNewlinePreProcessor: public TextProcessor
     }
 };//struct
 
-/* struct KillSpacesBeforeNewline:
+
+/** \brief KillSpacesBeforeNewline:
       removes spaces at the end of lines
 */
 struct KillSpacesBeforeNewline: public TextProcessor
 {
   public:
-    /* processes the given text, i.e. performs transformations
-
-       parameters:
-           text - the message text that should be processed
-    */
+    /** \brief processes the given text, i.e. performs transformations
+     *
+     * \param text   the message text that should be processed
+     */
     virtual void applyToText(std::string& text) const
     {
       std::string::size_type pos = text.find(" \n");
@@ -122,17 +121,16 @@ struct KillSpacesBeforeNewline: public TextProcessor
 };//struct
 
 
-/* struct ShortenDoubleSpaces:
-      replaces occurences of two or more consecutive spaces by one single space
+/** \brief ShortenDoubleSpaces:
+      replaces occurrences of two or more consecutive spaces by one single space
 */
 struct ShortenDoubleSpaces: public TextProcessor
 {
   public:
-    /* processes the given text, i.e. performs transformations
-
-       parameters:
-           text - the message text that should be processed
-    */
+    /** \brief processes the given text, i.e. performs transformations
+     *
+     * \param text   the message text that should be processed
+     */
     virtual void applyToText(std::string& text) const
     {
       std::string::size_type pos = text.find("  ");
@@ -144,21 +142,27 @@ struct ShortenDoubleSpaces: public TextProcessor
     }
 };//struct
 
-/* struct TablePreprocessor:
-      removes occurences of line feeds after table-related codes
+
+/** \brief TablePreprocessor:
+      removes occurrences of line feeds after table-related codes
 */
 struct TablePreprocessor: public TextProcessor
 {
   public:
+    /** \brief constructor
+     *
+     * \param row   name of the row tag (e.g. "tr" for "[tr]")
+     * \param cell  name of the cell tag (e.g. "td" for "[td]")
+     */
     TablePreprocessor(const std::string& row, const std::string& cell)
     : m_Row(row), m_Cell(cell)
     { }
 
-    /* processes the given text, i.e. performs transformations
 
-       parameters:
-           text - the message text that should be processed
-    */
+    /** \brief processes the given text, i.e. performs transformations
+     *
+     * \param text   the message text that should be processed
+     */
     virtual void applyToText(std::string& text) const
     {
       auxApply(text, "[/"+m_Row+"] ");
@@ -179,7 +183,7 @@ struct TablePreprocessor: public TextProcessor
   private:
     std::string m_Row, m_Cell;
 
-    /* aux. function */
+    /** \brief aux. function */
     inline void auxApply(std::string& text, const std::string& needle) const
     {
       std::string::size_type pos = find_ci(text, needle);
@@ -191,4 +195,4 @@ struct TablePreprocessor: public TextProcessor
     }
 };//struct
 
-#endif // BBCODE_TEXTPROCESSOR_H
+#endif // BBCODE_TEXTPROCESSOR_HPP

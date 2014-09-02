@@ -18,17 +18,22 @@
  -------------------------------------------------------------------------------
 */
 
-#ifndef BBCODE_NOTIFIER_H
-#define BBCODE_NOTIFIER_H
+#ifndef BBCODE_NOTIFIER_HPP
+#define BBCODE_NOTIFIER_HPP
 
 #include <iostream>
 
+/** \brief notifier class for printing and/or logging messages */
 struct DefaultNotifier
 {
+  /** \brief puts the passed message string to standard output
+   *
+   * \param str the message
+   */
   static void put(const std::string& str)
   {
     std::cout << str;
   }
 }; //struct
 
-#endif // BBCODE_NOTIFIER_H
+#endif // BBCODE_NOTIFIER_HPP

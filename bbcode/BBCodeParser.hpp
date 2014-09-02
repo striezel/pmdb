@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2012, 2013  Thoronador
+    Copyright (C) 2012, 2013, 2014  Thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,12 +18,12 @@
  -------------------------------------------------------------------------------
 */
 
-#ifndef BBCODEPARSER_H
-#define BBCODEPARSER_H
+#ifndef BBCODEPARSER_HPP
+#define BBCODEPARSER_HPP
 
 
 /* Note on C-preprocessor constants:
-     The BBCodeParser code recognises certain preprocessor constants.
+     The BBCodeParser code recognizes certain preprocessor constants.
      - NO_PREPROCESSORS_IN_PARSER
            If defined, the BBCodeParser won't contains text preprocessors.
      - NO_POSTPROCESSORS_IN_PARSER
@@ -43,7 +43,7 @@
 #include "TextProcessor.hpp"
 #endif
 
-/* class BBCodeParser:
+/** \brief BBCodeParser:
        transforms a given text containing BB codes to HTML code via the
        parse() function. All codes that should be replaced have to be added
        before parsing. Use addCode() for that. Smilies added via addSmilie()
@@ -52,30 +52,29 @@
 class BBCodeParser
 {
   public:
-    /* constructor */
+    /** constructor */
     BBCodeParser();
 
-    /* transforms BB codes in text to HTML codes (still incomplete)
 
-       parameters:
-           text     - the original text
-           forumURL - the base URL of the forum (some BB codes might require
-                      this URL for proper transformation of code to HTML)
-           isXHTML  - if set to true, smilie transformations will produce XHTML
-                      image tags
-           nl2br    - if set to true, new line characters will be converted to
-                      the corresponding (X)HTML code for line breaks
-    */
+    /** \brief transforms BB codes in text to HTML codes (still incomplete)
+     *
+     * \param text       the original text
+     * \param forumURL   the base URL of the forum (some BB codes might require
+                         this URL for proper transformation of code to HTML)
+     * \param isXHTML    if set to true, smilie transformations will produce XHTML
+                         image tags
+     * \param nl2br      if set to true, new line characters will be converted to
+                         the corresponding (X)HTML code for line breaks
+     * \return Returns the transformed/parsed text.
+     */
     std::string parse(std::string text, const std::string& forumURL, const bool isXHTML, const bool nl2br) const;
 
+
     #ifndef NO_PREPROCESSORS_IN_PARSER
-    /* adds a new text preprocessor to the parser
-
-       parameters:
-           preProc - pointer to the text processor object that should be added
-
-       remarks:
-           The passed pointers must live for the whole lifetime of the
+    /** \brief adds a new text preprocessor to the parser
+     *
+     * \param preProc  pointer to the text processor object that should be added
+     * \remarks The passed pointers must live for the whole lifetime of the
            BBCodeParser instance they are passed to. Otherwise parse() will
            fail. Alternatively call clearPreProcessors() before you delete/free
            those TextProcessor objects.
@@ -88,16 +87,15 @@ class BBCodeParser
            causes this TextProcessors to be applied twice.
 
            Preprocessors are applied before the BB codes are handled.
-    */
+     */
     void addPreProcessor(TextProcessor* preProc);
     #endif
 
-    /* adds a new bb code to the parser
 
-       parameters:
-           code - pointer to the BB code object that should be added
-
-       remarks:
+    /** \brief adds a new bb code to the parser
+     *
+     * \param code   pointer to the BB code object that should be added
+     * \remarks
            The passed pointers must live for the whole lifetime of the
            BBCodeParser instance they are passed to. Otherwise parse() will
            fail. Alternatively call clearCodes() before you delete/free those
@@ -113,69 +111,71 @@ class BBCodeParser
     */
     void addCode(BBCode* code);
 
-    #ifndef NO_SMILIES_IN_PARSER
-    /* adds a new smilie to the parser
 
-       parameters:
-           sm - the smilie
-    */
+    #ifndef NO_SMILIES_IN_PARSER
+    /** \brief adds a new smilie to the parser
+     *
+     * \param sm   the smilie
+     */
     void addSmilie(const Smilie& sm);
     #endif
 
+
     #ifndef NO_POSTPROCESSORS_IN_PARSER
-    /* adds a new text postprocessor to the parser
-
-       parameters:
-           postProc - pointer to the text processor object that should be added
-
-       remarks:
-           The passed pointers must live for the whole lifetime of the
-           BBCodeParser instance they are passed to. Otherwise parse() will
-           fail. Alternatively call clearPostProcessors() before you delete/free
-           those TextProcessor objects.
-
-           The parsing process during parse() calls will handle postprocessors
-           in the order they are passed to addPostProcessor().
-
-           Passing identical TextProcessor objects to this function without
-           clearing old postprocessor in between will not do any harm, it just
-           causes this TextProcessor to be applied twice.
-
-           Postprocessors are applied after the BB codes are handled.
-    */
+    /** \brief adds a new text postprocessor to the parser
+     *
+     * \param postProc   pointer to the text processor object that should be added
+     *
+     * \remarks
+     * The passed pointers must live for the whole lifetime of the
+     * BBCodeParser instance they are passed to. Otherwise parse() will
+     * fail. Alternatively call clearPostProcessors() before you delete/free
+     * those TextProcessor objects.
+     *
+     * The parsing process during parse() calls will handle postprocessors
+     * in the order they are passed to addPostProcessor().
+     *
+     * Passing identical TextProcessor objects to this function without
+     * clearing old postprocessor in between will not do any harm, it just
+     * causes this TextProcessor to be applied twice.
+     *
+     * Postprocessors are applied after the BB codes are handled.
+     */
     void addPostProcessor(TextProcessor* postProc);
     #endif
 
     #ifndef NO_PREPROCESSORS_IN_PARSER
-    /* clears all added preprocessors */
+    /** clears all added preprocessors */
     inline void clearPreProcessors()
     {
       m_PreProcs.clear();
     }
     #endif
 
-    /* clears all added BB codes
 
-       remarks:
-           Clearing codes right before calling parse() without any addCode()
-           calls in between will result in no BB codes being parsed. However,
-           smilies might still get parsed.
-    */
+    /** \brief clears all added BB codes
+     *
+     * \remarks
+     *  Clearing codes right before calling parse() without any addCode()
+     *  calls in between will result in no BB codes being parsed. However,
+     *  smilies might still get parsed.
+     */
     void clearCodes();
 
-    #ifndef NO_SMILIES_IN_PARSER
-    /* clears all added smilies
 
-       remarks:
-           Clearing smilies right before calling parse() without any addSmile()
-           calls in between will result in no smilies being parsed. However,
-           BB codes might still get parsed, if they are present.
-    */
+    #ifndef NO_SMILIES_IN_PARSER
+    /** \brief clears all added smilies
+     *
+     * \remarks
+     * Clearing smilies right before calling parse() without any addSmile()
+     * calls in between will result in no smilies being parsed. However,
+     * BB codes might still get parsed, if they are present.
+     */
     void clearSmilies();
     #endif
 
     #ifndef NO_POSTPROCESSORS_IN_PARSER
-    /* clears all added postprocessors */
+    /** clears all added postprocessors */
     inline void clearPostProcessors()
     {
       m_PostProcs.clear();
@@ -194,4 +194,4 @@ class BBCodeParser
     std::vector<BBCode*> m_Codes;
 };//class
 
-#endif // BBCODEPARSER_H
+#endif // BBCODEPARSER_HPP

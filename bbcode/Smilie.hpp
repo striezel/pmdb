@@ -18,35 +18,33 @@
  -------------------------------------------------------------------------------
 */
 
-#ifndef SMILIE_H
-#define SMILIE_H
+#ifndef SMILIE_HPP
+#define SMILIE_HPP
 
 #include <string>
 
-/* struct Smilie:
-       represents a smilie code and its replacement image
-*/
+/** \brief represents a smilie code and its replacement image
+ */
 struct Smilie
 {
   public:
-    /* constructor
-
-       parameters:
-           code     - code for that smilie
-           url      - URL of the smilie image
-           relative - set to true, if the URL is relative to the forum URL
-    */
+    /** \brief constructor
+     *
+     * \param code       code for that smilie
+     * \param url        URL of the smilie image
+     * \param relative   set to true, if the URL is relative to the forum URL
+     */
     Smilie(const std::string& code, const std::string& url, const bool relative);
 
-    /* "applies" the smilie to the given text, i.e. transforms the smilie code
-       into its HTML representation
 
-       parameters:
-           text     - the message text that (may) contain the smilie code
-           forumURL - base URL of the forum
-           isXHTML  - if set to true, the replacement will XHTML code. Otherwise
-                      HTML code is used.
-    */
+    /** \brief "applies" the smilie to the given text, i.e. transforms the smilie code
+     *         into its HTML representation
+     *
+     * \param text       the message text that (may) contain the smilie code
+     * \param forumURL   base URL of the forum
+     * \param isXHTML    if set to true, the replacement will XHTML code. Otherwise
+     *                   HTML code is used.
+     */
     void applyToText(std::string& text, const std::string& forumURL, const bool isXHTML) const;
   private:
     std::string m_Code;
@@ -54,4 +52,4 @@ struct Smilie
     bool m_Relative;
 };//struct
 
-#endif // SMILIE_H
+#endif // SMILIE_HPP

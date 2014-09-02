@@ -18,8 +18,8 @@
  -------------------------------------------------------------------------------
 */
 
-#ifndef BBCODE_DEFAULTCODES_H
-#define BBCODE_DEFAULTCODES_H
+#ifndef BBCODE_DEFAULTCODES_HPP
+#define BBCODE_DEFAULTCODES_HPP
 
 #include "BBCode.hpp"
 
@@ -101,4 +101,4 @@ namespace bbcode_default
 
 } //namespace
 
-#endif // BBCODE_DEFAULTCODES_H
+#endif // BBCODE_DEFAULTCODES_HPP

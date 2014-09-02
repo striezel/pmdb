@@ -1,5 +1,5 @@
 /*
-    This file is part of the PM XML Interpreter.
+    This file is part of the Private Message Database.
     Copyright (C) 2008, 2011, 2012  Thoronador
 
     The PM XML Interpreter is free software: you can redistribute it
@@ -16,8 +16,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef QUOTES_H
-#define QUOTES_H
+#ifndef QUOTES_HPP
+#define QUOTES_HPP
 
 #include "../libthoro/common/StringUtils.h"
 
@@ -34,11 +34,19 @@ inline std::string::size_type getClosingQuoteTagPosition(const std::string& text
   return find_ci(text, "[/quote]", offset);
 }//getClosingTagPosition
 
+
+/** \brief holds name and post number of an author of a quote */
 struct NameAndPost
 {
   std::string name;
   std::string post;
 
+
+  /** \brief constructor
+   *
+   * \param theName name of the quoted person
+   * \param thePost post number
+   */
   NameAndPost(const std::string& theName="", const std::string& thePost="")
   : name(theName), post(thePost)
   {
@@ -47,4 +55,4 @@ struct NameAndPost
 
 std::string handleQuotes(std::string msg_content, const std::string& forumURL);
 
-#endif // QUOTES_H
+#endif // QUOTES_HPP

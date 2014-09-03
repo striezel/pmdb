@@ -1,0 +1,17 @@
+language: cpp
+compiler:
+  - clang
+  - gcc
+branches:
+  only:
+    - master
+    - travis-ci
+before_install:
+  - sudo apt-get install libxml2 libxml2-dev -y
+script:
+  - mkdir ./Build
+  - cd ./Build
+  - cmake ../
+  - make
+notifications:
+  email: false

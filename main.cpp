@@ -59,7 +59,7 @@ void showGPLNotice()
 void showVersion()
 {
   showGPLNotice();
-  std::cout << "Private Message Database, version 0.20f, 2014-09-02\n";
+  std::cout << "Private Message Database, version 0.21, 2014-09-03\n";
 }
 
 void showHelp(const std::string& name)
@@ -498,6 +498,7 @@ int main(int argc, char **argv)
       if (nl2br) parser.addPreProcessor(&table_killLF);
 
       //create HTML files
+      std::cout << "Creating HTML files for message texts. This may take a while...\n";
       theTemplate.addReplacement("forum_url", conf.getForumURL(), false);
       while (msgIter!=mdb.getEnd())
       {

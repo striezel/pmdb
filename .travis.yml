@@ -1,15 +1,27 @@
 language: cpp
 compiler:
-  - clang
   - gcc
 before_install:
   - sudo apt-get install freeglut3-dev libglfw-dev libxml2 libxml2-dev zlib1g-dev -y
 script:
-  - ./ci/cpplint.sh
-  - mkdir ./Build
-  - cd ./Build
-  - cmake ../
-  - make -j2
-  - ctest -V
+  - if [[ -f /home/travis/build/Thoronador/pmdb/cov-int/build-log.txt ]] ; then cat /home/travis/build/Thoronador/pmdb/cov-int/build-log.txt ; fi
+  - if [[ -f /home/travis/build/Thoronador/pmdb/cov-int/scm_log.txt ]] ; then cat /home/travis/build/Thoronador/pmdb/cov-int/scm_log.txt ; fi
+  - echo "coverity stuff should be done by now."
 notifications:
   email: false
+
+env:
+  global:
+   # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
+   #   via the "travis encrypt" command using the project repo's public key
+   - secure: "J4J6ywB9y2R3L1sc+0/KEcgWwtxqDX7FKZ6lXC7FhSqaPHrPk6dtxANGDIbGjTKAX6UYzyTGlP3soBw7alEi/nLQD+n7gM9nYb8w1k/MBd+8Zjju8eGo76vRfqsYuuqcvcvwwnvmJdjPfpu7fgHKKBvE60L7yJB3GUt0nsnScyo="
+
+addons:
+  coverity_scan:
+    project:
+      name: "Thoronador/pmdb"
+      description: "Private Message Database"
+    notification_email: thoronador@users.sourceforge.net
+    build_command_prepend: "cmake ./"
+    build_command: "make"
+    branch_pattern: coverity_scan

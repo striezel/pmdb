@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2012  Thoronador
+    Copyright (C) 2012, 2014  Thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -152,6 +152,7 @@ bool PrivateMessage::loadFromFile(const std::string& fileName)
     input.close();
     return false;
   }
+  //We do not want PMs larger than 1 MB, to avoid excessive memory consumption.
   if (len>1024*1024)
   {
     #ifdef DEBUG
@@ -257,6 +258,7 @@ bool PrivateMessage::loadFromFile(const std::string& fileName)
   buffer[input.gcount()] = '\0';
   message = std::string(buffer);
   m_NeedsHashUpdate = true;
+  delete[] buffer; //free previously allocated buffer
 
   input.close();
   return true;

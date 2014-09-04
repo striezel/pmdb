@@ -35,6 +35,7 @@
 //return codes
 const int rcInvalidParameter = 1;
 const int rcFileError        = 2;
+const int rcCaughtException  = 3;
 
 void showGPLNotice()
 {
@@ -59,7 +60,7 @@ void showGPLNotice()
 void showVersion()
 {
   showGPLNotice();
-  std::cout << "Private Message Database, version 0.21, 2014-09-03\n";
+  std::cout << "Private Message Database, version 0.21b, 2014-09-04\n";
 }
 
 void showHelp(const std::string& name)
@@ -578,12 +579,23 @@ int main(int argc, char **argv)
       std::vector<md_date>::const_iterator secondIter = subIter->second.begin();
       while (secondIter!=subIter->second.end())
       {
-        const PrivateMessage & contained = mdb.getMessage(secondIter->md);
-        std::cout << "    \""<< contained.getTitle()<<"\" of "<<contained.getDatestamp()<<"\n";
+        try
+        {
+          const PrivateMessage & contained = mdb.getMessage(secondIter->md);
+          std::cout << "    \""<< contained.getTitle()<<"\" of "<<contained.getDatestamp();
+          if (fm.hasEntry(secondIter->md))
+            std::cout << " (in \"" << fm.getFolderName(secondIter->md) << "\")";
+          std::cout <<"\n";
+        }
+        catch (std::exception& except)
+        {
+          std::cout << "Caught exception: " << except.what() << "\n.";
+          return rcCaughtException;
+        }
         ++secondIter;
       }//while (inner)
       ++subIter;
-    }//while
+    }//while (outer, subIter)
   }//if search for duplicates/subsets
 
   return 0;

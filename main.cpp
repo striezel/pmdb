@@ -60,7 +60,7 @@ void showGPLNotice()
 void showVersion()
 {
   showGPLNotice();
-  std::cout << "Private Message Database, version 0.21b, 2014-09-04\n";
+  std::cout << "Private Message Database, version 0.21c, 2014-09-04\n";
 }
 
 void showHelp(const std::string& name)
@@ -572,9 +572,21 @@ int main(int argc, char **argv)
     std::map<md_date, std::vector<md_date> >::iterator subIter = subsets.begin();
     while (subIter!=subsets.end())
     {
-      const PrivateMessage & pm = mdb.getMessage(subIter->first.md);
-      std::cout << "Message \""<<pm.getTitle()<<"\" of "<<pm.getDatestamp()
-                << " contains the following "<<subIter->second.size() <<" message(s):\n";
+      try
+      {
+        const PrivateMessage & pm = mdb.getMessage(subIter->first.md);
+        std::cout << "Message \""<<pm.getTitle()<<"\" of "<<pm.getDatestamp();
+        if (fm.hasEntry(subIter->first.md))
+        {
+          std::cout << " in \"" << fm.getFolderName(subIter->first.md) << "\"";
+        }//if
+      }
+      catch (std::exception& ex)
+      {
+        std::cout << "\nCaught exception: " << ex.what() << "\n.";
+        return rcCaughtException;
+      }//try-catch
+      std::cout << " contains the following "<<subIter->second.size() <<" message(s):\n";
       std::sort(subIter->second.begin(), subIter->second.end());
       std::vector<md_date>::const_iterator secondIter = subIter->second.begin();
       while (secondIter!=subIter->second.end())

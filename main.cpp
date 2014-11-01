@@ -22,12 +22,14 @@
 #include <iostream>
 #include <set>
 #include <string>
+#include <vector>
 #include "MessageDatabase.hpp"
 #include "FolderMap.hpp"
 #include "Config.hpp"
 #include "bbcode/BBCodeParser.hpp"
 #include "bbcode/BBCode_Table.hpp"
 #include "bbcode/DefaultCodes.hpp"
+#include "filters/FilterUser.hpp"
 #include "libthoro/common/DirectoryFunctions.h"
 #include "libthoro/common/DirectoryFileList.h"
 #include "libthoro/common/StringUtils.h"
@@ -99,8 +101,12 @@ void showHelp(const std::string& name)
             << "                         --table="<<TableBBCode::DefaultTableClass<<"\n"
             << "                         --row="<<TableBBCode::DefaultRowClass<<"\n"
             << "                         --cell="<<TableBBCode::DefaultCellClass<<"\n"
-            << " --subset-check    - search for messages with texts that are completely\n"
-            << "                     contained in other messages, too.\n";
+            << "  --subset-check   - search for messages with texts that are completely\n"
+            << "                     contained in other messages, too.\n"
+            << "  --list-from X    - list all messages that were sent by user X.\n"
+            << "                     Can occur multiple times for more than one user.\n"
+            << "  --list-to X      - list all messages that were sent to user X.\n"
+            << "                     Can occur multiple times for more than one user.\n";
 }
 
 int main(int argc, char **argv)
@@ -133,6 +139,7 @@ int main(int argc, char **argv)
   std::string classCell;
 
   bool searchForSubsets = false;
+  std::vector<FilterUser> filters = std::vector<FilterUser>();
 
   if ((argc>1) and (argv!=NULL))
   {
@@ -301,6 +308,40 @@ int main(int argc, char **argv)
           }
           searchForSubsets = true;
         }//param == subset-check
+        else if ((param=="--list-from"))
+        {
+          if ((i+1<argc) and (argv[i+1]!=NULL))
+          {
+            const std::string user = std::string(argv[i+1]);
+            const FilterUser f(user, true, true);
+            filters.push_back(f);
+            ++i; //skip next parameter, because it's used as user name already
+            std::cout << "Added PMs from user \""<<user<<"\" to filter criteria.\n";
+          }
+          else
+          {
+            std::cout << "Error: You have to specify a user name after \""
+                      << param <<"\".\n";
+            return rcInvalidParameter;
+          }
+        }//param == list-from-user
+        else if ((param=="--list-to"))
+        {
+          if ((i+1<argc) and (argv[i+1]!=NULL))
+          {
+            const std::string user = std::string(argv[i+1]);
+            const FilterUser f(user, false, true);
+            filters.push_back(f);
+            ++i; //skip next parameter, because it's used as user name already
+            std::cout << "Added PMs to user \""<<user<<"\" to filter criteria.\n";
+          }
+          else
+          {
+            std::cout << "Error: You have to specify a user name after \""
+                      << param <<"\".\n";
+            return rcInvalidParameter;
+          }
+        }//param == list-to-user
         else
         {
           //unknown or wrong parameter
@@ -609,6 +650,49 @@ int main(int argc, char **argv)
       ++subIter;
     }//while (outer, subIter)
   }//if search for duplicates/subsets
+
+  //list messages by given filter conditions
+  if (!filters.empty())
+  {
+    std::vector<SortType> matches;
+    MessageDatabase::Iterator msgIter = mdb.getBegin();
+    while (msgIter != mdb.getEnd())
+    {
+      std::vector<FilterUser>::const_iterator filterIter = filters.begin();
+      while (filterIter != filters.end())
+      {
+        if (filterIter->match(msgIter->second))
+        {
+          matches.push_back( md_date(msgIter->second.getDatestamp(), msgIter->first));
+          filterIter = filters.end();
+        }
+        else
+        {
+          ++filterIter;
+        }
+      }//while (inner)
+      ++msgIter;
+    }//while
+
+    std::sort(matches.begin(), matches.end());
+    std::cout << "Filtered messages:\n";
+    std::vector<SortType>::const_iterator mdIter = matches.begin();
+    while (mdIter != matches.end())
+    {
+      const PrivateMessage & pm = mdb.getMessage(mdIter->md);
+      std::cout << "Message \""<<pm.getTitle()<<"\" of "<<pm.getDatestamp();
+      if (fm.hasEntry(mdIter->md))
+      {
+        std::cout << " in \"" << fm.getFolderName(mdIter->md) << "\"";
+      }//if
+      std::cout << std::endl;
+      ++mdIter;
+    }//while
+    if (matches.size()==0)
+      std::cout << "  no matches\n";
+    else
+      std::cout << "Total: "<<matches.size()<<"\n";
+  }//if filters are set
 
   return 0;
 }

@@ -20,6 +20,7 @@ set(pmdb_sources
     bbcode/BBCode_Table.cpp
     bbcode/Smilie.cpp
     bbcode/quotes.cpp
+    filters/FilterUser.cpp
     libthoro/common/DirectoryFileList.cpp
     libthoro/common/DirectoryFunctions.cpp
     libthoro/common/StringUtils.cpp

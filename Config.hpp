@@ -36,11 +36,11 @@ class Config
     Config();
 
 
-     /** \brief returns the forum's base URL
-      *
-      * \return returns the forum's base URL. Returns an empty string,
-      *         if no URL was set/read yet.
-      */
+    /** \brief returns the forum's base URL
+     *
+     * \return returns the forum's base URL. Returns an empty string,
+     *         if no URL was set/read yet.
+     */
     const std::string& getForumURL() const;
 
 

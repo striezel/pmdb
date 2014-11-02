@@ -26,6 +26,7 @@
 #include "MessageDatabase.hpp"
 #include "FolderMap.hpp"
 #include "Config.hpp"
+#include "ConsoleColours.h"
 #include "bbcode/BBCodeParser.hpp"
 #include "bbcode/BBCode_Table.hpp"
 #include "bbcode/DefaultCodes.hpp"
@@ -637,7 +638,7 @@ int main(int argc, char **argv)
           const PrivateMessage & contained = mdb.getMessage(secondIter->md);
           std::cout << "    \""<< contained.getTitle()<<"\" of "<<contained.getDatestamp();
           if (fm.hasEntry(secondIter->md))
-            std::cout << " (in \"" << fm.getFolderName(secondIter->md) << "\")";
+            std::cout << " (in \"" << colouredFolder(fm.getFolderName(secondIter->md)) << "\")";
           std::cout <<"\n";
         }
         catch (std::exception& except)

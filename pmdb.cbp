@@ -39,6 +39,7 @@
 		</Linker>
 		<Unit filename="Config.cpp" />
 		<Unit filename="Config.hpp" />
+		<Unit filename="ConsoleColours.h" />
 		<Unit filename="FolderMap.cpp" />
 		<Unit filename="FolderMap.hpp" />
 		<Unit filename="MessageDatabase.cpp" />

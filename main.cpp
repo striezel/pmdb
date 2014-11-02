@@ -27,6 +27,7 @@
 #include "FolderMap.hpp"
 #include "Config.hpp"
 #include "ConsoleColours.h"
+#include "ColourMap.hpp"
 #include "bbcode/BBCodeParser.hpp"
 #include "bbcode/BBCode_Table.hpp"
 #include "bbcode/DefaultCodes.hpp"
@@ -609,6 +610,10 @@ int main(int argc, char **argv)
 
   if (searchForSubsets)
   {
+    ColourMap cMap;
+    cMap.add("Postausgang", colourGreen);
+    cMap.add("Sent", colourGreen);
+
     std::cout << "Searching for message texts that are contained in others. This may take a while...\n";
     std::map<md_date, std::vector<md_date> > subsets = mdb.getTextSubsets();
     std::map<md_date, std::vector<md_date> >::iterator subIter = subsets.begin();
@@ -638,7 +643,7 @@ int main(int argc, char **argv)
           const PrivateMessage & contained = mdb.getMessage(secondIter->md);
           std::cout << "    \""<< contained.getTitle()<<"\" of "<<contained.getDatestamp();
           if (fm.hasEntry(secondIter->md))
-            std::cout << " (in \"" << colouredFolder(fm.getFolderName(secondIter->md)) << "\")";
+            std::cout << " (in \"" << cMap.colouredFolder(fm.getFolderName(secondIter->md)) << "\")";
           std::cout <<"\n";
         }
         catch (std::exception& except)

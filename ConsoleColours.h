@@ -45,11 +45,13 @@ const std::string backgroundMagenta = "\033[45m";
 const std::string backgroundCyan    = "\033[46m";
 const std::string backgroundWhite   = "\033[47m";
 
-inline std::string colouredFolder(const std::string& folderName)
-{
-  if ((folderName == "Postausgang") || (folderName == "Sent"))
-    return colourGreen + folderName + colourDefault;
-  return folderName;
-}
+/** \brief tries to find a control sequence for the given colour
+ *
+ * \param name the name of the colour
+ * \param background If true, the control sequence for the background colour is returned.
+ *                   Otherwise the foreground/font colour is returned.
+ * \return Returns control sequence in case of success. Returns empty string, if an error occurred.
+ */
+std::string nameToControlSequence(const std::string& name, const bool background = false);
 
 #endif // CONSOLECOLOURS_H

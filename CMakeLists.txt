@@ -7,6 +7,8 @@ project(pmdb)
 
 set(pmdb_sources
     Config.cpp
+    ColourMap.cpp
+    ConsoleColours.cpp
     FolderMap.cpp
     MessageDatabase.cpp
     MsgTemplate.cpp

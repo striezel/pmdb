@@ -37,8 +37,11 @@
 		<Linker>
 			<Add library="xml2" />
 		</Linker>
+		<Unit filename="ColourMap.cpp" />
+		<Unit filename="ColourMap.hpp" />
 		<Unit filename="Config.cpp" />
 		<Unit filename="Config.hpp" />
+		<Unit filename="ConsoleColours.cpp" />
 		<Unit filename="ConsoleColours.h" />
 		<Unit filename="FolderMap.cpp" />
 		<Unit filename="FolderMap.hpp" />

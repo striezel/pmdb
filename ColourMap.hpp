@@ -61,6 +61,10 @@ class ColourMap
      * \return Returns string with control sequences, where appropriate.
      */
     const std::string colouredFolder(const std::string& folder) const;
+
+
+    /** \brief character that starts comments line in colour map file */
+    static const char cCommentCharacter;
   private:
     std::map<std::string, std::string> colours;
 }; //class

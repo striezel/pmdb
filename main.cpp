@@ -611,8 +611,15 @@ int main(int argc, char **argv)
   if (searchForSubsets)
   {
     ColourMap cMap;
-    cMap.add("Postausgang", colourGreen);
-    cMap.add("Sent", colourGreen);
+    const std::string pathToColourMap = defaultSaveDirectory + "pmdb.colourmap";
+    if (FileExists(pathToColourMap))
+    {
+      if (!cMap.loadFromFile(pathToColourMap))
+      {
+        std::cout << "Error: failed to load colour map from " << pathToColourMap << "!\n";
+        return rcFileError;
+      }
+    }//if colour map file exists
 
     std::cout << "Searching for message texts that are contained in others. This may take a while...\n";
     std::map<md_date, std::vector<md_date> > subsets = mdb.getTextSubsets();
@@ -625,7 +632,7 @@ int main(int argc, char **argv)
         std::cout << "Message \""<<pm.getTitle()<<"\" of "<<pm.getDatestamp();
         if (fm.hasEntry(subIter->first.md))
         {
-          std::cout << " in \"" << fm.getFolderName(subIter->first.md) << "\"";
+          std::cout << " in \"" << cMap.colouredFolder(fm.getFolderName(subIter->first.md)) << "\"";
         }//if
       }
       catch (std::exception& ex)

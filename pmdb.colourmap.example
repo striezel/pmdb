@@ -1,0 +1,33 @@
+# This is the colour map file for pmdb. It can be used to give the folder
+# names in the console output different colours to allow easier distinction.
+# The file should be placed in ~/.pmdb/ and have the name pmdb.colourmap, if
+# you want pmdb to process the file.
+#
+# As you may have guessed by now, lines starting with '#' are comments.
+#
+# Supported colour names are:
+#   default (default console font colour)
+#   black
+#   blue
+#   cyan
+#   green
+#   magenta
+#   red
+#   white
+#   yellow
+#
+# Basic notation for colour assignments is:
+#
+#   folder name=colour
+#
+# E.g., if you want the folder "My Folder" to show up in blue colour, you have
+# to add the line
+#
+#   My Folder=blue
+#
+# to this file (of course without the # and the leading spaces).
+
+Postausgang=green
+Sent=green
+Posteingang=red
+Inbox=red

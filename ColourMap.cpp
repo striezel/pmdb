@@ -23,6 +23,8 @@
 #include <iostream>
 #include "ConsoleColours.h"
 
+const char ColourMap::cCommentCharacter = '#';
+
 ColourMap::ColourMap()
 : colours(std::map<std::string, std::string>())
 {
@@ -64,36 +66,39 @@ bool ColourMap::loadFromFile(const std::string& fileName)
 
     if (!line.empty())
     {
-      sep_pos = line.find('=');
-      if (sep_pos == std::string::npos || sep_pos == 0)
+      if (line[0] != cCommentCharacter)
       {
-        std::cout << "ColourMap::loadFromFile: ERROR: Invalid line found: \""
-                  << line <<"\".\nGeneral format: \"Name of folder=colour\"\n"
-                  << "Loading from file cancelled.\n";
-        input.close();
-        return false;
-      }
-
-      const std::string folder = line.substr(0, sep_pos);
-      const std::string colour = line.substr(sep_pos).erase(0, 1);
-      if (folder.empty() || colour.empty())
-      {
-        std::cout << "ColourMap::loadFromFile: ERROR: empty folder name or empty value!\n";
-        input.close();
-        return false;
-      }
-      const std::string code = nameToControlSequence(colour);
-      if (!code.empty())
-      {
-        colours[folder] = code;
-      }
-      else
-      {
-        std::cout << "ColourMap::loadFromFile: ERROR: Invalid colour specification!\n"
-                  << "\""<<colour<<"\" is not a known colour name.\n";
+        sep_pos = line.find('=');
+        if (sep_pos == std::string::npos || sep_pos == 0)
+        {
+          std::cout << "ColourMap::loadFromFile: ERROR: Invalid line found: \""
+                    << line <<"\".\nGeneral format: \"Name of folder=colour\"\n"
+                    << "Loading from file cancelled.\n";
           input.close();
           return false;
-      }//else
+        }
+
+        const std::string folder = line.substr(0, sep_pos);
+        const std::string colour = line.substr(sep_pos).erase(0, 1);
+        if (folder.empty() || colour.empty())
+        {
+          std::cout << "ColourMap::loadFromFile: ERROR: empty folder name or empty value!\n";
+          input.close();
+          return false;
+        }
+        const std::string code = nameToControlSequence(colour);
+        if (!code.empty())
+        {
+          colours[folder] = code;
+        }
+        else
+        {
+          std::cout << "ColourMap::loadFromFile: ERROR: Invalid colour specification!\n"
+                    << "\""<<colour<<"\" is not a known colour name.\n";
+            input.close();
+            return false;
+        }//else
+      }//if not comment
     }//if line not empty
   }//while
   input.close();

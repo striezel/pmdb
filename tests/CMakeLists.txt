@@ -3,5 +3,8 @@ cmake_minimum_required (VERSION 2.8)
 
 enable_testing()
 
+# Recurse into subdirectory for tests of BB code classes.
+add_subdirectory (bbcode)
+
 # Recurse into subdirectory for tests of Config class.
 add_subdirectory (config)

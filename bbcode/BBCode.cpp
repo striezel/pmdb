@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2012  Thoronador
+    Copyright (C) 2012, 2015  Thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -22,7 +22,7 @@
 #include "../libthoro/common/StringUtils.h"
 
 SimpleBBCode::SimpleBBCode(const std::string& code)
-: BBCode(code)
+: BBCode(toLowerString(code))
 {
 
 }

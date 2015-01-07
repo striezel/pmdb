@@ -55,6 +55,7 @@ int main()
     if (text != iter->second)
     {
       std::cout << "Error: Some code was not transformed properly!\n"
+                << "Instance: SimpleBBCode(\"b\")\n"
                 << "Original text:   \""<<iter->first<<"\"\n"
                 << "Expected result: \""<<iter->second<<"\"\n"
                 << "Actual result:   \""<<text<<"\"\n";
@@ -63,6 +64,25 @@ int main()
     ++iter;
   } //while
 
+
+  /* upper-case B code -> should be the same as lower-case b */
+  SimpleBBCode simple_upper("B");
+  iter = tests.begin();
+  while (iter != tests.end())
+  {
+    std::string text = iter->first;
+    simple_upper.applyToText(text);
+    if (text != iter->second)
+    {
+      std::cout << "Error: Some code was not transformed properly!\n"
+                << "Instance: SimpleBBCode(\"B\")\n"
+                << "Original text:   \""<<iter->first<<"\"\n"
+                << "Expected result: \""<<iter->second<<"\"\n"
+                << "Actual result:   \""<<text<<"\"\n";
+      return 1;
+    }
+    ++iter;
+  } //while
 
   /* test with multi-character code */
   // We just use the blob code for testing.
@@ -92,6 +112,7 @@ int main()
     if (text != iter->second)
     {
       std::cout << "Error: Some code was not transformed properly!\n"
+                << "Instance: SimpleBBCode(\"blob\")\n"
                 << "Original text:   \""<<iter->first<<"\"\n"
                 << "Expected result: \""<<iter->second<<"\"\n"
                 << "Actual result:   \""<<text<<"\"\n";

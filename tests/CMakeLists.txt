@@ -8,3 +8,6 @@ add_subdirectory (bbcode)
 
 # Recurse into subdirectory for tests of Config class.
 add_subdirectory (config)
+
+# Recurse into subdirectory for tests of pmdb executable.
+add_subdirectory (pmdb)

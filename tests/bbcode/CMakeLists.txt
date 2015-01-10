@@ -5,8 +5,7 @@ cmake_minimum_required (VERSION 2.8)
 project(simple_bbcode_test)
 
 set(simple_bbcode_test_src
-    ../../MsgTemplate.cpp
-    ../../bbcode/BBCode.cpp
+    ../../bbcode/SimpleBBCode.cpp
     ../../libthoro/common/StringUtils.cpp
     simple_bbcode_test.cpp)
 
@@ -27,8 +26,7 @@ add_test(NAME test_simple_bbcode
 project(customized_simple_bbcode_test)
 
 set(customized_simple_bbcode_test_src
-    ../../MsgTemplate.cpp
-    ../../bbcode/BBCode.cpp
+    ../../bbcode/CustomizedSimpleBBCode.cpp
     ../../libthoro/common/StringUtils.cpp
     customized_simple_bbcode_test.cpp)
 

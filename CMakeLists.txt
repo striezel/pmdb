@@ -22,9 +22,14 @@ set(pmdb_sources
     SortType.cpp
     XMLDocument.cpp
     XMLNode.cpp
-    bbcode/BBCode.cpp
+    bbcode/AdvancedTemplateBBCode.cpp
     bbcode/BBCodeParser.cpp
     bbcode/BBCode_Table.cpp
+    bbcode/CustomizedSimpleBBCode.cpp
+    bbcode/HorizontalRuleBBCode.cpp
+    bbcode/ListBBCode.cpp
+    bbcode/SimpleBBCode.cpp
+    bbcode/SimpleTemplateBBCode.cpp
     bbcode/Smilie.cpp
     bbcode/quotes.cpp
     filters/FilterUser.cpp

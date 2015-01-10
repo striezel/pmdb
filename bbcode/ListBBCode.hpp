@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2012, 2013, 2014  Thoronador
+    Copyright (C) 2012, 2014, 2015  Thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,52 +18,49 @@
  -------------------------------------------------------------------------------
 */
 
-#ifndef BBCODE_HPP
-#define BBCODE_HPP
+#ifndef LISTBBCODE_HPP
+#define LISTBBCODE_HPP
 
 #include <string>
-#include "../MsgTemplate.hpp"
+#include "BBCode.hpp"
 
-/** \brief BBCode: basic interface for BB code structs/classes */
-struct BBCode
+
+/** \brief ListBBCode:
+       struct for list BB code
+*/
+struct ListBBCode: public BBCode
 {
   public:
     /** \brief constructor
      *
-     * \param code   "name" of the code, i.e. "b" for [B]bold text[/B]
+     * \param code        "name" of the code, i.e. "list"
+                          for "[LIST][*]item 1[*]2nd item[/LIST]"
+     * \param unordered   if set to true, this code will produce an unordered list.
+                          Otherwise it will create an ordered list.
      */
-    BBCode(const std::string& code)
-    : m_Name(code)
-    { }
+    ListBBCode(const std::string& code, bool unordered=true);
 
 
     /** destructor */
-    virtual ~BBCode() {}
+    virtual ~ListBBCode() {}
 
-
-    /** \brief returns the code's "name"
-     */
-    inline const std::string& getName() const
-    {
-      return m_Name;
-    }
 
     /** \brief "applies" the BB code to the given text, i.e. transforms the BB code
      * into its HTML representation
      *
      * \param text   the message text that (may) contain the BB code
      */
-    virtual void applyToText(std::string& text) const = 0;
+    virtual void applyToText(std::string& text) const;
 
-    #ifndef NO_BBCODE_NOTIFY
-    template<typename notifier>
-    void notify(const std::string& msg) const
+
+    /** returns true, if the code creates an unordered list */
+    inline bool createsUnordered() const
     {
-      notifier::put(msg);
+      return m_Unordered;
     }
-    #endif
   private:
-    std::string m_Name;
+    bool actualApply(std::string& text, const std::string::size_type offset) const;
+    bool m_Unordered;
 };//struct
 
-#endif // BBCODE_HPP
+#endif // LISTBBCODE_HPP

@@ -31,6 +31,8 @@
 #include "bbcode/BBCodeParser.hpp"
 #include "bbcode/BBCode_Table.hpp"
 #include "bbcode/DefaultCodes.hpp"
+#include "bbcode/HorizontalRuleBBCode.hpp"
+#include "bbcode/ListBBCode.hpp"
 #include "filters/FilterUser.hpp"
 #include "libthoro/common/DirectoryFunctions.h"
 #include "libthoro/common/DirectoryFileList.h"

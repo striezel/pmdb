@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2012, 2013, 2014  Thoronador
+    Copyright (C) 2012, 2014, 2015  Thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,52 +18,36 @@
  -------------------------------------------------------------------------------
 */
 
-#ifndef BBCODE_HPP
-#define BBCODE_HPP
+#ifndef SIMPLEBBCODE_HPP
+#define SIMPLEBBCODE_HPP
 
 #include <string>
-#include "../MsgTemplate.hpp"
+#include "BBCode.hpp"
 
-/** \brief BBCode: basic interface for BB code structs/classes */
-struct BBCode
+
+/* struct SimpleBBCode:
+       handles "simple" BB codes, where the square brackets can be transformed
+       to < or > to produce the proper HTML code, e.g. where
+       "[TAG]content[/TAG]" becomes "<tag>content</tag>"
+*/
+struct SimpleBBCode: public BBCode
 {
   public:
     /** \brief constructor
      *
      * \param code   "name" of the code, i.e. "b" for [B]bold text[/B]
      */
-    BBCode(const std::string& code)
-    : m_Name(code)
-    { }
-
+    SimpleBBCode(const std::string& code);
 
     /** destructor */
-    virtual ~BBCode() {}
-
-
-    /** \brief returns the code's "name"
-     */
-    inline const std::string& getName() const
-    {
-      return m_Name;
-    }
+    virtual ~SimpleBBCode() {}
 
     /** \brief "applies" the BB code to the given text, i.e. transforms the BB code
      * into its HTML representation
      *
-     * \param text   the message text that (may) contain the BB code
+     * \param text - the message text that (may) contain the BB code
      */
-    virtual void applyToText(std::string& text) const = 0;
+    virtual void applyToText(std::string& text) const;
+};//struct SimpleBBCode
 
-    #ifndef NO_BBCODE_NOTIFY
-    template<typename notifier>
-    void notify(const std::string& msg) const
-    {
-      notifier::put(msg);
-    }
-    #endif
-  private:
-    std::string m_Name;
-};//struct
-
-#endif // BBCODE_HPP
+#endif // SIMPLEBBCODE_HPP

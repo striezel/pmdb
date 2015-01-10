@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2012, 2013, 2014  Thoronador
+    Copyright (C) 2012, 2014, 2015  Thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,52 +18,33 @@
  -------------------------------------------------------------------------------
 */
 
-#ifndef BBCODE_HPP
-#define BBCODE_HPP
+#ifndef HORIZONTALRULEBBCODE_HPP
+#define HORIZONTALRULEBBCODE_HPP
 
 #include <string>
-#include "../MsgTemplate.hpp"
+#include "BBCode.hpp"
 
-/** \brief BBCode: basic interface for BB code structs/classes */
-struct BBCode
+/** \brief HorizontalRuleBBCode:
+       struct for hr BB code
+*/
+struct HorizontalRuleBBCode: public BBCode
 {
   public:
-    /** \brief constructor
+    /** constructor
      *
      * \param code   "name" of the code, i.e. "b" for [B]bold text[/B]
      */
-    BBCode(const std::string& code)
-    : m_Name(code)
-    { }
+    HorizontalRuleBBCode(const std::string& code, const bool isXHTML);
 
-
-    /** destructor */
-    virtual ~BBCode() {}
-
-
-    /** \brief returns the code's "name"
-     */
-    inline const std::string& getName() const
-    {
-      return m_Name;
-    }
 
     /** \brief "applies" the BB code to the given text, i.e. transforms the BB code
      * into its HTML representation
      *
      * \param text   the message text that (may) contain the BB code
      */
-    virtual void applyToText(std::string& text) const = 0;
-
-    #ifndef NO_BBCODE_NOTIFY
-    template<typename notifier>
-    void notify(const std::string& msg) const
-    {
-      notifier::put(msg);
-    }
-    #endif
+    virtual void applyToText(std::string& text) const;
   private:
-    std::string m_Name;
-};//struct
+    bool m_isXHTML;
+};//struct HorizontalRuleBBCode
 
-#endif // BBCODE_HPP
+#endif // HORIZONTALRULEBBCODE_HPP

@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2012, 2013  Thoronador
+    Copyright (C) 2012, 2013, 2015  Thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -89,7 +89,7 @@ std::string MsgTemplate::show() const
     while (pos!=std::string::npos)
     {
       result.replace(pos, fullTag.length(), iter->second);
-      pos = result.find(fullTag);
+      pos = result.find(fullTag, pos);
     }//while
     ++iter;
   }//while
@@ -112,14 +112,14 @@ std::string MsgTemplate::prepareReplacement(std::string content, const bool kill
     while (pos!=std::string::npos)
     {
       content.replace(pos, 1, "&lt;");
-      pos = content.find("<");
+      pos = content.find("<", pos+1);
     }//while
 
     pos = content.find(">");
     while (pos!=std::string::npos)
     {
       content.replace(pos, 1, "&gt;");
-      pos = content.find(">");
+      pos = content.find(">", pos+1);
     }//while
   }//if escape HTML tags
 
@@ -127,14 +127,14 @@ std::string MsgTemplate::prepareReplacement(std::string content, const bool kill
   while (pos!=std::string::npos)
   {
     content.replace(pos, 3, "&#x7B;..");
-    pos = content.find("{..");
+    pos = content.find("{..", pos+1);
   }//while
 
   pos = content.find("..}");
   while (pos!=std::string::npos)
   {
     content.replace(pos, 3, "..&#x7D;");
-    pos = content.find("..}");
+    pos = content.find("..}", pos+1);
   }//while
 
   return content;

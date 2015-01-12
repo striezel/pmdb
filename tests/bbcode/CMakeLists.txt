@@ -18,7 +18,7 @@ set( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -s" )
 add_executable(simple_bbcode_test ${simple_bbcode_test_src})
 
 # --- add it as a test
-add_test(NAME test_simple_bbcode
+add_test(NAME class_SimpleBBCode
          COMMAND $<TARGET_FILE:simple_bbcode_test>)
 
 
@@ -39,5 +39,5 @@ set( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -s" )
 add_executable(customized_simple_bbcode_test ${customized_simple_bbcode_test_src})
 
 # --- add it as a test
-add_test(NAME test_customized_simple_bbcode
+add_test(NAME class_CustomizedSimpleBBCode
          COMMAND $<TARGET_FILE:customized_simple_bbcode_test>)

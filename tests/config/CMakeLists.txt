@@ -18,7 +18,7 @@ set( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -s" )
 add_executable(config_test_create ${config_test_create_src})
 
 # --- add it as a test
-add_test(NAME test_config_create
+add_test(NAME class_Config_create
          COMMAND $<TARGET_FILE:config_test_create>)
 
 
@@ -39,7 +39,7 @@ set( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -s" )
 add_executable(config_test_setURL ${config_test_setURL_src})
 
 # --- add it as a test
-add_test(NAME test_config_setURL
+add_test(NAME class_Config_setURL
          COMMAND $<TARGET_FILE:config_test_setURL>)
 
 
@@ -61,5 +61,5 @@ set( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -s" )
 add_executable(config_test_setTPL ${config_test_setTPL_src})
 
 # --- add it as a test
-add_test(NAME test_config_setTPL
+add_test(NAME class_Config_setTPL
          COMMAND $<TARGET_FILE:config_test_setTPL>)

@@ -17,5 +17,5 @@ set( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -s" )
 add_executable(msgtemplate_loadequality_test ${msgtemplate_loadequality_test_src})
 
 # --- add it as a test
-add_test(NAME test_msgtemplate_loadequality
+add_test(NAME class_MsgTemplate_loadequality
          COMMAND $<TARGET_FILE:msgtemplate_loadequality_test>)

@@ -9,5 +9,8 @@ add_subdirectory (bbcode)
 # Recurse into subdirectory for tests of Config class.
 add_subdirectory (config)
 
+# Recurse into subdirectory for tests of MsgTemplate class.
+add_subdirectory (msgtemplate)
+
 # Recurse into subdirectory for tests of pmdb executable.
 add_subdirectory (pmdb)

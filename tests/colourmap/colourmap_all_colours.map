@@ -1,0 +1,33 @@
+# This is a colour map file for the test suite of pmdb.
+# Colour maps can be used to give the folder names in the console output
+# different colours to allow easier distinction.
+#
+# This file get's loaded during the test suite runs.
+# For a better example see pmdb.colourmap.example in the repository's root
+# directory.
+#
+# Supported colour names are:
+#   default (default console font colour)
+#   black
+#   blue
+#   cyan
+#   green
+#   magenta
+#   red
+#   white
+#   yellow
+#
+# Basic notation for colour assignments is:
+#
+#   folder name=colour
+#
+
+def=default
+bck=black
+blu=blue
+cyn=cyan
+grn=green
+mgt=magenta
+red=red
+wht=white
+ylw=yellow

@@ -6,6 +6,9 @@ enable_testing()
 # Recurse into subdirectory for tests of BB code classes.
 add_subdirectory (bbcode)
 
+# Recurse into subdirectory for tests of ColourMap class.
+add_subdirectory (colourmap)
+
 # Recurse into subdirectory for tests of Config class.
 add_subdirectory (config)
 

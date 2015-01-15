@@ -42,37 +42,33 @@ int main()
   //load other template from file
   // ---- get temporary file name
   std::string tempName = "";
+
+  //mkstemp scope
   {
-    char* tempFileName = tempnam("/tmp", "msg");
-    if (tempFileName == NULL)
+    char tempFileName[] = "/tmp/msgXXXXXXXXXX";
+    const int fd = mkstemp(tempFileName);
+    if (fd < 0) //-1 signals error
     {
       std::cout << "Could not get temporary file name!\n";
-      return 1;
-    } //if
-    tempName = std::string(tempFileName);
-    free(tempFileName);
-  }
-
-  // ---- scope for output file stream
-  {
-    std::ofstream outFile;
-    outFile.open(tempName.c_str(), std::ios_base::out | std::ios_base::binary | std::ios_base::trunc);
-    if (!outFile.is_open())
-    {
-      std::cout << "Could not create temporary file \"" << tempName << "\"!\n";
-      std::cout.flush();
+      unlink(tempFileName);
       return 1;
     }
-    outFile.write(cTemplateString.c_str(), cTemplateString.length());
-    if (!outFile.good())
+    tempName = std::string(tempFileName);
+    const ssize_t writeResult = write(fd, cTemplateString.c_str(), cTemplateString.size());
+    close(fd);
+    if (writeResult < 0) //-1 signals error, errno will be set
     {
       std::cout << "Could not write to temporary file \"" << tempName << "\"!\n";
       std::cout.flush();
-      outFile.close();
       return 1;
     }
-    outFile.close();
-  } //end of outFile scope
+    if (writeResult != cTemplateString.size())
+    {
+      std::cout << "Could not write complete test template to temporary file \"" << tempName << "\"!\n";
+      std::cout.flush();
+      return 1;
+    }
+  } //end of mkstemp() scope
 
   const bool loadSuccess = tpl_fromFile.loadFromFile(tempName);
   unlink(tempName.c_str());

@@ -18,7 +18,7 @@
  -------------------------------------------------------------------------------
 */
 
-#include "ConsoleColours.h"
+#include "ConsoleColours.hpp"
 
 std::string nameToControlSequence(const std::string& name, const bool background)
 {

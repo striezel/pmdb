@@ -26,7 +26,7 @@
 		<Unit filename="../../ColourMap.cpp" />
 		<Unit filename="../../ColourMap.hpp" />
 		<Unit filename="../../ConsoleColours.cpp" />
-		<Unit filename="../../ConsoleColours.h" />
+		<Unit filename="../../ConsoleColours.hpp" />
 		<Unit filename="colourmap_load.cpp" />
 		<Extensions>
 			<code_completion />

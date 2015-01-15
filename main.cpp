@@ -26,7 +26,7 @@
 #include "MessageDatabase.hpp"
 #include "FolderMap.hpp"
 #include "Config.hpp"
-#include "ConsoleColours.h"
+#include "ConsoleColours.hpp"
 #include "ColourMap.hpp"
 #include "bbcode/BBCodeParser.hpp"
 #include "bbcode/BBCode_Table.hpp"

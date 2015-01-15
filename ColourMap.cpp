@@ -21,7 +21,7 @@
 #include "ColourMap.hpp"
 #include <fstream>
 #include <iostream>
-#include "ConsoleColours.h"
+#include "ConsoleColours.hpp"
 
 const char ColourMap::cCommentCharacter = '#';
 

@@ -18,8 +18,8 @@
  -------------------------------------------------------------------------------
 */
 
-#ifndef CONFIG_H
-#define CONFIG_H
+#ifndef CONFIG_HPP
+#define CONFIG_HPP
 
 #include <string>
 #include <vector>
@@ -94,4 +94,4 @@ class Config
     #endif
 }; //class
 
-#endif // CONFIG_H
+#endif // CONFIG_HPP

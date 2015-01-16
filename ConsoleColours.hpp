@@ -18,8 +18,8 @@
  -------------------------------------------------------------------------------
 */
 
-#ifndef CONSOLECOLOURS_H
-#define CONSOLECOLOURS_H
+#ifndef CONSOLECOLOURS_HPP
+#define CONSOLECOLOURS_HPP
 
 #include <string>
 
@@ -54,4 +54,4 @@ const std::string backgroundWhite   = "\033[47m";
  */
 std::string nameToControlSequence(const std::string& name, const bool background = false);
 
-#endif // CONSOLECOLOURS_H
+#endif // CONSOLECOLOURS_HPP

@@ -18,8 +18,8 @@
  -------------------------------------------------------------------------------
 */
 
-#ifndef COLOURMAP_H
-#define COLOURMAP_H
+#ifndef COLOURMAP_HPP
+#define COLOURMAP_HPP
 
 #include <string>
 #include <map>
@@ -69,4 +69,4 @@ class ColourMap
     std::map<std::string, std::string> colours;
 }; //class
 
-#endif // COLOURMAP_H
+#endif // COLOURMAP_HPP

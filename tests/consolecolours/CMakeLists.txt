@@ -9,7 +9,7 @@ set(test_names_to_ctrl_seqs_src
     names_to_controlsequences.cpp)
 
 #if (CMAKE_COMPILER_IS_GNUCC)
-    add_definitions(-Wall -O3 -fexceptions --std=c++11)
+    add_definitions(-Wall -O3 -fexceptions -std=c++0x)
 #endif (CMAKE_COMPILER_IS_GNUCC)
 
 set( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -s" )

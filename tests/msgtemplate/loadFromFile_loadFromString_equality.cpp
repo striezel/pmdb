@@ -18,11 +18,10 @@
  -------------------------------------------------------------------------------
 */
 
-#include <cstdio> //for tempnam()
-#include <cstdlib> //for free()
+#include <cstdlib> //for mkstemp()
 #include <fstream>
 #include <iostream>
-#include <unistd.h> //for unlink()
+#include <unistd.h> //for close(), unlink(), write()
 #include "../../MsgTemplate.hpp"
 
 int main()

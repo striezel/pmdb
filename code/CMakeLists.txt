@@ -30,10 +30,11 @@ set(pmdb_sources
     bbcode/quotes.cpp
     filters/FilterUser.cpp
     ../libthoro/common/DirectoryFileList.cpp
-    ../libthoro/common/DirectoryFunctions.cpp
     ../libthoro/common/StringUtils.cpp
-    ../libthoro/hashfunctions/sha-256.cpp
-    ../libthoro/hashfunctions/sha-256_sources.cpp
+    ../libthoro/filesystem/DirectoryFunctions.cpp
+    ../libthoro/filesystem/FileFunctions.cpp
+    ../libthoro/hash/sha-256.cpp
+    ../libthoro/hash/sha-256_sources.cpp
     main.cpp)
 
 if (CMAKE_COMPILER_IS_GNUCC)

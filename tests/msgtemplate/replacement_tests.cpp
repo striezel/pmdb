@@ -21,7 +21,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "../../MsgTemplate.hpp"
+#include "../../code/MsgTemplate.hpp"
 
 struct ReplData
 {

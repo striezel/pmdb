@@ -37,6 +37,19 @@
 		<Linker>
 			<Add library="xml2" />
 		</Linker>
+		<Unit filename="../libthoro/common/BufferStream.h" />
+		<Unit filename="../libthoro/common/DirectoryFileList.cpp" />
+		<Unit filename="../libthoro/common/DirectoryFileList.h" />
+		<Unit filename="../libthoro/common/DirectoryFunctions.cpp" />
+		<Unit filename="../libthoro/common/DirectoryFunctions.h" />
+		<Unit filename="../libthoro/common/StringUtils.cpp" />
+		<Unit filename="../libthoro/common/StringUtils.h" />
+		<Unit filename="../libthoro/hashfunctions/sha-1-256_functions.h" />
+		<Unit filename="../libthoro/hashfunctions/sha-256.cpp" />
+		<Unit filename="../libthoro/hashfunctions/sha-256.h" />
+		<Unit filename="../libthoro/hashfunctions/sha-256_functions.h" />
+		<Unit filename="../libthoro/hashfunctions/sha-256_sources.cpp" />
+		<Unit filename="../libthoro/hashfunctions/sha-256_sources.h" />
 		<Unit filename="ColourMap.cpp" />
 		<Unit filename="ColourMap.hpp" />
 		<Unit filename="Config.cpp" />
@@ -88,19 +101,6 @@
 		<Unit filename="filters/Filter.hpp" />
 		<Unit filename="filters/FilterUser.cpp" />
 		<Unit filename="filters/FilterUser.hpp" />
-		<Unit filename="libthoro/common/BufferStream.h" />
-		<Unit filename="libthoro/common/DirectoryFileList.cpp" />
-		<Unit filename="libthoro/common/DirectoryFileList.h" />
-		<Unit filename="libthoro/common/DirectoryFunctions.cpp" />
-		<Unit filename="libthoro/common/DirectoryFunctions.h" />
-		<Unit filename="libthoro/common/StringUtils.cpp" />
-		<Unit filename="libthoro/common/StringUtils.h" />
-		<Unit filename="libthoro/hashfunctions/sha-1-256_functions.h" />
-		<Unit filename="libthoro/hashfunctions/sha-256.cpp" />
-		<Unit filename="libthoro/hashfunctions/sha-256.h" />
-		<Unit filename="libthoro/hashfunctions/sha-256_functions.h" />
-		<Unit filename="libthoro/hashfunctions/sha-256_sources.cpp" />
-		<Unit filename="libthoro/hashfunctions/sha-256_sources.h" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />

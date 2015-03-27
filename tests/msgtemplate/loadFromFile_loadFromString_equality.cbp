@@ -23,8 +23,8 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-		<Unit filename="../../MsgTemplate.cpp" />
-		<Unit filename="../../MsgTemplate.hpp" />
+		<Unit filename="../../code/MsgTemplate.cpp" />
+		<Unit filename="../../code/MsgTemplate.hpp" />
 		<Unit filename="loadFromFile_loadFromString_equality.cpp" />
 		<Extensions>
 			<code_completion />

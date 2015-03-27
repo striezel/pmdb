@@ -5,7 +5,7 @@ cmake_minimum_required (VERSION 2.8)
 project(simple_bbcode_test)
 
 set(simple_bbcode_test_src
-    ../../bbcode/SimpleBBCode.cpp
+    ../../code/bbcode/SimpleBBCode.cpp
     ../../libthoro/common/StringUtils.cpp
     simple_bbcode_test.cpp)
 
@@ -26,7 +26,7 @@ add_test(NAME class_SimpleBBCode
 project(customized_simple_bbcode_test)
 
 set(customized_simple_bbcode_test_src
-    ../../bbcode/CustomizedSimpleBBCode.cpp
+    ../../code/bbcode/CustomizedSimpleBBCode.cpp
     ../../libthoro/common/StringUtils.cpp
     customized_simple_bbcode_test.cpp)
 
@@ -47,7 +47,7 @@ add_test(NAME class_CustomizedSimpleBBCode
 project(horizontal_rule_bbcode_test)
 
 set(horizontal_rule_bbcode_test_src
-    ../../bbcode/HorizontalRuleBBCode.cpp
+    ../../code/bbcode/HorizontalRuleBBCode.cpp
     ../../libthoro/common/StringUtils.cpp
     horizontal_rule_bbcode_test.cpp)
 

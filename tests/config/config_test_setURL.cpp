@@ -19,7 +19,7 @@
 */
 
 #include <iostream>
-#include "../../Config.hpp"
+#include "../../code/Config.hpp"
 
 int main(void)
 {

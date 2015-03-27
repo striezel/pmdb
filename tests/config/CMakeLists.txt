@@ -5,8 +5,8 @@ cmake_minimum_required (VERSION 2.8)
 project(config_test_create)
 
 set(config_test_create_src
-    ../../Config.cpp
-    ../../bbcode/Smilie.cpp
+    ../../code/Config.cpp
+    ../../code/bbcode/Smilie.cpp
     config_test_create.cpp)
 
 if (CMAKE_COMPILER_IS_GNUCC)
@@ -26,8 +26,8 @@ add_test(NAME class_Config_create
 project(config_test_setURL)
 
 set(config_test_setURL_src
-    ../../Config.cpp
-    ../../bbcode/Smilie.cpp
+    ../../code/Config.cpp
+    ../../code/bbcode/Smilie.cpp
     config_test_setURL.cpp)
 
 if (CMAKE_COMPILER_IS_GNUCC)
@@ -48,8 +48,8 @@ add_test(NAME class_Config_setURL
 project(config_test_setTPL)
 
 set(config_test_setTPL_src
-    ../../Config.cpp
-    ../../bbcode/Smilie.cpp
+    ../../code/Config.cpp
+    ../../code/bbcode/Smilie.cpp
     config_test_setTPL.cpp)
 
 if (CMAKE_COMPILER_IS_GNUCC)

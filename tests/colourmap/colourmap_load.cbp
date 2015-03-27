@@ -23,10 +23,10 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-		<Unit filename="../../ColourMap.cpp" />
-		<Unit filename="../../ColourMap.hpp" />
-		<Unit filename="../../ConsoleColours.cpp" />
-		<Unit filename="../../ConsoleColours.hpp" />
+		<Unit filename="../../code/ColourMap.cpp" />
+		<Unit filename="../../code/ColourMap.hpp" />
+		<Unit filename="../../code/ConsoleColours.cpp" />
+		<Unit filename="../../code/ConsoleColours.hpp" />
 		<Unit filename="colourmap_load.cpp" />
 		<Extensions>
 			<code_completion />

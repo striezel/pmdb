@@ -24,9 +24,9 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-		<Unit filename="../../bbcode/BBCode.hpp" />
-		<Unit filename="../../bbcode/HorizontalRuleBBCode.cpp" />
-		<Unit filename="../../bbcode/HorizontalRuleBBCode.hpp" />
+		<Unit filename="../../code/bbcode/BBCode.hpp" />
+		<Unit filename="../../code/bbcode/HorizontalRuleBBCode.cpp" />
+		<Unit filename="../../code/bbcode/HorizontalRuleBBCode.hpp" />
 		<Unit filename="../../libthoro/common/StringUtils.cpp" />
 		<Unit filename="../../libthoro/common/StringUtils.h" />
 		<Unit filename="horizontal_rule_bbcode_test.cpp" />

@@ -19,7 +19,7 @@
 */
 
 #include "AdvancedTemplateBBCode.hpp"
-#include "../libthoro/common/StringUtils.h"
+#include "../../libthoro/common/StringUtils.h"
 
 AdvancedTemplateBBCode::AdvancedTemplateBBCode(const std::string& code, const MsgTemplate& tpl, const std::string& inner, const std::string& attr)
 : SimpleTemplateBBCode(code, tpl, inner), m_AttrName(attr)

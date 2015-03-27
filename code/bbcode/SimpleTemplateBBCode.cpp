@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2012, 2014, 2015  Thoronador
+    Copyright (C) 2012, 2015  Thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,27 +18,29 @@
  -------------------------------------------------------------------------------
 */
 
-#include "SimpleBBCode.hpp"
-#include "../libthoro/common/StringUtils.h"
+#include "SimpleTemplateBBCode.hpp"
+#include "../../libthoro/common/StringUtils.h"
 
-SimpleBBCode::SimpleBBCode(const std::string& code)
-: BBCode(toLowerString(code))
+SimpleTemplateBBCode::SimpleTemplateBBCode(const std::string& code, const MsgTemplate& tpl, const std::string& inner)
+: BBCode(code), m_Template(tpl), m_InnerName(inner)
 {
 
 }
 
-void SimpleBBCode::applyToText(std::string& text) const
+void SimpleTemplateBBCode::applyToText(std::string& text) const
 {
   const std::string code = "["+getName()+"]";
   const std::string end_code = "[/"+getName()+"]";
   std::string::size_type pos = find_ci(text, code);
   std::string::size_type end_pos = std::string::npos;
+  MsgTemplate tpl = m_Template;
   while (pos!=std::string::npos)
   {
     end_pos = find_ci(text, end_code, pos+1);
     if (end_pos==std::string::npos) return;
-    text.replace(pos, code.length(), "<"+getName()+">");
-    text.replace(end_pos, end_code.length(), "</"+getName()+">");
+    const std::string inner_text = text.substr(pos+code.length(), end_pos-(pos+code.length()));
+    tpl.addReplacement(m_InnerName, transformInner(inner_text), false);
+    text.replace(pos, end_pos+end_code.length()-pos, tpl.show());
     pos = find_ci(text, code, pos);
   }//while
 }

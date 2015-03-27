@@ -22,7 +22,7 @@
 #define BBCODE_TEXTPROCESSOR_HPP
 
 #include <string>
-#include "../libthoro/common/StringUtils.h"
+#include "../../libthoro/common/StringUtils.h"
 
 /** \brief TextProcessor:
        basic interface for BB code pre- and post-processing structs

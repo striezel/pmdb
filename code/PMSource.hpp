@@ -22,8 +22,8 @@
 #define PMSOURCE_HPP
 
 #include "PrivateMessage.hpp"
-#include "libthoro/common/BufferStream.h"
-#include "libthoro/hashfunctions/sha-256_sources.h"
+#include "../libthoro/common/BufferStream.h"
+#include "../libthoro/hashfunctions/sha-256_sources.h"
 
 namespace SHA256
 {

@@ -24,8 +24,8 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-		<Unit filename="../../ConsoleColours.cpp" />
-		<Unit filename="../../ConsoleColours.hpp" />
+		<Unit filename="../../code/ConsoleColours.cpp" />
+		<Unit filename="../../code/ConsoleColours.hpp" />
 		<Unit filename="names_to_controlsequences.cpp" />
 		<Extensions>
 			<code_completion />

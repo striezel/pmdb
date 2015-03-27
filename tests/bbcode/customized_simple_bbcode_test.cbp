@@ -23,9 +23,9 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-		<Unit filename="../../bbcode/BBCode.hpp" />
-		<Unit filename="../../bbcode/CustomizedSimpleBBCode.cpp" />
-		<Unit filename="../../bbcode/CustomizedSimpleBBCode.hpp" />
+		<Unit filename="../../code/bbcode/BBCode.hpp" />
+		<Unit filename="../../code/bbcode/CustomizedSimpleBBCode.cpp" />
+		<Unit filename="../../code/bbcode/CustomizedSimpleBBCode.hpp" />
 		<Unit filename="../../libthoro/common/StringUtils.cpp" />
 		<Unit filename="../../libthoro/common/StringUtils.h" />
 		<Unit filename="customized_simple_bbcode_test.cpp" />

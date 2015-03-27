@@ -19,7 +19,7 @@
 */
 
 #include "ListBBCode.hpp"
-#include "../libthoro/common/StringUtils.h"
+#include "../../libthoro/common/StringUtils.h"
 
 ListBBCode::ListBBCode(const std::string& code, bool unordered)
 : BBCode(code), m_Unordered(unordered)

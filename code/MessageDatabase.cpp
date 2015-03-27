@@ -26,8 +26,8 @@
 #include "SortType.hpp"
 #include "XMLDocument.hpp"
 #include "XMLNode.hpp"
-#include "libthoro/common/DirectoryFileList.h"
-#include "libthoro/common/StringUtils.h"
+#include "../libthoro/common/DirectoryFileList.h"
+#include "../libthoro/common/StringUtils.h"
 
 bool isValidSHA256Hash(const std::string& hash)
 {

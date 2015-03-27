@@ -20,7 +20,7 @@
 
 #include <iostream>
 #include <string>
-#include "../../bbcode/SimpleBBCode.hpp"
+#include "../../code/bbcode/SimpleBBCode.hpp"
 
 int main()
 {

@@ -19,7 +19,7 @@
 #ifndef QUOTES_HPP
 #define QUOTES_HPP
 
-#include "../libthoro/common/StringUtils.h"
+#include "../../libthoro/common/StringUtils.h"
 
 /* ************************************
 

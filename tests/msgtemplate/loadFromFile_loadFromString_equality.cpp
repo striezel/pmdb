@@ -22,7 +22,7 @@
 #include <fstream>
 #include <iostream>
 #include <unistd.h> //for close(), unlink(), write()
-#include "../../MsgTemplate.hpp"
+#include "../../code/MsgTemplate.hpp"
 
 int main()
 {

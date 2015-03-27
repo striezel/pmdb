@@ -32,10 +32,10 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-		<Unit filename="../../Config.cpp" />
-		<Unit filename="../../Config.hpp" />
-		<Unit filename="../../bbcode/Smilie.cpp" />
-		<Unit filename="../../bbcode/Smilie.hpp" />
+		<Unit filename="../../code/Config.cpp" />
+		<Unit filename="../../code/Config.hpp" />
+		<Unit filename="../../code/bbcode/Smilie.cpp" />
+		<Unit filename="../../code/bbcode/Smilie.hpp" />
 		<Unit filename="config_test_create.cpp" />
 		<Extensions>
 			<code_completion />

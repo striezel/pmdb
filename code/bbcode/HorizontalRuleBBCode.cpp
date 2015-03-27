@@ -19,7 +19,7 @@
 */
 
 #include "HorizontalRuleBBCode.hpp"
-#include "../libthoro/common/StringUtils.h"
+#include "../../libthoro/common/StringUtils.h"
 
 HorizontalRuleBBCode::HorizontalRuleBBCode(const std::string& code, const bool isXHTML)
 : BBCode(code), m_isXHTML(isXHTML)

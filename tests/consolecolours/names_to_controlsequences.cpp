@@ -21,7 +21,7 @@
 #include <iostream>
 #include <vector>
 #include <tuple>
-#include "../../ConsoleColours.hpp"
+#include "../../code/ConsoleColours.hpp"
 
 /* Info:
    The programme tests, if all known colour names are properly transformed to

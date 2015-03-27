@@ -25,7 +25,7 @@
 #endif
 #include <sstream>
 #include "PMSource.hpp"
-#include "libthoro/common/StringUtils.h"
+#include "../libthoro/common/StringUtils.h"
 
 PrivateMessage::PrivateMessage()
 : datestamp(""),

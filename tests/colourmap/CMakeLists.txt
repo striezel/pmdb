@@ -5,8 +5,8 @@ cmake_minimum_required (VERSION 2.8)
 project(colourmap_test_load)
 
 set(colourmap_test_load_src
-    ../../ColourMap.cpp
-    ../../ConsoleColours.cpp
+    ../../code/ColourMap.cpp
+    ../../code/ConsoleColours.cpp
     colourmap_load.cpp)
 
 if (CMAKE_COMPILER_IS_GNUCC)

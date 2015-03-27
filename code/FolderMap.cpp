@@ -21,7 +21,7 @@
 #include "FolderMap.hpp"
 #include <iostream>
 #include <stdexcept>
-#include "libthoro/common/StringUtils.h"
+#include "../libthoro/common/StringUtils.h"
 
 FolderMap::FolderMap()
 : m_FolderMap(std::map<SHA256::MessageDigest, std::string>())

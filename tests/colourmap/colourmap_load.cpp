@@ -20,7 +20,7 @@
 
 #include <iostream>
 #include <vector>
-#include "../../ColourMap.hpp"
+#include "../../code/ColourMap.hpp"
 
 /* Info:
    The programme tests, if colour map files are loaded.

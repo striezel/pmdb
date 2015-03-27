@@ -34,9 +34,9 @@
 #include "bbcode/HorizontalRuleBBCode.hpp"
 #include "bbcode/ListBBCode.hpp"
 #include "filters/FilterUser.hpp"
-#include "libthoro/common/DirectoryFunctions.h"
-#include "libthoro/common/DirectoryFileList.h"
-#include "libthoro/common/StringUtils.h"
+#include "../libthoro/common/DirectoryFunctions.h"
+#include "../libthoro/common/DirectoryFileList.h"
+#include "../libthoro/common/StringUtils.h"
 
 //return codes
 const int rcInvalidParameter = 1;

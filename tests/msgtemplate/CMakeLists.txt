@@ -6,7 +6,7 @@ cmake_minimum_required (VERSION 2.8)
 project(test_msgtemplate_loadequality)
 
 set(test_msgtemplate_loadequality_src
-    ../../MsgTemplate.cpp
+    ../../code/MsgTemplate.cpp
     loadFromFile_loadFromString_equality.cpp)
 
 if (CMAKE_COMPILER_IS_GNUCC)
@@ -27,7 +27,7 @@ add_test(NAME class_MsgTemplate_loadequality
 project(test_MsgTemplate_replacements)
 
 set(test_MsgTemplate_replacements_src
-    ../../MsgTemplate.cpp
+    ../../code/MsgTemplate.cpp
     replacement_tests.cpp)
 
 if (CMAKE_COMPILER_IS_GNUCC)

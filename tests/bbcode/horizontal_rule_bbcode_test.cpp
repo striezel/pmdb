@@ -22,7 +22,7 @@
 #include <string>
 #include <tuple> // available from C++11 onwards
 #include <vector>
-#include "../../bbcode/HorizontalRuleBBCode.hpp"
+#include "../../code/bbcode/HorizontalRuleBBCode.hpp"
 
 typedef std::tuple<std::string, std::string, std::string> TestData;
 

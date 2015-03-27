@@ -24,8 +24,8 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-		<Unit filename="../../MsgTemplate.cpp" />
-		<Unit filename="../../MsgTemplate.hpp" />
+		<Unit filename="../../code/MsgTemplate.cpp" />
+		<Unit filename="../../code/MsgTemplate.hpp" />
 		<Unit filename="replacement_tests.cpp" />
 		<Extensions>
 			<code_completion />

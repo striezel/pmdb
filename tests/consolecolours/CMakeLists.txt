@@ -5,7 +5,7 @@ cmake_minimum_required (VERSION 2.8)
 project(test_names_to_ctrl_seqs)
 
 set(test_names_to_ctrl_seqs_src
-    ../../ConsoleColours.cpp
+    ../../code/ConsoleColours.cpp
     names_to_controlsequences.cpp)
 
 #if (CMAKE_COMPILER_IS_GNUCC)

@@ -22,7 +22,7 @@
 #ifdef DEBUG
   #include <iostream>
 #endif
-#include "../libthoro/common/StringUtils.h"
+#include "../../libthoro/common/StringUtils.h"
 #include "Notifier.hpp"
 
 TableBBCode::OpeningElem::OpeningElem()

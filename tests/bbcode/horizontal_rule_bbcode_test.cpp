@@ -1,6 +1,6 @@
 /*
  -------------------------------------------------------------------------------
-    This file is part of the Private Message Database.
+    This file is part of the Private Message Database test suite.
     Copyright (C) 2015  Thoronador
 
     This program is free software: you can redistribute it and/or modify

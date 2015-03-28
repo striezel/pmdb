@@ -80,3 +80,23 @@ add_executable(list_bbcode_test ${list_bbcode_test_src})
 # --- add it as a test
 add_test(NAME class_ListBBCode
          COMMAND $<TARGET_FILE:list_bbcode_test>)
+
+
+# binary for tests of SimpleTemplateBBCode class
+project(simple_template_bbcode_test)
+
+set(simple_template_bbcode_test_src
+    ../../code/MsgTemplate.cpp
+    ../../code/bbcode/SimpleTemplateBBCode.cpp
+    ../../libthoro/common/StringUtils.cpp
+    simple_template_bbcode_test.cpp)
+
+add_definitions(-Wall -O3 -fexceptions)
+
+set( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -s" )
+
+add_executable(simple_template_bbcode_test ${simple_template_bbcode_test_src})
+
+# --- add it as a test
+add_test(NAME class_SimpleTemplateBBCode
+         COMMAND $<TARGET_FILE:simple_template_bbcode_test>)

@@ -61,3 +61,22 @@ add_executable(horizontal_rule_bbcode_test ${horizontal_rule_bbcode_test_src})
 # --- add it as a test
 add_test(NAME class_HorizontalRuleBBCode
          COMMAND $<TARGET_FILE:horizontal_rule_bbcode_test>)
+
+
+# binary for tests of ListBBCode class
+project(list_bbcode_test)
+
+set(list_bbcode_test_src
+    ../../code/bbcode/ListBBCode.cpp
+    ../../libthoro/common/StringUtils.cpp
+    list_bbcode_test.cpp)
+
+add_definitions(-Wall -O3 -fexceptions)
+
+set( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -s" )
+
+add_executable(list_bbcode_test ${list_bbcode_test_src})
+
+# --- add it as a test
+add_test(NAME class_ListBBCode
+         COMMAND $<TARGET_FILE:list_bbcode_test>)

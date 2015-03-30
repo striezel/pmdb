@@ -102,6 +102,27 @@ add_test(NAME class_SimpleTemplateBBCode
          COMMAND $<TARGET_FILE:simple_template_bbcode_test>)
 
 
+# binary for tests of AdvancedTemplateBBCode class
+project(advanced_template_bbcode_test)
+
+set(advanced_template_bbcode_test_src
+    ../../code/MsgTemplate.cpp
+    ../../code/bbcode/AdvancedTemplateBBCode.cpp
+    ../../code/bbcode/SimpleTemplateBBCode.cpp
+    ../../libthoro/common/StringUtils.cpp
+    advanced_template_bbcode_test.cpp)
+
+add_definitions(-Wall -O3 -fexceptions)
+
+set( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -s" )
+
+add_executable(advanced_template_bbcode_test ${advanced_template_bbcode_test_src})
+
+# --- add it as a test
+add_test(NAME class_AdvancedTemplateBBCode
+         COMMAND $<TARGET_FILE:advanced_template_bbcode_test>)
+
+
 # binary for tests of Smilie class
 project(smilie_test)
 

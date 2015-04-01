@@ -143,6 +143,27 @@ add_test(NAME class_SimpleTplAmpTransformBBCode
          COMMAND $<TARGET_FILE:SimpleTplAmpTransformBBCode_test>)
 
 
+# binary for tests of AdvancedTplAmpTransformBBCode class
+project(AdvancedTplAmpTransformBBCode_test)
+
+set(AdvancedTplAmpTransformBBCode_test_src
+    ../../code/MsgTemplate.cpp
+    ../../code/bbcode/AdvancedTemplateBBCode.cpp
+    ../../code/bbcode/SimpleTemplateBBCode.cpp
+    ../../libthoro/common/StringUtils.cpp
+    AdvancedTplAmpTransformBBCode_test.cpp)
+
+add_definitions(-Wall -O3 -fexceptions)
+
+set( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -s" )
+
+add_executable(AdvancedTplAmpTransformBBCode_test ${AdvancedTplAmpTransformBBCode_test_src})
+
+# --- add it as a test
+add_test(NAME class_AdvancedTplAmpTransformBBCode
+         COMMAND $<TARGET_FILE:AdvancedTplAmpTransformBBCode_test>)
+
+
 # binary for tests of Smilie class
 project(smilie_test)
 

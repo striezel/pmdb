@@ -80,8 +80,6 @@
 		<Unit filename="bbcode/BBCode.hpp" />
 		<Unit filename="bbcode/BBCodeParser.cpp" />
 		<Unit filename="bbcode/BBCodeParser.hpp" />
-		<Unit filename="bbcode/BBCode_Table.cpp" />
-		<Unit filename="bbcode/BBCode_Table.hpp" />
 		<Unit filename="bbcode/CustomizedSimpleBBCode.cpp" />
 		<Unit filename="bbcode/CustomizedSimpleBBCode.hpp" />
 		<Unit filename="bbcode/DefaultCodes.hpp" />
@@ -97,6 +95,8 @@
 		<Unit filename="bbcode/SimpleTplAmpTransformBBCode.hpp" />
 		<Unit filename="bbcode/Smilie.cpp" />
 		<Unit filename="bbcode/Smilie.hpp" />
+		<Unit filename="bbcode/TableBBCode.cpp" />
+		<Unit filename="bbcode/TableBBCode.hpp" />
 		<Unit filename="bbcode/TextProcessor.hpp" />
 		<Unit filename="bbcode/quotes.cpp" />
 		<Unit filename="bbcode/quotes.hpp" />

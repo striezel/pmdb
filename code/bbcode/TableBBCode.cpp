@@ -18,7 +18,7 @@
  -------------------------------------------------------------------------------
 */
 
-#include "BBCode_Table.hpp"
+#include "TableBBCode.hpp"
 #ifdef DEBUG
   #include <iostream>
 #endif

@@ -20,13 +20,13 @@ set(pmdb_sources
     XMLNode.cpp
     bbcode/AdvancedTemplateBBCode.cpp
     bbcode/BBCodeParser.cpp
-    bbcode/BBCode_Table.cpp
     bbcode/CustomizedSimpleBBCode.cpp
     bbcode/HorizontalRuleBBCode.cpp
     bbcode/ListBBCode.cpp
     bbcode/SimpleBBCode.cpp
     bbcode/SimpleTemplateBBCode.cpp
     bbcode/Smilie.cpp
+    bbcode/TableBBCode.cpp
     bbcode/quotes.cpp
     filters/FilterUser.cpp
     ../libthoro/common/DirectoryFileList.cpp

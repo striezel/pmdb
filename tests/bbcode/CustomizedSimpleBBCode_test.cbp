@@ -2,12 +2,12 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="list_bbcode_test" />
+		<Option title="CustomizedSimpleBBCode_test" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Release">
-				<Option output="bin/Release/list_bbcode_test" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/Release/CustomizedSimpleBBCode_test" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Release/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
@@ -24,11 +24,11 @@
 			<Add option="-fexceptions" />
 		</Compiler>
 		<Unit filename="../../code/bbcode/BBCode.hpp" />
-		<Unit filename="../../code/bbcode/ListBBCode.cpp" />
-		<Unit filename="../../code/bbcode/ListBBCode.hpp" />
+		<Unit filename="../../code/bbcode/CustomizedSimpleBBCode.cpp" />
+		<Unit filename="../../code/bbcode/CustomizedSimpleBBCode.hpp" />
 		<Unit filename="../../libthoro/common/StringUtils.cpp" />
 		<Unit filename="../../libthoro/common/StringUtils.h" />
-		<Unit filename="list_bbcode_test.cpp" />
+		<Unit filename="CustomizedSimpleBBCode_test.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />

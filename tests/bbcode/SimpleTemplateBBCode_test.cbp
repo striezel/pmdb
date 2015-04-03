@@ -2,12 +2,12 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="advanced_template_bbcode_test" />
+		<Option title="simple_template_bbcode_test" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Release">
-				<Option output="bin/Release/advanced_template_bbcode_test" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/Release/simple_template_bbcode_test" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Release/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
@@ -25,13 +25,12 @@
 		</Compiler>
 		<Unit filename="../../code/MsgTemplate.cpp" />
 		<Unit filename="../../code/MsgTemplate.hpp" />
-		<Unit filename="../../code/bbcode/AdvancedTemplateBBCode.cpp" />
-		<Unit filename="../../code/bbcode/AdvancedTemplateBBCode.hpp" />
+		<Unit filename="../../code/bbcode/BBCode.hpp" />
 		<Unit filename="../../code/bbcode/SimpleTemplateBBCode.cpp" />
 		<Unit filename="../../code/bbcode/SimpleTemplateBBCode.hpp" />
 		<Unit filename="../../libthoro/common/StringUtils.cpp" />
 		<Unit filename="../../libthoro/common/StringUtils.h" />
-		<Unit filename="advanced_template_bbcode_test.cpp" />
+		<Unit filename="SimpleTemplateBBCode_test.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />

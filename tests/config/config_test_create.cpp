@@ -44,16 +44,3 @@ int main(void)
   //all checks successful
   return 0;
 }
-
-/*
-
-BOOST_AUTO_TEST_CASE (config_setTPL)
-{
-  Config conf;
-  conf.setTPLFile("/some/nice/path/to/file.tpl");
-  // tpl file name should match value above
-  BOOST_CHECK(conf.getTPL() == "/some/nice/path/to/file.tpl");
-}
-
-BOOST_AUTO_TEST_SUITE_END( )
-*/

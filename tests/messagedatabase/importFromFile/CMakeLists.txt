@@ -5,6 +5,7 @@ cmake_minimum_required (VERSION 2.8)
 project(importFromFile_test)
 
 set(importFromFile_test_src
+    ../../../code/Encoding.cpp
     ../../../code/FolderMap.cpp
     ../../../code/MessageDatabase.cpp
     ../../../code/MsgTemplate.cpp

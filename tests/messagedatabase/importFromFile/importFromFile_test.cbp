@@ -27,6 +27,8 @@
 		<Linker>
 			<Add library="xml2" />
 		</Linker>
+		<Unit filename="../../../code/Encoding.cpp" />
+		<Unit filename="../../../code/Encoding.hpp" />
 		<Unit filename="../../../code/FolderMap.cpp" />
 		<Unit filename="../../../code/FolderMap.hpp" />
 		<Unit filename="../../../code/MessageDatabase.cpp" />

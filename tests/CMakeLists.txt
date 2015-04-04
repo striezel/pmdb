@@ -12,6 +12,9 @@ add_subdirectory (colourmap)
 # Recurse into subdirectory for tests of Config class.
 add_subdirectory (config)
 
+# Recurse into subdirectory for tests of MessageDatabase class.
+add_subdirectory (messagedatabase)
+
 # Recurse into subdirectory for tests of MsgTemplate class.
 add_subdirectory (msgtemplate)
 

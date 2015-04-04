@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!-- some random comment, just to make sure the program can handle comments -->
+
+<privatemessages>
+	<folder name="Sent">
+		<privatemessage>
+			<datestamp>2007-06-14 12:34</datestamp>
+			<title>This is the title</title>
+			<fromuser>Hermes</fromuser>
+			<fromuserid>234</fromuserid>
+			<touser>Poseidon</touser>
+			<message><![CDATA[This is a message.]]></message>
+		</privatemessage>
+	</folder>
+</privatemessages>

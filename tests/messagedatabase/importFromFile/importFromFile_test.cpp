@@ -162,6 +162,8 @@ int main(int argc, char **argv)
   charsets.push_back(std::make_pair("charset-ucs-4.xml",      "UCS-4"));
   charsets.push_back(std::make_pair("charset-utf-8.xml",      "UTF-8"));
   charsets.push_back(std::make_pair("charset-utf-16.xml",     "UTF-16"));
+  charsets.push_back(std::make_pair("charset-utf-16-BE.xml",  "UTF-16 big endian"));
+  charsets.push_back(std::make_pair("charset-utf-16-LE.xml",  "UTF-16 little endian"));
 
   //range-based for loop -> requires C++11
   for (const std::pair<std::string, std::string>& charsetPair: charsets)

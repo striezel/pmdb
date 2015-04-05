@@ -19,6 +19,8 @@
 */
 
 #include <iostream>
+#include <utility>
+#include <vector>
 #include "../../../libthoro/encoding/StringConversion.hpp"
 #include "../../../libthoro/filesystem/DirectoryFunctions.hpp"
 #include "../../../code/MessageDatabase.hpp"
@@ -154,10 +156,15 @@ int main(int argc, char **argv)
   } //end of scope for "single_message.xml"
 
 
-  //scope one for "charset-iso-8859-1.xml"
+  std::vector<std::pair<std::string, std::string> > charsets;
+  charsets.push_back(std::make_pair("charset-iso-8859-1.xml", "ISO-8859-1"));
+  charsets.push_back(std::make_pair("charset-utf-8.xml",      "UTF-8"));
+  charsets.push_back(std::make_pair("charset-utf-16.xml",     "UTF-16"));
+
+  //range-based for loop -> requires C++11
+  for (const std::pair<std::string, std::string>& charsetPair: charsets)
   {
-    /* Try to read a message that contains a variety of ISO-88559-1 characters
-       with ordinal values above 127. */
+    /* Try to read a message that contains a variety of ISO-88559-1/UTF-8/UTF-16 characters. */
     MessageDatabase msgdb;
     FolderMap fm;
     uint32_t readPMs = 0;
@@ -165,15 +172,15 @@ int main(int argc, char **argv)
 
     try
     {
-      if (!msgdb.importFromFile(baseXmlPath+"charset-iso-8859-1.xml", readPMs, newPMs, fm))
+      if (!msgdb.importFromFile(baseXmlPath+charsetPair.first, readPMs, newPMs, fm))
       {
-        std::cout << "Error: Could not load message from " + baseXmlPath+"charset-iso-8859-1.xml!\n";
+        std::cout << "Error: Could not load message from " + baseXmlPath+charsetPair.first+"!\n";
         return 1;
       }
     }
     catch (...)
     {
-      std::cout << "Error: Caught exception while trying to import message from charset-iso-8859-1.xml!\n";
+      std::cout << "Error: Caught exception while trying to import message from "+charsetPair.first+"!\n";
       return 1;
     }
     //check, if we read exactly one PM
@@ -193,7 +200,7 @@ int main(int argc, char **argv)
 
     MessageDatabase::Iterator iter = msgdb.getBegin();
     const SHA256::MessageDigest sha256Hash = iter->first;
-    std::cout << "Message hash of charset-iso-8859-1.xml is " << sha256Hash.toHexString() << ".\n";
+    std::cout << "Message hash of "+charsetPair.first+" is " << sha256Hash.toHexString() << ".\n";
     PrivateMessage pm;
     try
     {
@@ -240,187 +247,9 @@ int main(int argc, char **argv)
                 << "\" but is \"" << message << "\" instead.\n";
       return 1;
     }
-    std::cout << "Info: ISO-8859-1 message is:\n" << message
+    std::cout << "Info: " << charsetPair.second << " message is:\n" << message
               << "\n---- END OF MESSAGE ----\n";
-  } //end of scope for "charset-iso-8859-1.xml"
-
-  //scope one for "charset-utf-8.xml"
-  {
-    /* Try to read a message that contains a variety of UTF-8 characters. */
-    MessageDatabase msgdb;
-    FolderMap fm;
-    uint32_t readPMs = 0;
-    uint32_t newPMs = 0;
-
-    try
-    {
-      if (!msgdb.importFromFile(baseXmlPath+"charset-utf-8.xml", readPMs, newPMs, fm))
-      {
-        std::cout << "Error: Could not load message from " + baseXmlPath+"charset-utf-8.xml!\n";
-        return 1;
-      }
-    }
-    catch (...)
-    {
-      std::cout << "Error: Caught exception while trying to import message from charset-utf-8.xml!\n";
-      return 1;
-    }
-    //check, if we read exactly one PM
-    if ((readPMs != 1) || (newPMs != 1))
-    {
-      std::cout << "Error: Numbers of read/new PMs should be one each, but they are not!\n"
-                << "Read: " << readPMs << "; new: " << newPMs << "\n";
-      return 1;
-    }
-    //check, if DB reports proper number of messages
-    if (msgdb.getNumberOfMessages() != 1)
-    {
-      std::cout << "Error: Number of messages should be one, but it is "
-                << msgdb.getNumberOfMessages() << " instead!\n";
-      return 1;
-    }
-
-    MessageDatabase::Iterator iter = msgdb.getBegin();
-    const SHA256::MessageDigest sha256Hash = iter->first;
-    std::cout << "Message hash of charset-utf-8.xml is " << sha256Hash.toHexString() << ".\n";
-    PrivateMessage pm;
-    try
-    {
-      pm = msgdb.getMessage(sha256Hash);
-    }
-    catch (...)
-    {
-      std::cout << "Error: Could not get private message from database!\n";
-      return 1;
-    }
-    //check contents
-    // ---- Note: datestamp, title, sender, from user ID, to user get omitted,
-    //      they are the same as in the previous file and should therefore be
-    //      read without problems.
-    // ---- message
-
-    const std::string iso8859_1_message = std::string("This is a message.\n")
-                                        + " !\"#$%&'()*+,-./\n"
-                                        + "0123456789:;<=>?\n"
-                                        + "@ABCDEFGHIJKLMNO\n"
-                                        + "PQRSTUVWXYZ[\\]^_\n"
-                                        + "`abcdefghijklmno\n"
-                                        + "pqrstuvwxyz{|}~\n"
-                                        + " ¡¢£¤¥¦§¨©ª«¬­®¯\n"
-                                        + "°±²³´µ¶·¸¹º»¼½¾¿\n"
-                                        + "ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏ\n"
-                                        + "ĞÑÒÓÔÕÖ×ØÙÚÛÜİŞß\n"
-                                        + "àáâãäåæçèéêëìíîï\n"
-                                        + "ğñòóôõö÷øùúûüışÿ\n";
-
-    std::string message("");
-    //convert message
-    if (!libthoro::encoding::utf8_to_iso8859_1(pm.getMessage(), message))
-    {
-      std::cout << "Conversion failed!\n";
-      std::cout << "Message is now \""<<message<<"\".\n";
-      return 1;
-    }
-
-    //compare converted message
-    if (message != iso8859_1_message)
-    {
-      std::cout << "Error: Message should be \"" << iso8859_1_message
-                << "\" but is \"" << message << "\" instead.\n";
-      return 1;
-    }
-    std::cout << "Info: UTF-8 message is:\n" << message
-              << "\n---- END OF MESSAGE ----\n";
-  } //end of scope for "charset-utf-8.xml"
-
-  //scope one for "charset-utf-16.xml"
-  {
-    /* Try to read a message that contains a variety of UTF-16 characters. */
-    MessageDatabase msgdb;
-    FolderMap fm;
-    uint32_t readPMs = 0;
-    uint32_t newPMs = 0;
-
-    try
-    {
-      if (!msgdb.importFromFile(baseXmlPath+"charset-utf-16.xml", readPMs, newPMs, fm))
-      {
-        std::cout << "Error: Could not load message from " + baseXmlPath+"charset-utf-16.xml!\n";
-        return 1;
-      }
-    }
-    catch (...)
-    {
-      std::cout << "Error: Caught exception while trying to import message from charset-utf-16.xml!\n";
-      return 1;
-    }
-    //check, if we read exactly one PM
-    if ((readPMs != 1) || (newPMs != 1))
-    {
-      std::cout << "Error: Numbers of read/new PMs should be one each, but they are not!\n"
-                << "Read: " << readPMs << "; new: " << newPMs << "\n";
-      return 1;
-    }
-    //check, if DB reports proper number of messages
-    if (msgdb.getNumberOfMessages() != 1)
-    {
-      std::cout << "Error: Number of messages should be one, but it is "
-                << msgdb.getNumberOfMessages() << " instead!\n";
-      return 1;
-    }
-
-    MessageDatabase::Iterator iter = msgdb.getBegin();
-    const SHA256::MessageDigest sha256Hash = iter->first;
-    std::cout << "Message hash of charset-utf-16.xml is " << sha256Hash.toHexString() << ".\n";
-    PrivateMessage pm;
-    try
-    {
-      pm = msgdb.getMessage(sha256Hash);
-    }
-    catch (...)
-    {
-      std::cout << "Error: Could not get private message from database!\n";
-      return 1;
-    }
-    //check contents
-    // ---- Note: datestamp, title, sender, from user ID, to user get omitted,
-    //      they are the same as in the previous file and should therefore be
-    //      read without problems.
-    // ---- message
-
-    const std::string iso8859_1_message = std::string("This is a message.\n")
-                                        + " !\"#$%&'()*+,-./\n"
-                                        + "0123456789:;<=>?\n"
-                                        + "@ABCDEFGHIJKLMNO\n"
-                                        + "PQRSTUVWXYZ[\\]^_\n"
-                                        + "`abcdefghijklmno\n"
-                                        + "pqrstuvwxyz{|}~\n"
-                                        + " ¡¢£¤¥¦§¨©ª«¬­®¯\n"
-                                        + "°±²³´µ¶·¸¹º»¼½¾¿\n"
-                                        + "ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏ\n"
-                                        + "ĞÑÒÓÔÕÖ×ØÙÚÛÜİŞß\n"
-                                        + "àáâãäåæçèéêëìíîï\n"
-                                        + "ğñòóôõö÷øùúûüışÿ\n";
-
-    std::string message("");
-    //convert message
-    if (!libthoro::encoding::utf8_to_iso8859_1(pm.getMessage(), message))
-    {
-      std::cout << "Conversion failed!\n";
-      std::cout << "Message is now \""<<message<<"\".\n";
-      return 1;
-    }
-
-    //compare converted message
-    if (message != iso8859_1_message)
-    {
-      std::cout << "Error: Message should be \"" << iso8859_1_message
-                << "\" but is \"" << message << "\" instead.\n";
-      return 1;
-    }
-    std::cout << "Info: UTF-16 message is:\n" << message
-              << "\n---- END OF MESSAGE ----\n";
-  } //end of scope for "charset-utf-16.xml"
+  } //end range-bases for ("foreach")
 
   std::cout << "Passed simple message database file import test!\n";
   return 0;

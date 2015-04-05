@@ -21,9 +21,8 @@ set(importFromFile_test_src
     ../../../libthoro/hash/sha-256_sources.cpp
     importFromFile_test.cpp)
 
-if (CMAKE_COMPILER_IS_GNUCC)
-    add_definitions(-Wall -O3 -fexceptions)
-endif (CMAKE_COMPILER_IS_GNUCC)
+//We use a C++11 feature in the code, so enable C++0x a.k.a. C++11.
+add_definitions(-Wall -O3 -fexceptions -std=c++0x)
 
 set( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -s" )
 

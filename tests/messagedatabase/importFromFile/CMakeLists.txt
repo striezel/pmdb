@@ -5,7 +5,6 @@ cmake_minimum_required (VERSION 2.8)
 project(importFromFile_test)
 
 set(importFromFile_test_src
-    ../../../code/Encoding.cpp
     ../../../code/FolderMap.cpp
     ../../../code/MessageDatabase.cpp
     ../../../code/MsgTemplate.cpp
@@ -16,6 +15,7 @@ set(importFromFile_test_src
     ../../../code/XMLNode.cpp
     ../../../libthoro/common/DirectoryFileList.cpp
     ../../../libthoro/common/StringUtils.cpp
+    ../../../libthoro/encoding/StringConversion.cpp
     ../../../libthoro/filesystem/DirectoryFunctions.cpp
     ../../../libthoro/hash/sha-256.cpp
     ../../../libthoro/hash/sha-256_sources.cpp

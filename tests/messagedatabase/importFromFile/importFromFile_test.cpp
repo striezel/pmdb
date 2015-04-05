@@ -19,8 +19,8 @@
 */
 
 #include <iostream>
+#include "../../../libthoro/encoding/StringConversion.hpp"
 #include "../../../libthoro/filesystem/DirectoryFunctions.hpp"
-#include "../../../code/Encoding.hpp"
 #include "../../../code/MessageDatabase.hpp"
 
 int main(int argc, char **argv)
@@ -226,7 +226,7 @@ int main(int argc, char **argv)
 
     std::string message("");
     //convert message
-    if (!Encoding::UTF8_to_ISO_8859_1(pm.getMessage(), message))
+    if (!libthoro::encoding::utf8_to_iso8859_1(pm.getMessage(), message))
     {
       std::cout << "Conversion failed!\n";
       std::cout << "Message is now \""<<message<<"\".\n";

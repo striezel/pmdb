@@ -50,11 +50,20 @@ int main(int argc, char **argv)
     uint32_t readPMs = 0;
     uint32_t newPMs = 0;
 
-    if (!msgdb.importFromFile(baseXmlPath+"single_message.xml", readPMs, newPMs, fm))
+    try
     {
-      std::cout << "Error: Could not load message from " + baseXmlPath+"single_message.xml!\n";
+      if (!msgdb.importFromFile(baseXmlPath+"single_message.xml", readPMs, newPMs, fm))
+      {
+        std::cout << "Error: Could not load message from " + baseXmlPath+"single_message.xml!\n";
+        return 1;
+      }
+    }
+    catch (...)
+    {
+      std::cout << "Error: Caught exception while trying to import message from XML file!\n";
       return 1;
     }
+
     //check, if we read exactly one PM
     if ((readPMs != 1) || (newPMs != 1))
     {
@@ -73,7 +82,16 @@ int main(int argc, char **argv)
     MessageDatabase::Iterator iter = msgdb.getBegin();
     const SHA256::MessageDigest sha256Hash = iter->first;
     std::cout << "Message hash of single_message.xml is " << sha256Hash.toHexString() << ".\n";
-    const PrivateMessage& pm = msgdb.getMessage(sha256Hash);
+    PrivateMessage pm;
+    try
+    {
+      pm = msgdb.getMessage(sha256Hash);
+    }
+    catch (...)
+    {
+      std::cout << "Error: Could not get private message from database!\n";
+      return 1;
+    }
     //check contents
     // ---- datestamp
     if (pm.getDatestamp() != "2007-06-14 12:34")
@@ -145,9 +163,17 @@ int main(int argc, char **argv)
     uint32_t readPMs = 0;
     uint32_t newPMs = 0;
 
-    if (!msgdb.importFromFile(baseXmlPath+"charset-iso-8859-1.xml", readPMs, newPMs, fm))
+    try
     {
-      std::cout << "Error: Could not load message from " + baseXmlPath+"charset-iso-8859-1.xml!\n";
+      if (!msgdb.importFromFile(baseXmlPath+"charset-iso-8859-1.xml", readPMs, newPMs, fm))
+      {
+        std::cout << "Error: Could not load message from " + baseXmlPath+"charset-iso-8859-1.xml!\n";
+        return 1;
+      }
+    }
+    catch (...)
+    {
+      std::cout << "Error: Caught exception while trying to import message from charset-iso-8859-1.xml!\n";
       return 1;
     }
     //check, if we read exactly one PM
@@ -168,7 +194,16 @@ int main(int argc, char **argv)
     MessageDatabase::Iterator iter = msgdb.getBegin();
     const SHA256::MessageDigest sha256Hash = iter->first;
     std::cout << "Message hash of charset-iso-8859-1.xml is " << sha256Hash.toHexString() << ".\n";
-    const PrivateMessage& pm = msgdb.getMessage(sha256Hash);
+    PrivateMessage pm;
+    try
+    {
+      pm = msgdb.getMessage(sha256Hash);
+    }
+    catch (...)
+    {
+      std::cout << "Error: Could not get private message from database!\n";
+      return 1;
+    }
     //check contents
     // ---- Note: datestamp, title, sender, from user ID, to user get omitted,
     //      they are the same as in the previous file and should therefore be

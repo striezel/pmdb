@@ -158,6 +158,7 @@ int main(int argc, char **argv)
 
   std::vector<std::pair<std::string, std::string> > charsets;
   charsets.push_back(std::make_pair("charset-iso-8859-1.xml", "ISO-8859-1"));
+  charsets.push_back(std::make_pair("charset-ucs-2.xml",      "UCS-2"));
   charsets.push_back(std::make_pair("charset-ucs-4.xml",      "UCS-4"));
   charsets.push_back(std::make_pair("charset-utf-8.xml",      "UTF-8"));
   charsets.push_back(std::make_pair("charset-utf-16.xml",     "UTF-16"));

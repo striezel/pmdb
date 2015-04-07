@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2012, 2014  Thoronador
+    Copyright (C) 2012, 2014, 2015  Thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -36,55 +36,120 @@ class PrivateMessage
     /** clears/resets all data members */
     void clear();
 
+
     /** normalises the line breaks in the message text */
     void normalise();
 
 
     //access to data members
+    /** \brief access PM's datestamp
+     *
+     * \return datestamp (string)
+     */
     inline const std::string& getDatestamp() const
     {
       return datestamp;
     }
 
+
+    /** \brief access current title of the PM
+     *
+     * \return PM title
+     */
     inline const std::string& getTitle() const
     {
       return title;
     }
 
+
+    /** \brief provides access to the name of the person who sent the PM
+     *
+     * \return name of the sender
+     */
     inline const std::string& getFromUser() const
     {
       return fromUser;
     }
 
+
+    /** \brief provides access to the user ID of the person who sent the PM
+     *
+     * \return Returns user ID of the sender.
+     *         A value of zero indicates that no value has been set.
+     */
     inline uint32_t getFromUserID() const
     {
       return fromUserID;
     }
 
+
+    /** \brief provides access to the name of the person who received the PM
+     *
+     * \return name of the receiver
+     */
     inline const std::string& getToUser() const
     {
       return toUser;
     }
 
+
+    /** \brief provides access to the text of the PM
+     *
+     * \return message text
+     */
     inline const std::string& getMessage() const
     {
       return message;
     }
 
+
+    /** \brief calculates the SHA-256 hash of the PM
+     *
+     * \return returns SHA-256 hash of the PM
+     */
     const SHA256::MessageDigest& getHash();
 
 
     //functions to set various data members
+    /** \brief set new datestamp
+     *
+     * \param ds  new value
+     */
     void setDatestamp(const std::string& ds);
 
+
+    /** \brief set new PM title
+     *
+     * \param t  the new title
+     */
     void setTitle(const std::string& t);
 
+
+    /** \brief set new sender name
+     *
+     * \param from  the new sender's name
+     */
     void setFromUser(const std::string& from);
 
+
+    /** \brief set new user ID of sender
+     *
+     * \param uid  the new user ID
+     */
     void setFromUserID(const uint32_t uid);
 
+
+    /** \brief set new name of the receiver
+     *
+     * \param to  the new name
+     */
     void setToUser(const std::string& to);
 
+
+    /** \brief set new PM message text
+     *
+     * \param msg  the new message text
+     */
     void setMessage(const std::string& msg);
 
 
@@ -94,6 +159,7 @@ class PrivateMessage
      * \return Returns true in case of success, or false if an error occured.
      */
     bool saveToFile(const std::string& fileName) const;
+
 
     /** \brief tries to load the message from the given file
      *

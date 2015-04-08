@@ -496,3 +496,8 @@ std::map<md_date, std::vector<md_date> > MessageDatabase::getTextSubsets() const
   }//while
   return result;
 }
+
+void MessageDatabase::clear()
+{
+  m_Messages.clear();
+}

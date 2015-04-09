@@ -18,6 +18,7 @@
  -------------------------------------------------------------------------------
 */
 
+#include <exception>
 #include <iostream>
 #include "../../../code/MessageDatabase.hpp"
 
@@ -48,28 +49,36 @@ int main()
     pm.setToUser("Poseidon");
     pm.setMessage("This is a message.");
 
-    //database should accept message
-    if (!mdb.addMessage(pm))
+    try
     {
-      std::cout << "Error: Could not add message to DB!\n";
-      return 1;
-    }
-    //But database should not accept same message twice!
-    if (mdb.addMessage(pm))
+      //database should accept message
+      if (!mdb.addMessage(pm))
+      {
+        std::cout << "Error: Could not add message to DB!\n";
+        return 1;
+      }
+      //But database should not accept same message twice!
+      if (mdb.addMessage(pm))
+      {
+        std::cout << "Error: DB accepted same message twice!\n";
+        return 1;
+      }
+      //DB should say it has that message.
+      if (!mdb.hasMessage(pm))
+      {
+        std::cout << "Error: Database can not keep track of messages!\n";
+        return 1;
+      }
+      if (mdb.getNumberOfMessages() != 1)
+      {
+        std::cout << "Error: DB has more than one message!\n";
+        return 1;
+      }
+    } //try
+    catch (std::exception& except)
     {
-      std::cout << "Error: DB accepted same message twice!\n";
-      return 1;
-    }
-    //DB should say it has that message.
-    if (!mdb.hasMessage(pm))
-    {
-      std::cout << "Error: Database can not keep track of messages!\n";
-      return 1;
-    }
-    if (mdb.getNumberOfMessages() != 1)
-    {
-      std::cout << "Error: DB has more than one message!\n";
-      return 1;
+      std::cout << "Error: Caught an exception, you managed to mess things up!\n"
+                << "What: " << except.what() << "\n";
     }
   } //end of scope
 
@@ -94,35 +103,43 @@ int main()
     secondPM.setToUser("Mrs. B");
     secondPM.setMessage("This is another message.");
 
-    //database should accept message
-    if (!mdb.addMessage(pm))
+    try
     {
-      std::cout << "Error: Could not add message to DB!\n";
-      return 1;
-    }
-    //database should accept 2nd message
-    if (!mdb.addMessage(secondPM))
-    {
-      std::cout << "Error: Could not add 2nd message to DB!\n";
-      return 1;
-    }
+      //database should accept message
+      if (!mdb.addMessage(pm))
+      {
+        std::cout << "Error: Could not add message to DB!\n";
+        return 1;
+      }
+      //database should accept 2nd message
+      if (!mdb.addMessage(secondPM))
+      {
+        std::cout << "Error: Could not add 2nd message to DB!\n";
+        return 1;
+      }
 
-    //DB should say it has the first message.
-    if (!mdb.hasMessage(pm))
+      //DB should say it has the first message.
+      if (!mdb.hasMessage(pm))
+      {
+        std::cout << "Error: Database can not keep track of messages!\n";
+        return 1;
+      }
+      //DB should say it has the second message.
+      if (!mdb.hasMessage(secondPM))
+      {
+        std::cout << "Error: Database can not keep track of messages!\n";
+        return 1;
+      }
+      if (mdb.getNumberOfMessages() != 2)
+      {
+        std::cout << "Error: DB does not have two messages!\n";
+        return 1;
+      }
+    } //try
+    catch (std::exception& except)
     {
-      std::cout << "Error: Database can not keep track of messages!\n";
-      return 1;
-    }
-    //DB should say it has the second message.
-    if (!mdb.hasMessage(secondPM))
-    {
-      std::cout << "Error: Database can not keep track of messages!\n";
-      return 1;
-    }
-    if (mdb.getNumberOfMessages() != 2)
-    {
-      std::cout << "Error: DB does not have two messages!\n";
-      return 1;
+      std::cout << "Error: Caught an exception, you managed to mess things up!\n"
+                << "What: " << except.what() << "\n";
     }
   } //end of scope for two messages
 
@@ -139,36 +156,45 @@ int main()
     pm.setToUser("Poseidon");
     pm.setMessage("This is a message.");
 
-    unsigned int i;
     const unsigned int limit = 200000;
-    for (i=1; i <= limit; ++i)
+    try
     {
-      //change user ID to get a "different" message
-      pm.setFromUserID(i);
-      //database should accept message
-      if (!mdb.addMessage(pm))
+      unsigned int i;
+      for (i=1; i <= limit; ++i)
       {
-        std::cout << "Error: Could not add message with user ID " << i << " to DB!\n";
+        //change user ID to get a "different" message
+        pm.setFromUserID(i);
+        //database should accept message
+        if (!mdb.addMessage(pm))
+        {
+          std::cout << "Error: Could not add message with user ID " << i << " to DB!\n";
+          return 1;
+        }
+        //database should know it has that message
+        if (!mdb.hasMessage(pm))
+        {
+          std::cout << "Error: Database can not keep track of " << i << " (or more) messages!\n";
+          return 1;
+        }
+        //Database should NOT accept the message twice.
+        if (mdb.addMessage(pm))
+        {
+          std::cout << "Error: Could add message with user ID " << i << " to DB - twice!\n";
+          return 1;
+        }
+      } //for
+      if (mdb.getNumberOfMessages() != limit)
+      {
+        std::cout << "Error: DB does not have " << limit << " messages as expected!\n";
         return 1;
       }
-      //database should know it has that message
-      if (!mdb.hasMessage(pm))
-      {
-        std::cout << "Error: Database can not keep track of " << i << " (or more) messages!\n";
-        return 1;
-      }
-      //Database should NOT accept the message twice.
-      if (mdb.addMessage(pm))
-      {
-        std::cout << "Error: Could add message with user ID " << i << " to DB - twice!\n";
-        return 1;
-      }
-    } //for
-    if (mdb.getNumberOfMessages() != limit)
+    } //try
+    catch (std::exception& except)
     {
-      std::cout << "Error: DB does not have " << limit << " messages as expected!\n";
-      return 1;
+      std::cout << "Error: Caught an exception, you managed to mess things up!\n"
+                << "What: " << except.what() << "\n";
     }
+
     std::cout << "Test info: Added " << limit << " messages successfully!\n";
   } //end of scope for multiple PMs
 

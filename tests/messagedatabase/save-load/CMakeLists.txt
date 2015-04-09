@@ -15,6 +15,7 @@ set(MessageDatabase_saveload_test_src
     ../../../code/XMLNode.cpp
     ../../../libthoro/common/DirectoryFileList.cpp
     ../../../libthoro/common/StringUtils.cpp
+    ../../../libthoro/filesystem/DirectoryFunctions.cpp
     ../../../libthoro/hash/sha-256.cpp
     ../../../libthoro/hash/sha-256_sources.cpp
     save-load-test.cpp)

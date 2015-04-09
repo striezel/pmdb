@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2012, 2013, 2014  Thoronador
+    Copyright (C) 2012, 2013, 2014, 2015  Thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -28,6 +28,7 @@
 #include "XMLNode.hpp"
 #include "../libthoro/common/DirectoryFileList.h"
 #include "../libthoro/common/StringUtils.h"
+#include "../libthoro/filesystem/DirectoryFunctions.hpp"
 
 bool isValidSHA256Hash(const std::string& hash)
 {
@@ -329,9 +330,10 @@ bool MessageDatabase::processPrivateMessageNode(const XMLNode& node, uint32_t& r
 bool MessageDatabase::saveMessages(const std::string& directory) const
 {
   std::map<SHA256::MessageDigest, PrivateMessage>::const_iterator iter = m_Messages.begin();
+  const std::string realDirectory(libthoro::filesystem::slashify(directory));
   while (iter!=m_Messages.end())
   {
-    if (!iter->second.saveToFile(directory+iter->first.toHexString()))
+    if (!iter->second.saveToFile(realDirectory+iter->first.toHexString()))
       return false;
     ++iter;
   }//while
@@ -350,6 +352,8 @@ bool MessageDatabase::loadMessages(const std::string& directory, uint32_t& readP
 
   PrivateMessage tempPM;
 
+  const std::string realDirectory(libthoro::filesystem::slashify(directory));
+
   std::vector<FileEntry>::const_iterator iter = files.begin();
   while (iter!=files.end())
   {
@@ -357,9 +361,9 @@ bool MessageDatabase::loadMessages(const std::string& directory, uint32_t& readP
     {
       if (isValidSHA256Hash(iter->FileName))
       {
-        if (!tempPM.loadFromFile(directory+iter->FileName))
+        if (!tempPM.loadFromFile(realDirectory+iter->FileName))
         {
-          std::cout << "Error while loading message from file \""<< directory+iter->FileName <<"\"!\n";
+          std::cout << "Error while loading message from file \""<< realDirectory+iter->FileName <<"\"!\n";
           return false;
         }
         if (iter->FileName!=tempPM.getHash().toHexString())

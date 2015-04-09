@@ -21,6 +21,7 @@
 #include <cstdlib> //for mkstemp()
 #include <fstream>
 #include <iostream>
+#include <sys/stat.h> //for umask()
 #include <unistd.h> //for close(), unlink(), write()
 #include "../../code/MsgTemplate.hpp"
 
@@ -45,7 +46,10 @@ int main()
   //mkstemp scope
   {
     char tempFileName[] = "/tmp/msgXXXXXXXXXX";
+    const mode_t orig_umask = umask(S_IXUSR | S_IRWXG | S_IRWXO);
     const int fd = mkstemp(tempFileName);
+    //reset umask
+    umask(orig_umask);
     if (fd < 0) //-1 signals error
     {
       std::cout << "Could not get temporary file name!\n";

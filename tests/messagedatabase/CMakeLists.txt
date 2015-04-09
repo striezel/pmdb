@@ -6,3 +6,6 @@ add_subdirectory (addMessage)
 
 # Recurse into subdirectory for importFromFile() test.
 add_subdirectory (importFromFile)
+
+# Recurse into subdirectory for saveMessages()/loadMessages() test.
+add_subdirectory (save-load)

@@ -59,17 +59,25 @@ int main(int argc, char **argv)
   //add some PMs to the database
   unsigned int i;
   const unsigned int limit = 2000;
-  for (i=1; i <= limit; ++i)
+  try
   {
-    //change user ID to get a "different" message
-    pm.setFromUserID(i);
-    //database should accept message
-    if (!mdb.addMessage(pm))
+    for (i=1; i <= limit; ++i)
     {
-      std::cout << "Error: Could not add message with user ID " << i << " to DB!\n";
-      return 1;
-    }
-  } //for
+      //change user ID to get a "different" message
+      pm.setFromUserID(i);
+      //database should accept message
+      if (!mdb.addMessage(pm))
+      {
+        std::cout << "Error: Could not add message with user ID " << i << " to DB!\n";
+        return 1;
+      }
+    } //for
+  } //try
+  catch (...)
+  {
+    std::cout << "Error: Caught exception while trying to add messages!\n";
+    return 1;
+  } //catch
   std::cout << "Test info: Added " << limit << " messages successfully!\n";
 
 

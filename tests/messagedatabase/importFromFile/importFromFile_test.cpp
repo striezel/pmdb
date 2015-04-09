@@ -221,19 +221,20 @@ int main(int argc, char **argv)
     //      read without problems.
     // ---- message
 
-    const std::string iso8859_1_message = std::string("This is a message.\n")
-                                        + " !\"#$%&'()*+,-./\n"
-                                        + "0123456789:;<=>?\n"
-                                        + "@ABCDEFGHIJKLMNO\n"
-                                        + "PQRSTUVWXYZ[\\]^_\n"
-                                        + "`abcdefghijklmno\n"
-                                        + "pqrstuvwxyz{|}~\n"
-                                        + " ¡¢£¤¥¦§¨©ª«¬­®¯\n"
-                                        + "°±²³´µ¶·¸¹º»¼½¾¿\n"
-                                        + "ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏ\n"
-                                        + "ĞÑÒÓÔÕÖ×ØÙÚÛÜİŞß\n"
-                                        + "àáâãäåæçèéêëìíîï\n"
-                                        + "ğñòóôõö÷øùúûüışÿ\n";
+    const std::string iso8859_1_message
+        = std::string("This is a message.\n")
+          + " !\"#$%&'()*+,-./\n"
+          + "0123456789:;<=>?\n"
+          + "@ABCDEFGHIJKLMNO\n"
+          + "PQRSTUVWXYZ[\\]^_\n"
+          + "`abcdefghijklmno\n"
+          + "pqrstuvwxyz{|}~\n"
+          + "\xa0\xa1\xa2\xa3\xa4\xa5\xa6\xa7\xa8\xa9\xaa\xab\xac\xad\xae\xaf\n"  // " ¡¢£¤¥¦§¨©ª«¬­®¯\n"
+          + "\xb0\xb1\xb2\xb3\xb4\xb5\xb6\xb7\xb8\xb9\xba\xbb\xbc\xbd\xbe\xbf\n"  // "°±²³´µ¶·¸¹º»¼½¾¿\n"
+          + "\xc0\xc1\xc2\xc3\xc4\xc5\xc6\xc7\xc8\xc9\xca\xcb\xcc\xcd\xce\xcf\n"  // "ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏ\n"
+          + "\xd0\xd1\xd2\xd3\xd4\xd5\xd6\xd7\xd8\xd9\xda\xdb\xdc\xdd\xde\xdf\n"  // "ĞÑÒÓÔÕÖ×ØÙÚÛÜİŞß\n"
+          + "\xe0\xe1\xe2\xe3\xe4\xe5\xe6\xe7\xe8\xe9\xea\xeb\xec\xed\xee\xef\n"  // "àáâãäåæçèéêëìíîï\n"
+          + "\xf0\xf1\xf2\xf3\xf4\xf5\xf6\xf7\xf8\xf9\xfa\xfb\xfc\xfd\xfe\xff\n"; // "ğñòóôõö÷øùúûüışÿ\n"
 
     std::string message("");
     //convert message

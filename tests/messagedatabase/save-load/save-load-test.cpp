@@ -79,11 +79,19 @@ int main(int argc, char **argv)
     return 1;
   }
   uint32_t readMessages = 0, newMessages = 0;
-  if (!mdb.loadMessages(tempDir, readMessages, newMessages))
+  try
   {
-    std::cout << "Error: Could not load messages from \"" << tempDir << "\"!\n";
+    if (!mdb.loadMessages(tempDir, readMessages, newMessages))
+    {
+      std::cout << "Error: Could not load messages from \"" << tempDir << "\"!\n";
+      return 1;
+    } //if
+  }//try
+  catch (...)
+  {
+    std::cout << "Error: Caught exception while trying to load messages!\n";
     return 1;
-  }
+  } //catch
   if ((readMessages != limit) || (newMessages != 0))
   {
     std::cout << "Error: Unexpected message count!\n"
@@ -94,11 +102,19 @@ int main(int argc, char **argv)
   }
   //now clear and do the same again
   mdb.clear();
-  if (!mdb.loadMessages(tempDir, readMessages, newMessages))
+  try
   {
-    std::cout << "Error: Could not load messages from \"" << tempDir << "\" a second time!\n";
+    if (!mdb.loadMessages(tempDir, readMessages, newMessages))
+    {
+      std::cout << "Error: Could not load messages from \"" << tempDir << "\" a second time!\n";
+      return 1;
+    } //if
+  }//try
+  catch (...)
+  {
+    std::cout << "Error: Caught exception while trying to load messages a second time!\n";
     return 1;
-  }
+  } //catch
   if ((readMessages != limit) || (newMessages != limit))
   {
     std::cout << "Error: Unexpected message count!\n"

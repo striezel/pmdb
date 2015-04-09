@@ -18,6 +18,7 @@
  -------------------------------------------------------------------------------
 */
 
+#include <exception>
 #include <iostream>
 #include <utility>
 #include <vector>
@@ -145,14 +146,22 @@ int main(int argc, char **argv)
       std::cout << "Error: Folder map has no entry for " << sha256Hash.toHexString() << "!\n";
       return 1;
     }
-    // ---- folder name check
-    if (fm.getFolderName(sha256Hash) != std::string("Sent"))
+    try
     {
-      std::cout << "Error: Folder for " << sha256Hash.toHexString()
-                << " should be \"Sent\", but it is \""
-                << fm.getFolderName(sha256Hash) << "\" instead !\n";
-      return 1;
-    }
+      // ---- folder name check
+      if (fm.getFolderName(sha256Hash) != std::string("Sent"))
+      {
+        std::cout << "Error: Folder for " << sha256Hash.toHexString()
+                  << " should be \"Sent\", but it is \""
+                  << fm.getFolderName(sha256Hash) << "\" instead !\n";
+        return 1;
+      } //if
+    } //try
+    catch (std::exception& ex)
+    {
+      std::cout << "Error: Caught an exception, you managed to mess things up!\n"
+                << "What: " << ex.what() << "\n";
+    } //catch
   } //end of scope for "single_message.xml"
 
 

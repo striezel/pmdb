@@ -21,5 +21,8 @@ add_subdirectory (msgtemplate)
 # Recurse into subdirectory for tests of console colour function(s).
 add_subdirectory (consolecolours)
 
+# Recurse into subdirectory for tests of PrivateMessage class.
+add_subdirectory (privatemessage)
+
 # Recurse into subdirectory for tests of pmdb executable.
 add_subdirectory (pmdb)

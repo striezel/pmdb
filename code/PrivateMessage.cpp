@@ -263,3 +263,17 @@ bool PrivateMessage::loadFromFile(const std::string& fileName)
   input.close();
   return true;
 }
+
+bool PrivateMessage::operator==(const PrivateMessage& other) const
+{
+  return ((datestamp == other.datestamp) && (title == other.title)
+      && (fromUser == other.fromUser) && (fromUserID == other.fromUserID)
+      && (toUser == other.toUser) && (message == other.message));
+}
+
+bool PrivateMessage::operator!=(const PrivateMessage& other) const
+{
+  return ((datestamp != other.datestamp) or (title != other.title)
+      or (fromUser != other.fromUser) or (fromUserID != other.fromUserID)
+      or (toUser != other.toUser) or (message != other.message));
+}

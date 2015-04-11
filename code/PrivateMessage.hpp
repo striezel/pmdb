@@ -167,6 +167,24 @@ class PrivateMessage
      * \return Returns true in case of success, or false if an error occured.
      */
     bool loadFromFile(const std::string& fileName);
+
+
+    /** \brief equality operator for PrivateMessage class
+     *
+     * \param other   the other PrivateMessage instance
+     * \return Returns true, if both instances have the same content.
+     *         Hashes or hash update state are NOT considered.
+     */
+    bool operator==(const PrivateMessage& other) const;
+
+
+    /** \brief inequality operator for PrivateMessage class
+     *
+     * \param other   the other PrivateMessage instance
+     * \return Returns true, if both instances have different content.
+     *         Hashes or hash update state are NOT considered.
+     */
+    bool operator!=(const PrivateMessage& other) const;
   private:
     std::string datestamp;
     std::string title;

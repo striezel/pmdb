@@ -81,7 +81,7 @@ int main(int argc, char **argv)
   std::cout << "Test info: Added " << limit << " messages successfully!\n";
 
 
-  if (!mdb.saveMessages(tempDir))
+  if (!mdb.saveMessages(tempDir, false))
   {
     std::cout << "Error: Could not save messages to \"" << tempDir << "\"!\n";
     return 1;
@@ -89,7 +89,7 @@ int main(int argc, char **argv)
   uint32_t readMessages = 0, newMessages = 0;
   try
   {
-    if (!mdb.loadMessages(tempDir, readMessages, newMessages))
+    if (!mdb.loadMessages(tempDir, readMessages, newMessages, false))
     {
       std::cout << "Error: Could not load messages from \"" << tempDir << "\"!\n";
       return 1;
@@ -112,7 +112,7 @@ int main(int argc, char **argv)
   mdb.clear();
   try
   {
-    if (!mdb.loadMessages(tempDir, readMessages, newMessages))
+    if (!mdb.loadMessages(tempDir, readMessages, newMessages, false))
     {
       std::cout << "Error: Could not load messages from \"" << tempDir << "\" a second time!\n";
       return 1;

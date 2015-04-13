@@ -122,6 +122,7 @@ int main(int argc, char **argv)
   bool saveModeSpecified = false;
   std::string homeDirectory;
   std::string defaultSaveDirectory;
+  const bool compressed = false;
 
   if (libthoro::filesystem::Directory::getHome(homeDirectory))
   {
@@ -405,7 +406,7 @@ int main(int argc, char **argv)
   set_iter = loadDirs.begin();
   while (set_iter!=loadDirs.end())
   {
-    if (!mdb.loadMessages(*set_iter, PMs_done, PMs_new))
+    if (!mdb.loadMessages(*set_iter, PMs_done, PMs_new, compressed))
     {
       std::cout << "Could not load all messages from \""<< *set_iter <<"\"!\nRead so far: "<<PMs_done<<"; new: "<<PMs_new<<"\n";
       return 0;
@@ -439,7 +440,7 @@ int main(int argc, char **argv)
       }
     }//if more than zero messages
 
-    if (!mdb.saveMessages(libthoro::filesystem::slashify(defaultSaveDirectory)))
+    if (!mdb.saveMessages(libthoro::filesystem::slashify(defaultSaveDirectory), compressed))
     {
       std::cout << "Could not save messages!\n";
       return 0;

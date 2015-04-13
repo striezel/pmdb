@@ -156,17 +156,19 @@ class PrivateMessage
     /** \brief tries to save the message to the given file
      *
      * \param fileName the file that shall be used to save the message
+     * \param compressed   if set to true, the saved file will be compressed with zlib
      * \return Returns true in case of success, or false if an error occured.
      */
-    bool saveToFile(const std::string& fileName) const;
+    bool saveToFile(const std::string& fileName, const bool compressed) const;
 
 
     /** \brief tries to load the message from the given file
      *
      * \param fileName file that shall be used to load the message
+     * \param isCompressed  Set this to true to indicate that the file contains a zlib-compressed PM.
      * \return Returns true in case of success, or false if an error occured.
      */
-    bool loadFromFile(const std::string& fileName);
+    bool loadFromFile(const std::string& fileName, const bool isCompressed);
 
 
     /** \brief equality operator for PrivateMessage class

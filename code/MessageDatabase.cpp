@@ -327,20 +327,20 @@ bool MessageDatabase::processPrivateMessageNode(const XMLNode& node, uint32_t& r
   return true;
 }
 
-bool MessageDatabase::saveMessages(const std::string& directory) const
+bool MessageDatabase::saveMessages(const std::string& directory, const bool compressed) const
 {
   std::map<SHA256::MessageDigest, PrivateMessage>::const_iterator iter = m_Messages.begin();
   const std::string realDirectory(libthoro::filesystem::slashify(directory));
   while (iter!=m_Messages.end())
   {
-    if (!iter->second.saveToFile(realDirectory+iter->first.toHexString()))
+    if (!iter->second.saveToFile(realDirectory+iter->first.toHexString(), compressed))
       return false;
     ++iter;
   }//while
   return true;
 }
 
-bool MessageDatabase::loadMessages(const std::string& directory, uint32_t& readPMs, uint32_t& newPMs)
+bool MessageDatabase::loadMessages(const std::string& directory, uint32_t& readPMs, uint32_t& newPMs, const bool isCompressed)
 {
   readPMs = 0;
   newPMs = 0;
@@ -361,7 +361,7 @@ bool MessageDatabase::loadMessages(const std::string& directory, uint32_t& readP
     {
       if (isValidSHA256Hash(iter->FileName))
       {
-        if (!tempPM.loadFromFile(realDirectory+iter->FileName))
+        if (!tempPM.loadFromFile(realDirectory+iter->FileName, isCompressed))
         {
           std::cout << "Error while loading message from file \""<< realDirectory+iter->FileName <<"\"!\n";
           return false;

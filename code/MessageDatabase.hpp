@@ -99,9 +99,10 @@ class MessageDatabase
     /** \brief tries to save all messages in the database to the given directory
      *
      * \param directory directory where the messages shall be saved
+     * \param compressed  Set this to true to compress PMs with zlib.
      * \return Returns true in case of success, or false otherwise.
      */
-    bool saveMessages(const std::string& directory) const;
+    bool saveMessages(const std::string& directory, const bool compressed) const;
 
 
     /** \brief tries to load all messages in the given directory into the database
@@ -109,9 +110,10 @@ class MessageDatabase
      * \param directory the directory from which the messages shall be loaded
      * \param readPMs   will hold the number of PMs that were read from the file
      * \param newPMs    will hold the number of new PMs that were stored in the DB
+     * \param isCompressed  Set this to true to indicate that the directory contains only zlib-compressed PMs.
      * \return Returns true in case of success, or false otherwise.
      */
-    bool loadMessages(const std::string& directory, uint32_t& readPMs, uint32_t& newPMs);
+    bool loadMessages(const std::string& directory, uint32_t& readPMs, uint32_t& newPMs, const bool isCompressed);
 
 
     /** \brief creates index files (HTML) for all message folders

@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2012, 2014  Thoronador
+    Copyright (C) 2012, 2014, 2015  Thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -109,32 +109,52 @@ void PrivateMessage::setMessage(const std::string& msg)
   m_NeedsHashUpdate = true;
 }
 
-bool PrivateMessage::saveToFile(const std::string& fileName) const
+bool PrivateMessage::saveToFile(const std::string& fileName, const bool compressed) const
 {
-  std::ofstream output;
-  output.open(fileName.c_str(), std::ios_base::out | std::ios_base::binary);
-  if (!output)
+  if (!compressed)
   {
+    std::ofstream output;
+    output.open(fileName.c_str(), std::ios_base::out | std::ios_base::binary);
+    if (!output)
+    {
+      return false;
+    }
+    //write datestamp
+    output.write(datestamp.c_str(), datestamp.length()+1);
+    //write title
+    output.write(title.c_str(), title.length()+1);
+    //write fromUser
+    output.write(fromUser.c_str(), fromUser.length()+1);
+    //write fromUserID
+    const std::string uid_string = uintToString(fromUserID);
+    output.write(uid_string.c_str(), uid_string.length()+1);
+    //write toUser
+    output.write(toUser.c_str(), toUser.length()+1);
+    //write message text
+    output.write(message.c_str(), message.length()+1);
+    return output.good();
+  }
+  else
+  {
+    #warning Not implemented yet!
+    #ifdef DEBUG
+    std::cout << "Error while reading private message: compression is not implemented yet!\n";
+    #endif
     return false;
   }
-  //write datestamp
-  output.write(datestamp.c_str(), datestamp.length()+1);
-  //write title
-  output.write(title.c_str(), title.length()+1);
-  //write fromUser
-  output.write(fromUser.c_str(), fromUser.length()+1);
-  //write fromUserID
-  const std::string uid_string = uintToString(fromUserID);
-  output.write(uid_string.c_str(), uid_string.length()+1);
-  //write toUser
-  output.write(toUser.c_str(), toUser.length()+1);
-  //write message text
-  output.write(message.c_str(), message.length()+1);
-  return output.good();
 }
 
-bool PrivateMessage::loadFromFile(const std::string& fileName)
+bool PrivateMessage::loadFromFile(const std::string& fileName, const bool isCompressed)
 {
+  if (isCompressed)
+  {
+    #warning Not implemented yet!
+    #ifdef DEBUG
+    std::cout << "Error while reading private message: compression is not implemented yet!\n";
+    #endif
+    return false;
+  }
+
   std::ifstream input;
   input.open(fileName.c_str(), std::ios_base::in | std::ios_base::binary);
   if (!input)

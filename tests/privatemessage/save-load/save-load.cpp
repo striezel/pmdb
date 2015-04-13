@@ -47,8 +47,8 @@ int main()
     std::cout << "Error: Failed to create temporary file!\n";
     return 1;
   }
-  //save message
-  if (!pmOne.saveToFile(tempName))
+  //save message (uncompressed)
+  if (!pmOne.saveToFile(tempName, false))
   {
     std::cout << "Error: Could not save PM to " << tempName << "!\n";
     if (!libthoro::filesystem::File::remove(tempName))
@@ -59,9 +59,9 @@ int main()
     return 1;
   }
 
-  //second PM instance for loading the file
+  //second PM instance for loading the file (uncompressed)
   PrivateMessage pmTwo;
-  if (!pmTwo.loadFromFile(tempName))
+  if (!pmTwo.loadFromFile(tempName, false))
   {
     std::cout << "Error: Could not load PM from " << tempName << "!\n";
     if (!libthoro::filesystem::File::remove(tempName))

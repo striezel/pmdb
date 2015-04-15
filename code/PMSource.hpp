@@ -22,7 +22,7 @@
 #define PMSOURCE_HPP
 
 #include "PrivateMessage.hpp"
-#include "../libthoro/common/BufferStream.h"
+#include "../libthoro/common/BufferStream.hpp"
 #include "../libthoro/hash/sha-256_sources.h"
 
 namespace SHA256
@@ -51,7 +51,7 @@ class PMSource: public MessageSource
      */
     virtual bool getNextMessageBlock(MessageBlock& mBlock);
   private:
-    Thoro::BufferStream m_BufStream;
+    libthoro::BufferStream m_BufStream;
 }; //class
 
 } //namespace

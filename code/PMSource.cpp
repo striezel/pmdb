@@ -25,7 +25,7 @@
 #endif
 #include <stdexcept>
 #include "../libthoro/common/StringUtils.h"
-#include "../libthoro/common/BufferStream.h"
+#include "../libthoro/common/BufferStream.hpp"
 
 namespace SHA256
 {

@@ -37,7 +37,7 @@
 		<Linker>
 			<Add library="xml2" />
 		</Linker>
-		<Unit filename="../libthoro/common/BufferStream.h" />
+		<Unit filename="../libthoro/common/BufferStream.hpp" />
 		<Unit filename="../libthoro/common/DirectoryFileList.cpp" />
 		<Unit filename="../libthoro/common/DirectoryFileList.h" />
 		<Unit filename="../libthoro/common/StringUtils.cpp" />

@@ -153,6 +153,13 @@ class PrivateMessage
     void setMessage(const std::string& msg);
 
 
+    /** \brief determines the size of this PM, if it were saved to a file
+     *
+     * \return Returns size of uncompressed saved PM in bytes.
+     */
+    std::string::size_type getSaveSize() const;
+
+
     /** \brief tries to save the message to the given file
      *
      * \param fileName the file that shall be used to save the message
@@ -188,14 +195,25 @@ class PrivateMessage
      */
     bool operator!=(const PrivateMessage& other) const;
   private:
-    std::string datestamp;
-    std::string title;
-    std::string fromUser;
-    uint32_t fromUserID;
-    std::string toUser;
-    std::string message;
-    bool m_NeedsHashUpdate;
-    SHA256::MessageDigest m_Hash;
+    /** \brief tries to save the PM contents to an output stream
+     *
+     * \param outputStream  stream that shall be used to save the PM;
+     *                      the stream shall be opened and ready for writing
+     *                      data to it when passed to the function.
+     * \return Returns true, if the data was written to the stream.
+     *         Returns false, if the write operation failed.
+     */
+    bool saveToStream(std::ostream& outputStream) const;
+
+
+    std::string datestamp;  /**< date and time the PM was sent */
+    std::string title;  /**< title of the PM */
+    std::string fromUser;  /**< name of the sender */
+    uint32_t fromUserID;  /**< numeric ID of the sender */
+    std::string toUser;  /**< name of the recipients  */
+    std::string message;  /**< the message text */
+    bool m_NeedsHashUpdate;  /**< tracks whether hash is not up to date */
+    SHA256::MessageDigest m_Hash;  /**< hash of the message */
 };//class
 
 #endif // PRIVATEMESSAGE_HPP

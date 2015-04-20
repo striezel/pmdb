@@ -51,7 +51,7 @@ class PMSource: public MessageSource
      */
     virtual bool getNextMessageBlock(MessageBlock& mBlock);
   private:
-    libthoro::BufferStream m_BufStream;
+    libthoro::InBufferStream m_BufStream;
 }; //class
 
 } //namespace

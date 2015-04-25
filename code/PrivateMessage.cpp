@@ -23,9 +23,11 @@
 #ifdef DEBUG
   #include <iostream>
 #endif
+#include <limits>
 #include <sstream>
 #include "PMSource.hpp"
 #include "../libthoro/common/StringUtils.h"
+#include "../libthoro/zlib/CompressionFunctions.hpp"
 
 PrivateMessage::PrivateMessage()
 : datestamp(""),
@@ -151,15 +153,68 @@ bool PrivateMessage::saveToFile(const std::string& fileName, const bool compress
     const bool result = saveToStream(output);
     output.close();
     return result;
-  }
+  } //if not compressed
   else
   {
-    #warning Not implemented yet!
-    #ifdef DEBUG
-    std::cout << "Error while reading private message: compression is not implemented yet!\n";
-    #endif
-    return false;
-  }
+    const std::string::size_type bufLen = getSaveSize();
+    uint8_t * buffer = NULL;
+    try
+    {
+      buffer = new uint8_t[bufLen];
+    }
+    catch (...)
+    {
+      #ifdef DEBUG
+      std::cout << "Error while saving private message: could not allocate buffer for compression!\n";
+      #endif
+      if (buffer != NULL)
+        delete [] buffer;
+      return false;
+    } //catch
+
+    libthoro::OutBufferStream bufferStream(reinterpret_cast<char*>(buffer), bufLen);
+    const bool result = saveToStream(bufferStream);
+    if (!result)
+    {
+      #ifdef DEBUG
+      std::cout << "Error while saving private message: could not write data to buffer stream!\n";
+      #endif
+      delete[] buffer;
+      buffer = NULL;
+      return false;
+    } //if
+
+    uint32_t compSize = 0;
+    if (bufLen > std::numeric_limits<uint32_t>::max())
+      compSize = std::numeric_limits<uint32_t>::max();
+    else
+      compSize = bufLen;
+    libthoro::zlib::CompressPointer compressedData = new uint8_t[compSize];
+    uint32_t usedSize = 0;
+    if (!libthoro::zlib::compress(buffer, bufLen, compressedData, compSize, usedSize, 9))
+    {
+      #ifdef DEBUG
+      std::cout << "Error while saving compressed message: Compression via zlib failed!\n";
+      #endif
+      delete[] buffer; buffer = NULL;
+      delete[] compressedData; compressedData = NULL;
+      return false;
+    }
+    std::ofstream output;
+    output.open(fileName.c_str(), std::ios_base::out | std::ios_base::binary);
+    if (!output)
+    {
+      delete[] buffer; buffer = NULL;
+      delete[] compressedData; compressedData = NULL;
+      return false;
+    }
+    output.write(reinterpret_cast<char*>(compressedData), usedSize);
+    const bool success = output.good();
+    output.close();
+    delete[] buffer; buffer = NULL;
+    delete[] compressedData; compressedData = NULL;
+    return success;
+  } //else (i.e. shall save compressed PM data)
 }
 
 bool PrivateMessage::loadFromFile(const std::string& fileName, const bool isCompressed)

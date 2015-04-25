@@ -52,6 +52,8 @@
 		<Unit filename="../libthoro/hash/sha-256_functions.h" />
 		<Unit filename="../libthoro/hash/sha-256_sources.cpp" />
 		<Unit filename="../libthoro/hash/sha-256_sources.h" />
+		<Unit filename="../libthoro/zlib/CompressionFunctions.cpp" />
+		<Unit filename="../libthoro/zlib/CompressionFunctions.hpp" />
 		<Unit filename="ColourMap.cpp" />
 		<Unit filename="ColourMap.hpp" />
 		<Unit filename="Config.cpp" />

@@ -18,6 +18,7 @@ set(addMessage_test_src
     ../../../libthoro/filesystem/DirectoryFunctions.cpp
     ../../../libthoro/hash/sha-256.cpp
     ../../../libthoro/hash/sha-256_sources.cpp
+    ../../../libthoro/zlib/CompressionFunctions.cpp
     addMessage.cpp)
 
 add_definitions(-Wall -O2 -fexceptions)

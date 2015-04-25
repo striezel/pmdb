@@ -18,6 +18,7 @@ set(MessageDatabase_saveload_test_src
     ../../../libthoro/filesystem/DirectoryFunctions.cpp
     ../../../libthoro/hash/sha-256.cpp
     ../../../libthoro/hash/sha-256_sources.cpp
+    ../../../libthoro/zlib/CompressionFunctions.cpp
     save-load-test.cpp)
 
 add_definitions(-Wall -O2 -fexceptions)

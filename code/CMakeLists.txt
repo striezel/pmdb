@@ -35,6 +35,7 @@ set(pmdb_sources
     ../libthoro/filesystem/FileFunctions.cpp
     ../libthoro/hash/sha-256.cpp
     ../libthoro/hash/sha-256_sources.cpp
+    ../libthoro/zlib/CompressionFunctions.cpp
     main.cpp)
 
 if (CMAKE_COMPILER_IS_GNUCC)

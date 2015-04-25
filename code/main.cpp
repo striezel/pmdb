@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2012, 2013, 2014  Thoronador
+    Copyright (C) 2012, 2013, 2014, 2015  Thoronador
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -72,7 +72,7 @@ void showVersion()
 
 void showHelp(const std::string& name)
 {
-  std::cout << "\n"<<name<<"\n"
+  std::cout << "\n" << name << "\n"
             << "options:\n"
             << "  --help           - displays this help message and quits\n"
             << "  -?               - same as --help\n"
@@ -103,9 +103,9 @@ void showHelp(const std::string& name)
             << "                     Must occur together with --table and --row.\n"
             << "  --std-classes    - sets the 'standard' classes for the three class options.\n"
             << "                     This is equivalent to specifying all these parameters:\n"
-            << "                         --table="<<TableBBCode::DefaultTableClass<<"\n"
-            << "                         --row="<<TableBBCode::DefaultRowClass<<"\n"
-            << "                         --cell="<<TableBBCode::DefaultCellClass<<"\n"
+            << "                         --table=" << TableBBCode::DefaultTableClass << "\n"
+            << "                         --row=" << TableBBCode::DefaultRowClass << "\n"
+            << "                         --cell=" << TableBBCode::DefaultCellClass << "\n"
             << "  --subset-check   - search for messages with texts that are completely\n"
             << "                     contained in other messages, too.\n"
             << "  --list-from X    - list all messages that were sent by user X.\n"
@@ -173,17 +173,17 @@ int main(int argc, char **argv)
             const std::string pathToXML = std::string(argv[i+1]);
             if (pathXML.find(pathToXML)!=pathXML.end())
             {
-              std::cout << "Parameter "<<param<<" must not occur more than once for the same file!\n";
+              std::cout << "Parameter " << param << " must not occur more than once for the same file!\n";
               return rcInvalidParameter;
             }
             pathXML.insert(pathToXML);
             ++i; //skip next parameter, because it's used as file name already
-            std::cout << "XML file \""<<pathToXML<<"\" was chained for loading.\n";
+            std::cout << "XML file \"" << pathToXML << "\" was chained for loading.\n";
           }
           else
           {
             std::cout << "Error: You have to specify a file name after \""
-                      << param <<"\".\n";
+                      << param << "\".\n";
             return rcInvalidParameter;
           }
         }//param == xml
@@ -196,7 +196,7 @@ int main(int argc, char **argv)
             return rcInvalidParameter;
           }
           pathXML.insert(pathToXML);
-          std::cout << "XML file \""<<pathToXML<<"\" was chained for loading.\n";
+          std::cout << "XML file \"" << pathToXML << "\" was chained for loading.\n";
         }//param == xml (single parameter version)
         else if (param=="--save")
         {
@@ -214,13 +214,13 @@ int main(int argc, char **argv)
         {
           if (saveModeSpecified)
           {
-            std::cout << "Parameter "<<param<<" must not occur more than once "
+            std::cout << "Parameter " << param << " must not occur more than once "
                       << "and is mutually exclusive with --save!\n";
             return rcInvalidParameter;
           }
           doSave = false;
           saveModeSpecified = true;
-          std::cout << "Files will NOT be saved as requested via "<<param<<".\n";
+          std::cout << "Files will NOT be saved as requested via " << param << ".\n";
         }//param == no-save
         else if (param=="--load")
         {
@@ -230,7 +230,7 @@ int main(int argc, char **argv)
             return rcInvalidParameter;
           }
           loadDirs.insert(defaultSaveDirectory);
-          std::cout << "Directory \""<<defaultSaveDirectory<<"\" was chained for loading.\n";
+          std::cout << "Directory \"" << defaultSaveDirectory << "\" was chained for loading.\n";
         }//param == load
         else if ((param.substr(0,7)=="--load=") and (param.length()>7))
         {
@@ -242,7 +242,7 @@ int main(int argc, char **argv)
             return rcInvalidParameter;
           }
           loadDirs.insert(pathToDir);
-          std::cout << "Directory \""<<pathToDir<<"\" was chained for loading.\n";
+          std::cout << "Directory \"" << pathToDir << "\" was chained for loading.\n";
         }//param == 'load=...'
         else if (param=="--html")
         {
@@ -257,7 +257,7 @@ int main(int argc, char **argv)
         {
           if (doHTML or forceXHTML)
           {
-            std::cout << "Parameter "<<param<<" must not occur more than once "
+            std::cout << "Parameter " << param << " must not occur more than once "
                       << "or in combination with --html!\n";
             return rcInvalidParameter;
           }
@@ -268,7 +268,7 @@ int main(int argc, char **argv)
         {
           if (!nl2br)
           {
-            std::cout << "Parameter "<<param<<" must not occur more than once!\n";
+            std::cout << "Parameter " << param << " must not occur more than once!\n";
             return rcInvalidParameter;
           }
           nl2br = false;
@@ -308,7 +308,7 @@ int main(int argc, char **argv)
         {
           if (searchForSubsets)
           {
-            std::cout << "Parameter "<<param<<" must not occur more than once!\n";
+            std::cout << "Parameter " << param << " must not occur more than once!\n";
             return rcInvalidParameter;
           }
           searchForSubsets = true;
@@ -321,12 +321,12 @@ int main(int argc, char **argv)
             const FilterUser f(user, true, true);
             filters.push_back(f);
             ++i; //skip next parameter, because it's used as user name already
-            std::cout << "Added PMs from user \""<<user<<"\" to filter criteria.\n";
+            std::cout << "Added PMs from user \"" << user << "\" to filter criteria.\n";
           }
           else
           {
             std::cout << "Error: You have to specify a user name after \""
-                      << param <<"\".\n";
+                      << param << "\".\n";
             return rcInvalidParameter;
           }
         }//param == list-from-user
@@ -338,7 +338,7 @@ int main(int argc, char **argv)
             const FilterUser f(user, false, true);
             filters.push_back(f);
             ++i; //skip next parameter, because it's used as user name already
-            std::cout << "Added PMs to user \""<<user<<"\" to filter criteria.\n";
+            std::cout << "Added PMs to user \"" << user << "\" to filter criteria.\n";
           }
           else
           {
@@ -350,14 +350,14 @@ int main(int argc, char **argv)
         else
         {
           //unknown or wrong parameter
-          std::cout << "Invalid parameter given: \""<<param<<"\".\n"
+          std::cout << "Invalid parameter given: \"" << param << "\".\n"
                     << "Use --help to get a list of valid parameters.\n";
           return rcInvalidParameter;
         }
       }//parameter exists
       else
       {
-        std::cout << "Parameter at index "<<i<<" is NULL.\n";
+        std::cout << "Parameter at index " << i << " is NULL.\n";
         return rcInvalidParameter;
       }
       ++i;//on to next parameter
@@ -390,13 +390,13 @@ int main(int argc, char **argv)
   {
     if (mdb.importFromFile(*set_iter, PMs_done, PMs_new, fm))
     {
-      std::cout << "Import of private messages from \""<< *set_iter <<"\" was successful!\n  "
-                << PMs_done<<" PMs read, new PMs: "<<PMs_new<<"\n";
+      std::cout << "Import of private messages from \"" << *set_iter << "\" was successful!\n  "
+                << PMs_done << " PMs read, new PMs: " << PMs_new << "\n";
     }
     else
     {
-      std::cout << "Import of private messages from \""<< *set_iter <<"\" failed!\n"
-                << "  PMs read from file so far: "<<PMs_done<<"\nNew PMs: "<<PMs_new<<"\n";
+      std::cout << "Import of private messages from \"" << *set_iter << "\" failed!\n"
+                << "  PMs read from file so far: " << PMs_done << "\nNew PMs: " << PMs_new << "\n";
     }
     ++set_iter;
   }//while
@@ -419,7 +419,7 @@ int main(int argc, char **argv)
     ++set_iter;
   }//while
 
-  std::cout << "PMs in the database: "<<mdb.getNumberOfMessages()<<"\n";
+  std::cout << "PMs in the database: " << mdb.getNumberOfMessages() << "\n";
 
   if (doSave)
   {
@@ -561,13 +561,13 @@ int main(int argc, char **argv)
                       std::ios_base::out | std::ios_base::binary | std::ios_base::trunc);
         if (!htmlFile.is_open())
         {
-          std::cout << "Failed to open file "<<htmlDir<<msgIter->first.toHexString()<<".html!\n";
+          std::cout << "Failed to open file " << htmlDir << msgIter->first.toHexString() << ".html!\n";
           return rcFileError;
         }
         htmlFile.write(output.c_str(), output.length());
         if (!htmlFile.good())
         {
-          std::cout << "Error while writing to file "<<htmlDir<<msgIter->first.toHexString()<<".html!\n";
+          std::cout << "Error while writing to file " << htmlDir << msgIter->first.toHexString() << ".html!\n";
           htmlFile.close();
           return rcFileError;
         }
@@ -627,12 +627,12 @@ int main(int argc, char **argv)
     std::cout << "Searching for message texts that are contained in others. This may take a while...\n";
     std::map<md_date, std::vector<md_date> > subsets = mdb.getTextSubsets();
     std::map<md_date, std::vector<md_date> >::iterator subIter = subsets.begin();
-    while (subIter!=subsets.end())
+    while (subIter != subsets.end())
     {
       try
       {
         const PrivateMessage & pm = mdb.getMessage(subIter->first.md);
-        std::cout << "Message \""<<pm.getTitle()<<"\" of "<<pm.getDatestamp();
+        std::cout << "Message \"" << pm.getTitle() << "\" of " << pm.getDatestamp();
         if (fm.hasEntry(subIter->first.md))
         {
           std::cout << " in \"" << cMap.colouredFolder(fm.getFolderName(subIter->first.md)) << "\"";
@@ -643,15 +643,15 @@ int main(int argc, char **argv)
         std::cout << "\nCaught exception: " << ex.what() << "\n.";
         return rcCaughtException;
       }//try-catch
-      std::cout << " contains the following "<<subIter->second.size() <<" message(s):\n";
+      std::cout << " contains the following " << subIter->second.size() <<" message(s):\n";
       std::sort(subIter->second.begin(), subIter->second.end());
       std::vector<md_date>::const_iterator secondIter = subIter->second.begin();
-      while (secondIter!=subIter->second.end())
+      while (secondIter != subIter->second.end())
       {
         try
         {
           const PrivateMessage & contained = mdb.getMessage(secondIter->md);
-          std::cout << "    \""<< contained.getTitle()<<"\" of "<<contained.getDatestamp();
+          std::cout << "    \""<< contained.getTitle() << "\" of " << contained.getDatestamp();
           if (fm.hasEntry(secondIter->md))
             std::cout << " (in \"" << cMap.colouredFolder(fm.getFolderName(secondIter->md)) << "\")";
           std::cout <<"\n";
@@ -696,7 +696,7 @@ int main(int argc, char **argv)
     while (mdIter != matches.end())
     {
       const PrivateMessage & pm = mdb.getMessage(mdIter->md);
-      std::cout << "Message \""<<pm.getTitle()<<"\" of "<<pm.getDatestamp();
+      std::cout << "Message \"" << pm.getTitle() << "\" of " << pm.getDatestamp();
       if (fm.hasEntry(mdIter->md))
       {
         std::cout << " in \"" << fm.getFolderName(mdIter->md) << "\"";
@@ -704,10 +704,10 @@ int main(int argc, char **argv)
       std::cout << std::endl;
       ++mdIter;
     }//while
-    if (matches.size()==0)
+    if (matches.empty())
       std::cout << "  no matches\n";
     else
-      std::cout << "Total: "<<matches.size()<<"\n";
+      std::cout << "Total: " << matches.size() << "\n";
   }//if filters are set
 
   return 0;

@@ -22,7 +22,7 @@
 #include "../../../code/MessageDatabase.hpp"
 
 /* This program performs some tests for MessageDatabase::saveMessages() and
-   MessageDatabase::loadMessages(), but with plain files without compression.
+   MessageDatabase::loadMessages(), but with compressed files.
 
    Expected command line parameters: 1
      1st: path to the temporary directory that shall be used to save and load
@@ -64,6 +64,7 @@ int main(int argc, char **argv)
 
   //add some PMs to the database
   unsigned int i;
+  // limit is the number of different PMs in the database
   const unsigned int limit = 2000;
   try
   {
@@ -87,17 +88,17 @@ int main(int argc, char **argv)
   std::cout << "Test info: Added " << limit << " messages successfully!\n";
 
 
-  if (!mdb.saveMessages(tempDir, false))
+  if (!mdb.saveMessages(tempDir, true))
   {
-    std::cout << "Error: Could not save messages to \"" << tempDir << "\"!\n";
+    std::cout << "Error: Could not save compressed messages to \"" << tempDir << "\"!\n";
     return 1;
   }
   uint32_t readMessages = 0, newMessages = 0;
   try
   {
-    if (!mdb.loadMessages(tempDir, readMessages, newMessages, false))
+    if (!mdb.loadMessages(tempDir, readMessages, newMessages, true))
     {
-      std::cout << "Error: Could not load messages from \"" << tempDir << "\"!\n";
+      std::cout << "Error: Could not load compressed messages from \"" << tempDir << "\"!\n";
       return 1;
     } //if
   }//try
@@ -118,15 +119,15 @@ int main(int argc, char **argv)
   mdb.clear();
   try
   {
-    if (!mdb.loadMessages(tempDir, readMessages, newMessages, false))
+    if (!mdb.loadMessages(tempDir, readMessages, newMessages, true))
     {
-      std::cout << "Error: Could not load messages from \"" << tempDir << "\" a second time!\n";
+      std::cout << "Error: Could not load compressed messages from \"" << tempDir << "\" a second time!\n";
       return 1;
     } //if
   }//try
   catch (...)
   {
-    std::cout << "Error: Caught exception while trying to load messages a second time!\n";
+    std::cout << "Error: Caught exception while trying to load compressed messages a second time!\n";
     return 1;
   } //catch
   if ((readMessages != limit) || (newMessages != limit))
@@ -138,6 +139,6 @@ int main(int argc, char **argv)
     return 1;
   }
 
-  std::cout << "Passed all MessageDatabase::saveMessages()/MessageDatabase::loadMessages() tests with plain/uncompressed data files.\n";
+  std::cout << "Passed all MessageDatabase::saveMessages()/MessageDatabase::loadMessages() tests with compressed files.\n";
   return 0;
 }

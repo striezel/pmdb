@@ -206,6 +206,17 @@ class PrivateMessage
     bool saveToStream(std::ostream& outputStream) const;
 
 
+    /** \brief tries to load the PM contents from an input stream
+     *
+     * \param inputStream  stream that shall be used to load the PM;
+     *                     the stream shall be opened and ready for reading
+     *                     data from it when passed to the function.
+     * \return Returns true, if the data was loaded from the stream.
+     *         Returns false, if the read operation failed.
+     */
+    bool loadFromStream(std::istream& inputStream);
+
+
     std::string datestamp;  /**< date and time the PM was sent */
     std::string title;  /**< title of the PM */
     std::string fromUser;  /**< name of the sender */

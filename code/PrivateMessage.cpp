@@ -208,7 +208,11 @@ bool PrivateMessage::saveToFile(const std::string& fileName, const bool compress
       delete[] compressedData; compressedData = NULL;
       return false;
     }
-    output.write(reinterpret_cast<char*>(compressedData), usedSize);
+    //Write original length value, so we can use it to allocate proper buffer size for decompression
+    const uint32_t origLen = bufLen;
+    output.write(reinterpret_cast<const char*>(&origLen), sizeof(uint32_t));
+    //write compressed data
+    output.write(reinterpret_cast<const char*>(compressedData), usedSize);
     const bool success = output.good();
     output.close();
     delete[] buffer; buffer = NULL;
@@ -217,32 +221,16 @@ bool PrivateMessage::saveToFile(const std::string& fileName, const bool compress
   } //else (i.e. shall save compressed PM data)
 }
 
-bool PrivateMessage::loadFromFile(const std::string& fileName, const bool isCompressed)
+bool PrivateMessage::loadFromStream(std::istream& inputStream)
 {
-  if (isCompressed)
-  {
-    #warning Not implemented yet!
-    #ifdef DEBUG
-    std::cout << "Error while reading private message: compression is not implemented yet!\n";
-    #endif
-    return false;
-  }
-
-  std::ifstream input;
-  input.open(fileName.c_str(), std::ios_base::in | std::ios_base::binary);
-  if (!input)
-  {
-    return false;
-  }
-  input.seekg(0, std::ios_base::end);
-  const std::streamsize len = input.tellg();
-  input.seekg(0, std::ios_base::beg);
-  if (!input.good())
+  inputStream.seekg(0, std::ios_base::end);
+  const std::streamsize len = inputStream.tellg();
+  inputStream.seekg(0, std::ios_base::beg);
+  if (!inputStream.good())
   {
     #ifdef DEBUG
     std::cout << "Error while reading private message: seek operation(s) failed!\n";
     #endif
-    input.close();
     return false;
   }
   //We do not want PMs larger than 1 MB, to avoid excessive memory consumption.
@@ -251,67 +239,62 @@ bool PrivateMessage::loadFromFile(const std::string& fileName, const bool isComp
     #ifdef DEBUG
     std::cout << "Error while reading private message: unexpected file size!\n";
     #endif
-    input.close();
     return false;
   }
   //assume worst case for buffer size: all file content should fit into it
   char * buffer = new char[len+1];
 
   //read datestamp
-  input.getline(buffer, len, '\0');
-  if (!input.good())
+  inputStream.getline(buffer, len, '\0');
+  if (!inputStream.good())
   {
     #ifdef DEBUG
     std::cout << "Error while reading private message's datestamp part!\n";
     #endif
     delete[] buffer;
-    input.close();
     return false;
   }
-  buffer[input.gcount()] = '\0';
+  buffer[inputStream.gcount()] = '\0';
   datestamp = std::string(buffer);
   m_NeedsHashUpdate = true;
 
   //read title
-  input.getline(buffer, len, '\0');
-  if (!input.good())
+  inputStream.getline(buffer, len, '\0');
+  if (!inputStream.good())
   {
     #ifdef DEBUG
     std::cout << "Error while reading private message's title part!\n";
     #endif
     delete[] buffer;
-    input.close();
     return false;
   }
-  buffer[input.gcount()] = '\0';
+  buffer[inputStream.gcount()] = '\0';
   title = std::string(buffer);
 
   //read fromUser
-  input.getline(buffer, len, '\0');
-  if (!input.good())
+  inputStream.getline(buffer, len, '\0');
+  if (!inputStream.good())
   {
     #ifdef DEBUG
     std::cout << "Error while reading private message's sender part!\n";
     #endif
     delete[] buffer;
-    input.close();
     return false;
   }
-  buffer[input.gcount()] = '\0';
+  buffer[inputStream.gcount()] = '\0';
   fromUser = std::string(buffer);
 
   //read fromUserID
-  input.getline(buffer, len, '\0');
-  if (!input.good())
+  inputStream.getline(buffer, len, '\0');
+  if (!inputStream.good())
   {
     #ifdef DEBUG
     std::cout << "Error while reading private message's user ID!\n";
     #endif
     delete[] buffer;
-    input.close();
     return false;
   }
-  buffer[input.gcount()] = '\0';
+  buffer[inputStream.gcount()] = '\0';
   const std::string tempStr = std::string(buffer);
   if (!(std::stringstream (tempStr) >> fromUserID))
   {
@@ -319,42 +302,156 @@ bool PrivateMessage::loadFromFile(const std::string& fileName, const bool isComp
     std::cout << "Error while converting private message's user ID string to integer!\n";
     #endif
     delete[] buffer;
-    input.close();
     return false;
   }
 
   //read toUser
-  input.getline(buffer, len, '\0');
-  if (!input.good())
+  inputStream.getline(buffer, len, '\0');
+  if (!inputStream.good())
   {
     #ifdef DEBUG
     std::cout << "Error while reading private message's receiver!\n";
     #endif
     delete[] buffer;
-    input.close();
     return false;
   }
-  buffer[input.gcount()] = '\0';
+  buffer[inputStream.gcount()] = '\0';
   toUser = std::string(buffer);
 
   //read message text
-  input.getline(buffer, len, '\0');
-  if (!input.good())
+  inputStream.getline(buffer, len, '\0');
+  if (!inputStream.good())
   {
     #ifdef DEBUG
     std::cout << "Error while reading private message's text!\n";
     #endif
     delete[] buffer;
-    input.close();
     return false;
   }
-  buffer[input.gcount()] = '\0';
+  buffer[inputStream.gcount()] = '\0';
   message = std::string(buffer);
   m_NeedsHashUpdate = true;
   delete[] buffer; //free previously allocated buffer
 
-  input.close();
   return true;
+}
+
+bool PrivateMessage::loadFromFile(const std::string& fileName, const bool isCompressed)
+{
+  if (isCompressed)
+  {
+    std::ifstream input;
+    input.open(fileName.c_str(), std::ios_base::in | std::ios_base::binary);
+    if (!input)
+    {
+      return false;
+    }
+
+    uint32_t decompressedSize = 0;
+    input.read(reinterpret_cast<char*>(&decompressedSize), sizeof(uint32_t));
+    if (!input.good() or (input.gcount() != sizeof(uint32_t)))
+    {
+      input.close();
+      #ifdef DEBUG
+      std::cout << "Error while reading private message: Could not read size value!\n";
+      #endif
+      return false;
+    }
+
+    /* Check for size to avoid allocating an excessive amount of memory.
+       Size should not be zero (empty buffer is useless), and it should not be
+       more than 1 MB, which is more than enough for a PM.
+    */
+    if ((decompressedSize == 0) or (decompressedSize > 1024*1024))
+    {
+      input.close();
+      #ifdef DEBUG
+      std::cout << "Error while reading private message: Encountered invalid decompression size value of "
+                << decompressedSize << " bytes! Size should be in [1;" << 1024*1024 << "].\n";
+      #endif
+      return false;
+    }
+
+    //get total length of file
+    input.seekg(0, std::ios_base::end);
+    const std::streamsize len = input.tellg();
+    //reset stream pointer to fifth byte (four have already been read)
+    input.seekg(sizeof(uint32_t), std::ios_base::beg);
+    if (!input.good())
+    {
+      input.close();
+      #ifdef DEBUG
+      std::cout << "Error while reading private message: seek operation(s) failed!\n";
+      #endif
+      return false;
+    }
+
+    const std::streamsize compressedBufferSize = len - 4;
+    if ((compressedBufferSize > 1024*1024) or (compressedBufferSize <= 0))
+    {
+      input.close();
+      #ifdef DEBUG
+      std::cout << "Error while reading private message: Encountered invalid compression buffer size value of "
+                << compressedBufferSize << " bytes! Size should be in [1;" << 1024*1024 << "].\n";
+      #endif
+      return false;
+    }
+
+    //allocate buffer for compressed data
+    uint8_t * compressedBuffer = new uint8_t[compressedBufferSize];
+    //read all data into buffer
+    input.read(reinterpret_cast<char*> (compressedBuffer), compressedBufferSize);
+    if (!input.good() or (input.gcount() != compressedBufferSize))
+    {
+      input.close();
+      delete[] compressedBuffer;
+      #ifdef DEBUG
+      std::cout << "Error while reading private message: Could not read all compressed data!\n";
+      #endif
+      return false;
+    }
+    //We can close the input stream now, because all data was read from the stream.
+    input.close();
+
+    //allocate buffer for decompressed data
+    uint8_t * decompressedBuffer = new uint8_t[decompressedSize];
+
+    //decompress all the stuff
+    if (!libthoro::zlib::decompress(compressedBuffer, compressedBufferSize, decompressedBuffer, decompressedSize))
+    {
+      delete[] compressedBuffer;
+      delete[] decompressedBuffer;
+      #ifdef DEBUG
+      std::cout << "Error while reading private message: Decompression failed!\n";
+      #endif
+      return false;
+    } //if decompress failed
+
+    //Compression succeeded, we can delete compressed buffer.
+    delete[] compressedBuffer;
+    compressedBuffer = NULL;
+
+    //create buffer stream
+    libthoro::InBufferStream bufferStream(reinterpret_cast<const char*>(decompressedBuffer), decompressedSize);
+    const bool success = loadFromStream(bufferStream);
+    bufferStream.buffer(NULL, 0);
+    delete[] decompressedBuffer;
+    decompressedBuffer = NULL;
+
+    return success;
+  }
+  else
+  {
+    std::ifstream input;
+    input.open(fileName.c_str(), std::ios_base::in | std::ios_base::binary);
+    if (!input)
+    {
+      return false;
+    }
+    const bool success = loadFromStream(input);
+    input.close();
+    return success;
+  } //else (i.e. uncompressed)
 }
 
 bool PrivateMessage::operator==(const PrivateMessage& other) const

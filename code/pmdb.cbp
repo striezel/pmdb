@@ -28,6 +28,19 @@
 					<Add option="-s" />
 				</Linker>
 			</Target>
+			<Target title="Release_no-compression">
+				<Option output="bin/Release-no-compression/pmdb" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release-no-compression/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O3" />
+					<Add option="-DNO_PM_COMPRESSION" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
@@ -52,8 +65,14 @@
 		<Unit filename="../libthoro/hash/sha-256_functions.h" />
 		<Unit filename="../libthoro/hash/sha-256_sources.cpp" />
 		<Unit filename="../libthoro/hash/sha-256_sources.h" />
-		<Unit filename="../libthoro/zlib/CompressionFunctions.cpp" />
-		<Unit filename="../libthoro/zlib/CompressionFunctions.hpp" />
+		<Unit filename="../libthoro/zlib/CompressionFunctions.cpp">
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="../libthoro/zlib/CompressionFunctions.hpp">
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
 		<Unit filename="ColourMap.cpp" />
 		<Unit filename="ColourMap.hpp" />
 		<Unit filename="Config.cpp" />

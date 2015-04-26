@@ -47,7 +47,7 @@ const int rcCaughtException  = 3;
 void showGPLNotice()
 {
   std::cout << "Private Message Database\n"
-            << "  Copyright (C) 2012, 2013, 2014  Thoronador\n"
+            << "  Copyright (C) 2012, 2013, 2014, 2015  Thoronador\n"
             << "\n"
             << "  This programme is free software: you can redistribute it and/or\n"
             << "  modify it under the terms of the GNU General Public License as published\n"
@@ -67,7 +67,11 @@ void showGPLNotice()
 void showVersion()
 {
   showGPLNotice();
-  std::cout << "Private Message Database, version 0.23, 2014-11-07\n";
+  #ifdef NO_PM_COMPRESSION
+  std::cout << "Private Message Database, version 0.24~no-compression, 2015-04-26\n";
+  #else
+  std::cout << "Private Message Database, version 0.24, 2015-04-26\n";
+  #endif
 }
 
 void showHelp(const std::string& name)
@@ -90,6 +94,14 @@ void showHelp(const std::string& name)
             << "                     loaded. Enabled by default.\n"
             << "  --no-save        - prevents the programme from saving any read meassages.\n"
             << "                     Mutually exclusive with --save.\n"
+            #ifndef NO_PM_COMPRESSION
+            << "  --compress       - save and load operations (see --save and --load) will use\n"
+            << "                     compression, i.e. messages are compressed using zlib\n"
+            << "                     before they are saved to files, and they will be decom-\n"
+            << "                     pressed when they are loaded from files. By default,\n"
+            << "                     messages will NOT be compressed for backwards compatibi-\n"
+            << "                     lity with earlier pmdb versions.\n"
+            #endif // NO_PM_COMPRESSION
             << "  --html           - creates HTML files for every message.\n"
             << "  --xhtml          - like --html, but use XHTML instead of HTML\n"
             << "  --no-br          - do not convert new line characters to line breaks in\n"
@@ -122,7 +134,7 @@ int main(int argc, char **argv)
   bool saveModeSpecified = false;
   std::string homeDirectory;
   std::string defaultSaveDirectory;
-  const bool compressed = false;
+  bool compressed = false;
 
   if (libthoro::filesystem::Directory::getHome(homeDirectory))
   {
@@ -283,6 +295,21 @@ int main(int argc, char **argv)
           }
           noList = true;
         }//param == no-list
+        else if ((param=="--compress") or (param=="--compression") or (param=="--zlib"))
+        {
+          #ifndef NO_PM_COMPRESSION
+          if (compressed)
+          {
+            std::cout << "Parameter " << param << " must not occur more than once!\n";
+            return rcInvalidParameter;
+          }
+          compressed = true;
+          std::cout << "Files loading/saving will use compression as requested via " << param << ".\n";
+          #else
+          std::cout << "Error: Compression is not available in this build of pmdb!\n";
+          return rcInvalidParameter;
+          #endif // NO_PM_COMPRESSION
+        }//param == compression
         else if ((param.substr(0,8)=="--table=") and (param.length()>8))
         {
           classTable = param.substr(8);

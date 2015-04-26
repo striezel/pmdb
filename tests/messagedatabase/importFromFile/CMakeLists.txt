@@ -19,11 +19,10 @@ set(importFromFile_test_src
     ../../../libthoro/filesystem/DirectoryFunctions.cpp
     ../../../libthoro/hash/sha-256.cpp
     ../../../libthoro/hash/sha-256_sources.cpp
-    ../../../libthoro/zlib/CompressionFunctions.cpp
     importFromFile_test.cpp)
 
 # We use a C++11 feature in the code, so enable C++0x a.k.a. C++11.
-add_definitions(-Wall -O3 -fexceptions -std=c++0x)
+add_definitions(-Wall -O3 -fexceptions -std=c++0x -DNO_PM_COMPRESSION)
 
 set( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -s" )
 

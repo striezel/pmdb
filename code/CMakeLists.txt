@@ -55,3 +55,60 @@ if (LIBXML2_FOUND)
 else ()
   message ( FATAL_ERROR "libxml2 was not found!" )
 endif (LIBXML2_FOUND)
+
+
+
+#same project, but without PM compression capabilities
+project(pmdb_no_comp)
+
+# add definition to avoid PM compression
+add_definitions(-DNO_PM_COMPRESSION)
+
+set(pmdb_no_comp_sources
+    Config.cpp
+    ColourMap.cpp
+    ConsoleColours.cpp
+    FolderMap.cpp
+    MessageDatabase.cpp
+    MsgTemplate.cpp
+    PMSource.cpp
+    PrivateMessage.cpp
+    SortType.cpp
+    XMLDocument.cpp
+    XMLNode.cpp
+    bbcode/AdvancedTemplateBBCode.cpp
+    bbcode/BBCodeParser.cpp
+    bbcode/CustomizedSimpleBBCode.cpp
+    bbcode/HorizontalRuleBBCode.cpp
+    bbcode/ListBBCode.cpp
+    bbcode/SimpleBBCode.cpp
+    bbcode/SimpleTemplateBBCode.cpp
+    bbcode/Smilie.cpp
+    bbcode/TableBBCode.cpp
+    bbcode/quotes.cpp
+    filters/FilterUser.cpp
+    ../libthoro/common/DirectoryFileList.cpp
+    ../libthoro/common/StringUtils.cpp
+    ../libthoro/filesystem/DirectoryFunctions.cpp
+    ../libthoro/filesystem/FileFunctions.cpp
+    ../libthoro/hash/sha-256.cpp
+    ../libthoro/hash/sha-256_sources.cpp
+    main.cpp)
+
+if (CMAKE_COMPILER_IS_GNUCC)
+    add_definitions (-Wall -O3 -fexceptions)
+endif (CMAKE_COMPILER_IS_GNUCC)
+
+set( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -s" )
+
+add_executable(pmdb_no_comp ${pmdb_no_comp_sources})
+
+# find libxml2
+set(LIBXML2_DIR "../cmake/" )
+find_package (LIBXML2)
+if (LIBXML2_FOUND)
+  include_directories(${LIBXML2_INCLUDE_DIRS})
+  target_link_libraries (pmdb_no_comp ${LIBXML2_LIBRARIES})
+else ()
+  message ( FATAL_ERROR "libxml2 was not found!" )
+endif (LIBXML2_FOUND)

@@ -22,10 +22,8 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
+			<Add option="-DNO_PM_COMPRESSION" />
 		</Compiler>
-		<Linker>
-			<Add library="z" />
-		</Linker>
 		<Unit filename="../../../code/PMSource.cpp" />
 		<Unit filename="../../../code/PMSource.hpp" />
 		<Unit filename="../../../code/PrivateMessage.cpp" />
@@ -36,8 +34,6 @@
 		<Unit filename="../../../libthoro/hash/sha-256.h" />
 		<Unit filename="../../../libthoro/hash/sha-256_sources.cpp" />
 		<Unit filename="../../../libthoro/hash/sha-256_sources.h" />
-		<Unit filename="../../../libthoro/zlib/CompressionFunctions.cpp" />
-		<Unit filename="../../../libthoro/zlib/CompressionFunctions.hpp" />
 		<Unit filename="normalise.cpp" />
 		<Extensions>
 			<code_completion />

@@ -23,6 +23,7 @@
 			<Add option="-std=c++0x" />
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
+			<Add option="-DNO_PM_COMPRESSION" />
 			<Add directory="/usr/include/libxml2/" />
 		</Compiler>
 		<Linker>
@@ -58,8 +59,6 @@
 		<Unit filename="../../../libthoro/hash/sha-256_functions.h" />
 		<Unit filename="../../../libthoro/hash/sha-256_sources.cpp" />
 		<Unit filename="../../../libthoro/hash/sha-256_sources.h" />
-		<Unit filename="../../../libthoro/zlib/CompressionFunctions.cpp" />
-		<Unit filename="../../../libthoro/zlib/CompressionFunctions.hpp" />
 		<Unit filename="importFromFile_test.cpp" />
 		<Extensions>
 			<code_completion />

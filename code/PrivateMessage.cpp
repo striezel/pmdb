@@ -27,7 +27,9 @@
 #include <sstream>
 #include "PMSource.hpp"
 #include "../libthoro/common/StringUtils.h"
+#ifndef NO_PM_COMPRESSION
 #include "../libthoro/zlib/CompressionFunctions.hpp"
+#endif
 
 PrivateMessage::PrivateMessage()
 : datestamp(""),
@@ -156,6 +158,12 @@ bool PrivateMessage::saveToFile(const std::string& fileName, const bool compress
   } //if not compressed
   else
   {
+    #ifdef NO_PM_COMPRESSION
+    #ifdef DEBUG
+    std::cout << "Error while saving compressed private message: compression is disabled for this build!\n";
+    #endif
+    return false;
+    #else
     const std::string::size_type bufLen = getSaveSize();
     uint8_t * buffer = NULL;
     try
@@ -218,6 +226,7 @@ bool PrivateMessage::saveToFile(const std::string& fileName, const bool compress
     delete[] buffer; buffer = NULL;
     delete[] compressedData; compressedData = NULL;
     return success;
+    #endif // end of NO_PM_COMPRESSION is not defined
   } //else (i.e. shall save compressed PM data)
 }
 
@@ -340,6 +349,12 @@ bool PrivateMessage::loadFromFile(const std::string& fileName, const bool isComp
 {
   if (isCompressed)
   {
+    #ifdef NO_PM_COMPRESSION
+    #ifdef DEBUG
+    std::cout << "Error while loading compressed private message: (de-)compression is disabled for this build!\n";
+    #endif //DEBUG
+    return false;
+    #else
     std::ifstream input;
     input.open(fileName.c_str(), std::ios_base::in | std::ios_base::binary);
     if (!input)
@@ -439,7 +454,8 @@ bool PrivateMessage::loadFromFile(const std::string& fileName, const bool isComp
     decompressedBuffer = NULL;
 
     return success;
-  }
+    #endif // NO_PM_COMPRESSION is not defined
+  } //if compressed
   else
   {
     std::ifstream input;

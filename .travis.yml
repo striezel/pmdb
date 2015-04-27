@@ -9,6 +9,6 @@ script:
   - cd ./Build
   - cmake ../
   - make -j2
-  - make test
+  - ctest -V
 notifications:
   email: false

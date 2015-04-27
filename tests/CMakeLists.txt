@@ -29,3 +29,7 @@ add_subdirectory (privatemessage)
 
 # Recurse into subdirectory for tests of pmdb executable.
 add_subdirectory (pmdb)
+
+# Recurse into subdirectory for tests of pmdb executable without compression
+# support.
+add_subdirectory (pmdb-no-comp)

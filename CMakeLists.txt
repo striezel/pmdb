@@ -7,5 +7,8 @@ enable_testing()
 #actual project
 add_subdirectory (code)
 
+# like actual project, but without compression support
+add_subdirectory (program-no-compression)
+
 # add subdirectory for test cases
 add_subdirectory (tests)

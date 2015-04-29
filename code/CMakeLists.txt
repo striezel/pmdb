@@ -38,11 +38,9 @@ set(pmdb_sources
     ../libthoro/zlib/CompressionFunctions.cpp
     main.cpp)
 
-if (CMAKE_COMPILER_IS_GNUCC)
-    add_definitions (-Wall -O3 -fexceptions)
-endif (CMAKE_COMPILER_IS_GNUCC)
+add_definitions (-Wall -O3 -fexceptions --std=c++0x -Wl,--no-as-needed -pthread)
 
-set( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -s" )
+set( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -s -lpthread" )
 
 add_executable(pmdb ${pmdb_sources})
 

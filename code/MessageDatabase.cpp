@@ -23,12 +23,17 @@
 #include <sstream>
 #include <algorithm>
 #include <stdexcept>
+#ifdef PMDB_EXPERIMENTAL
+#include <future>
+#include <thread>
+#endif
 #include "SortType.hpp"
 #include "XMLDocument.hpp"
 #include "XMLNode.hpp"
 #include "../libthoro/common/DirectoryFileList.h"
 #include "../libthoro/common/StringUtils.h"
 #include "../libthoro/filesystem/DirectoryFunctions.hpp"
+#include "../libthoro/procfs/processors.hpp"
 
 bool isValidSHA256Hash(const std::string& hash)
 {
@@ -477,8 +482,97 @@ bool MessageDatabase::saveIndexFiles(const std::string& directory, MsgTemplate i
   return true;
 }
 
-
 std::map<md_date, std::vector<md_date> > MessageDatabase::getTextSubsets() const
+{
+  #ifdef PMDB_EXPERIMENTAL
+  const int numCPU = libthoro::procfs::getProcessorCount();
+  if ((numCPU <= 1) || (m_Messages.size() < 10))
+  #endif
+    return getTextSubsetsSimple();
+  #ifdef PMDB_EXPERIMENTAL
+  //We have two or more processors and "enough" messages, switch to threaded variant.
+  std::future<std::map<md_date, std::vector<md_date> >> f1;
+  try
+  {
+    f1 = std::async(std::launch::async, &MessageDatabase::getTextSubsets1stPart, this);
+  }
+  catch (std::exception& ex)
+  {
+    std::cout << "Damn! Caught an exception: " << ex.what() << "\n";
+    return std::map<md_date, std::vector<md_date> >();
+  }
+
+  std::future<std::map<md_date, std::vector<md_date> >> f2
+      = std::async(std::launch::async, &MessageDatabase::getTextSubsets2ndPart, this);
+
+  f1.wait();
+  f2.wait();
+
+  std::map<md_date, std::vector<md_date> > result = f1.get();
+  std::map<md_date, std::vector<md_date> > r2 = f2.get();
+  auto iter = r2.begin();
+  while (iter != r2.end())
+  {
+    result.insert(*iter);
+    ++iter;
+  } //while
+  return result;
+  #endif
+}
+
+#ifdef PMDB_EXPERIMENTAL
+std::map<md_date, std::vector<md_date> > MessageDatabase::getTextSubsets1stPart() const
+{
+  std::map<md_date, std::vector<md_date> > result;
+  Iterator iter = m_Messages.begin();
+  Iterator half_iter = m_Messages.begin();
+  std::advance(half_iter, std::distance(m_Messages.begin(), m_Messages.end()) / 2);
+  while (iter!=half_iter)
+  {
+    Iterator innerIter = m_Messages.begin();
+    while (innerIter!=m_Messages.end())
+    {
+      if (iter!=innerIter)
+      {
+        if (iter->second.getMessage().find(innerIter->second.getMessage())!=std::string::npos)
+        {
+          result[md_date(iter->first, iter->second.getDatestamp())].push_back(md_date(innerIter->first, innerIter->second.getDatestamp()));
+        }
+      }
+      ++innerIter;
+    }
+    ++iter;
+  }//while
+  return result;
+}
+
+std::map<md_date, std::vector<md_date> > MessageDatabase::getTextSubsets2ndPart() const
+{
+  std::map<md_date, std::vector<md_date> > result;
+  Iterator half_iter = m_Messages.begin();
+  std::advance(half_iter, std::distance(m_Messages.begin(), m_Messages.end()) / 2);
+  Iterator iter = m_Messages.begin();
+  while (iter!=m_Messages.end())
+  {
+    Iterator innerIter = m_Messages.begin();
+    while (innerIter!=m_Messages.end())
+    {
+      if (iter!=innerIter)
+      {
+        if (iter->second.getMessage().find(innerIter->second.getMessage())!=std::string::npos)
+        {
+          result[md_date(iter->first, iter->second.getDatestamp())].push_back(md_date(innerIter->first, innerIter->second.getDatestamp()));
+        }
+      }
+      ++innerIter;
+    }
+    ++iter;
+  }//while
+  return result;
+}
+#endif // PMDB_EXPERIMENTAL
+
+std::map<md_date, std::vector<md_date> > MessageDatabase::getTextSubsetsSimple() const
 {
   std::map<md_date, std::vector<md_date> > result;
   Iterator iter = m_Messages.begin();

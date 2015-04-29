@@ -142,6 +142,19 @@ class MessageDatabase
      */
     void clear();
   private:
+    /** \brief finds messages whose texts "overlap"
+     *
+     * \return Returns a map where a hash-datestamp struct for a message is
+     *         mapped to a vector of hash-datestamp structs of messages whose
+     *         texts are contained in the key message.
+     */
+    std::map<md_date, std::vector<md_date> > getTextSubsetsSimple() const;
+
+    #ifdef PMDB_EXPERIMENTAL
+    std::map<md_date, std::vector<md_date> > getTextSubsets1stPart() const;
+    std::map<md_date, std::vector<md_date> > getTextSubsets2ndPart() const;
+    #endif // PMDB_EXPERIMENTAL
+
     /** \brief processes a <folder> XML node
      *
      * \param node    the XML node

@@ -27,10 +27,10 @@
 		<Unit filename="../../../code/FolderMap.hpp" />
 		<Unit filename="../../../libthoro/common/StringUtils.cpp" />
 		<Unit filename="../../../libthoro/common/StringUtils.h" />
-		<Unit filename="../../../libthoro/hash/sha-256.cpp" />
-		<Unit filename="../../../libthoro/hash/sha-256.h" />
-		<Unit filename="../../../libthoro/hash/sha-256_sources.cpp" />
-		<Unit filename="../../../libthoro/hash/sha-256_sources.h" />
+		<Unit filename="../../../libthoro/hash/sha256/MessageSource.cpp" />
+		<Unit filename="../../../libthoro/hash/sha256/MessageSource.hpp" />
+		<Unit filename="../../../libthoro/hash/sha256/sha256.cpp" />
+		<Unit filename="../../../libthoro/hash/sha256/sha256.hpp" />
 		<Unit filename="add-get.cpp" />
 		<Extensions>
 			<code_completion />

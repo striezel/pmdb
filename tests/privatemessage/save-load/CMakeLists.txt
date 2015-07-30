@@ -9,8 +9,8 @@ set(PM_save_load_test_src
     ../../../code/PrivateMessage.cpp
     ../../../libthoro/common/StringUtils.cpp
     ../../../libthoro/filesystem/FileFunctions.cpp
-    ../../../libthoro/hash/sha-256.cpp
-    ../../../libthoro/hash/sha-256_sources.cpp
+    ../../../libthoro/hash/sha256/sha256.cpp
+    ../../../libthoro/hash/sha256/MessageSource.cpp
     save-load.cpp)
 
 if (CMAKE_COMPILER_IS_GNUCC)

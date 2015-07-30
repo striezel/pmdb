@@ -22,6 +22,7 @@
 #define BBCODE_DEFAULTCODES_HPP
 
 #include "BBCode.hpp"
+#include "BBCodeParser.hpp"
 #include "SimpleBBCode.hpp"
 #include "CustomizedSimpleBBCode.hpp"
 #include "SimpleTplAmpTransformBBCode.hpp"

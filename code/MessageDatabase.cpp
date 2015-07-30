@@ -19,9 +19,10 @@
 */
 
 #include "MessageDatabase.hpp"
+#include <algorithm>
+#include <fstream>
 #include <iostream>
 #include <sstream>
-#include <algorithm>
 #include <stdexcept>
 #include "SortType.hpp"
 #include "XMLDocument.hpp"
@@ -29,6 +30,7 @@
 #include "../libthoro/common/DirectoryFileList.h"
 #include "../libthoro/common/StringUtils.h"
 #include "../libthoro/filesystem/DirectoryFunctions.hpp"
+#include "../libthoro/hash/sha256/BufferSourceUtility.hpp"
 
 bool isValidSHA256Hash(const std::string& hash)
 {

@@ -33,8 +33,10 @@ set(pmdb_sources
     ../libthoro/common/StringUtils.cpp
     ../libthoro/filesystem/DirectoryFunctions.cpp
     ../libthoro/filesystem/FileFunctions.cpp
-    ../libthoro/hash/sha-256.cpp
-    ../libthoro/hash/sha-256_sources.cpp
+    ../libthoro/hash/sha256/sha256.cpp
+    ../libthoro/hash/sha256/BufferSource.cpp
+    ../libthoro/hash/sha256/BufferSourceUtility.cpp
+    ../libthoro/hash/sha256/MessageSource.cpp
     ../libthoro/zlib/CompressionFunctions.cpp
     main.cpp)
 

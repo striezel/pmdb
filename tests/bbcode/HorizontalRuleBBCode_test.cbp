@@ -29,7 +29,7 @@
 		<Unit filename="../../code/bbcode/HorizontalRuleBBCode.hpp" />
 		<Unit filename="../../libthoro/common/StringUtils.cpp" />
 		<Unit filename="../../libthoro/common/StringUtils.h" />
-		<Unit filename="HorizontalRuleBBCcode_test.cpp" />
+		<Unit filename="HorizontalRuleBBCode_test.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />

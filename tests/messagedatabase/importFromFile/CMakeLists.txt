@@ -17,8 +17,10 @@ set(importFromFile_test_src
     ../../../libthoro/common/StringUtils.cpp
     ../../../libthoro/encoding/StringConversion.cpp
     ../../../libthoro/filesystem/DirectoryFunctions.cpp
-    ../../../libthoro/hash/sha-256.cpp
-    ../../../libthoro/hash/sha-256_sources.cpp
+    ../../../libthoro/hash/sha256/sha256.cpp
+    ../../../libthoro/hash/sha256/BufferSource.cpp
+    ../../../libthoro/hash/sha256/BufferSourceUtility.cpp
+    ../../../libthoro/hash/sha256/MessageSource.cpp
     importFromFile_test.cpp)
 
 # We use a C++11 feature in the code, so enable C++0x a.k.a. C++11.

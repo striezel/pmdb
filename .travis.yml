@@ -3,8 +3,9 @@ compiler:
   - clang
   - gcc
 before_install:
-  - sudo apt-get install libxml2 libxml2-dev -y
+  - sudo apt-get install freeglut3-dev libglfw-dev libxml2 libxml2-dev zlib1g-dev -y
 script:
+  - ./ci/cpplint.sh
   - mkdir ./Build
   - cd ./Build
   - cmake ../

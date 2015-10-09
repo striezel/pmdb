@@ -69,9 +69,9 @@ void showVersion()
 {
   showGPLNotice();
   #ifdef NO_PM_COMPRESSION
-  std::cout << "Private Message Database, version 0.24~no-compression, 2015-04-26\n";
+  std::cout << "Private Message Database, version 0.24.1~no-compression, 2015-10-09\n";
   #else
-  std::cout << "Private Message Database, version 0.24, 2015-04-26\n";
+  std::cout << "Private Message Database, version 0.24.1, 2015-10-09\n";
   #endif
 }
 
@@ -656,6 +656,7 @@ int main(int argc, char **argv)
     std::cout << "Searching for message texts that are contained in others. This may take a while...\n";
     std::map<md_date, std::vector<md_date> > subsets = mdb.getTextSubsets();
     std::map<md_date, std::vector<md_date> >::iterator subIter = subsets.begin();
+    std::set<SHA256::MessageDigest> redundantMessages;
     while (subIter != subsets.end())
     {
       try
@@ -690,10 +691,22 @@ int main(int argc, char **argv)
           std::cout << "Caught exception: " << except.what() << "\n.";
           return rcCaughtException;
         }
+        redundantMessages.insert(secondIter->md);
         ++secondIter;
       }//while (inner)
       ++subIter;
     }//while (outer, subIter)
+
+    if (!redundantMessages.empty())
+    {
+      const unsigned int current = mdb.getNumberOfMessages();
+      const unsigned int redundant = static_cast<unsigned int>(redundantMessages.size());
+      std::cout << "Information: " << redundant
+                << " message(s) can be deleted without information loss, "
+                << "reducing the message count from currently " << current
+                << " message(s) to " << (current-redundant) << " message(s)."
+                << std::endl;
+    } //if redundant message(s)
   }//if search for duplicates/subsets
 
   //list messages by given filter conditions

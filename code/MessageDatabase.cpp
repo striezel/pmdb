@@ -32,39 +32,6 @@
 #include "../libthoro/filesystem/DirectoryFunctions.hpp"
 #include "../libthoro/hash/sha256/BufferSourceUtility.hpp"
 
-bool isValidSHA256Hash(const std::string& hash)
-{
-  if (hash.length()!=64) return false;
-  unsigned int i;
-  for (i=0; i<64; ++i)
-  {
-    switch (hash[i])
-    {
-      case '0':
-      case '1':
-      case '2':
-      case '3':
-      case '4':
-      case '5':
-      case '6':
-      case '7':
-      case '8':
-      case '9':
-      case 'a':
-      case 'b':
-      case 'c':
-      case 'd':
-      case 'e':
-      case 'f':
-           break;
-      default:
-           return false;
-           break;
-    }//swi
-  }//for
-  return true;
-}
-
 MessageDatabase::MessageDatabase()
 :  m_Messages(std::map<SHA256::MessageDigest, PrivateMessage>())
 {
@@ -361,7 +328,7 @@ bool MessageDatabase::loadMessages(const std::string& directory, uint32_t& readP
   {
     if (!(iter->IsDirectory))
     {
-      if (isValidSHA256Hash(iter->FileName))
+      if (SHA256::isValidHash(iter->FileName))
       {
         if (!tempPM.loadFromFile(realDirectory+iter->FileName, isCompressed))
         {

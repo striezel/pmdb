@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2012, 2014, 2015  Dirk Stolle
+    Copyright (C) 2012, 2014, 2015, 2016  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -26,9 +26,9 @@
 #include <limits>
 #include <sstream>
 #include "PMSource.hpp"
-#include "../libthoro/common/StringUtils.h"
+#include "../libstriezel/common/StringUtils.hpp"
 #ifndef NO_PM_COMPRESSION
-#include "../libthoro/zlib/CompressionFunctions.hpp"
+#include "../libstriezel/zlib/CompressionFunctions.hpp"
 #endif
 
 PrivateMessage::PrivateMessage()
@@ -180,7 +180,7 @@ bool PrivateMessage::saveToFile(const std::string& fileName, const bool compress
       return false;
     } //catch
 
-    libthoro::OutBufferStream bufferStream(reinterpret_cast<char*>(buffer), bufLen);
+    libstriezel::OutBufferStream bufferStream(reinterpret_cast<char*>(buffer), bufLen);
     const bool result = saveToStream(bufferStream);
     if (!result)
     {
@@ -197,9 +197,9 @@ bool PrivateMessage::saveToFile(const std::string& fileName, const bool compress
       compSize = std::numeric_limits<uint32_t>::max();
     else
       compSize = bufLen;
-    libthoro::zlib::CompressPointer compressedData = new uint8_t[compSize];
+    libstriezel::zlib::CompressPointer compressedData = new uint8_t[compSize];
     uint32_t usedSize = 0;
-    if (!libthoro::zlib::compress(buffer, bufLen, compressedData, compSize, usedSize, 9))
+    if (!libstriezel::zlib::compress(buffer, bufLen, compressedData, compSize, usedSize, 9))
     {
       #ifdef DEBUG
       std::cout << "Error while saving compressed message: Compression via zlib failed!\n";
@@ -432,7 +432,7 @@ bool PrivateMessage::loadFromFile(const std::string& fileName, const bool isComp
     uint8_t * decompressedBuffer = new uint8_t[decompressedSize];
 
     //decompress all the stuff
-    if (!libthoro::zlib::decompress(compressedBuffer, compressedBufferSize, decompressedBuffer, decompressedSize))
+    if (!libstriezel::zlib::decompress(compressedBuffer, compressedBufferSize, decompressedBuffer, decompressedSize))
     {
       delete[] compressedBuffer;
       delete[] decompressedBuffer;
@@ -447,7 +447,7 @@ bool PrivateMessage::loadFromFile(const std::string& fileName, const bool isComp
     compressedBuffer = NULL;
 
     //create buffer stream
-    libthoro::InBufferStream bufferStream(reinterpret_cast<const char*>(decompressedBuffer), decompressedSize);
+    libstriezel::InBufferStream bufferStream(reinterpret_cast<const char*>(decompressedBuffer), decompressedSize);
     const bool success = loadFromStream(bufferStream);
     bufferStream.buffer(NULL, 0);
     delete[] decompressedBuffer;

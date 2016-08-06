@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2012, 2014, 2015  Dirk Stolle
+    Copyright (C) 2012, 2014, 2015, 2016  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,7 +19,7 @@
 */
 
 #include "SimpleBBCode.hpp"
-#include "../../libthoro/common/StringUtils.h"
+#include "../../libstriezel/common/StringUtils.hpp"
 
 SimpleBBCode::SimpleBBCode(const std::string& code)
 : BBCode(toLowerString(code))

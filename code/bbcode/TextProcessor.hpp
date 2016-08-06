@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2012  Dirk Stolle
+    Copyright (C) 2012, 2016  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -22,7 +22,7 @@
 #define BBCODE_TEXTPROCESSOR_HPP
 
 #include <string>
-#include "../../libthoro/common/StringUtils.h"
+#include "../../libstriezel/common/StringUtils.hpp"
 
 /** \brief TextProcessor:
        basic interface for BB code pre- and post-processing structs

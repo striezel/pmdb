@@ -25,12 +25,12 @@
 		</Compiler>
 		<Unit filename="../../../code/FolderMap.cpp" />
 		<Unit filename="../../../code/FolderMap.hpp" />
-		<Unit filename="../../../libthoro/common/StringUtils.cpp" />
-		<Unit filename="../../../libthoro/common/StringUtils.h" />
-		<Unit filename="../../../libthoro/hash/sha256/MessageSource.cpp" />
-		<Unit filename="../../../libthoro/hash/sha256/MessageSource.hpp" />
-		<Unit filename="../../../libthoro/hash/sha256/sha256.cpp" />
-		<Unit filename="../../../libthoro/hash/sha256/sha256.hpp" />
+		<Unit filename="../../../libstriezel/common/StringUtils.cpp" />
+		<Unit filename="../../../libstriezel/common/StringUtils.hpp" />
+		<Unit filename="../../../libstriezel/hash/sha256/MessageSource.cpp" />
+		<Unit filename="../../../libstriezel/hash/sha256/MessageSource.hpp" />
+		<Unit filename="../../../libstriezel/hash/sha256/sha256.cpp" />
+		<Unit filename="../../../libstriezel/hash/sha256/sha256.hpp" />
 		<Unit filename="add-get.cpp" />
 		<Extensions>
 			<code_completion />

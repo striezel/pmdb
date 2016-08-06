@@ -4,8 +4,8 @@ cmake_minimum_required (VERSION 2.8)
 #like main project, but without PM compression capabilities
 project(pmdb_no_comp)
 
-# add definition to avoid PM compression
-add_definitions(-DNO_PM_COMPRESSION)
+# add definition to avoid PM compression and enable C++11 support
+add_definitions(-DNO_PM_COMPRESSION -std=c++0x)
 
 set(pmdb_no_comp_sources
     ../code/Config.cpp
@@ -30,14 +30,14 @@ set(pmdb_no_comp_sources
     ../code/bbcode/TableBBCode.cpp
     ../code/bbcode/quotes.cpp
     ../code/filters/FilterUser.cpp
-    ../libthoro/common/DirectoryFileList.cpp
-    ../libthoro/common/StringUtils.cpp
-    ../libthoro/filesystem/DirectoryFunctions.cpp
-    ../libthoro/filesystem/FileFunctions.cpp
-    ../libthoro/hash/sha256/sha256.cpp
-    ../libthoro/hash/sha256/BufferSource.cpp
-    ../libthoro/hash/sha256/BufferSourceUtility.cpp
-    ../libthoro/hash/sha256/MessageSource.cpp
+    ../libstriezel/common/DirectoryFileList.cpp
+    ../libstriezel/common/StringUtils.cpp
+    ../libstriezel/filesystem/directory.cpp
+    ../libstriezel/filesystem/file.cpp
+    ../libstriezel/hash/sha256/sha256.cpp
+    ../libstriezel/hash/sha256/BufferSource.cpp
+    ../libstriezel/hash/sha256/BufferSourceUtility.cpp
+    ../libstriezel/hash/sha256/MessageSource.cpp
     ../code/main.cpp)
 
 if (CMAKE_COMPILER_IS_GNUCC)

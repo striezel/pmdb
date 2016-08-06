@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2012, 2013  Dirk Stolle
+    Copyright (C) 2012, 2013, 2016  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -22,7 +22,7 @@
 #ifdef DEBUG
   #include <iostream>
 #endif
-#include "../../libthoro/common/StringUtils.h"
+#include "../../libstriezel/common/StringUtils.hpp"
 #include "Notifier.hpp"
 
 TableBBCode::OpeningElem::OpeningElem()

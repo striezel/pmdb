@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2012, 2013, 2014, 2015  Dirk Stolle
+    Copyright (C) 2012, 2013, 2014, 2015, 2016  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -27,10 +27,10 @@
 #include "SortType.hpp"
 #include "XMLDocument.hpp"
 #include "XMLNode.hpp"
-#include "../libthoro/common/DirectoryFileList.h"
-#include "../libthoro/common/StringUtils.h"
-#include "../libthoro/filesystem/DirectoryFunctions.hpp"
-#include "../libthoro/hash/sha256/BufferSourceUtility.hpp"
+#include "../libstriezel/common/DirectoryFileList.hpp"
+#include "../libstriezel/common/StringUtils.hpp"
+#include "../libstriezel/filesystem/directory.hpp"
+#include "../libstriezel/hash/sha256/BufferSourceUtility.hpp"
 
 MessageDatabase::MessageDatabase()
 :  m_Messages(std::map<SHA256::MessageDigest, PrivateMessage>())
@@ -299,7 +299,7 @@ bool MessageDatabase::processPrivateMessageNode(const XMLNode& node, uint32_t& r
 bool MessageDatabase::saveMessages(const std::string& directory, const bool compressed) const
 {
   std::map<SHA256::MessageDigest, PrivateMessage>::const_iterator iter = m_Messages.begin();
-  const std::string realDirectory(libthoro::filesystem::slashify(directory));
+  const std::string realDirectory(libstriezel::filesystem::slashify(directory));
   while (iter!=m_Messages.end())
   {
     if (!iter->second.saveToFile(realDirectory+iter->first.toHexString(), compressed))
@@ -321,7 +321,7 @@ bool MessageDatabase::loadMessages(const std::string& directory, uint32_t& readP
 
   PrivateMessage tempPM;
 
-  const std::string realDirectory(libthoro::filesystem::slashify(directory));
+  const std::string realDirectory(libstriezel::filesystem::slashify(directory));
 
   std::vector<FileEntry>::const_iterator iter = files.begin();
   while (iter!=files.end())

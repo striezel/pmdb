@@ -23,7 +23,7 @@
 
 #include <string>
 #include <stdint.h>
-#include "../libthoro/hash/sha256/sha256.hpp"
+#include "../libstriezel/hash/sha256/sha256.hpp"
 
 /** holds information about a private message */
 class PrivateMessage

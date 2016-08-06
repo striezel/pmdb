@@ -26,8 +26,8 @@
 		<Unit filename="../../code/bbcode/BBCode.hpp" />
 		<Unit filename="../../code/bbcode/CustomizedSimpleBBCode.cpp" />
 		<Unit filename="../../code/bbcode/CustomizedSimpleBBCode.hpp" />
-		<Unit filename="../../libthoro/common/StringUtils.cpp" />
-		<Unit filename="../../libthoro/common/StringUtils.h" />
+		<Unit filename="../../libstriezel/common/StringUtils.cpp" />
+		<Unit filename="../../libstriezel/common/StringUtils.hpp" />
 		<Unit filename="CustomizedSimpleBBCode_test.cpp" />
 		<Extensions>
 			<code_completion />

@@ -27,8 +27,8 @@
 		<Unit filename="../../code/bbcode/Notifier.hpp" />
 		<Unit filename="../../code/bbcode/TableBBCode.cpp" />
 		<Unit filename="../../code/bbcode/TableBBCode.hpp" />
-		<Unit filename="../../libthoro/common/StringUtils.cpp" />
-		<Unit filename="../../libthoro/common/StringUtils.h" />
+		<Unit filename="../../libstriezel/common/StringUtils.cpp" />
+		<Unit filename="../../libstriezel/common/StringUtils.hpp" />
 		<Unit filename="TableBBCode_test.cpp" />
 		<Extensions>
 			<code_completion />

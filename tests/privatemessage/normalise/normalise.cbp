@@ -28,12 +28,12 @@
 		<Unit filename="../../../code/PMSource.hpp" />
 		<Unit filename="../../../code/PrivateMessage.cpp" />
 		<Unit filename="../../../code/PrivateMessage.hpp" />
-		<Unit filename="../../../libthoro/common/StringUtils.cpp" />
-		<Unit filename="../../../libthoro/common/StringUtils.h" />
-		<Unit filename="../../../libthoro/hash/sha256/sha256.cpp" />
-		<Unit filename="../../../libthoro/hash/sha256/sha256.hpp" />
-		<Unit filename="../../../libthoro/hash/sha256/MessageSource.cpp" />
-		<Unit filename="../../../libthoro/hash/sha256/MessageSource.hpp" />
+		<Unit filename="../../../libstriezel/common/StringUtils.cpp" />
+		<Unit filename="../../../libstriezel/common/StringUtils.hpp" />
+		<Unit filename="../../../libstriezel/hash/sha256/sha256.cpp" />
+		<Unit filename="../../../libstriezel/hash/sha256/sha256.hpp" />
+		<Unit filename="../../../libstriezel/hash/sha256/MessageSource.cpp" />
+		<Unit filename="../../../libstriezel/hash/sha256/MessageSource.hpp" />
 		<Unit filename="normalise.cpp" />
 		<Extensions>
 			<code_completion />

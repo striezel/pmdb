@@ -6,9 +6,9 @@ project(FolderMap_addget_test)
 
 set(FolderMap_addget_test_src
     ../../../code/FolderMap.cpp
-    ../../../libthoro/common/StringUtils.cpp
-    ../../../libthoro/hash/sha256/sha256.cpp
-    ../../../libthoro/hash/sha256/MessageSource.cpp
+    ../../../libstriezel/common/StringUtils.cpp
+    ../../../libstriezel/hash/sha256/sha256.cpp
+    ../../../libstriezel/hash/sha256/MessageSource.cpp
     add-get.cpp)
 
 if (CMAKE_COMPILER_IS_GNUCC)

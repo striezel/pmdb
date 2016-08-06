@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database test suite.
-    Copyright (C) 2015  Dirk Stolle
+    Copyright (C) 2015, 2016  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -22,8 +22,8 @@
 #include <iostream>
 #include <utility>
 #include <vector>
-#include "../../../libthoro/encoding/StringConversion.hpp"
-#include "../../../libthoro/filesystem/DirectoryFunctions.hpp"
+#include "../../../libstriezel/encoding/StringConversion.hpp"
+#include "../../../libstriezel/filesystem/directory.hpp"
 #include "../../../code/MessageDatabase.hpp"
 
 int main(int argc, char **argv)
@@ -39,7 +39,7 @@ int main(int argc, char **argv)
     return 1;
   }
   //get base path for XML test files from command line arguments
-  const std::string baseXmlPath = libthoro::filesystem::slashify(std::string(argv[1]));
+  const std::string baseXmlPath = libstriezel::filesystem::slashify(std::string(argv[1]));
   if (baseXmlPath.empty() || (baseXmlPath == "/") || (baseXmlPath == "\\"))
   {
     std::cout << "Error: Invalid base XML path!\n";
@@ -247,7 +247,7 @@ int main(int argc, char **argv)
 
     std::string message("");
     //convert message
-    if (!libthoro::encoding::utf8_to_iso8859_1(pm.getMessage(), message))
+    if (!libstriezel::encoding::utf8_to_iso8859_1(pm.getMessage(), message))
     {
       std::cout << "Conversion failed!\n";
       std::cout << "Message is now \""<<message<<"\".\n";

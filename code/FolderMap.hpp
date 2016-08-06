@@ -24,7 +24,7 @@
 #include <map>
 #include <set>
 #include <string>
-#include "../libthoro/hash/sha256/sha256.hpp"
+#include "../libstriezel/hash/sha256/sha256.hpp"
 
 /** \brief FolderMap - class that maps private messages (represented by their hash) to their corresponding folder
  */

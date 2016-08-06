@@ -30,16 +30,16 @@
 		<Unit filename="../../../code/PMSource.hpp" />
 		<Unit filename="../../../code/PrivateMessage.cpp" />
 		<Unit filename="../../../code/PrivateMessage.hpp" />
-		<Unit filename="../../../libthoro/common/StringUtils.cpp" />
-		<Unit filename="../../../libthoro/common/StringUtils.h" />
-		<Unit filename="../../../libthoro/filesystem/FileFunctions.cpp" />
-		<Unit filename="../../../libthoro/filesystem/FileFunctions.hpp" />
-		<Unit filename="../../../libthoro/hash/sha256/sha256.cpp" />
-		<Unit filename="../../../libthoro/hash/sha256/sha256.hpp" />
-		<Unit filename="../../../libthoro/hash/sha256/MessageSource.cpp" />
-		<Unit filename="../../../libthoro/hash/sha256/MessageSource.hpp" />
-		<Unit filename="../../../libthoro/zlib/CompressionFunctions.cpp" />
-		<Unit filename="../../../libthoro/zlib/CompressionFunctions.hpp" />
+		<Unit filename="../../../libstriezel/common/StringUtils.cpp" />
+		<Unit filename="../../../libstriezel/common/StringUtils.hpp" />
+		<Unit filename="../../../libstriezel/filesystem/file.cpp" />
+		<Unit filename="../../../libstriezel/filesystem/file.hpp" />
+		<Unit filename="../../../libstriezel/hash/sha256/sha256.cpp" />
+		<Unit filename="../../../libstriezel/hash/sha256/sha256.hpp" />
+		<Unit filename="../../../libstriezel/hash/sha256/MessageSource.cpp" />
+		<Unit filename="../../../libstriezel/hash/sha256/MessageSource.hpp" />
+		<Unit filename="../../../libstriezel/zlib/CompressionFunctions.cpp" />
+		<Unit filename="../../../libstriezel/zlib/CompressionFunctions.hpp" />
 		<Unit filename="save-load-compressed.cpp" />
 		<Extensions>
 			<code_completion />

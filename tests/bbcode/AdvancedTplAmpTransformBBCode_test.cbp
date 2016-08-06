@@ -31,8 +31,8 @@
 		<Unit filename="../../code/bbcode/BBCode.hpp" />
 		<Unit filename="../../code/bbcode/SimpleTemplateBBCode.cpp" />
 		<Unit filename="../../code/bbcode/SimpleTemplateBBCode.hpp" />
-		<Unit filename="../../libthoro/common/StringUtils.cpp" />
-		<Unit filename="../../libthoro/common/StringUtils.h" />
+		<Unit filename="../../libstriezel/common/StringUtils.cpp" />
+		<Unit filename="../../libstriezel/common/StringUtils.hpp" />
 		<Unit filename="AdvancedTplAmpTransformBBCode_test.cpp" />
 		<Extensions>
 			<code_completion />

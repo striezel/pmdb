@@ -22,7 +22,7 @@
 #define SORTTYPE_HPP
 
 #include <string>
-#include "../libthoro/hash/sha256/sha256.hpp"
+#include "../libstriezel/hash/sha256/sha256.hpp"
 
 /** aux. type for sorting entries by datestamp and hash */
 struct SortType

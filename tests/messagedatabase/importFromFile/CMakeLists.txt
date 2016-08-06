@@ -13,14 +13,14 @@ set(importFromFile_test_src
     ../../../code/SortType.cpp
     ../../../code/XMLDocument.cpp
     ../../../code/XMLNode.cpp
-    ../../../libthoro/common/DirectoryFileList.cpp
-    ../../../libthoro/common/StringUtils.cpp
-    ../../../libthoro/encoding/StringConversion.cpp
-    ../../../libthoro/filesystem/DirectoryFunctions.cpp
-    ../../../libthoro/hash/sha256/sha256.cpp
-    ../../../libthoro/hash/sha256/BufferSource.cpp
-    ../../../libthoro/hash/sha256/BufferSourceUtility.cpp
-    ../../../libthoro/hash/sha256/MessageSource.cpp
+    ../../../libstriezel/common/DirectoryFileList.cpp
+    ../../../libstriezel/common/StringUtils.cpp
+    ../../../libstriezel/encoding/StringConversion.cpp
+    ../../../libstriezel/filesystem/directory.cpp
+    ../../../libstriezel/hash/sha256/sha256.cpp
+    ../../../libstriezel/hash/sha256/BufferSource.cpp
+    ../../../libstriezel/hash/sha256/BufferSourceUtility.cpp
+    ../../../libstriezel/hash/sha256/MessageSource.cpp
     importFromFile_test.cpp)
 
 # We use a C++11 feature in the code, so enable C++0x a.k.a. C++11.

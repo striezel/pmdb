@@ -7,9 +7,9 @@ project(PM_normalise_test)
 set(PM_normalise_test_src
     ../../../code/PMSource.cpp
     ../../../code/PrivateMessage.cpp
-    ../../../libthoro/common/StringUtils.cpp
-    ../../../libthoro/hash/sha256/sha256.cpp
-    ../../../libthoro/hash/sha256/MessageSource.cpp
+    ../../../libstriezel/common/StringUtils.cpp
+    ../../../libstriezel/hash/sha256/sha256.cpp
+    ../../../libstriezel/hash/sha256/MessageSource.cpp
     normalise.cpp)
 
 if (CMAKE_COMPILER_IS_GNUCC)

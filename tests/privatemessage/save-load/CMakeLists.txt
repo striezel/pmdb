@@ -7,10 +7,10 @@ project(PM_save_load_test)
 set(PM_save_load_test_src
     ../../../code/PMSource.cpp
     ../../../code/PrivateMessage.cpp
-    ../../../libthoro/common/StringUtils.cpp
-    ../../../libthoro/filesystem/FileFunctions.cpp
-    ../../../libthoro/hash/sha256/sha256.cpp
-    ../../../libthoro/hash/sha256/MessageSource.cpp
+    ../../../libstriezel/common/StringUtils.cpp
+    ../../../libstriezel/filesystem/file.cpp
+    ../../../libstriezel/hash/sha256/sha256.cpp
+    ../../../libstriezel/hash/sha256/MessageSource.cpp
     save-load.cpp)
 
 if (CMAKE_COMPILER_IS_GNUCC)
@@ -18,7 +18,8 @@ if (CMAKE_COMPILER_IS_GNUCC)
 endif (CMAKE_COMPILER_IS_GNUCC)
 
 # add definition to avoid PM compression (this test is for uncompressed data)
-add_definitions(-DNO_PM_COMPRESSION)
+# and add support for C++11
+add_definitions(-DNO_PM_COMPRESSION -std=c++0x)
 
 set( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -s" )
 

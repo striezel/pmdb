@@ -7,16 +7,19 @@ project(PM_save_load_compressed_test)
 set(PM_save_load_compressed_test_src
     ../../../code/PMSource.cpp
     ../../../code/PrivateMessage.cpp
-    ../../../libthoro/common/StringUtils.cpp
-    ../../../libthoro/filesystem/FileFunctions.cpp
-    ../../../libthoro/hash/sha256/sha256.cpp
-    ../../../libthoro/hash/sha256/MessageSource.cpp
-    ../../../libthoro/zlib/CompressionFunctions.cpp
+    ../../../libstriezel/common/StringUtils.cpp
+    ../../../libstriezel/filesystem/file.cpp
+    ../../../libstriezel/hash/sha256/sha256.cpp
+    ../../../libstriezel/hash/sha256/MessageSource.cpp
+    ../../../libstriezel/zlib/CompressionFunctions.cpp
     save-load-compressed.cpp)
 
 if (CMAKE_COMPILER_IS_GNUCC)
     add_definitions(-Wall -O3 -fexceptions)
 endif (CMAKE_COMPILER_IS_GNUCC)
+
+# enable C++11 support
+add_definitions(-std=c++0x)
 
 set( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -s" )
 

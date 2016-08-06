@@ -6,7 +6,7 @@ project(SimpleBBCode_test)
 
 set(SimpleBBCode_test_src
     ../../code/bbcode/SimpleBBCode.cpp
-    ../../libthoro/common/StringUtils.cpp
+    ../../libstriezel/common/StringUtils.cpp
     SimpleBBCode_test.cpp)
 
 if (CMAKE_COMPILER_IS_GNUCC)
@@ -27,7 +27,7 @@ project(CustomizedSimpleBBCode_test)
 
 set(CustomizedSimpleBBCode_test_src
     ../../code/bbcode/CustomizedSimpleBBCode.cpp
-    ../../libthoro/common/StringUtils.cpp
+    ../../libstriezel/common/StringUtils.cpp
     CustomizedSimpleBBCode_test.cpp)
 
 if (CMAKE_COMPILER_IS_GNUCC)
@@ -48,7 +48,7 @@ project(HorizontalRuleBBCode_test)
 
 set(HorizontalRuleBBCode_test_src
     ../../code/bbcode/HorizontalRuleBBCode.cpp
-    ../../libthoro/common/StringUtils.cpp
+    ../../libstriezel/common/StringUtils.cpp
     HorizontalRuleBBCode_test.cpp)
 
 # code uses some C++11 features, enable it via -std=c++0x
@@ -68,7 +68,7 @@ project(ListBBCode_test)
 
 set(ListBBCode_test_src
     ../../code/bbcode/ListBBCode.cpp
-    ../../libthoro/common/StringUtils.cpp
+    ../../libstriezel/common/StringUtils.cpp
     ListBBCode_test.cpp)
 
 add_definitions(-Wall -O3 -fexceptions)
@@ -88,7 +88,7 @@ project(SimpleTemplateBBCode_test)
 set(SimpleTemplateBBCode_test_src
     ../../code/MsgTemplate.cpp
     ../../code/bbcode/SimpleTemplateBBCode.cpp
-    ../../libthoro/common/StringUtils.cpp
+    ../../libstriezel/common/StringUtils.cpp
     SimpleTemplateBBCode_test.cpp)
 
 add_definitions(-Wall -O3 -fexceptions)
@@ -109,7 +109,7 @@ set(AdvancedTemplateBBCode_test_src
     ../../code/MsgTemplate.cpp
     ../../code/bbcode/AdvancedTemplateBBCode.cpp
     ../../code/bbcode/SimpleTemplateBBCode.cpp
-    ../../libthoro/common/StringUtils.cpp
+    ../../libstriezel/common/StringUtils.cpp
     AdvancedTemplateBBCode_test.cpp)
 
 add_definitions(-Wall -O3 -fexceptions)
@@ -129,7 +129,7 @@ project(SimpleTplAmpTransformBBCode_test)
 set(SimpleTplAmpTransformBBCode_test_src
     ../../code/MsgTemplate.cpp
     ../../code/bbcode/SimpleTemplateBBCode.cpp
-    ../../libthoro/common/StringUtils.cpp
+    ../../libstriezel/common/StringUtils.cpp
     SimpleTplAmpTransformBBCode_test.cpp)
 
 add_definitions(-Wall -O3 -fexceptions)
@@ -150,7 +150,7 @@ set(AdvancedTplAmpTransformBBCode_test_src
     ../../code/MsgTemplate.cpp
     ../../code/bbcode/AdvancedTemplateBBCode.cpp
     ../../code/bbcode/SimpleTemplateBBCode.cpp
-    ../../libthoro/common/StringUtils.cpp
+    ../../libstriezel/common/StringUtils.cpp
     AdvancedTplAmpTransformBBCode_test.cpp)
 
 add_definitions(-Wall -O3 -fexceptions)
@@ -169,7 +169,7 @@ project(TableBBCode_test)
 
 set(TableBBCode_test_src
     ../../code/bbcode/TableBBCode.cpp
-    ../../libthoro/common/StringUtils.cpp
+    ../../libstriezel/common/StringUtils.cpp
     TableBBCode_test.cpp)
 
 add_definitions(-Wall -O3 -fexceptions)

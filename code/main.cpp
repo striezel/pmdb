@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2012, 2013, 2014, 2015  Dirk Stolle
+    Copyright (C) 2012, 2013, 2014, 2015, 2016  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -35,10 +35,10 @@
 #include "bbcode/ListBBCode.hpp"
 #include "bbcode/TableBBCode.hpp"
 #include "filters/FilterUser.hpp"
-#include "../libthoro/filesystem/DirectoryFunctions.hpp"
-#include "../libthoro/filesystem/FileFunctions.hpp"
-#include "../libthoro/common/DirectoryFileList.h"
-#include "../libthoro/common/StringUtils.h"
+#include "../libstriezel/filesystem/directory.hpp"
+#include "../libstriezel/filesystem/file.hpp"
+#include "../libstriezel/common/DirectoryFileList.hpp"
+#include "../libstriezel/common/StringUtils.hpp"
 
 //return codes
 const int rcInvalidParameter = 1;
@@ -137,15 +137,15 @@ int main(int argc, char **argv)
   std::string defaultSaveDirectory;
   bool compressed = false;
 
-  if (libthoro::filesystem::Directory::getHome(homeDirectory))
+  if (libstriezel::filesystem::directory::getHome(homeDirectory))
   {
-    homeDirectory = libthoro::filesystem::slashify(homeDirectory);
-    defaultSaveDirectory = homeDirectory + std::string(".pmdb") + libthoro::filesystem::pathDelimiter;
+    homeDirectory = libstriezel::filesystem::slashify(homeDirectory);
+    defaultSaveDirectory = homeDirectory + std::string(".pmdb") + libstriezel::filesystem::pathDelimiter;
   }
   else
   {
-    homeDirectory = std::string(".") + libthoro::filesystem::pathDelimiter;
-    defaultSaveDirectory = std::string(".pmdb") + libthoro::filesystem::pathDelimiter;
+    homeDirectory = std::string(".") + libstriezel::filesystem::pathDelimiter;
+    defaultSaveDirectory = std::string(".pmdb") + libstriezel::filesystem::pathDelimiter;
   }
   bool doHTML = false;
   bool forceXHTML = false;
@@ -249,7 +249,7 @@ int main(int argc, char **argv)
         else if ((param.substr(0,7)=="--load=") and (param.length()>7))
         {
           std::string pathToDir = param.substr(7);
-          pathToDir = libthoro::filesystem::slashify(pathToDir); //Does it have a trailing (back)slash?
+          pathToDir = libstriezel::filesystem::slashify(pathToDir); //Does it have a trailing (back)slash?
           if (loadDirs.find(pathToDir)!=loadDirs.end())
           {
             std::cout << "Parameter --load must not occur more than once for the same directory!\n";
@@ -455,11 +455,11 @@ int main(int argc, char **argv)
     //directory creation - only necessary, if there are any messages
     if (mdb.getNumberOfMessages()!=0)
     {
-      const std::string realDir = libthoro::filesystem::unslashify(defaultSaveDirectory);
-      if (!libthoro::filesystem::Directory::exists(realDir))
+      const std::string realDir = libstriezel::filesystem::unslashify(defaultSaveDirectory);
+      if (!libstriezel::filesystem::directory::exists(realDir))
       {
         std::cout << "Trying to create save directory \""<<realDir<<"\"...";
-        if (!libthoro::filesystem::Directory::createRecursive(realDir))
+        if (!libstriezel::filesystem::directory::createRecursive(realDir))
         {
           std::cout <<"failed!\nAborting.\n";
           return 0;
@@ -468,13 +468,13 @@ int main(int argc, char **argv)
       }
     }//if more than zero messages
 
-    if (!mdb.saveMessages(libthoro::filesystem::slashify(defaultSaveDirectory), compressed))
+    if (!mdb.saveMessages(libstriezel::filesystem::slashify(defaultSaveDirectory), compressed))
     {
       std::cout << "Could not save messages!\n";
       return 0;
     }
     std::cout << "Messages saved successfully!\n";
-    if (!fm.save(libthoro::filesystem::slashify(defaultSaveDirectory)))
+    if (!fm.save(libstriezel::filesystem::slashify(defaultSaveDirectory)))
     {
       std::cout << "Could not save folder map!\n";
       return 0;
@@ -488,25 +488,25 @@ int main(int argc, char **argv)
     if (msgIter!=mdb.getEnd())
     {
       //directory creation
-      std::string htmlDir = libthoro::filesystem::slashify(defaultSaveDirectory)+"html";
-      if (!libthoro::filesystem::Directory::exists(htmlDir))
+      std::string htmlDir = libstriezel::filesystem::slashify(defaultSaveDirectory)+"html";
+      if (!libstriezel::filesystem::directory::exists(htmlDir))
       {
         std::cout << "Trying to create HTML directory \""<<htmlDir<<"\"...";
-        if (!libthoro::filesystem::Directory::createRecursive(htmlDir))
+        if (!libstriezel::filesystem::directory::createRecursive(htmlDir))
         {
           std::cout <<"failed!\nAborting.\n";
           return 0;
         }
         std::cout << "success!\n";
       }//if html directory does not exist
-      htmlDir = libthoro::filesystem::slashify(htmlDir);
+      htmlDir = libstriezel::filesystem::slashify(htmlDir);
 
       BBCodeParser parser;
       Config conf;
       conf.setForumURL("http://www.example.com/forum/");
       conf.setTPLFile("message.tpl");
       //try to load configuration file
-      if (libthoro::filesystem::File::exists(defaultSaveDirectory+"pmdb.conf"))
+      if (libstriezel::filesystem::file::exists(defaultSaveDirectory+"pmdb.conf"))
       {
         if (!conf.loadFromFile(defaultSaveDirectory+"pmdb.conf"))
         {
@@ -644,7 +644,7 @@ int main(int argc, char **argv)
   {
     ColourMap cMap;
     const std::string pathToColourMap = defaultSaveDirectory + "pmdb.colourmap";
-    if (libthoro::filesystem::File::exists(pathToColourMap))
+    if (libstriezel::filesystem::file::exists(pathToColourMap))
     {
       if (!cMap.loadFromFile(pathToColourMap))
       {

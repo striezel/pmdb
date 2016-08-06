@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database test suite.
-    Copyright (C) 2015  Dirk Stolle
+    Copyright (C) 2015, 2016  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
 
 #include <iostream>
 #include "../../../code/PrivateMessage.hpp"
-#include "../../../libthoro/filesystem/FileFunctions.hpp"
+#include "../../../libstriezel/filesystem/file.hpp"
 
 int main()
 {
@@ -42,7 +42,7 @@ int main()
 
   //get temporary file name for saving message
   std::string tempName("");
-  if (!libthoro::filesystem::File::createTemp(tempName))
+  if (!libstriezel::filesystem::file::createTemp(tempName))
   {
     std::cout << "Error: Failed to create temporary file!\n";
     return 1;
@@ -51,7 +51,7 @@ int main()
   if (!pmOne.saveToFile(tempName, false))
   {
     std::cout << "Error: Could not save PM to " << tempName << "!\n";
-    if (!libthoro::filesystem::File::remove(tempName))
+    if (!libstriezel::filesystem::file::remove(tempName))
     {
       std::cout << "Additionally, the temporary file " << tempName
                 << "could not be removed.\n";
@@ -64,7 +64,7 @@ int main()
   if (!pmTwo.loadFromFile(tempName, false))
   {
     std::cout << "Error: Could not load PM from " << tempName << "!\n";
-    if (!libthoro::filesystem::File::remove(tempName))
+    if (!libstriezel::filesystem::file::remove(tempName))
     {
       std::cout << "Additionally, the temporary file " << tempName
                 << "could not be removed.\n";
@@ -73,7 +73,7 @@ int main()
   }
 
   //remove temporary file, no  longer needed
-  if (!libthoro::filesystem::File::remove(tempName))
+  if (!libstriezel::filesystem::file::remove(tempName))
   {
     std::cout << "Hint: The temporary file " << tempName
               << "could not be removed.\n";

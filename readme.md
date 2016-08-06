@@ -1,6 +1,6 @@
 # pmdb
 
-[![Build Status](https://travis-ci.org/Thoronador/pmdb.svg)](https://travis-ci.org/Thoronador/pmdb)
+[![Build Status](https://travis-ci.org/striezel/pmdb.svg)](https://travis-ci.org/striezel/pmdb)
 
 pmdb is (or better: will be) a small command-line tool that can be used to
 "manage" private messages that were imported from an XML file.
@@ -31,7 +31,7 @@ into a root terminal.
 Get the source directly from Git by cloning the Git repository and change to
 the directory after the repository is completely cloned:
 
-    git clone https://github.com/Thoronador/pmdb.git ./pmdb
+    git clone https://github.com/striezel/pmdb.git ./pmdb
     cd pmdb
     git submodule update --init --recursive
 
@@ -52,7 +52,7 @@ Now the pmdb binary is built and ready for use.
 
 ## Copyright and Licensing
 
-Copyright 2012-2015 Thoronador
+Copyright 2012-2015 Dirk Stolle
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

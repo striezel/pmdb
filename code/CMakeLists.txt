@@ -60,3 +60,12 @@ if (LIBXML2_FOUND)
 else ()
   message ( FATAL_ERROR "libxml2 was not found!" )
 endif (LIBXML2_FOUND)
+
+#find zlib
+find_package (ZLIB)
+if (ZLIB_FOUND)
+  include_directories(${ZLIB_INCLUDE_DIRS})
+  target_link_libraries (pmdb ${ZLIB_LIBRARIES})
+else ()
+  message ( FATAL_ERROR "zlib was not found!" )
+endif (ZLIB_FOUND)

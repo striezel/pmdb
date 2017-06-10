@@ -39,6 +39,15 @@ else ()
   message ( FATAL_ERROR "libxml2 was not found!" )
 endif (LIBXML2_FOUND)
 
+#find zlib
+find_package (ZLIB)
+if (ZLIB_FOUND)
+  include_directories(${ZLIB_INCLUDE_DIRS})
+  target_link_libraries (MessageDatabase_saveload_compressed_test ${ZLIB_LIBRARIES})
+else ()
+  message ( FATAL_ERROR "zlib was not found!" )
+endif (ZLIB_FOUND)
+
 
 # --- add it as a test
 add_test(NAME class_MessageDatabase_save_load_comp

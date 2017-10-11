@@ -58,7 +58,7 @@ void PrivateMessage::clear()
 void PrivateMessage::normalise()
 {
   std::string::size_type pos = message.find("\r\n");
-  while (pos!=std::string::npos)
+  while (pos != std::string::npos)
   {
     message.replace(pos, 2, "\n");
     m_NeedsHashUpdate = true;
@@ -116,29 +116,29 @@ void PrivateMessage::setMessage(const std::string& msg)
 std::string::size_type PrivateMessage::getSaveSize() const
 {
   const std::string uid_string = uintToString(getFromUserID());
-  return getDatestamp().length()+1
-       + getTitle().length()+1
-       + getFromUser().length()+1
-       + uid_string.length()+1
-       + getToUser().length()+1
-       + getMessage().length()+1;
+  return getDatestamp().length() + 1
+       + getTitle().length() + 1
+       + getFromUser().length() + 1
+       + uid_string.length() + 1
+       + getToUser().length() + 1
+       + getMessage().length() + 1;
 }
 
 bool PrivateMessage::saveToStream(std::ostream& outputStream) const
 {
   //write datestamp
-  outputStream.write(datestamp.c_str(), datestamp.length()+1);
+  outputStream.write(datestamp.c_str(), datestamp.length() + 1);
   //write title
-  outputStream.write(title.c_str(), title.length()+1);
+  outputStream.write(title.c_str(), title.length() + 1);
   //write fromUser
-  outputStream.write(fromUser.c_str(), fromUser.length()+1);
+  outputStream.write(fromUser.c_str(), fromUser.length() + 1);
   //write fromUserID
   const std::string uid_string = uintToString(fromUserID);
-  outputStream.write(uid_string.c_str(), uid_string.length()+1);
+  outputStream.write(uid_string.c_str(), uid_string.length() + 1);
   //write toUser
-  outputStream.write(toUser.c_str(), toUser.length()+1);
+  outputStream.write(toUser.c_str(), toUser.length() + 1);
   //write message text
-  outputStream.write(message.c_str(), message.length()+1);
+  outputStream.write(message.c_str(), message.length() + 1);
   return outputStream.good();
 }
 

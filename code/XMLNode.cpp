@@ -20,6 +20,7 @@
 
 #include "XMLNode.hpp"
 #include <stdexcept>
+#include "../libstriezel/common/StringUtils.hpp"
 
 XMLNode::XMLNode(const xmlNodePtr node)
 : m_Node(node)
@@ -131,6 +132,28 @@ std::string XMLNode::getFirstAttributeValue() const
   return reinterpret_cast<const char*>(m_Node->properties->children->content);
 }
 
+std::vector<std::pair<std::string, std::string> > XMLNode::getAttributes() const
+{
+  //if there are no attribute nodes, return empty vector
+  if (NULL==m_Node->properties)
+    return std::vector<std::pair<std::string, std::string> >();
+
+  std::vector<std::pair<std::string, std::string> > attributeList;
+  xmlAttrPtr currentAttribute = m_Node->properties;
+  while (currentAttribute != NULL)
+  {
+    std::string value = "";
+    if (currentAttribute->children != NULL)
+      value = reinterpret_cast<const char*>(currentAttribute->children->content);
+    //push name and value to list
+    attributeList.push_back(std::pair<std::string, std::string>(
+        reinterpret_cast<const char*>(currentAttribute->name), value));
+    //move to next attribute
+    currentAttribute = currentAttribute->next;
+  } //while
+  return attributeList;
+}
+
 XMLNode XMLNode::getParent() const
 {
   return m_Node->parent;
@@ -149,4 +172,18 @@ bool XMLNode::isAttributeNode() const
 bool XMLNode::isTextNode() const
 {
   return (m_Node->type==XML_TEXT_NODE);
+}
+
+bool XMLNode::isCommentNode() const
+{
+  return (m_Node->type==XML_COMMENT_NODE);
+}
+
+void XMLNode::skipEmptyCommentAndTextSiblings()
+{
+  while ((isCommentNode() or (isTextNode() and isEmptyOrWhitespace(getContentBoth())))
+          and hasNextSibling())
+  {
+    m_Node = m_Node->next;
+  } //while)
 }

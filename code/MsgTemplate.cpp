@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2012, 2013, 2015  Dirk Stolle
+    Copyright (C) 2012, 2013, 2015, 2017  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -26,6 +26,10 @@ MsgTemplate::MsgTemplate()
 : m_Tags(std::map<std::string, std::string>()), m_Template("")
 { }
 
+MsgTemplate::MsgTemplate(const std::string& tplText)
+: m_Tags(std::map<std::string, std::string>()), m_Template(tplText)
+{ }
+
 MsgTemplate::~MsgTemplate()
 {
   //empty
@@ -46,7 +50,7 @@ bool MsgTemplate::loadFromFile(const std::string& fileName)
   while (!inputFile.eof())
   {
     memset(buffer, '\0', buf_size);
-    inputFile.read(buffer, buf_size-1);
+    inputFile.read(buffer, buf_size - 1);
     if (!inputFile.good())
     {
       if (!inputFile.eof())
@@ -81,18 +85,16 @@ std::string MsgTemplate::show() const
 {
   std::string result = m_Template;
   std::string::size_type pos = std::string::npos;
-  std::map<std::string, std::string>::const_iterator iter = m_Tags.begin();
-  while (iter!=m_Tags.end())
+  for (const auto tag : m_Tags)
   {
-    const std::string fullTag = "{.." + iter->first + "..}";
+    const std::string fullTag = "{.." + tag.first + "..}";
     pos = result.find(fullTag);
-    while (pos!=std::string::npos)
+    while (pos != std::string::npos)
     {
-      result.replace(pos, fullTag.length(), iter->second);
+      result.replace(pos, fullTag.length(), tag.second);
       pos = result.find(fullTag, pos);
-    }//while
-    ++iter;
-  }//while
+    } //while
+  } //for (range-based)
   return result;
 }
 
@@ -102,40 +104,40 @@ std::string MsgTemplate::prepareReplacement(std::string content, const bool kill
   if (killHTML)
   {
     pos = content.find("&");
-    while (pos!=std::string::npos)
+    while (pos != std::string::npos)
     {
       content.replace(pos, 1, "&amp;");
-      pos = content.find("&", pos+1);
-    }//while
+      pos = content.find("&", pos + 1);
+    } //while
 
     pos = content.find("<");
-    while (pos!=std::string::npos)
+    while (pos != std::string::npos)
     {
       content.replace(pos, 1, "&lt;");
-      pos = content.find("<", pos+1);
-    }//while
+      pos = content.find("<", pos + 1);
+    } //while
 
     pos = content.find(">");
-    while (pos!=std::string::npos)
+    while (pos != std::string::npos)
     {
       content.replace(pos, 1, "&gt;");
-      pos = content.find(">", pos+1);
-    }//while
-  }//if escape HTML tags
+      pos = content.find(">", pos + 1);
+    } //while
+  } //if escape HTML tags
 
   pos = content.find("{..");
   while (pos!=std::string::npos)
   {
     content.replace(pos, 3, "&#x7B;..");
-    pos = content.find("{..", pos+1);
-  }//while
+    pos = content.find("{..", pos + 1);
+  } //while
 
   pos = content.find("..}");
   while (pos!=std::string::npos)
   {
     content.replace(pos, 3, "..&#x7D;");
-    pos = content.find("..}", pos+1);
-  }//while
+    pos = content.find("..}", pos + 1);
+  } //while
 
   return content;
 }

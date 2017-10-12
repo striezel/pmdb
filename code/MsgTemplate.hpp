@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2012, 2014  Dirk Stolle
+    Copyright (C) 2012, 2014, 2017  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -29,19 +29,22 @@
 class MsgTemplate
 {
   public:
-    /** constructor */
+    /** Default constructor. */
     MsgTemplate();
 
-    explicit MsgTemplate(const std::string& str1)
-    : m_Tags(std::map<std::string, std::string>()), m_Template(str1)
-    { }
+
+    /** \brief Constructor with initial value for template text.
+     *
+     * \param tplText the template text
+     */
+    explicit MsgTemplate(const std::string& tplText);
 
 
     /** destructor */
     ~MsgTemplate();
 
 
-    /** \brief loads template from a given file
+    /** \brief Loads template from a given file.
      *
      * \param fileName   path to the template file
      * \return Returns true in case of success.
@@ -49,7 +52,7 @@ class MsgTemplate
     bool loadFromFile(const std::string& fileName);
 
 
-    /** \brief "loads" template from a given string
+    /** \brief Loads template from a given string.
      *
      * \param tplText   the template text
      * \return Returns true in case of success.
@@ -57,28 +60,42 @@ class MsgTemplate
     bool loadFromString(const std::string& tplText);
 
 
-    /** \brief adds a new replacement for a certain tag
+    /** \brief Adds a new replacement for a certain tag.
      *
      * \param tag           name of the tag that shall be replaced
      * \param replacement   replacement for the given tag
      * \param killHTML      if set to true, HTML code will be escaped in the
      *                      replacement string
+     * \remarks If a tag with the given name already exists, it will be
+     * overwritten.
      */
     void addReplacement(const std::string& tag, const std::string& replacement, const bool killHTML);
 
 
-    /** clears the replacement list */
+    /** Clears the replacement list. */
     void clearReplacements();
 
 
-    /** returns a string that contains the final template with all replacement
-       tags replaced by their proper content
-    */
+    /** Gets a string that contains the final template with all replacement
+     * tags replaced by their proper content.
+     *
+     * \return template with all tags replaced by proper content
+     */
     std::string show() const;
   private:
+    /** \brief Prepares a replacement string by escaping HTML code (if specified
+     * via @killHTML) and some other character sequences with special meaning.
+     *
+     * \param content    replacement string
+     * \param killHTML   if set to true, HTML code will be escaped in the
+     *                   replacement string
+     * \return prepared version of @content
+     */
     std::string prepareReplacement(std::string content, const bool killHTML);
-    std::map<std::string, std::string> m_Tags;
-    std::string m_Template;
+
+
+    std::map<std::string, std::string> m_Tags; /**< tag map; key = name, value = replacement */
+    std::string m_Template; /**< template text */
 }; //class
 
 #endif // MSGTEMPLATE_HPP

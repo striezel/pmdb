@@ -13,6 +13,9 @@ if (CMAKE_COMPILER_IS_GNUCC)
     add_definitions(-Wall -O3 -fexceptions)
 endif (CMAKE_COMPILER_IS_GNUCC)
 
+# C++11 support
+add_definitions (-std=c++0x)
+
 set( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -s" )
 
 add_executable(test_msgtemplate_loadequality ${test_msgtemplate_loadequality_src})

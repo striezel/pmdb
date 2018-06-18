@@ -31,7 +31,7 @@ into a root terminal.
 Get the source directly from Git by cloning the Git repository and change to
 the directory after the repository is completely cloned:
 
-    git clone https://github.com/striezel/pmdb.git ./pmdb
+    git clone https://gitlab.com/striezel/pmdb.git ./pmdb
     cd pmdb
     git submodule update --init --recursive
 

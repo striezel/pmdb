@@ -9,8 +9,11 @@ build:
   stage: build
   before_script:
     - apt-get update
-    - apt-get -y install cmake freeglut3-dev g++ git libarchive-dev libglfw-dev libunshield-dev libxml2 libxml2-dev libzip-dev zlib1g-dev
+    - apt-get -y install cmake g++ libxml2 libxml2-dev zlib1g-dev
     - git submodule update --init
+    # Remove parts of the submodule that are not used but would get into CI's
+    # way when linting.
+    - rm -rf ./libstriezel/archive ./libstriezel/common/graphics ./libstriezel/common/gui ./libstriezel/tests
   script:
     - ./ci/cpplint.sh
     - mkdir ./build

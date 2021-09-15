@@ -84,11 +84,10 @@ void MsgTemplate::clearReplacements()
 std::string MsgTemplate::show() const
 {
   std::string result = m_Template;
-  std::string::size_type pos = std::string::npos;
-  for (const auto tag : m_Tags)
+  for (const auto& tag : m_Tags)
   {
     const std::string fullTag = "{.." + tag.first + "..}";
-    pos = result.find(fullTag);
+    std::string::size_type pos = result.find(fullTag);
     while (pos != std::string::npos)
     {
       result.replace(pos, fullTag.length(), tag.second);

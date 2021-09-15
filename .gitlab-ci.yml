@@ -5,15 +5,33 @@ image: gcc:8
 
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
-build:
+
+build_gcc:
   stage: build
   before_script:
     - apt-get update
     - apt-get -y install cmake g++ libxml2 libxml2-dev zlib1g-dev
-    - git submodule update --init
     # Remove parts of the submodule that are not used but would get into CI's
     # way when linting.
     - rm -rf ./libstriezel/archive ./libstriezel/common/graphics ./libstriezel/common/gui ./libstriezel/tests
+  script:
+    - ./ci/cpplint.sh
+    - mkdir ./build
+    - cd ./build
+    - cmake ../
+    - make -j4
+    - ctest -V
+
+build_clang:
+  image: debian:11-slim
+  stage: build
+  before_script:
+    - apt-get update
+    - apt-get -y install cmake clang libxml2 libxml2-dev pkg-config zlib1g-dev
+    # Remove parts of the submodule that are not used but would get into CI's
+    # way when linting.
+    - rm -rf ./libstriezel/archive ./libstriezel/common/graphics ./libstriezel/common/gui ./libstriezel/tests
+    - export CC=clang && export CXX=clang++
   script:
     - ./ci/cpplint.sh
     - mkdir ./build

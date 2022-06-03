@@ -5,8 +5,8 @@ project(pmdb_no_comp)
 
 # add definition to avoid PM compression
 add_definitions(-DNO_PM_COMPRESSION)
-# enable C++11 support
-set(CMAKE_CXX_STANDARD 11)
+
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(pmdb_no_comp_sources

@@ -18,8 +18,8 @@ endif (CMAKE_COMPILER_IS_GNUCC)
 
 # add definition to avoid PM compression (this test is for uncompressed data)
 add_definitions(-DNO_PM_COMPRESSION)
-# and add support for C++11
-set(CMAKE_CXX_STANDARD 11)
+
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -s" )

@@ -22,8 +22,7 @@ set(importFromFile_test_src
     ../../../libstriezel/hash/sha256/MessageSource.cpp
     importFromFile_test.cpp)
 
-# We use a C++11 feature in the code, so enable C++0x a.k.a. C++11.
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # no compression
 add_definitions(-DNO_PM_COMPRESSION)

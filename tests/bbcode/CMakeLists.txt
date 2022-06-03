@@ -52,7 +52,7 @@ set(HorizontalRuleBBCode_test_src
 
 add_definitions(-Wall -O3 -fexceptions)
 # code uses some C++11 features, enable it
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -s" )

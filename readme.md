@@ -1,6 +1,8 @@
 # pmdb
 
 [![GitLab pipeline status](https://gitlab.com/striezel/pmdb/badges/master/pipeline.svg)](https://gitlab.com/striezel/pmdb/-/pipelines)
+[![GitHub CI Clang status](https://github.com/striezel/pmdb/workflows/Clang/badge.svg)](https://github.com/striezel/pmdb/actions)
+[![GitHub CI GCC status](https://github.com/striezel/pmdb/workflows/GCC/badge.svg)](https://github.com/striezel/pmdb/actions)
 
 pmdb is (or better: will be) a small command-line tool that can be used to
 "manage" private messages that were imported from an XML file.

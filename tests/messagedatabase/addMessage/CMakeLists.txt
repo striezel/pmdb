@@ -1,5 +1,4 @@
-# We might support earlier versions, too, but it's only tested with 2.8.9.
-cmake_minimum_required (VERSION 2.8)
+cmake_minimum_required (VERSION 3.8)
 
 # binary for Config creation test
 project(addMessage_test)
@@ -22,7 +21,12 @@ set(addMessage_test_src
     ../../../libstriezel/hash/sha256/MessageSource.cpp
     addMessage.cpp)
 
-add_definitions(-Wall -O2 -fexceptions -DNO_PM_COMPRESSION -std=c++0x)
+if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+  add_definitions(-Wall -O2 -fexceptions)
+endif ()
+add_definitions(-DNO_PM_COMPRESSION)
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -s" )
 

@@ -1,5 +1,4 @@
-# We might support earlier versions, too, but it's only tested with 2.8.9.
-cmake_minimum_required (VERSION 2.8)
+cmake_minimum_required (VERSION 3.8)
 
 # binary for PrivateMessage::saveToFile()/loadFromFile() test
 project(PM_save_load_test)
@@ -18,8 +17,10 @@ if (CMAKE_COMPILER_IS_GNUCC)
 endif (CMAKE_COMPILER_IS_GNUCC)
 
 # add definition to avoid PM compression (this test is for uncompressed data)
+add_definitions(-DNO_PM_COMPRESSION)
 # and add support for C++11
-add_definitions(-DNO_PM_COMPRESSION -std=c++0x)
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -s" )
 

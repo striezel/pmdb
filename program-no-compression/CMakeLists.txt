@@ -1,11 +1,13 @@
-# We might support earlier versions, too, but it's only tested with 2.8.9.
-cmake_minimum_required (VERSION 2.8)
+cmake_minimum_required (VERSION 3.8)
 
 #like main project, but without PM compression capabilities
 project(pmdb_no_comp)
 
-# add definition to avoid PM compression and enable C++11 support
-add_definitions(-DNO_PM_COMPRESSION -std=c++0x)
+# add definition to avoid PM compression
+add_definitions(-DNO_PM_COMPRESSION)
+# enable C++11 support
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(pmdb_no_comp_sources
     ../code/Config.cpp
@@ -40,9 +42,9 @@ set(pmdb_no_comp_sources
     ../libstriezel/hash/sha256/MessageSource.cpp
     ../code/main.cpp)
 
-if (CMAKE_COMPILER_IS_GNUCC)
+if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     add_definitions (-Wall -O3 -fexceptions)
-endif (CMAKE_COMPILER_IS_GNUCC)
+endif ()
 
 set( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -s" )
 

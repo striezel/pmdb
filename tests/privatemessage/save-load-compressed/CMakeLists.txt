@@ -1,5 +1,5 @@
-# We might support earlier versions, too, but it's only tested with 2.8.9.
-cmake_minimum_required (VERSION 2.8)
+# We might support earlier versions, too, but those are not tested.
+cmake_minimum_required (VERSION 3.8)
 
 # binary for PrivateMessage::saveToFile()/loadFromFile() test
 project(PM_save_load_compressed_test)
@@ -19,7 +19,8 @@ if (CMAKE_COMPILER_IS_GNUCC)
 endif (CMAKE_COMPILER_IS_GNUCC)
 
 # enable C++11 support
-add_definitions(-std=c++0x)
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -s" )
 

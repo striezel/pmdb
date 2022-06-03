@@ -1,5 +1,5 @@
-# We might support earlier versions, too, but it's only tested with 2.8.9.
-cmake_minimum_required (VERSION 2.8)
+# We might support earlier versions, too, but those are not tested.
+cmake_minimum_required (VERSION 3.8)
 
 # binary for Config creation test
 project(colourmap_test_load)

@@ -1,5 +1,4 @@
-# We might support earlier versions, too, but it's only tested with 2.8.9.
-cmake_minimum_required (VERSION 2.8)
+cmake_minimum_required (VERSION 3.8)
 
 # binary for tests of SimpleBBCode class
 project(SimpleBBCode_test)
@@ -30,9 +29,9 @@ set(CustomizedSimpleBBCode_test_src
     ../../libstriezel/common/StringUtils.cpp
     CustomizedSimpleBBCode_test.cpp)
 
-if (CMAKE_COMPILER_IS_GNUCC)
+if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     add_definitions(-Wall -O3 -fexceptions)
-endif (CMAKE_COMPILER_IS_GNUCC)
+endif ()
 
 set( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -s" )
 
@@ -51,8 +50,10 @@ set(HorizontalRuleBBCode_test_src
     ../../libstriezel/common/StringUtils.cpp
     HorizontalRuleBBCode_test.cpp)
 
-# code uses some C++11 features, enable it via -std=c++0x
-add_definitions(-Wall -O3 -fexceptions -std=c++0x)
+add_definitions(-Wall -O3 -fexceptions)
+# code uses some C++11 features, enable it
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -s" )
 

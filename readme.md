@@ -11,7 +11,7 @@ TODO: Add more information.
 
 ### Prerequisites
 
-To build pmdb from source you need a C++ compiler, CMake 2.8 or later, and
+To build pmdb from source you need a C++ compiler, CMake 3.8 or later, and
 the libxml2 library. It also helps to have Git, a distributed version control
 system, on your build system to get the latest source code directly from the
 Git repository.

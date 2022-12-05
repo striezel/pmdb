@@ -5,7 +5,7 @@
 [![GitHub CI GCC status](https://github.com/striezel/pmdb/workflows/GCC/badge.svg)](https://github.com/striezel/pmdb/actions)
 
 pmdb is (or better: will be) a small command-line tool that can be used to
-"manage" private messages that were imported from an XML file.
+"manage" private messages that were imported from vBulletin via an XML file.
 
 TODO: Add more information.
 
@@ -14,18 +14,18 @@ TODO: Add more information.
 ### Prerequisites
 
 To build pmdb from source you need a C++ compiler with support for C++17,
-CMake 3.8 or later, and the libxml2 library.
+CMake 3.8 or later, the libxml2 library and the zlib library.
 
 It also helps to have Git, a distributed version control system, on your build
 system to get the latest source code directly from the Git repository.
 
 All that can usually be installed be typing
 
-    apt-get install cmake g++ git libxml2-dev
+    apt-get install cmake g++ git libxml2-dev zlib1g-dev
 
 or
 
-    yum install cmake gcc-c++ git libxml2-devel
+    yum install cmake gcc-c++ git libxml2-devel zlib-devel
 
 into a root terminal.
 

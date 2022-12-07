@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2015  Dirk Stolle
+    Copyright (C) 2015, 2022  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,18 +18,34 @@
  -------------------------------------------------------------------------------
 */
 
-#include <iostream>
+#include "../locate_catch.hpp"
 #include "../../code/Config.hpp"
 
-int main(void)
+TEST_CASE("Config")
 {
-  Config conf;
+  SECTION("initial state")
+  {
+    Config conf;
+    REQUIRE( conf.getForumURL().empty() );
+    REQUIRE( conf.getTPL().empty() );
+    REQUIRE( conf.getSmilies().empty() );
+  }
 
-  conf.setForumURL("http://www.example.com/");
-  // forum URL should match value above
-  if (conf.getForumURL() == "http://www.example.com/")
-    return 0;
-  //else: error
-  std::cout << "Error: forum URL does not match the value it was set to!\n";
-  return 1;
+  SECTION("set / get template")
+  {
+    Config conf;
+
+    conf.setTPLFile("/some/nice/path/to/file.tpl");
+    // tpl file name should match value above
+    REQUIRE( conf.getTPL() == "/some/nice/path/to/file.tpl" );
+  }
+
+  SECTION("set / get URL")
+  {
+    Config conf;
+
+    conf.setForumURL("http://www.example.com/");
+    // forum URL should match value above
+    REQUIRE( conf.getForumURL() == "http://www.example.com/" );
+  }
 }

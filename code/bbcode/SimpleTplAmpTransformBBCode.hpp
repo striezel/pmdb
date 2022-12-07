@@ -36,7 +36,7 @@ struct SimpleTplAmpTransformBBCode: public SimpleTemplateBBCode
      * \param tpl     the template that shall be used
      * \param inner   name of the template tag for the inner code
      */
-    SimpleTplAmpTransformBBCode(const std::string& code, const MsgTemplate& tpl, const std::string& inner="inner")
+    SimpleTplAmpTransformBBCode(const std::string& code, const MsgTemplate& tpl, const std::string& inner = "inner")
     : SimpleTemplateBBCode(code, tpl, inner)
     { }
   protected:
@@ -49,13 +49,13 @@ struct SimpleTplAmpTransformBBCode: public SimpleTemplateBBCode
     {
       std::string result(inner);
       std::string::size_type pos = result.find("&");
-      while (pos!=std::string::npos)
+      while (pos != std::string::npos)
       {
         result.replace(pos, 1, "&amp;");
-        pos = result.find("&", pos+4);
-      }//while
+        pos = result.find("&", pos + 4);
+      }
       return result;
     }
-};//struct
+}; // struct
 
 #endif // SIMPLETPLAMPTRANSFORMBBCODE_HPP

@@ -10,7 +10,7 @@ build_gcc:
   stage: build
   before_script:
     - apt-get update
-    - apt-get -y install cmake g++ libxml2 libxml2-dev zlib1g-dev
+    - apt-get -y install catch cmake g++ libxml2 libxml2-dev zlib1g-dev
     # Remove parts of the submodule that are not used but would get into CI's
     # way when linting.
     - rm -rf ./libstriezel/archive ./libstriezel/common/graphics ./libstriezel/common/gui ./libstriezel/tests
@@ -27,7 +27,7 @@ build_clang:
   stage: build
   before_script:
     - apt-get update
-    - apt-get -y install cmake clang libxml2 libxml2-dev pkg-config zlib1g-dev
+    - apt-get -y install catch cmake clang libxml2 libxml2-dev pkg-config zlib1g-dev
     # Remove parts of the submodule that are not used but would get into CI's
     # way when linting.
     - rm -rf ./libstriezel/archive ./libstriezel/common/graphics ./libstriezel/common/gui ./libstriezel/tests

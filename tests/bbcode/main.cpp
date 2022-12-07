@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
-    This file is part of the Private Message Database.
-    Copyright (C) 2015  Dirk Stolle
+    This file is part of the test suite for pmdb.
+    Copyright (C) 2022  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,18 +18,5 @@
  -------------------------------------------------------------------------------
 */
 
-#include <iostream>
-#include "../../code/Config.hpp"
-
-int main(void)
-{
-  Config conf;
-
-  conf.setTPLFile("/some/nice/path/to/file.tpl");
-  // tpl file name should match value above
-  if (conf.getTPL() == "/some/nice/path/to/file.tpl")
-    return 0;
-  //else: error
-  std::cout << "Error: template file name does not match the value it was set to!\n";
-  return 1;
-}
+#define CATCH_CONFIG_MAIN
+#include "../locate_catch.hpp"

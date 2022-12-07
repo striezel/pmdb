@@ -1,64 +1,24 @@
 cmake_minimum_required (VERSION 3.8)
 
-# binary for Config creation test
-project(config_test_create)
+# binary for Config tests
+project(config_tests)
 
-set(config_test_create_src
+set(config_tests_sources
     ../../code/Config.cpp
     ../../code/bbcode/Smilie.cpp
-    config_test_create.cpp)
+    Config.cpp
+    main.cpp)
 
-if (CMAKE_COMPILER_IS_GNUCC)
+if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     add_definitions(-Wall -O3 -fexceptions)
-endif (CMAKE_COMPILER_IS_GNUCC)
 
-set( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -s" )
+    set( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -s" )
+endif ()
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_executable(config_test_create ${config_test_create_src})
+add_executable(config_tests ${config_tests_sources})
 
 # --- add it as a test
-add_test(NAME class_Config_create
-         COMMAND $<TARGET_FILE:config_test_create>)
-
-
-# binary for Config set URL test
-project(config_test_setURL)
-
-set(config_test_setURL_src
-    ../../code/Config.cpp
-    ../../code/bbcode/Smilie.cpp
-    config_test_setURL.cpp)
-
-if (CMAKE_COMPILER_IS_GNUCC)
-    add_definitions(-Wall -O3 -fexceptions)
-endif (CMAKE_COMPILER_IS_GNUCC)
-
-set( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -s" )
-
-add_executable(config_test_setURL ${config_test_setURL_src})
-
-# --- add it as a test
-add_test(NAME class_Config_setURL
-         COMMAND $<TARGET_FILE:config_test_setURL>)
-
-
-
-# binary for Config set TPL test
-project(config_test_setTPL)
-
-set(config_test_setTPL_src
-    ../../code/Config.cpp
-    ../../code/bbcode/Smilie.cpp
-    config_test_setTPL.cpp)
-
-if (CMAKE_COMPILER_IS_GNUCC)
-    add_definitions(-Wall -O3 -fexceptions)
-endif (CMAKE_COMPILER_IS_GNUCC)
-
-set( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -s" )
-
-add_executable(config_test_setTPL ${config_test_setTPL_src})
-
-# --- add it as a test
-add_test(NAME class_Config_setTPL
-         COMMAND $<TARGET_FILE:config_test_setTPL>)
+add_test(NAME Config_tests
+         COMMAND $<TARGET_FILE:config_tests>)

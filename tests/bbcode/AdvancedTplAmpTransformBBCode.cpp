@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database test suite.
-    Copyright (C) 2015  Dirk Stolle
+    Copyright (C) 2015, 2022  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,74 +18,62 @@
  -------------------------------------------------------------------------------
 */
 
-#include <iostream>
+#include "../locate_catch.hpp"
 #include "../../code/bbcode/AdvancedTplAmpTransformBBCode.hpp"
 
-int main()
+TEST_CASE("AdvancedTplAmpTransformBBCode")
 {
-  //fictious tag <tag>
+  // fictious tag <tag>
   AdvancedTplAmpTransformBBCode advancedTransform("tag", MsgTemplate("<tag value=\"{..attr..}\">{..inner..}</tag>"), "inner", "attr");
 
   // Populate map with strings for testing.
   //   Keys:   input string
   //   Values: expected output string
   std::map<std::string, std::string> tests;
-  //empty string stays unchanged
+  // empty string stays unchanged
   tests[""] = "";
-  //unchanged, no code
+  // unchanged, no code
   tests["There is no code here."] = "There is no code here.";
-  //simple code
+  // simple code
   tests["[tag=abc]123[/tag]"] = "<tag value=\"abc\">123</tag>";
-  //code with upper case letters
+  // code with upper case letters
   tests["[TAG=abc]123[/TAG]"] = "<tag value=\"abc\">123</tag>";
-  //only first letter in upper case
+  // only first letter in upper case
   tests["[Tag=abc]123[/Tag]"] = "<tag value=\"abc\">123</tag>";
-  //mixed case code
+  // mixed case code
   tests["[TaG=def]123[/tAg]"] = "<tag value=\"def\">123</tag>";
-  //letters inside
+  // letters inside
   tests["[tag=qwert]abcdefgh[/tag]"] = "<tag value=\"qwert\">abcdefgh</tag>";
-  //HTML entity inside - "&" should not get escaped
+  // HTML entity inside - "&" should not get escaped
   tests["[tag=aaa]&uuml;[/tag]"] = "<tag value=\"aaa\">&uuml;</tag>";
-  //HTML entity inside - "&" should not get escaped
+  // HTML entity inside - "&" should not get escaped
   tests["[tag=aaa]&amp;[/tag]"] = "<tag value=\"aaa\">&amp;</tag>";
-  //HTML entity inside - "&" should get escaped
+  // HTML entity inside - "&" should get escaped
   tests["[tag=baz]foo&quot;bar[/tag]"] = "<tag value=\"baz\">foo&quot;bar</tag>";
-  //HTML entity inside attr. - "&" should get escaped there
+  // HTML entity inside attr. - "&" should get escaped there
   tests["[tag=a&aa]mumble[/tag]"] = "<tag value=\"a&amp;aa\">mumble</tag>";
-  //HTML entity inside attr. - "&" should not get escaped
+  // HTML entity inside attr. - "&" should not get escaped
   tests["[tag=&amp;]aaa[/tag]"] = "<tag value=\"&amp;amp;\">aaa</tag>";
-  //HTML entity inside attr. - "&" should get escaped
+  // HTML entity inside attr. - "&" should get escaped
   tests["[tag=ba&oink;z]foo&quot;bar[/tag]"] = "<tag value=\"ba&amp;oink;z\">foo&quot;bar</tag>";
-  //less than inside - should not get escaped
+  // less than inside - should not get escaped
   tests["[tag=baz]foo<bar[/tag]"] = "<tag value=\"baz\">foo<bar</tag>";
-  //greater than inside - should not get escaped
+  // greater than inside - should not get escaped
   tests["[tag=baz]foo>bar[/tag]"] = "<tag value=\"baz\">foo>bar</tag>";
-  //another tag inside - should not get escaped
+  // another tag inside - should not get escaped
   tests["[tag=asd]<foo>bar[/tag]"] = "<tag value=\"asd\"><foo>bar</tag>";
-  //start code only - should not change
+  // start code only - should not change
   tests["[tag=abc]123"] = "[tag=abc]123";
-  //end code only - should not change
+  // end code only - should not change
   tests["123[/tag]"] = "123[/tag]";
-  //incomplete again - no change
+  // incomplete again - no change
   tests["[tag=abc]123[/tag"] = "[tag=abc]123[/tag";
 
-  //iterate over all given strings and check, if they get the expected result
-  std::map<std::string, std::string>::const_iterator iter = tests.begin();
-  while (iter != tests.end())
+  // iterate over all given strings and check, if they get the expected result
+  for (const auto& [key, value]: tests)
   {
-    std::string text = iter->first;
+    std::string text = key;
     advancedTransform.applyToText(text);
-    if (text != iter->second)
-    {
-      std::cout << "Error: Some code was not transformed properly!\n"
-                << "Instance: AdvancedTplAmpTransformBBCode(\"tag\", ..., \"inner\", \"attr\")\n"
-                << "Original text:   \"" << iter->first << "\"\n"
-                << "Expected result: \"" << iter->second << "\"\n"
-                << "Actual result:   \"" << text << "\"\n";
-      return 1;
-    }
-    ++iter;
-  } //while
-  std::cout << "Passed all AdvancedTplAmpTransformBBCode code tests.\n";
-  return 0;
+    REQUIRE( text == value );
+  }
 }

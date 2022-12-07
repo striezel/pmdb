@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="bbcode_test" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Release">
+				<Option output="bin/Release/bbcode_test" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wshadow" />
+			<Add option="-pedantic-errors" />
+			<Add option="-pedantic" />
+			<Add option="-Wextra" />
+			<Add option="-Wall" />
+			<Add option="-std=c++17" />
+			<Add option="-fexceptions" />
+		</Compiler>
+		<Unit filename="../../code/MsgTemplate.cpp" />
+		<Unit filename="../../code/MsgTemplate.hpp" />
+		<Unit filename="../../code/bbcode/AdvancedTemplateBBCode.cpp" />
+		<Unit filename="../../code/bbcode/AdvancedTemplateBBCode.hpp" />
+		<Unit filename="../../code/bbcode/AdvancedTplAmpTransformBBCode.hpp" />
+		<Unit filename="../../code/bbcode/BBCode.hpp" />
+		<Unit filename="../../code/bbcode/CustomizedSimpleBBCode.cpp" />
+		<Unit filename="../../code/bbcode/CustomizedSimpleBBCode.hpp" />
+		<Unit filename="../../code/bbcode/HorizontalRuleBBCode.cpp" />
+		<Unit filename="../../code/bbcode/HorizontalRuleBBCode.hpp" />
+		<Unit filename="../../code/bbcode/ListBBCode.cpp" />
+		<Unit filename="../../code/bbcode/ListBBCode.hpp" />
+		<Unit filename="../../code/bbcode/SimpleBBCode.cpp" />
+		<Unit filename="../../code/bbcode/SimpleBBCode.hpp" />
+		<Unit filename="../../code/bbcode/SimpleTemplateBBCode.cpp" />
+		<Unit filename="../../code/bbcode/SimpleTemplateBBCode.hpp" />
+		<Unit filename="../../code/bbcode/SimpleTplAmpTransformBBCode.hpp" />
+		<Unit filename="../../code/bbcode/Smilie.cpp" />
+		<Unit filename="../../code/bbcode/Smilie.hpp" />
+		<Unit filename="../../code/bbcode/TableBBCode.cpp" />
+		<Unit filename="../../code/bbcode/TableBBCode.hpp" />
+		<Unit filename="../../libstriezel/common/StringUtils.cpp" />
+		<Unit filename="../../libstriezel/common/StringUtils.hpp" />
+		<Unit filename="../locate_catch.hpp" />
+		<Unit filename="AdvancedTemplateBBCode.cpp" />
+		<Unit filename="AdvancedTplAmpTransformBBCode.cpp" />
+		<Unit filename="CustomizedSimpleBBCode.cpp" />
+		<Unit filename="HorizontalRuleBBCode.cpp" />
+		<Unit filename="ListBBCode.cpp" />
+		<Unit filename="SimpleBBCode.cpp" />
+		<Unit filename="SimpleTemplateBBCode.cpp" />
+		<Unit filename="SimpleTplAmpTransformBBCode.cpp" />
+		<Unit filename="Smilie.cpp" />
+		<Unit filename="TableBBCode.cpp" />
+		<Unit filename="main.cpp" />
+		<Extensions>
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

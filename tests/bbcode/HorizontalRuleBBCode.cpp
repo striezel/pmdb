@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database test suite.
-    Copyright (C) 2015  Dirk Stolle
+    Copyright (C) 2015, 2022  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,17 +18,16 @@
  -------------------------------------------------------------------------------
 */
 
-#include <iostream>
-#include <string>
-#include <tuple> // available from C++11 onwards
+#include "../locate_catch.hpp"
+#include <tuple> // available from C++11 onward
 #include <vector>
 #include "../../code/bbcode/HorizontalRuleBBCode.hpp"
 
-typedef std::tuple<std::string, std::string, std::string> TestData;
-
-int main()
+TEST_CASE("HorizontalRuleBBCode")
 {
-  //We just use the hr code for testing.
+  using TestData = std::tuple<std::string, std::string, std::string>;
+
+  // We just use the hr code for testing.
   HorizontalRuleBBCode rule_html("hr", false);
   HorizontalRuleBBCode rule_xhtml("hr", true);
   /* upper-case HR code -> should be the same as lower-case hr */
@@ -70,57 +69,26 @@ int main()
                            "Rule [/hr] Britannia"));
 
   //iterate over all given strings and check, if they get the expected result
-  for (auto&& item : tests)
+  for (const auto& item : tests)
   {
-    //HTML, lower case BBCode name
+    // HTML, lower case BBCode name
     std::string text = std::get<0>(item);
     rule_html.applyToText(text);
-    if (text != std::get<1>(item))
-    {
-      std::cout << "Error: Output from HTML version of horizontal rule code does not match the expected result!\n"
-                << "Text:     " << std::get<0>(item) << std::endl
-                << "Result:   " << text << std::endl
-                << "Expected: " << std::get<1>(item) << std::endl;
-      return 1;
-    }
+    REQUIRE( text == std::get<1>(item) );
 
-    //XHTML, lower case BBCode name
+    // XHTML, lower case BBCode name
     text = std::get<0>(item);
     rule_xhtml.applyToText(text);
-    if (text != std::get<2>(item))
-    {
-      std::cout << "Error: Output from XHTML version of horizontal rule code does not match the expected result!\n"
-                << "Text:     " << std::get<0>(item) << std::endl
-                << "Result:   " << text << std::endl
-                << "Expected: " << std::get<2>(item) << std::endl;
-      return 1;
-    }
+    REQUIRE( text == std::get<2>(item) );
 
-    //HTML, upper case BBCode name
+    // HTML, upper case BBCode name
     text = std::get<0>(item);
     rule_html_up.applyToText(text);
-    if (text != std::get<1>(item))
-    {
-      std::cout << "Error: Output from HTML version of upper case horizontal rule code does not match the expected result!\n"
-                << "Text:     " << std::get<0>(item) << std::endl
-                << "Result:   " << text << std::endl
-                << "Expected: " << std::get<1>(item) << std::endl;
-      return 1;
-    }
+    REQUIRE( text == std::get<1>(item) );
 
-    //XHTML, upper case BBCode name
+    // XHTML, upper case BBCode name
     text = std::get<0>(item);
     rule_xhtml_up.applyToText(text);
-    if (text != std::get<2>(item))
-    {
-      std::cout << "Error: Output from XHTML version of upper case horizontal rule code does not match the expected result!\n"
-                << "Text:     " << std::get<0>(item) << std::endl
-                << "Result:   " << text << std::endl
-                << "Expected: " << std::get<2>(item) << std::endl;
-      return 1;
-    }
-  } //for (range-based)
-
-  //all test cases matched the expected result
-  return 0;
+    REQUIRE( text == std::get<2>(item) );
+  }
 }

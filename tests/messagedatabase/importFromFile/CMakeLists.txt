@@ -44,6 +44,14 @@ else ()
   message ( FATAL_ERROR "libxml2 was not found!" )
 endif (LIBXML2_FOUND)
 
+# find iconv
+find_package(Iconv)
+if (Iconv_FOUND)
+  include_directories(${Iconv_INCLUDE_DIRS})
+  target_link_libraries (importFromFile_test ${Iconv_LIBRARIES})
+else ()
+  message ( FATAL_ERROR "libiconv was not found!" )
+endif (Iconv_FOUND)
 
 # --- add it as a test
 add_test(NAME class_MessageDatabase_importFromFile_single

@@ -19,6 +19,12 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_executable(config_tests ${config_tests_sources})
 
+# MSYS2 / MinGW uses Catch 3.x.
+if (HAS_CATCH_V3)
+    find_package(Catch2 3 REQUIRED)
+    target_link_libraries(config_tests Catch2::Catch2WithMain)
+endif ()
+
 # --- add it as a test
 add_test(NAME Config_tests
          COMMAND $<TARGET_FILE:config_tests>)

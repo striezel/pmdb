@@ -36,13 +36,13 @@ endif ()
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+add_executable(BBCode_tests ${BBCode_tests_sources})
+
 # MSYS2 / MinGW uses Catch 3.x.
 if (HAS_CATCH_V3)
     find_package(Catch2 3 REQUIRED)
     target_link_libraries(BBCode_tests Catch2::Catch2WithMain)
 endif ()
-
-add_executable(BBCode_tests ${BBCode_tests_sources})
 
 # --- add it as a test
 add_test(NAME BBCode_testing

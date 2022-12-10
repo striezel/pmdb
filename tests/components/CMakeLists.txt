@@ -4,6 +4,9 @@ cmake_minimum_required (VERSION 3.8)
 project(component_tests)
 
 set(component_tests_sources
+    ../../code/Config.cpp
+    ../../code/ConsoleColours.cpp
+    ../../code/FolderMap.cpp
     ../../code/MsgTemplate.cpp
     ../../code/bbcode/AdvancedTemplateBBCode.cpp
     ../../code/bbcode/CustomizedSimpleBBCode.cpp
@@ -14,6 +17,10 @@ set(component_tests_sources
     ../../code/bbcode/Smilie.cpp
     ../../code/bbcode/TableBBCode.cpp
     ../../libstriezel/common/StringUtils.cpp
+    ../../libstriezel/hash/sha256/MessageSource.cpp
+    ../../libstriezel/hash/sha256/sha256.cpp
+    Config.cpp
+    FolderMap.cpp
     bbcode/AdvancedTemplateBBCode.cpp
     bbcode/AdvancedTplAmpTransformBBCode.cpp
     bbcode/CustomizedSimpleBBCode.cpp
@@ -24,6 +31,7 @@ set(component_tests_sources
     bbcode/SimpleTplAmpTransformBBCode.cpp
     bbcode/Smilie.cpp
     bbcode/TableBBCode.cpp
+    names_to_controlsequences.cpp
     main.cpp)
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")

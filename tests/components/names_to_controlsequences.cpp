@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database test suite.
-    Copyright (C) 2015  Dirk Stolle
+    Copyright (C) 2015, 2022  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,28 +18,26 @@
  -------------------------------------------------------------------------------
 */
 
-#include <iostream>
+#include "../locate_catch.hpp"
 #include <vector>
 #include <tuple>
 #include "../../code/ConsoleColours.hpp"
 
-/* Info:
-   The programme tests, if all known colour names are properly transformed to
-   their corresponding control sequences. It uses the std::tuple template from
-   C++11 and therefore requires C++11 support to be turned on.
-*/
-
-typedef std::tuple<std::string, bool, std::string> TestData;
-
-int main(void)
+TEST_CASE("ConsoleColours")
 {
+  /* Info:
+     The test check, if all known colour names are properly transformed to
+     their corresponding control sequences.
+  */
+
+  using TestData = std::tuple<std::string, bool, std::string>;
   std::vector<TestData> vec;
 
   /* add some values for known cases */
-  //default - should be independent of background parameter
+  // default - should be independent of background parameter
   vec.push_back(TestData("default", true,  colourDefault));
   vec.push_back(TestData("default", false, colourDefault));
-  //other colours have different sequences for text and background colours
+  // other colours have different sequences for text and background colours
   vec.push_back(TestData("black",   false, colourBlack));
   vec.push_back(TestData("black",   true,  backgroundBlack));
   vec.push_back(TestData("blue",    false, colourBlue));
@@ -57,16 +55,9 @@ int main(void)
   vec.push_back(TestData("white",   false, colourWhite));
   vec.push_back(TestData("white",   true,  backgroundWhite));
 
-  for(auto && item : vec)
+  for(const auto& item : vec)
   {
-    if (nameToControlSequence(std::get<0>(item), std::get<1>(item)) != std::get<2>(item))
-    {
-      std::cout << "Error: Returned control sequence does not match the expected value!" << std::endl
-                << "  name: " << std::get<0>(item) << ", bg: " << std::get<1>(item) << std::endl;
-      return 1;
-    } //if
-  } //for (range-based)
-
-  //success
-  return 0;
+    const auto result = nameToControlSequence(std::get<0>(item), std::get<1>(item));
+    REQUIRE( result == std::get<2>(item) );
+  }
 }

@@ -15,20 +15,11 @@ add_subdirectory (components)
 # Recurse into subdirectory for tests of ColourMap class.
 add_subdirectory (colourmap)
 
-# Recurse into subdirectory for tests of Config class.
-add_subdirectory (config)
-
-# Recurse into subdirectory for tests of FolderMap class.
-add_subdirectory (foldermap)
-
 # Recurse into subdirectory for tests of MessageDatabase class.
 add_subdirectory (messagedatabase)
 
 # Recurse into subdirectory for tests of MsgTemplate class.
 add_subdirectory (msgtemplate)
-
-# Recurse into subdirectory for tests of console colour function(s).
-add_subdirectory (consolecolours)
 
 # Recurse into subdirectory for tests of PrivateMessage class.
 add_subdirectory (privatemessage)

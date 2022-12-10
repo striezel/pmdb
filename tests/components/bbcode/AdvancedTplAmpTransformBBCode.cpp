@@ -18,13 +18,13 @@
  -------------------------------------------------------------------------------
 */
 
-#include "../locate_catch.hpp"
-#include "../../code/bbcode/AdvancedTemplateBBCode.hpp"
+#include "../../locate_catch.hpp"
+#include "../../../code/bbcode/AdvancedTplAmpTransformBBCode.hpp"
 
-TEST_CASE("AdvancedTemplateBBCode")
+TEST_CASE("AdvancedTplAmpTransformBBCode")
 {
-  // fictious tag <tag>
-  AdvancedTemplateBBCode advanced("tag", MsgTemplate("<tag value=\"{..attr..}\">{..inner..}</tag>"), "inner", "attr");
+  // fictitious tag <tag>
+  AdvancedTplAmpTransformBBCode advancedTransform("tag", MsgTemplate("<tag value=\"{..attr..}\">{..inner..}</tag>"), "inner", "attr");
 
   // Populate map with strings for testing.
   //   Keys:   input string
@@ -44,10 +44,18 @@ TEST_CASE("AdvancedTemplateBBCode")
   tests["[TaG=def]123[/tAg]"] = "<tag value=\"def\">123</tag>";
   // letters inside
   tests["[tag=qwert]abcdefgh[/tag]"] = "<tag value=\"qwert\">abcdefgh</tag>";
-  // HTML entity inside - should not get escaped
+  // HTML entity inside - "&" should not get escaped
   tests["[tag=aaa]&uuml;[/tag]"] = "<tag value=\"aaa\">&uuml;</tag>";
-  // HTML entity inside - should not get escaped
+  // HTML entity inside - "&" should not get escaped
+  tests["[tag=aaa]&amp;[/tag]"] = "<tag value=\"aaa\">&amp;</tag>";
+  // HTML entity inside - "&" should get escaped
   tests["[tag=baz]foo&quot;bar[/tag]"] = "<tag value=\"baz\">foo&quot;bar</tag>";
+  // HTML entity inside attr. - "&" should get escaped there
+  tests["[tag=a&aa]mumble[/tag]"] = "<tag value=\"a&amp;aa\">mumble</tag>";
+  // HTML entity inside attr. - "&" should not get escaped
+  tests["[tag=&amp;]aaa[/tag]"] = "<tag value=\"&amp;amp;\">aaa</tag>";
+  // HTML entity inside attr. - "&" should get escaped
+  tests["[tag=ba&oink;z]foo&quot;bar[/tag]"] = "<tag value=\"ba&amp;oink;z\">foo&quot;bar</tag>";
   // less than inside - should not get escaped
   tests["[tag=baz]foo<bar[/tag]"] = "<tag value=\"baz\">foo<bar</tag>";
   // greater than inside - should not get escaped
@@ -65,7 +73,7 @@ TEST_CASE("AdvancedTemplateBBCode")
   for (const auto& [key, value]: tests)
   {
     std::string text = key;
-    advanced.applyToText(text);
+    advancedTransform.applyToText(text);
     REQUIRE( text == value );
   }
 }

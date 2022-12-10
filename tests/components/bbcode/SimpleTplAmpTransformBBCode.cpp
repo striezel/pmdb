@@ -18,12 +18,12 @@
  -------------------------------------------------------------------------------
 */
 
-#include "../locate_catch.hpp"
-#include "../../code/bbcode/SimpleTplAmpTransformBBCode.hpp"
+#include "../../locate_catch.hpp"
+#include "../../../code/bbcode/SimpleTplAmpTransformBBCode.hpp"
 
 TEST_CASE("SimpleTplAmpTransformBBCode")
 {
-  // fictious tag <tag>
+  // fictitious tag <tag>
   SimpleTplAmpTransformBBCode simpleTransform("tag", MsgTemplate("<tag id=\"{..inner..}\">{..inner..}</tag>"), "inner");
 
   // Populate map with strings for testing.

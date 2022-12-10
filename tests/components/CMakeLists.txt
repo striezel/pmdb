@@ -1,9 +1,9 @@
 cmake_minimum_required (VERSION 3.8)
 
-# binary for tests of SimpleBBCode class
-project(BBCode_tests)
+# binary for component tests
+project(component_tests)
 
-set(BBCode_tests_sources
+set(component_tests_sources
     ../../code/MsgTemplate.cpp
     ../../code/bbcode/AdvancedTemplateBBCode.cpp
     ../../code/bbcode/CustomizedSimpleBBCode.cpp
@@ -14,16 +14,16 @@ set(BBCode_tests_sources
     ../../code/bbcode/Smilie.cpp
     ../../code/bbcode/TableBBCode.cpp
     ../../libstriezel/common/StringUtils.cpp
-    AdvancedTemplateBBCode.cpp
-    AdvancedTplAmpTransformBBCode.cpp
-    CustomizedSimpleBBCode.cpp
-    HorizontalRuleBBCode.cpp
-    ListBBCode.cpp
-    SimpleBBCode.cpp
-    SimpleTemplateBBCode.cpp
-    SimpleTplAmpTransformBBCode.cpp
-    Smilie.cpp
-    TableBBCode.cpp
+    bbcode/AdvancedTemplateBBCode.cpp
+    bbcode/AdvancedTplAmpTransformBBCode.cpp
+    bbcode/CustomizedSimpleBBCode.cpp
+    bbcode/HorizontalRuleBBCode.cpp
+    bbcode/ListBBCode.cpp
+    bbcode/SimpleBBCode.cpp
+    bbcode/SimpleTemplateBBCode.cpp
+    bbcode/SimpleTplAmpTransformBBCode.cpp
+    bbcode/Smilie.cpp
+    bbcode/TableBBCode.cpp
     main.cpp)
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
@@ -36,14 +36,14 @@ endif ()
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_executable(BBCode_tests ${BBCode_tests_sources})
+add_executable(component_tests ${component_tests_sources})
 
 # MSYS2 / MinGW uses Catch 3.x.
 if (HAS_CATCH_V3)
     find_package(Catch2 3 REQUIRED)
-    target_link_libraries(BBCode_tests Catch2::Catch2WithMain)
+    target_link_libraries(component_tests Catch2::Catch2WithMain)
 endif ()
 
 # --- add it as a test
-add_test(NAME BBCode_testing
-         COMMAND $<TARGET_FILE:BBCode_tests>)
+add_test(NAME component_testing
+         COMMAND $<TARGET_FILE:component_tests>)

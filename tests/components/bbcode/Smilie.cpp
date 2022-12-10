@@ -19,8 +19,8 @@
 */
 
 #include <vector>
-#include "../locate_catch.hpp"
-#include "../../code/bbcode/Smilie.hpp"
+#include "../../locate_catch.hpp"
+#include "../../../code/bbcode/Smilie.hpp"
 
 struct TData
 {

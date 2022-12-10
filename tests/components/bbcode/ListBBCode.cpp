@@ -18,8 +18,8 @@
  -------------------------------------------------------------------------------
 */
 
-#include "../locate_catch.hpp"
-#include "../../code/bbcode/ListBBCode.hpp"
+#include "../../locate_catch.hpp"
+#include "../../../code/bbcode/ListBBCode.hpp"
 
 TEST_CASE("ListBBCode")
 {
@@ -60,9 +60,9 @@ TEST_CASE("ListBBCode")
           + "[*]there\n"
           + "[*]was a\n"
           + "[*]crash test dummy,\n"
-          + "[*]who felt crashs ain't funny.\n"
+          + "[*]who felt crashes ain't funny.\n"
           + "[/list]"] = std::string("Hey!\n<ul>\n<li>once\n</li><li>there\n</li><li>was a\n</li>")
-                       + "<li>crash test dummy,\n</li><li>who felt crashs ain't funny.\n</li></ul>";
+                       + "<li>crash test dummy,\n</li><li>who felt crashes ain't funny.\n</li></ul>";
 
     // iterate over all given strings and check, if they get the expected result
     for (const auto& [key, value]: tests)
@@ -110,9 +110,9 @@ TEST_CASE("ListBBCode")
           + "[*]there\n"
           + "[*]was a\n"
           + "[*]crash test dummy,\n"
-          + "[*]who felt crashs ain't funny.\n"
+          + "[*]who felt crashes ain't funny.\n"
           + "[/list]"] = std::string("Hey!\n<ol>\n<li>once\n</li><li>there\n</li><li>was a\n</li>")
-                       + "<li>crash test dummy,\n</li><li>who felt crashs ain't funny.\n</li></ol>";
+                       + "<li>crash test dummy,\n</li><li>who felt crashes ain't funny.\n</li></ol>";
 
     // iterate over all given strings and check, if they get the expected result
     for (const auto& [key, value]: tests)

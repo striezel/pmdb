@@ -18,10 +18,10 @@
  -------------------------------------------------------------------------------
 */
 
-#include "../locate_catch.hpp"
+#include "../../locate_catch.hpp"
 #include <tuple> // available from C++11 onward
 #include <vector>
-#include "../../code/bbcode/HorizontalRuleBBCode.hpp"
+#include "../../../code/bbcode/HorizontalRuleBBCode.hpp"
 
 TEST_CASE("HorizontalRuleBBCode")
 {

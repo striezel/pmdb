@@ -18,8 +18,8 @@
  -------------------------------------------------------------------------------
 */
 
-#include "../locate_catch.hpp"
-#include "../../code/bbcode/CustomizedSimpleBBCode.hpp"
+#include "../../locate_catch.hpp"
+#include "../../../code/bbcode/CustomizedSimpleBBCode.hpp"
 
 TEST_CASE("CustomizedSimpleBBCode")
 {

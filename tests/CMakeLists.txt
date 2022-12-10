@@ -10,8 +10,7 @@ else ()
   set(HAS_CATCH_V3 OFF)
 endif ()
 
-# Recurse into subdirectory for tests of BB code classes.
-add_subdirectory (bbcode)
+add_subdirectory (components)
 
 # Recurse into subdirectory for tests of ColourMap class.
 add_subdirectory (colourmap)

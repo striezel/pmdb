@@ -2,7 +2,7 @@
 # Colour maps can be used to give the folder names in the console output
 # different colours to allow easier distinction.
 #
-# This file get's loaded during the test suite runs.
+# This file gets loaded during the test suite runs.
 # For a better example see pmdb.colourmap.example in the repository's root
 # directory.
 #

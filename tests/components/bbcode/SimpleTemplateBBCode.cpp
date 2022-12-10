@@ -18,13 +18,13 @@
  -------------------------------------------------------------------------------
 */
 
-#include "../locate_catch.hpp"
-#include "../../code/bbcode/AdvancedTplAmpTransformBBCode.hpp"
+#include "../../locate_catch.hpp"
+#include "../../../code/bbcode/SimpleTemplateBBCode.hpp"
 
-TEST_CASE("AdvancedTplAmpTransformBBCode")
+TEST_CASE("SimpleTemplateBBCode")
 {
-  // fictious tag <tag>
-  AdvancedTplAmpTransformBBCode advancedTransform("tag", MsgTemplate("<tag value=\"{..attr..}\">{..inner..}</tag>"), "inner", "attr");
+  // fictitious tag <tag>
+  SimpleTemplateBBCode simple("tag", MsgTemplate("<tag id=\"{..inner..}\">{..inner..}</tag>"), "inner");
 
   // Populate map with strings for testing.
   //   Keys:   input string
@@ -35,45 +35,37 @@ TEST_CASE("AdvancedTplAmpTransformBBCode")
   // unchanged, no code
   tests["There is no code here."] = "There is no code here.";
   // simple code
-  tests["[tag=abc]123[/tag]"] = "<tag value=\"abc\">123</tag>";
+  tests["[tag]123[/tag]"] = "<tag id=\"123\">123</tag>";
   // code with upper case letters
-  tests["[TAG=abc]123[/TAG]"] = "<tag value=\"abc\">123</tag>";
+  tests["[TAG]123[/TAG]"] = "<tag id=\"123\">123</tag>";
   // only first letter in upper case
-  tests["[Tag=abc]123[/Tag]"] = "<tag value=\"abc\">123</tag>";
+  tests["[Tag]123[/Tag]"] = "<tag id=\"123\">123</tag>";
   // mixed case code
-  tests["[TaG=def]123[/tAg]"] = "<tag value=\"def\">123</tag>";
+  tests["[TaG]123[/tAg]"] = "<tag id=\"123\">123</tag>";
   // letters inside
-  tests["[tag=qwert]abcdefgh[/tag]"] = "<tag value=\"qwert\">abcdefgh</tag>";
-  // HTML entity inside - "&" should not get escaped
-  tests["[tag=aaa]&uuml;[/tag]"] = "<tag value=\"aaa\">&uuml;</tag>";
-  // HTML entity inside - "&" should not get escaped
-  tests["[tag=aaa]&amp;[/tag]"] = "<tag value=\"aaa\">&amp;</tag>";
-  // HTML entity inside - "&" should get escaped
-  tests["[tag=baz]foo&quot;bar[/tag]"] = "<tag value=\"baz\">foo&quot;bar</tag>";
-  // HTML entity inside attr. - "&" should get escaped there
-  tests["[tag=a&aa]mumble[/tag]"] = "<tag value=\"a&amp;aa\">mumble</tag>";
-  // HTML entity inside attr. - "&" should not get escaped
-  tests["[tag=&amp;]aaa[/tag]"] = "<tag value=\"&amp;amp;\">aaa</tag>";
-  // HTML entity inside attr. - "&" should get escaped
-  tests["[tag=ba&oink;z]foo&quot;bar[/tag]"] = "<tag value=\"ba&amp;oink;z\">foo&quot;bar</tag>";
+  tests["[tag]abcdefgh[/tag]"] = "<tag id=\"abcdefgh\">abcdefgh</tag>";
+  // HTML entity inside - should not get escaped
+  tests["[tag]&uuml;[/tag]"] = "<tag id=\"&uuml;\">&uuml;</tag>";
+  // HTML entity inside - should not get escaped
+  tests["[tag]foo&quot;bar[/tag]"] = "<tag id=\"foo&quot;bar\">foo&quot;bar</tag>";
   // less than inside - should not get escaped
-  tests["[tag=baz]foo<bar[/tag]"] = "<tag value=\"baz\">foo<bar</tag>";
+  tests["[tag]foo<bar[/tag]"] = "<tag id=\"foo<bar\">foo<bar</tag>";
   // greater than inside - should not get escaped
-  tests["[tag=baz]foo>bar[/tag]"] = "<tag value=\"baz\">foo>bar</tag>";
+  tests["[tag]foo>bar[/tag]"] = "<tag id=\"foo>bar\">foo>bar</tag>";
   // another tag inside - should not get escaped
-  tests["[tag=asd]<foo>bar[/tag]"] = "<tag value=\"asd\"><foo>bar</tag>";
+  tests["[tag]<foo>bar[/tag]"] = "<tag id=\"<foo>bar\"><foo>bar</tag>";
   // start code only - should not change
-  tests["[tag=abc]123"] = "[tag=abc]123";
+  tests["[tag]123"] = "[tag]123";
   // end code only - should not change
   tests["123[/tag]"] = "123[/tag]";
   // incomplete again - no change
-  tests["[tag=abc]123[/tag"] = "[tag=abc]123[/tag";
+  tests["[tag]123[/tag"] = "[tag]123[/tag";
 
   // iterate over all given strings and check, if they get the expected result
   for (const auto& [key, value]: tests)
   {
     std::string text = key;
-    advancedTransform.applyToText(text);
+    simple.applyToText(text);
     REQUIRE( text == value );
   }
 }

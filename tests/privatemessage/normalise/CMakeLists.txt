@@ -12,14 +12,14 @@ set(PM_normalise_test_src
     ../../../libstriezel/hash/sha256/MessageSource.cpp
     normalise.cpp)
 
-if (CMAKE_COMPILER_IS_GNUCC)
+if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     add_definitions(-Wall -O3 -fexceptions)
-endif (CMAKE_COMPILER_IS_GNUCC)
+
+    set( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -s" )
+endif ()
 
 # add definition to avoid PM compression and its library dependency
 add_definitions(-DNO_PM_COMPRESSION)
-
-set( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -s" )
 
 add_executable(PM_normalise_test ${PM_normalise_test_src})
 

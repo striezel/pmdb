@@ -9,11 +9,11 @@ set(colourmap_test_load_src
     ../../code/ConsoleColours.cpp
     colourmap_load.cpp)
 
-if (CMAKE_COMPILER_IS_GNUCC)
+if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     add_definitions(-Wall -O3 -fexceptions)
-endif (CMAKE_COMPILER_IS_GNUCC)
 
-set( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -s" )
+    set( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -s" )
+endif ()
 
 add_executable(colourmap_test_load ${colourmap_test_load_src})
 

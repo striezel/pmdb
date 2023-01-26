@@ -10,12 +10,12 @@ set(test_msgtemplate_loadequality_src
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     add_definitions(-Wall -O3 -fexceptions)
+
+    set( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -s" )
 endif ()
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
-set( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -s" )
 
 add_executable(test_msgtemplate_loadequality ${test_msgtemplate_loadequality_src})
 
@@ -32,11 +32,11 @@ set(test_MsgTemplate_replacements_src
     ../../code/MsgTemplate.cpp
     replacement_tests.cpp)
 
-if (CMAKE_COMPILER_IS_GNUCC)
+if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     add_definitions(-Wall -O3 -fexceptions)
-endif (CMAKE_COMPILER_IS_GNUCC)
 
-set( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -s" )
+    set( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -s" )
+endif ()
 
 add_executable(test_MsgTemplate_replacements ${test_MsgTemplate_replacements_src})
 

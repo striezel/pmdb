@@ -44,9 +44,9 @@ set(pmdb_no_comp_sources
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     add_definitions (-Wall -O3 -fexceptions)
-endif ()
 
-set( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -s" )
+    set( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -s" )
+endif ()
 
 add_executable(pmdb_no_comp ${pmdb_no_comp_sources})
 

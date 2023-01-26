@@ -45,6 +45,10 @@
 		<Compiler>
 			<Add option="-std=c++17" />
 			<Add option="-Wall" />
+			<Add option="-Wextra" />
+			<Add option="-Wpedantic" />
+			<Add option="-pedantic-errors" />
+			<Add option="-Wshadow" />
 			<Add option="-fexceptions" />
 			<Add directory="/usr/include/libxml2/" />
 		</Compiler>

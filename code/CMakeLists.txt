@@ -38,7 +38,7 @@ set(pmdb_sources
     main.cpp)
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-    add_definitions (-Wall -O3 -fexceptions)
+    add_definitions (-Wall -Wextra -Wpedantic -pedantic-errors -Wshadow -O3 -fexceptions)
 
     set( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -s" )
 endif ()

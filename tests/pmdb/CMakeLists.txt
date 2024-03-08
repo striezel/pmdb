@@ -15,8 +15,10 @@ add_test(NAME pmdb_help_question_mark
          COMMAND $<TARGET_FILE:pmdb> -?)
 
 # Windows-style help parameter "/?"
-add_test(NAME pmdb_help_question_mark_win
-         COMMAND $<TARGET_FILE:pmdb> /?)
+if (NOT DEFINED ENV{GITHUB_ACTIONS} OR NOT MINGW)
+  add_test(NAME pmdb_help_question_mark_win
+           COMMAND $<TARGET_FILE:pmdb> /?)
+endif ()
 
 # parameter to show version number
 add_test(NAME pmdb_version

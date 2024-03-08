@@ -54,5 +54,11 @@ endif (ZLIB_FOUND)
 
 
 # --- add it as a test
+if (NOT WIN32)
+  set(EXT "sh")
+else ()
+  set(EXT "cmd")
+endif()
+
 add_test(NAME class_MessageDatabase_save_load_comp
-         COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/save-load-compressed-test.sh $<TARGET_FILE:MessageDatabase_saveload_compressed_test>)
+         COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/save-load-compressed-test.${EXT} $<TARGET_FILE:MessageDatabase_saveload_compressed_test>)

@@ -1,4 +1,3 @@
-# We might support earlier versions, too, but those are not tested.
 cmake_minimum_required (VERSION 3.8)
 
 # binary for PrivateMessage::saveToFile()/loadFromFile() test

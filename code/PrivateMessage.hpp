@@ -164,7 +164,7 @@ class PrivateMessage
      *
      * \param fileName the file that shall be used to save the message
      * \param compressed   if set to true, the saved file will be compressed with zlib
-     * \return Returns true in case of success, or false if an error occured.
+     * \return Returns true in case of success, or false if an error occurred.
      */
     bool saveToFile(const std::string& fileName, const bool compressed) const;
 
@@ -173,7 +173,7 @@ class PrivateMessage
      *
      * \param fileName file that shall be used to load the message
      * \param isCompressed  Set this to true to indicate that the file contains a zlib-compressed PM.
-     * \return Returns true in case of success, or false if an error occured.
+     * \return Returns true in case of success, or false if an error occurred.
      */
     bool loadFromFile(const std::string& fileName, const bool isCompressed);
 

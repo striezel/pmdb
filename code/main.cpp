@@ -93,7 +93,7 @@ void showHelp(const std::string& name)
             << "  --save           - all messages will be saved after the XML files were read\n"
             << "                     and the messages from the load directories have been\n"
             << "                     loaded. Enabled by default.\n"
-            << "  --no-save        - prevents the programme from saving any read meassages.\n"
+            << "  --no-save        - prevents the programme from saving any read messages.\n"
             << "                     Mutually exclusive with --save.\n"
             #ifndef NO_PM_COMPRESSION
             << "  --compress       - save and load operations (see --save and --load) will use\n"

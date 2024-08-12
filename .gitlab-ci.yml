@@ -1,7 +1,7 @@
 # Use the official gcc image, based on debian.
 # It can use version tags as well, like gcc:8.5.
 # See https://hub.docker.com/_/gcc/ for more info.
-image: gcc:8
+image: gcc:14
 
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
@@ -23,7 +23,7 @@ build_gcc:
     - ctest -V
 
 build_clang:
-  image: debian:11-slim
+  image: debian:12-slim
   stage: build
   before_script:
     - apt-get update

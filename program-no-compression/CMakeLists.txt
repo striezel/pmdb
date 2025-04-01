@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.8)
+cmake_minimum_required (VERSION 3.8...3.31)
 
 #like main project, but without PM compression capabilities
 project(pmdb_no_comp)

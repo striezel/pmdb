@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.8)
+cmake_minimum_required (VERSION 3.8...3.31)
 
 # binary for Config creation test
 project(colourmap_test_load)

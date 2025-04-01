@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.8)
+cmake_minimum_required (VERSION 3.8...3.31)
 
 # binary for PrivateMessage::saveToFile()/loadFromFile() test
 project(PM_save_load_test)

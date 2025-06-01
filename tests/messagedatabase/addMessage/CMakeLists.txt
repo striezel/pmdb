@@ -45,4 +45,4 @@ endif (LIBXML2_FOUND)
 
 # --- add it as a test
 add_test(NAME class_MessageDatabase_addMessage
-         COMMAND $<TARGET_FILE:addMessage_test> ${CMAKE_CURRENT_SOURCE_DIR})
+         COMMAND $<TARGET_FILE:addMessage_test> "${CMAKE_CURRENT_SOURCE_DIR}")

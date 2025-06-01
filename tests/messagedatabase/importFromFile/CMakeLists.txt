@@ -55,4 +55,4 @@ endif (Iconv_FOUND)
 
 # --- add it as a test
 add_test(NAME class_MessageDatabase_importFromFile_single
-         COMMAND $<TARGET_FILE:importFromFile_test> ${CMAKE_CURRENT_SOURCE_DIR})
+         COMMAND $<TARGET_FILE:importFromFile_test> "${CMAKE_CURRENT_SOURCE_DIR}")

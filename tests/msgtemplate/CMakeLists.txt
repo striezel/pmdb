@@ -9,7 +9,7 @@ set(test_msgtemplate_loadequality_src
     loadFromFile_loadFromString_equality.cpp)
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-    add_definitions(-Wall -O3 -fexceptions)
+    add_definitions(-Wall -Wextra -Wpedantic -pedantic-errors -Wshadow -O3 -fexceptions)
 
     set( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -s" )
 endif ()
@@ -18,6 +18,16 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_executable(test_msgtemplate_loadequality ${test_msgtemplate_loadequality_src})
+
+# GNU GCC before 9.1.0 needs to link to libstdc++fs explicitly.
+if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS "9.1.0")
+  target_link_libraries(test_msgtemplate_loadequality stdc++fs)
+endif ()
+
+# Clang before 9.0 needs to link to libc++fs explicitly.
+if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang" AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS "9.0")
+  target_link_libraries(test_msgtemplate_loadequality c++fs)
+endif ()
 
 # --- add it as a test
 add_test(NAME class_MsgTemplate_loadequality

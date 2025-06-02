@@ -1,5 +1,5 @@
 :: This file is part of the test suite for Private Message Database.
-:: Copyright (C) 2015, 2024  Dirk Stolle
+:: Copyright (C) 2015, 2024, 2025  Dirk Stolle
 ::
 :: This program is free software: you can redistribute it and/or modify
 :: it under the terms of the GNU General Public License as published by
@@ -25,20 +25,20 @@ if "%1" EQU "" (
 :: create base directory where the test shall take place
 : tmp-dir
 SET SAVE_DIR=%TEMP%\test-mdb-save-load-%RANDOM%
-if EXISTS "%SAVE_DIR%" GOTO tmp-dir
+if EXIST "%SAVE_DIR%" GOTO tmp-dir
 md "%SAVE_DIR%"
 
-# run test
-"$1" "$SAVE_DIR"
-# ...and save its exit code
+:: run test
+"%1" "%SAVE_DIR%"
+:: ...and save its exit code
 SET TEST_EXIT_CODE_FIRST=%ERRORLEVEL%
 
-# run test with slash at end of path
-"$1" $SAVE_DIR\
-# ...and save its exit code
+:: run test with slash at end of path
+"%1" %SAVE_DIR%\
+:: ...and save its exit code
 SET TEST_EXIT_CODE_SECOND=%ERRORLEVEL%
 
-TOTAL=0
+SET TOTAL=0
 
 if %TEST_EXIT_CODE_FIRST% NEQ 0 (
   echo ERROR: The first part of the MessageDatabase save/load test, path without slash, failed!

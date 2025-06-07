@@ -45,34 +45,19 @@ const int rcInvalidParameter = 1;
 const int rcFileError        = 2;
 const int rcCaughtException  = 3;
 
-void showGPLNotice()
-{
-  std::cout << "Private Message Database\n"
-            << "  Copyright (C) 2012, 2013, 2014, 2015  Dirk Stolle\n"
-            << "\n"
-            << "  This program is free software: you can redistribute it and/or\n"
-            << "  modify it under the terms of the GNU General Public License as published\n"
-            << "  by the Free Software Foundation, either version 3 of the License, or\n"
-            << "  (at your option) any later version.\n"
-            << "\n"
-            << "  This program is distributed in the hope that they will be useful,\n"
-            << "  but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-            << "  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the\n"
-            << "  GNU General Public License for more details.\n"
-            << "\n"
-            << "  You should have received a copy of the GNU General Public License\n"
-            << "  along with this program.  If not, see <http://www.gnu.org/licenses/>.\n"
-            << "\n";
-}
-
 void showVersion()
 {
-  showGPLNotice();
   #ifdef NO_PM_COMPRESSION
   std::cout << "Private Message Database, version 0.24.1~no-compression, 2015-10-09\n";
   #else
   std::cout << "Private Message Database, version 0.24.1, 2015-10-09\n";
   #endif
+  std::cout << '\n'
+            << "Copyright (C) 2012, 2013, 2014, 2015  Dirk Stolle\n"
+            << "License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>\n"
+            << "This is free software: you are free to change and redistribute it under the\n"
+            << "terms of the GNU General Public License version 3 or any later version.\n"
+            << "There is NO WARRANTY, to the extent permitted by law.\n";
 }
 
 void showHelp(const std::string& name)

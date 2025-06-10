@@ -48,6 +48,7 @@ the directory after the repository is completely cloned:
 ```bash
 git clone https://github.com/striezel/pmdb.git
 cd pmdb
+git submodule update --init --recursive
 ```
 
 That's it, you should now have the current source code on your machine.

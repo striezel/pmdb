@@ -19,6 +19,7 @@ set(pmdb_no_comp_sources
     ../code/PMSource.cpp
     ../code/PrivateMessage.cpp
     ../code/SortType.cpp
+    ../code/Version.cpp
     ../code/XMLDocument.cpp
     ../code/XMLNode.cpp
     ../code/bbcode/AdvancedTemplateBBCode.cpp

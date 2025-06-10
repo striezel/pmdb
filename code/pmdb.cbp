@@ -105,6 +105,8 @@
 		<Unit filename="PrivateMessage.hpp" />
 		<Unit filename="SortType.cpp" />
 		<Unit filename="SortType.hpp" />
+		<Unit filename="Version.cpp" />
+		<Unit filename="Version.hpp" />
 		<Unit filename="XMLDocument.cpp" />
 		<Unit filename="XMLDocument.hpp" />
 		<Unit filename="XMLNode.cpp" />

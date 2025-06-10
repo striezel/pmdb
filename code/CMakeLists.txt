@@ -13,6 +13,7 @@ set(pmdb_sources
     PMSource.cpp
     PrivateMessage.cpp
     SortType.cpp
+    Version.cpp
     XMLDocument.cpp
     XMLNode.cpp
     bbcode/AdvancedTemplateBBCode.cpp

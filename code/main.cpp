@@ -29,6 +29,7 @@
 #include "Config.hpp"
 #include "ConsoleColours.hpp"
 #include "ColourMap.hpp"
+#include "Version.hpp"
 #include "bbcode/BBCodeParser.hpp"
 #include "bbcode/DefaultCodes.hpp"
 #include "bbcode/HorizontalRuleBBCode.hpp"
@@ -52,6 +53,7 @@ void showVersion()
   #else
   std::cout << "Private Message Database, version 0.24.1, 2015-10-09\n";
   #endif
+  showLibraryVersions();
   std::cout << '\n'
             << "Copyright (C) 2012, 2013, 2014, 2015  Dirk Stolle\n"
             << "License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>\n"

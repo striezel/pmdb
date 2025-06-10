@@ -53,8 +53,9 @@ jobs:
           mkdir artifacts
           # binary files
           cp build-static/code/pmdb artifacts/
-          # license
+          # license + third-party notices
           cp LICENSE artifacts/
+          cp third-party.md artifacts/
           # determine version
           VERSION=$(git describe --always)
           echo Version is $VERSION.

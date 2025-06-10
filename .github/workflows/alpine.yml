@@ -1,0 +1,68 @@
+name: Alpine
+
+on: push
+
+jobs:
+  alpine:
+    runs-on: ubuntu-24.04
+    container: 'alpine:3.22'
+
+    steps:
+      - name: Install and prepare Git
+        run: |
+          apk update && apk upgrade
+          apk add git
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+      # Checks-out the repository under $GITHUB_WORKSPACE.
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: 'recursive'
+      - name: Install packages
+        run: |
+          apk update
+          apk add catch2 cmake g++ libxml2-dev make pkgconf zlib-dev
+      - name: Build
+        run: |
+          cd "$GITHUB_WORKSPACE"
+          mkdir build
+          cd build
+          cmake ../
+          cmake --build . -j4
+      - name: Run tests
+        run: |
+          cd "$GITHUB_WORKSPACE/build"
+          ctest -V
+      - name: Install statically linked libraries
+        run: |
+          apk add libxml2-static xz-static zlib-static
+      - name: Build statically linked executables
+        run: |
+          cd "$GITHUB_WORKSPACE"
+          mkdir build-static
+          cd build-static
+          cmake ../ -DENABLE_LTO=ON -DENABLE_STATIC_LINKING=ON
+          cmake --build . -j4
+      - name: Run tests for statically linked build
+        run: |
+          cd "$GITHUB_WORKSPACE/build-static"
+          ctest -V
+      - name: Gather build artifacts
+        run: |
+          cd "$GITHUB_WORKSPACE"
+          mkdir artifacts
+          # binary files
+          cp build-static/code/pmdb artifacts/
+          # license
+          cp LICENSE artifacts/
+          # determine version
+          VERSION=$(git describe --always)
+          echo Version is $VERSION.
+          mv artifacts pmdb-$VERSION
+          tar czf pmdb_${VERSION}_linux-amd64-generic.tar.gz pmdb-$VERSION
+      - name: Archive build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: pmdb_linux-amd64-generic
+          path: pmdb_*_linux-amd64-generic.tar.gz
+          if-no-files-found: error

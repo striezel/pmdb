@@ -24,11 +24,17 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_executable(PM_save_load_compressed_test ${PM_save_load_compressed_test_src})
 
-#find zlib
-find_package (ZLIB)
+# find zlib
+find_package (PkgConfig)
+pkg_search_module (ZLIB REQUIRED zlib)
 if (ZLIB_FOUND)
-  include_directories(${ZLIB_INCLUDE_DIRS})
-  target_link_libraries (PM_save_load_compressed_test ${ZLIB_LIBRARIES})
+  if (ENABLE_STATIC_LINKING)
+    include_directories(${ZLIB_STATIC_INCLUDE_DIRS})
+    target_link_libraries (PM_save_load_compressed_test ${ZLIB_STATIC_LIBRARIES})
+  else ()
+    include_directories(${ZLIB_INCLUDE_DIRS})
+    target_link_libraries (PM_save_load_compressed_test ${ZLIB_LIBRARIES})
+  endif ()
 else ()
   message ( FATAL_ERROR "zlib was not found!" )
 endif (ZLIB_FOUND)

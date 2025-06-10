@@ -1,7 +1,7 @@
-#!/bin/bash
+#!/bin/sh
 
 # This file is part of the test suite for Private Message Database.
-# Copyright (C) 2015  Dirk Stolle
+# Copyright (C) 2015, 2025  Dirk Stolle
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,43 +18,43 @@
 
 
 # check parameter
-if [[ -z $1 ]]
+if [ -z "$1" ]
 then
   echo "Error: Expecting one parameter - executable for this test!"
   return 1
 fi
 
 # create base directory where the test shall take place
-SAVE_DIR=`mktemp --directory --tmpdir test-mdb-save-loadXXXXXXXXXX`
+SAVE_DIR=$(mktemp --directory --tmpdir test-mdb-save-loadXXXXXXXXXX)
 
 # run test
-$1 $SAVE_DIR
+$1 "$SAVE_DIR"
 # ...and save its exit code
 TEST_EXIT_CODE_FIRST=$?
 
 # run test with slash at end of path
-$1 $SAVE_DIR/
+$1 "$SAVE_DIR/"
 # ...and save its exit code
 TEST_EXIT_CODE_SECOND=$?
 
 TOTAL=0
 
-if [[ $TEST_EXIT_CODE_FIRST -ne 0 ]]
+if [ $TEST_EXIT_CODE_FIRST -ne 0 ]
 then
   echo "ERROR: The first part of the MessageDatabase save/load test (path without slash) failed!"
   TOTAL=1
 fi
 
-if [[ $TEST_EXIT_CODE_SECOND -ne 0 ]]
+if [ $TEST_EXIT_CODE_SECOND -ne 0 ]
 then
   echo "ERROR: The second part of the MessageDatabase save/load test (path with slash) failed!"
   TOTAL=2
 fi
 
 # clean up test directory
-rm -rf $SAVE_DIR
+rm -rf "$SAVE_DIR"
 
-if [[ $TOTAL -eq 0 ]]
+if [ $TOTAL -eq 0 ]
 then
   exit 0
 else

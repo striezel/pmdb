@@ -21,6 +21,17 @@ if (ENABLE_LTO)
   endif()
 endif (ENABLE_LTO)
 
+# If ENABLE_STATIC_STANDARD_LIBRARIES is on (e. g. via
+# `cmake -DENABLE_STATIC_STANDARD_LIBRARIES=ON`), then the C++ standard
+# libraries are linked statically. The option is off by default.
+#
+# Static linking increases the size of the binaries, but those binaries do not
+# need the statically linked libraries to be present on the system.
+option(ENABLE_STATIC_STANDARD_LIBRARIES "Link C++ standard libraries statically" OFF)
+if (ENABLE_STATIC_STANDARD_LIBRARIES)
+  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static-libgcc -static-libstdc++")
+endif (ENABLE_STATIC_STANDARD_LIBRARIES)
+
 # If ENABLE_STATIC_LINKING is on (e. g. via `cmake -DENABLE_STATIC_LINKING=ON`),
 # then all libraries are linked statically. The option is off by default.
 #

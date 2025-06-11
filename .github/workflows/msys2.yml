@@ -12,6 +12,7 @@ jobs:
       # Checks-out the repository under $GITHUB_WORKSPACE.
       - uses: actions/checkout@v4
         with:
+          fetch-depth: 0
           submodules: 'recursive'
       - uses: msys2/setup-msys2@v2
         with:
@@ -41,3 +42,41 @@ jobs:
 #          export MSYSTEM=MINGW64
 #          cd "$GITHUB_WORKSPACE"/build
 #          ctest -V
+      - name: Build with statically linked standard libraries
+        run: |
+          export MSYSTEM=MINGW64
+          export CXX=g++
+          export CC=gcc
+          cd "$GITHUB_WORKSPACE"
+          mkdir build_static_std_libs
+          cd build_static_std_libs
+          cmake ../ -DENABLE_LTO=ON -DENABLE_STATIC_STANDARD_LIBRARIES=ON
+          cmake --build . -j4
+      - name: Tests of build with statically linked standard libraries
+        run: |
+          export MSYSTEM=MINGW64
+          cd "$GITHUB_WORKSPACE"/build_static_std_libs
+          ctest -V
+      - name: Gather build artifacts
+        run: |
+          export MSYSTEM=MINGW64
+          cd "$GITHUB_WORKSPACE"
+          mkdir artifacts
+          # binary files
+          ./ci/copy-dll-dependencies.sh build_static_std_libs/code/pmdb.exe artifacts/
+          # license + third-party notices
+          cp LICENSE artifacts/
+          cp third-party.md artifacts/
+          # template files
+          cp code/*.tpl artifacts/
+          # determine version
+          VERSION=$(git describe --always)
+          mv artifacts pmdb_${VERSION}
+          '/c/Program Files/7-Zip/7z.exe' a -r pmdb_${VERSION}.zip pmdb_${VERSION}
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: pmdb-windows-msys2
+          if-no-files-found: error
+          path: |
+            pmdb*.zip

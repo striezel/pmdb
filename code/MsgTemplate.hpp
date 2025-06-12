@@ -40,10 +40,6 @@ class MsgTemplate
     explicit MsgTemplate(const std::string& tplText);
 
 
-    /** destructor */
-    ~MsgTemplate();
-
-
     /** \brief Loads template from a given file.
      *
      * \param fileName   path to the template file

@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2012, 2014  Dirk Stolle
+    Copyright (C) 2012, 2014, 2025  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -72,13 +72,13 @@ void Config::clear()
 bool Config::loadFromFile(const std::string& fileName)
 {
   std::ifstream input;
-  input.open(fileName.c_str(), std::ios::in | std::ios::binary);
+  input.open(fileName, std::ios::in | std::ios::binary);
   if (!input)
   {
     return false;
   }
 
-  //clear existing values
+  // clear existing values
   clear();
 
   const unsigned int cMaxLine = 1024;
@@ -89,13 +89,13 @@ bool Config::loadFromFile(const std::string& fileName)
   {
     buffer[cMaxLine-1] = '\0';
     line = std::string(buffer);
-    //check for possible carriage return at end (happens on Windows systems)
+    // check for possible carriage return at end (happens on Windows systems)
     if (!line.empty())
     {
-      if (line.at(line.length()-1)=='\r')
+      if (line.at(line.length() - 1) == '\r')
       {
-        line.erase(line.length()-1);
-      }//if
+        line.erase(line.length() - 1);
+      }
     }
 
     if (!line.empty())
@@ -104,25 +104,25 @@ bool Config::loadFromFile(const std::string& fileName)
       if (sep_pos == std::string::npos || sep_pos == 0)
       {
         std::cout << "Config::loadFromFile: ERROR: Invalid line found: \""
-                  << line <<"\".\nGeneral format: \"Name of Setting=value\"\n"
+                  << line << "\".\nGeneral format: \"Name of Setting=value\"\n"
                   << "Loading from file cancelled.\n";
         input.close();
         return false;
       }
 
       const std::string name = line.substr(0, sep_pos);
-      if (name=="forum")
+      if (name == "forum")
       {
         forumURL = line.substr(sep_pos+1);
       }
-      else if (name=="template")
+      else if (name == "template")
       {
         tplFile = line.substr(sep_pos+1);
       }
       #ifndef NO_SMILIES_IN_PARSER
-      else if ((name=="smilie") or (name=="smilie_r"))
+      else if ((name == "smilie") || (name == "smilie_r"))
       {
-        line = line.substr(sep_pos+1);
+        line = line.substr(sep_pos + 1);
         sep_pos = line.find('=');
         if (sep_pos == std::string::npos || sep_pos == 0)
         {
@@ -138,11 +138,11 @@ bool Config::loadFromFile(const std::string& fileName)
           input.close();
           return false;
         }
-        smilies.push_back(Smilie(code, s_url, (name=="smilie_r")));
-      }//else if (smilie)
+        smilies.push_back(Smilie(code, s_url, (name == "smilie_r")));
+      } // smilie
       #endif
-    }//if not empty
-  }//while
+    }
+  }
   input.close();
   return true;
 }

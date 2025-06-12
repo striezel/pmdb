@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2012, 2013, 2014, 2015  Dirk Stolle
+    Copyright (C) 2012, 2013, 2014, 2015, 2025  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -25,8 +25,8 @@
 XMLNode::XMLNode(const xmlNodePtr node)
 : m_Node(node)
 {
-  if (NULL==node)
-    throw std::invalid_argument("NULL is not allowed as argument in XMLNode::XMLNode()!"); //NULL not allowed
+  if (nullptr == node)
+    throw std::invalid_argument("NULL is not allowed as argument in XMLNode::XMLNode()!");
 }
 
 const xmlChar* XMLNode::getName() const
@@ -41,27 +41,27 @@ std::string XMLNode::getNameAsString() const
 
 bool XMLNode::hasChild() const
 {
-  return (m_Node->children!=NULL);
+  return m_Node->children != nullptr;
 }
 
 bool XMLNode::hasNextSibling() const
 {
-  return (m_Node->next!=NULL);
+  return m_Node->next != nullptr;
 }
 
 bool XMLNode::hasPrevSibling() const
 {
-  return (m_Node->prev!=NULL);
+  return m_Node->prev != nullptr;
 }
 
 bool XMLNode::hasParent() const
 {
-  return (m_Node->parent!=NULL);
+  return m_Node->parent != nullptr;
 }
 
 bool XMLNode::hasAttribute() const
 {
-  return (m_Node->properties!=NULL);
+  return m_Node->properties != nullptr;
 }
 
 XMLNode XMLNode::getChild() const
@@ -81,76 +81,88 @@ XMLNode XMLNode::getPrevSibling() const
 
 std::string XMLNode::getPlainTextContent() const
 {
-  //text is a child node of current node, so it has to have a child
-  if (NULL==m_Node->children) return "";
-  //type should be text node, of course
-  if (m_Node->children->type!=XML_TEXT_NODE) return "";
+  // Text is a child node of current node, so it has to have a child.
+  if (nullptr == m_Node->children)
+    return "";
+  // Type should be text node, of course.
+  if (m_Node->children->type != XML_TEXT_NODE)
+    return "";
   xmlChar* key = xmlNodeListGetString(m_Node->doc, m_Node->children, 1);
   std::string result = reinterpret_cast<const char*>(key);
-  xmlFree(key);//free it, because xmlNodeListGetString() allocated memory
+  // Free it, because xmlNodeListGetString() allocated memory.
+  xmlFree(key);
   return result;
 }
 
 std::string XMLNode::getCDATAText() const
 {
-  //text is a child node of current node, so it has to have a child
-  if (NULL==m_Node->children) return "";
-  //type should be CTDA node, of course
-  if (m_Node->children->type!=XML_CDATA_SECTION_NODE) return "";
+  // Text is a child node of current node, so it has to have a child.
+  if (nullptr == m_Node->children)
+    return "";
+  // Type should be CTDA node, of course.
+  if (m_Node->children->type != XML_CDATA_SECTION_NODE)
+    return "";
   xmlChar* key = xmlNodeListGetString(m_Node->doc, m_Node->children, 1);
   std::string result = reinterpret_cast<const char*>(key);
-  xmlFree(key);//free it, because xmlNodeListGetString() allocated memory
+  // Free it, because xmlNodeListGetString() allocated memory.
+  xmlFree(key);
   return result;
 }
 
 std::string XMLNode::getContentBoth() const
 {
-  //text is a child node of current node, so it has to have a child
-  if (NULL==m_Node->children) return "";
-  //type should be text or CDATA node
-  if ((m_Node->children->type!=XML_TEXT_NODE) and (m_Node->children->type!=XML_CDATA_SECTION_NODE)) return "";
+  // Text is a child node of current node, so it has to have a child.
+  if (nullptr == m_Node->children)
+    return "";
+  // Type should be text or CDATA node.
+  if ((m_Node->children->type != XML_TEXT_NODE) && (m_Node->children->type != XML_CDATA_SECTION_NODE))
+    return "";
   xmlChar* key = xmlNodeListGetString(m_Node->doc, m_Node->children, 1);
   std::string result = reinterpret_cast<const char*>(key);
-  xmlFree(key);//free it, because xmlNodeListGetString() allocated memory
+  // Free it, because xmlNodeListGetString() allocated memory.
+  xmlFree(key);
   return result;
 }
 
 std::string XMLNode::getFirstAttributeName() const
 {
-  //if there are no attribute nodes, return empty string
-  if (NULL==m_Node->properties) return "";
+  // If there are no attribute nodes, return empty string.
+  if (nullptr == m_Node->properties)
+    return "";
   return reinterpret_cast<const char*>(m_Node->properties->name);
 }
 
 std::string XMLNode::getFirstAttributeValue() const
 {
-  //if there are no attribute nodes, return empty string
-  if (NULL==m_Node->properties) return "";
-  //if there is no content, return empty string
-  if (NULL==m_Node->properties->children) return "";
-  //return content of first attr node
+  // If there are no attribute nodes, return empty string.
+  if (nullptr == m_Node->properties)
+    return "";
+  // If there is no content, return empty string.
+  if (nullptr == m_Node->properties->children)
+    return "";
+  // Return content of first attr node.
   return reinterpret_cast<const char*>(m_Node->properties->children->content);
 }
 
 std::vector<std::pair<std::string, std::string> > XMLNode::getAttributes() const
 {
-  //if there are no attribute nodes, return empty vector
-  if (NULL==m_Node->properties)
+  // If there are no attribute nodes, return empty vector.
+  if (nullptr == m_Node->properties)
     return std::vector<std::pair<std::string, std::string> >();
 
   std::vector<std::pair<std::string, std::string> > attributeList;
   xmlAttrPtr currentAttribute = m_Node->properties;
-  while (currentAttribute != NULL)
+  while (currentAttribute != nullptr)
   {
     std::string value = "";
-    if (currentAttribute->children != NULL)
+    if (currentAttribute->children != nullptr)
       value = reinterpret_cast<const char*>(currentAttribute->children->content);
-    //push name and value to list
+    // push name and value to list
     attributeList.push_back(std::pair<std::string, std::string>(
         reinterpret_cast<const char*>(currentAttribute->name), value));
-    //move to next attribute
+    // move to next attribute
     currentAttribute = currentAttribute->next;
-  } //while
+  }
   return attributeList;
 }
 
@@ -161,29 +173,29 @@ XMLNode XMLNode::getParent() const
 
 bool XMLNode::isElementNode() const
 {
-  return (m_Node->type==XML_ELEMENT_NODE);
+  return m_Node->type == XML_ELEMENT_NODE;
 }
 
 bool XMLNode::isAttributeNode() const
 {
-  return (m_Node->type==XML_ATTRIBUTE_NODE);
+  return m_Node->type == XML_ATTRIBUTE_NODE;
 }
 
 bool XMLNode::isTextNode() const
 {
-  return (m_Node->type==XML_TEXT_NODE);
+  return m_Node->type == XML_TEXT_NODE;
 }
 
 bool XMLNode::isCommentNode() const
 {
-  return (m_Node->type==XML_COMMENT_NODE);
+  return m_Node->type == XML_COMMENT_NODE;
 }
 
 void XMLNode::skipEmptyCommentAndTextSiblings()
 {
-  while ((isCommentNode() or (isTextNode() and isEmptyOrWhitespace(getContentBoth())))
-          and hasNextSibling())
+  while ((isCommentNode() || (isTextNode() && isEmptyOrWhitespace(getContentBoth())))
+          && hasNextSibling())
   {
     m_Node = m_Node->next;
-  } //while)
+  }
 }

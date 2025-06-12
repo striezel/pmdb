@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2012, 2014, 2015  Dirk Stolle
+    Copyright (C) 2012, 2014, 2015, 2025  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -22,26 +22,29 @@
 #include <stdexcept>
 
 XMLDocument::XMLDocument(const std::string& fileName)
-: //parse the XML file
+: // parse the XML file
   m_Doc(xmlParseFile(fileName.c_str()))
 {}
 
 XMLDocument::XMLDocument(xmlDocPtr doc)
-: //use existing pointer
+: // use existing pointer
   m_Doc(doc)
 {}
 
 XMLDocument::XMLDocument(const XMLDocument& op)
-: m_Doc(op.m_Doc==NULL ? NULL : xmlCopyDoc(op.m_Doc, 1))
+: m_Doc(op.m_Doc == nullptr ? nullptr : xmlCopyDoc(op.m_Doc, 1))
 {
 }
 
 XMLDocument& XMLDocument::operator=(const XMLDocument& op)
 {
-  if (this==&op) return *this;
+  if (this == &op)
+  {
+    return *this;
+  }
   xmlFreeDoc(m_Doc);
-  m_Doc = NULL;
-  if (op.m_Doc!=NULL)
+  m_Doc = nullptr;
+  if (op.m_Doc != nullptr)
   {
     m_Doc = xmlCopyDoc(op.m_Doc, 1);
   }
@@ -55,24 +58,24 @@ XMLDocument::~XMLDocument()
 
 bool XMLDocument::isParsed() const
 {
-  return (m_Doc!=NULL);
+  return m_Doc != nullptr;
 }
 
 bool XMLDocument::isEmpty() const
 {
-  return (xmlDocGetRootElement(m_Doc)==NULL);
+  return xmlDocGetRootElement(m_Doc) == nullptr;
 }
 
 bool XMLDocument::wellFormed() const
 {
-  if (NULL!=m_Doc)
+  if (nullptr != m_Doc)
     return ((m_Doc->properties & XML_DOC_WELLFORMED) != 0);
   return false;
 }
 
 XMLNode XMLDocument::getRootNode() const
 {
-  if (!isParsed() or isEmpty())
+  if (!isParsed() || isEmpty())
     throw std::invalid_argument("XMLDocument::getRootNode(): XML document must be parsed and not empty, if you want to get the root node!");
   return XMLNode(xmlDocGetRootElement(m_Doc));
 }

@@ -122,7 +122,7 @@ int main(int argc, char **argv)
   bool saveModeSpecified = false;
   std::string homeDirectory;
   std::string defaultSaveDirectory;
-  bool compressed = false;
+  Compression compression = Compression::none;
 
   if (libstriezel::filesystem::directory::getHome(homeDirectory))
   {
@@ -287,12 +287,12 @@ int main(int argc, char **argv)
         else if ((param == "--compress") || (param == "--compression") || (param == "--zlib"))
         {
           #ifndef NO_PM_COMPRESSION
-          if (compressed)
+          if (compression != Compression::none)
           {
             std::cerr << "Parameter " << param << " must not occur more than once!\n";
             return rcInvalidParameter;
           }
-          compressed = true;
+          compression = Compression::zlib;
           std::cout << "Files loading/saving will use compression as requested via " << param << ".\n";
           #else
           std::cerr << "Error: Compression is not available in this build of pmdb!\n";
@@ -402,42 +402,38 @@ int main(int argc, char **argv)
   MessageDatabase mdb;
   FolderMap fm;
   uint32_t PMs_done, PMs_new;
-  std::set<std::string>::const_iterator set_iter = pathXML.begin();
-  while (set_iter != pathXML.end())
+  for (const auto& path: pathXML)
   {
-    if (mdb.importFromFile(*set_iter, PMs_done, PMs_new, fm))
+    if (mdb.importFromFile(path, PMs_done, PMs_new, fm))
     {
-      std::cout << "Import of private messages from \"" << *set_iter << "\" was successful!\n  "
+      std::cout << "Import of private messages from \"" << path << "\" was successful!\n  "
                 << PMs_done << " PMs read, new PMs: " << PMs_new << "\n";
     }
     else
     {
-      std::cout << "Import of private messages from \"" << *set_iter << "\" failed!\n"
+      std::cout << "Import of private messages from \"" << path << "\" failed!\n"
                 << "  PMs read from file so far: " << PMs_done << "\nNew PMs: " << PMs_new << "\n";
     }
-    ++set_iter;
   }
 
   // try to load data from directories
-  set_iter = loadDirs.begin();
-  while (set_iter != loadDirs.end())
+  for (const auto& directory: loadDirs)
   {
-    if (!mdb.loadMessages(*set_iter, PMs_done, PMs_new, compressed))
+    if (!mdb.loadMessages(directory, PMs_done, PMs_new, compression))
     {
-      std::cout << "Could not load all messages from \"" << *set_iter
+      std::cout << "Could not load all messages from \"" << directory
                 << "\"!\nRead so far: " << PMs_done << "; new: " << PMs_new
                 << "\n";
       return 0;
     }
-    std::cout << "All messages from \"" << *set_iter << "\" loaded! Read: "
+    std::cout << "All messages from \"" << directory << "\" loaded! Read: "
               << PMs_done << "; new: " << PMs_new << "\n";
     // try to load folder map, too, but don't return, if it failed
-    if (fm.load(*set_iter))
+    if (fm.load(directory))
     {
-      std::cout << "Loaded folder map from \"" << *set_iter << "\".\n";
+      std::cout << "Loaded folder map from \"" << directory << "\".\n";
     }
-    ++set_iter;
-  }//while
+  }
 
   std::cout << "PMs in the database: " << mdb.getNumberOfMessages() << "\n";
 
@@ -457,9 +453,9 @@ int main(int argc, char **argv)
         }
         std::cout << "success!\n";
       }
-    }//if more than zero messages
+    } // if more than zero messages
 
-    if (!mdb.saveMessages(libstriezel::filesystem::slashify(defaultSaveDirectory), compressed))
+    if (!mdb.saveMessages(libstriezel::filesystem::slashify(defaultSaveDirectory), compression))
     {
       std::cout << "Could not save messages!\n";
       return 0;
@@ -471,7 +467,7 @@ int main(int argc, char **argv)
       return 0;
     }
     std::cout << "Folder map saved successfully!\n";
-  }//if save requested
+  } // if save requested
 
   if (doHTML)
   {
@@ -510,11 +506,10 @@ int main(int argc, char **argv)
 
       #ifndef NO_SMILIES_IN_PARSER
       const std::vector<Smilie>& smilies_from_config = conf.getSmilies();
-      std::vector<Smilie>::const_iterator iter = smilies_from_config.begin();
-      for (; iter!= smilies_from_config.end(); ++iter)
+      for (const Smilie& smilie: smilies_from_config)
       {
-        parser.addSmilie(*iter);
-      } //for
+        parser.addSmilie(smilie);
+      }
       #endif
 
       // load template for HTML files

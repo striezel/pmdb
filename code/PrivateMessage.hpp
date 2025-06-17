@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2012, 2014, 2015  Dirk Stolle
+    Copyright (C) 2012, 2014, 2015, 2025  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -25,24 +25,29 @@
 #include <stdint.h>
 #include "../libstriezel/hash/sha256/sha256.hpp"
 
-/** holds information about a private message */
+/// enumeration for types of compression
+enum class Compression: bool
+{
+  none = false,
+  zlib = true
+};
+
+/** Holds information about a private message. */
 class PrivateMessage
 {
   public:
-    /** constructor */
     PrivateMessage();
 
 
-    /** clears/resets all data members */
+    /** Clears/resets all data members. */
     void clear();
 
 
-    /** normalises the line breaks in the message text */
+    /** Normalises the line breaks in the message text. */
     void normalise();
 
 
-    //access to data members
-    /** \brief access PM's datestamp
+    /** \brief Gets PM's datestamp.
      *
      * \return datestamp (string)
      */
@@ -52,7 +57,7 @@ class PrivateMessage
     }
 
 
-    /** \brief access current title of the PM
+    /** \brief Gets title of the PM.
      *
      * \return PM title
      */
@@ -62,7 +67,7 @@ class PrivateMessage
     }
 
 
-    /** \brief provides access to the name of the person who sent the PM
+    /** \brief Gets the name of the person who sent the PM.
      *
      * \return name of the sender
      */
@@ -72,7 +77,7 @@ class PrivateMessage
     }
 
 
-    /** \brief provides access to the user ID of the person who sent the PM
+    /** \brief Gets the user ID of the person who sent the PM.
      *
      * \return Returns user ID of the sender.
      *         A value of zero indicates that no value has been set.
@@ -83,7 +88,7 @@ class PrivateMessage
     }
 
 
-    /** \brief provides access to the name of the person who received the PM
+    /** \brief Gets the name of the person who received the PM.
      *
      * \return name of the receiver
      */
@@ -93,7 +98,7 @@ class PrivateMessage
     }
 
 
-    /** \brief provides access to the text of the PM
+    /** \brief Gets the text of the PM.
      *
      * \return message text
      */
@@ -103,79 +108,78 @@ class PrivateMessage
     }
 
 
-    /** \brief calculates the SHA-256 hash of the PM
+    /** \brief Calculates the SHA-256 hash of the PM.
      *
-     * \return returns SHA-256 hash of the PM
+     * \return Returns SHA-256 hash of the PM.
      */
     const SHA256::MessageDigest& getHash();
 
 
-    //functions to set various data members
-    /** \brief set new datestamp
+    /** \brief Sets new datestamp.
      *
      * \param ds  new value
      */
     void setDatestamp(const std::string& ds);
 
 
-    /** \brief set new PM title
+    /** \brief Sets new PM title.
      *
      * \param t  the new title
      */
     void setTitle(const std::string& t);
 
 
-    /** \brief set new sender name
+    /** \brief Sets new sender name.
      *
      * \param from  the new sender's name
      */
     void setFromUser(const std::string& from);
 
 
-    /** \brief set new user ID of sender
+    /** \brief Sets new user ID of sender.
      *
      * \param uid  the new user ID
      */
     void setFromUserID(const uint32_t uid);
 
 
-    /** \brief set new name of the receiver
+    /** \brief Sets new name of the receiver.
      *
      * \param to  the new name
      */
     void setToUser(const std::string& to);
 
 
-    /** \brief set new PM message text
+    /** \brief Sets new PM message text.
      *
      * \param msg  the new message text
      */
     void setMessage(const std::string& msg);
 
 
-    /** \brief determines the size of this PM, if it were saved to a file
+    /** \brief Determines the size of this PM, if it were saved to a file.
      *
      * \return Returns size of uncompressed saved PM in bytes.
      */
     std::string::size_type getSaveSize() const;
 
 
-    /** \brief tries to save the message to the given file
+    /** \brief Tries to save the message to the given file.
      *
-     * \param fileName the file that shall be used to save the message
-     * \param compressed   if set to true, the saved file will be compressed with zlib
+     * \param fileName  the file that shall be used to save the message
+     * \param compression   if set to Compression::zlib, the saved file will be compressed with zlib
      * \return Returns true in case of success, or false if an error occurred.
      */
-    bool saveToFile(const std::string& fileName, const bool compressed) const;
+    bool saveToFile(const std::string& fileName, const Compression compression) const;
 
 
-    /** \brief tries to load the message from the given file
+    /** \brief Tries to load the message from the given file.
      *
      * \param fileName file that shall be used to load the message
-     * \param isCompressed  Set this to true to indicate that the file contains a zlib-compressed PM.
+     * \param compression  Set this to Compression::zlib to indicate that the file contains a zlib-compressed PM.
      * \return Returns true in case of success, or false if an error occurred.
      */
-    bool loadFromFile(const std::string& fileName, const bool isCompressed);
+    bool loadFromFile(const std::string& fileName, const Compression compression);
 
 
     /** \brief equality operator for PrivateMessage class
@@ -195,7 +199,7 @@ class PrivateMessage
      */
     bool operator!=(const PrivateMessage& other) const;
   private:
-    /** \brief tries to save the PM contents to an output stream
+    /** \brief Tries to save the PM contents to an output stream.
      *
      * \param outputStream  stream that shall be used to save the PM;
      *                      the stream shall be opened and ready for writing
@@ -206,7 +210,7 @@ class PrivateMessage
     bool saveToStream(std::ostream& outputStream) const;
 
 
-    /** \brief tries to load the PM contents from an input stream
+    /** \brief Tries to load the PM contents from an input stream.
      *
      * \param inputStream  stream that shall be used to load the PM;
      *                     the stream shall be opened and ready for reading
@@ -225,6 +229,6 @@ class PrivateMessage
     std::string message;  /**< the message text */
     bool m_NeedsHashUpdate;  /**< tracks whether hash is not up to date */
     SHA256::MessageDigest m_Hash;  /**< hash of the message */
-};//class
+}; // class
 
 #endif // PRIVATEMESSAGE_HPP

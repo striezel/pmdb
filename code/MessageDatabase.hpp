@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2012, 2013, 2014, 2015  Dirk Stolle
+    Copyright (C) 2012, 2013, 2014, 2015, 2025  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -34,11 +34,10 @@ class XMLNode;
 class MessageDatabase
 {
   public:
-    /* constructor */
     MessageDatabase();
 
 
-    /** \brief adds a message to the database
+    /** \brief Adds a message to the database.
      *
      * \param pm the message that shall be added
      * \return Returns true, if the message was added.
@@ -48,14 +47,14 @@ class MessageDatabase
     bool addMessage(PrivateMessage& pm);
 
 
-    /** \brief returns the number of messages that are in the database
+    /** \brief Returns the number of messages that are in the database.
      *
-     * \return returns the number of messages that are in the database
+     * \return Returns the number of messages that are in the database.
      */
     unsigned int getNumberOfMessages() const;
 
 
-    /** \brief determines whether a given message is in the database.
+    /** \brief Determines whether a given message is in the database.
      *
      * \param pm the message
      * \return Returns true, if the given message is in the database.
@@ -66,7 +65,7 @@ class MessageDatabase
 
     /** \brief Returns a single message from the database.
      *
-     * \param digest the SHA-256 hash of the required message
+     * \param digest  the SHA-256 hash of the required message
      * \return Returns the message with the given digest, if it exists.
      *         Throws exception otherwise.
      */
@@ -96,27 +95,29 @@ class MessageDatabase
     Iterator getEnd()   const;
 
 
-    /** \brief tries to save all messages in the database to the given directory
+    /** \brief Tries to save all messages in the database to the given directory.
      *
      * \param directory directory where the messages shall be saved
-     * \param compressed  Set this to true to compress PMs with zlib.
+     * \param compression  The type of compression to use when saving the PMs.
      * \return Returns true in case of success, or false otherwise.
      */
-    bool saveMessages(const std::string& directory, const bool compressed) const;
+    bool saveMessages(const std::string& directory, const Compression compression) const;
 
 
-    /** \brief tries to load all messages in the given directory into the database
+    /** \brief Tries to load all messages in the given directory into the database.
      *
      * \param directory the directory from which the messages shall be loaded
      * \param readPMs   will hold the number of PMs that were read from the file
      * \param newPMs    will hold the number of new PMs that were stored in the DB
-     * \param isCompressed  Set this to true to indicate that the directory contains only zlib-compressed PMs.
+     * \param compression  The type of (de-)compression to use when loading the
+     *                     PMs from the directory. Currently, zlib or none are
+     *                     supported.
      * \return Returns true in case of success, or false otherwise.
      */
-    bool loadMessages(const std::string& directory, uint32_t& readPMs, uint32_t& newPMs, const bool isCompressed);
+    bool loadMessages(const std::string& directory, uint32_t& readPMs, uint32_t& newPMs, const Compression compression);
 
 
-    /** \brief creates index files (HTML) for all message folders
+    /** \brief Creates index files (HTML) for all message folders.
      *
      * \param directory   path to the directory where the files are saved
      * \param index       template for index file
@@ -138,11 +139,11 @@ class MessageDatabase
     std::map<md_date, std::vector<md_date> > getTextSubsets() const;
 
 
-    /** \brief removes all messages from the database
+    /** \brief Removes all messages from the database.
      */
     void clear();
   private:
-    /** \brief processes a <folder> XML node
+    /** \brief Processes a <folder> XML node.
      *
      * \param node    the XML node
      * \param readPMs will hold the number of PMs that were read from the node
@@ -154,7 +155,7 @@ class MessageDatabase
     bool processFolderNode(const XMLNode& node, uint32_t& readPMs, uint32_t& newPMs, FolderMap& fm);
 
 
-    /** \brief processes a <privatemessage> XML node
+    /** \brief Processes a <privatemessage> XML node.
      *
      * \param node    the XML node
      * \param readPMs will hold the number of PMs that were read from the node
@@ -167,6 +168,6 @@ class MessageDatabase
     bool processPrivateMessageNode(const XMLNode& node, uint32_t& readPMs, uint32_t& newPMs, const std::string& folder, FolderMap& fm);
 
     std::map<SHA256::MessageDigest, PrivateMessage> m_Messages; /**< map that holds the messages */
-};//class
+}; // class
 
 #endif // MESSAGEDATABASE_HPP

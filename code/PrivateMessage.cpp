@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2012, 2014, 2015, 2016  Dirk Stolle
+    Copyright (C) 2012, 2014, 2015, 2016, 2025  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -63,7 +63,7 @@ void PrivateMessage::normalise()
     message.replace(pos, 2, "\n");
     m_NeedsHashUpdate = true;
     pos = message.find("\r\n", pos);
-  }//while
+  }
 }
 
 const SHA256::MessageDigest& PrivateMessage::getHash()
@@ -126,25 +126,25 @@ std::string::size_type PrivateMessage::getSaveSize() const
 
 bool PrivateMessage::saveToStream(std::ostream& outputStream) const
 {
-  //write datestamp
+  // write datestamp
   outputStream.write(datestamp.c_str(), datestamp.length() + 1);
-  //write title
+  // write title
   outputStream.write(title.c_str(), title.length() + 1);
-  //write fromUser
+  // write fromUser
   outputStream.write(fromUser.c_str(), fromUser.length() + 1);
-  //write fromUserID
+  // write fromUserID
   const std::string uid_string = uintToString(fromUserID);
   outputStream.write(uid_string.c_str(), uid_string.length() + 1);
-  //write toUser
+  // write toUser
   outputStream.write(toUser.c_str(), toUser.length() + 1);
-  //write message text
+  // write message text
   outputStream.write(message.c_str(), message.length() + 1);
   return outputStream.good();
 }
 
-bool PrivateMessage::saveToFile(const std::string& fileName, const bool compressed) const
+bool PrivateMessage::saveToFile(const std::string& fileName, const Compression compression) const
 {
-  if (!compressed)
+  if (compression == Compression::none)
   {
     std::ofstream output;
     output.open(fileName.c_str(), std::ios_base::out | std::ios_base::binary);
@@ -155,17 +155,17 @@ bool PrivateMessage::saveToFile(const std::string& fileName, const bool compress
     const bool result = saveToStream(output);
     output.close();
     return result;
-  } //if not compressed
+  } // if not compressed
   else
   {
     #ifdef NO_PM_COMPRESSION
     #ifdef DEBUG
-    std::cout << "Error while saving compressed private message: compression is disabled for this build!\n";
+    std::cout << "Error while saving compressed private message: Compression is disabled for this build!\n";
     #endif
     return false;
     #else
     const std::string::size_type bufLen = getSaveSize();
-    uint8_t * buffer = NULL;
+    uint8_t * buffer = nullptr;
     try
     {
       buffer = new uint8_t[bufLen];
@@ -175,22 +175,24 @@ bool PrivateMessage::saveToFile(const std::string& fileName, const bool compress
       #ifdef DEBUG
       std::cout << "Error while saving private message: could not allocate buffer for compression!\n";
       #endif
-      if (buffer != NULL)
+      if (buffer != nullptr)
+      {
         delete [] buffer;
+      }
       return false;
-    } //catch
+    }
 
     libstriezel::OutBufferStream bufferStream(reinterpret_cast<char*>(buffer), bufLen);
     const bool result = saveToStream(bufferStream);
     if (!result)
     {
       #ifdef DEBUG
-      std::cout << "Error while saving private message: could not write data to buffer stream!\n";
+      std::cerr << "Error while saving private message: Could not write data to buffer stream!\n";
       #endif
       delete[] buffer;
-      buffer = NULL;
+      buffer = nullptr;
       return false;
-    } //if
+    }
 
     uint32_t compSize = 0;
     if (bufLen > std::numeric_limits<uint32_t>::max())
@@ -202,32 +204,38 @@ bool PrivateMessage::saveToFile(const std::string& fileName, const bool compress
     if (!libstriezel::zlib::compress(buffer, bufLen, compressedData, compSize, usedSize, 9))
     {
       #ifdef DEBUG
-      std::cout << "Error while saving compressed message: Compression via zlib failed!\n";
+      std::cerr << "Error while saving compressed message: Compression via zlib failed!\n";
       #endif
-      delete[] buffer; buffer = NULL;
-      delete[] compressedData; compressedData = NULL;
+      delete[] buffer;
+      buffer = nullptr;
+      delete[] compressedData;
+      compressedData = nullptr;
       return false;
     }
     std::ofstream output;
     output.open(fileName.c_str(), std::ios_base::out | std::ios_base::binary);
     if (!output)
     {
-      delete[] buffer; buffer = NULL;
-      delete[] compressedData; compressedData = NULL;
+      delete[] buffer;
+      buffer = nullptr;
+      delete[] compressedData;
+      compressedData = nullptr;
       return false;
     }
-    //Write original length value, so we can use it to allocate proper buffer size for decompression
+    // Write original length value, so we can use it to allocate proper buffer size for decompression.
     const uint32_t origLen = bufLen;
     output.write(reinterpret_cast<const char*>(&origLen), sizeof(uint32_t));
     //write compressed data
     output.write(reinterpret_cast<const char*>(compressedData), usedSize);
     const bool success = output.good();
     output.close();
-    delete[] buffer; buffer = NULL;
-    delete[] compressedData; compressedData = NULL;
+    delete[] buffer;
+    buffer = nullptr;
+    delete[] compressedData;
+    compressedData = nullptr;
     return success;
     #endif // end of NO_PM_COMPRESSION is not defined
-  } //else (i.e. shall save compressed PM data)
+  } // else (i.e. shall save compressed PM data)
 }
 
 bool PrivateMessage::loadFromStream(std::istream& inputStream)
@@ -242,23 +250,23 @@ bool PrivateMessage::loadFromStream(std::istream& inputStream)
     #endif
     return false;
   }
-  //We do not want PMs larger than 1 MB, to avoid excessive memory consumption.
-  if (len>1024*1024)
+  // We do not want PMs larger than 1 MB, to avoid excessive memory consumption.
+  if (len > 1024 * 1024)
   {
     #ifdef DEBUG
-    std::cout << "Error while reading private message: unexpected file size!\n";
+    std::cerr << "Error while reading private message: Unexpected large file size!\n";
     #endif
     return false;
   }
-  //assume worst case for buffer size: all file content should fit into it
-  char * buffer = new char[len+1];
+  // assume worst case for buffer size: all file content should fit into it
+  char * buffer = new char[len + 1];
 
-  //read datestamp
+  // read datestamp
   inputStream.getline(buffer, len, '\0');
   if (!inputStream.good())
   {
     #ifdef DEBUG
-    std::cout << "Error while reading private message's datestamp part!\n";
+    std::cerr << "Error while reading private message's datestamp part!\n";
     #endif
     delete[] buffer;
     return false;
@@ -267,12 +275,12 @@ bool PrivateMessage::loadFromStream(std::istream& inputStream)
   datestamp = std::string(buffer);
   m_NeedsHashUpdate = true;
 
-  //read title
+  // read title
   inputStream.getline(buffer, len, '\0');
   if (!inputStream.good())
   {
     #ifdef DEBUG
-    std::cout << "Error while reading private message's title part!\n";
+    std::cerr << "Error while reading private message's title part!\n";
     #endif
     delete[] buffer;
     return false;
@@ -280,12 +288,12 @@ bool PrivateMessage::loadFromStream(std::istream& inputStream)
   buffer[inputStream.gcount()] = '\0';
   title = std::string(buffer);
 
-  //read fromUser
+  // read fromUser
   inputStream.getline(buffer, len, '\0');
   if (!inputStream.good())
   {
     #ifdef DEBUG
-    std::cout << "Error while reading private message's sender part!\n";
+    std::cerr << "Error while reading private message's sender part!\n";
     #endif
     delete[] buffer;
     return false;
@@ -293,12 +301,12 @@ bool PrivateMessage::loadFromStream(std::istream& inputStream)
   buffer[inputStream.gcount()] = '\0';
   fromUser = std::string(buffer);
 
-  //read fromUserID
+  // read fromUserID
   inputStream.getline(buffer, len, '\0');
   if (!inputStream.good())
   {
     #ifdef DEBUG
-    std::cout << "Error while reading private message's user ID!\n";
+    std::cerr << "Error while reading private message's user ID!\n";
     #endif
     delete[] buffer;
     return false;
@@ -308,18 +316,18 @@ bool PrivateMessage::loadFromStream(std::istream& inputStream)
   if (!(std::stringstream (tempStr) >> fromUserID))
   {
     #ifdef DEBUG
-    std::cout << "Error while converting private message's user ID string to integer!\n";
+    std::cerr << "Error while converting private message's user ID string to integer!\n";
     #endif
     delete[] buffer;
     return false;
   }
 
-  //read toUser
+  // read toUser
   inputStream.getline(buffer, len, '\0');
   if (!inputStream.good())
   {
     #ifdef DEBUG
-    std::cout << "Error while reading private message's receiver!\n";
+    std::cerr << "Error while reading private message's receiver!\n";
     #endif
     delete[] buffer;
     return false;
@@ -327,12 +335,12 @@ bool PrivateMessage::loadFromStream(std::istream& inputStream)
   buffer[inputStream.gcount()] = '\0';
   toUser = std::string(buffer);
 
-  //read message text
+  // read message text
   inputStream.getline(buffer, len, '\0');
   if (!inputStream.good())
   {
     #ifdef DEBUG
-    std::cout << "Error while reading private message's text!\n";
+    std::cerr << "Error while reading private message's text!\n";
     #endif
     delete[] buffer;
     return false;
@@ -340,14 +348,15 @@ bool PrivateMessage::loadFromStream(std::istream& inputStream)
   buffer[inputStream.gcount()] = '\0';
   message = std::string(buffer);
   m_NeedsHashUpdate = true;
-  delete[] buffer; //free previously allocated buffer
+  // free previously allocated buffer
+  delete[] buffer;
 
   return true;
 }
 
-bool PrivateMessage::loadFromFile(const std::string& fileName, const bool isCompressed)
+bool PrivateMessage::loadFromFile(const std::string& fileName, const Compression compression)
 {
-  if (isCompressed)
+  if (compression == Compression::zlib)
   {
     #ifdef NO_PM_COMPRESSION
     #ifdef DEBUG
@@ -364,7 +373,7 @@ bool PrivateMessage::loadFromFile(const std::string& fileName, const bool isComp
 
     uint32_t decompressedSize = 0;
     input.read(reinterpret_cast<char*>(&decompressedSize), sizeof(uint32_t));
-    if (!input.good() or (input.gcount() != sizeof(uint32_t)))
+    if (!input.good() || (input.gcount() != sizeof(uint32_t)))
     {
       input.close();
       #ifdef DEBUG
@@ -377,46 +386,46 @@ bool PrivateMessage::loadFromFile(const std::string& fileName, const bool isComp
        Size should not be zero (empty buffer is useless), and it should not be
        more than 1 MB, which is more than enough for a PM.
     */
-    if ((decompressedSize == 0) or (decompressedSize > 1024*1024))
+    if ((decompressedSize == 0) || (decompressedSize > 1024*1024))
     {
       input.close();
       #ifdef DEBUG
-      std::cout << "Error while reading private message: Encountered invalid decompression size value of "
+      std::cerr << "Error while reading private message: Encountered invalid decompression size value of "
                 << decompressedSize << " bytes! Size should be in [1;" << 1024*1024 << "].\n";
       #endif
       return false;
     }
 
-    //get total length of file
+    // get total length of file
     input.seekg(0, std::ios_base::end);
     const std::streamsize len = input.tellg();
-    //reset stream pointer to fifth byte (four have already been read)
+    // reset stream pointer to fifth byte (four have already been read)
     input.seekg(sizeof(uint32_t), std::ios_base::beg);
     if (!input.good())
     {
       input.close();
       #ifdef DEBUG
-      std::cout << "Error while reading private message: seek operation(s) failed!\n";
+      std::cerr << "Error while reading private message: Seek operation(s) failed!\n";
       #endif
       return false;
     }
 
     const std::streamsize compressedBufferSize = len - 4;
-    if ((compressedBufferSize > 1024*1024) or (compressedBufferSize <= 0))
+    if ((compressedBufferSize > 1024*1024) || (compressedBufferSize <= 0))
     {
       input.close();
       #ifdef DEBUG
-      std::cout << "Error while reading private message: Encountered invalid compression buffer size value of "
-                << compressedBufferSize << " bytes! Size should be in [1;" << 1024*1024 << "].\n";
+      std::cerr << "Error while reading private message: Encountered invalid compression buffer size value of "
+                << compressedBufferSize << " bytes! Size should be in [1;" << 1024 * 1024 << "].\n";
       #endif
       return false;
     }
 
-    //allocate buffer for compressed data
+    // allocate buffer for compressed data
     uint8_t * compressedBuffer = new uint8_t[compressedBufferSize];
-    //read all data into buffer
+    // read all data into buffer
     input.read(reinterpret_cast<char*> (compressedBuffer), compressedBufferSize);
-    if (!input.good() or (input.gcount() != compressedBufferSize))
+    if (!input.good() || (input.gcount() != compressedBufferSize))
     {
       input.close();
       delete[] compressedBuffer;
@@ -425,13 +434,13 @@ bool PrivateMessage::loadFromFile(const std::string& fileName, const bool isComp
       #endif
       return false;
     }
-    //We can close the input stream now, because all data was read from the stream.
+    // We can close the input stream now, because all data was read from the stream.
     input.close();
 
-    //allocate buffer for decompressed data
+    // allocate buffer for decompressed data
     uint8_t * decompressedBuffer = new uint8_t[decompressedSize];
 
-    //decompress all the stuff
+    // decompress all the stuff
     if (!libstriezel::zlib::decompress(compressedBuffer, compressedBufferSize, decompressedBuffer, decompressedSize))
     {
       delete[] compressedBuffer;
@@ -440,18 +449,18 @@ bool PrivateMessage::loadFromFile(const std::string& fileName, const bool isComp
       std::cout << "Error while reading private message: Decompression failed!\n";
       #endif
       return false;
-    } //if decompress failed
+    } // if zlib decompression failed
 
-    //Compression succeeded, we can delete compressed buffer.
+    // Compression succeeded, we can delete compressed buffer.
     delete[] compressedBuffer;
-    compressedBuffer = NULL;
+    compressedBuffer = nullptr;
 
-    //create buffer stream
+    // create buffer stream
     libstriezel::InBufferStream bufferStream(reinterpret_cast<const char*>(decompressedBuffer), decompressedSize);
     const bool success = loadFromStream(bufferStream);
-    bufferStream.buffer(NULL, 0);
+    bufferStream.buffer(nullptr, 0);
     delete[] decompressedBuffer;
-    decompressedBuffer = NULL;
+    decompressedBuffer = nullptr;
 
     return success;
     #endif // NO_PM_COMPRESSION is not defined
@@ -467,7 +476,7 @@ bool PrivateMessage::loadFromFile(const std::string& fileName, const bool isComp
     const bool success = loadFromStream(input);
     input.close();
     return success;
-  } //else (i.e. uncompressed)
+  } // else (i.e. uncompressed)
 }
 
 bool PrivateMessage::operator==(const PrivateMessage& other) const
@@ -479,7 +488,7 @@ bool PrivateMessage::operator==(const PrivateMessage& other) const
 
 bool PrivateMessage::operator!=(const PrivateMessage& other) const
 {
-  return ((datestamp != other.datestamp) or (title != other.title)
-      or (fromUser != other.fromUser) or (fromUserID != other.fromUserID)
-      or (toUser != other.toUser) or (message != other.message));
+  return ((datestamp != other.datestamp) || (title != other.title)
+      || (fromUser != other.fromUser) || (fromUserID != other.fromUserID)
+      || (toUser != other.toUser) || (message != other.message));
 }

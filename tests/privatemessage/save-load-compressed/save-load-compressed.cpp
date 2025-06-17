@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database test suite.
-    Copyright (C) 2015, 2016  Dirk Stolle
+    Copyright (C) 2015, 2016, 2025  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -44,15 +44,15 @@ int main()
                               +"Stet clita kasd gubergren,\n"
                               +"no sea takimata sanctus est Lorem ipsum dolor sit amet.");
 
-  //get temporary file name for saving message
+  // get temporary file name for saving message
   std::string tempName("");
   if (!libstriezel::filesystem::file::createTemp(tempName))
   {
     std::cout << "Error: Failed to create temporary file!\n";
     return 1;
   }
-  //save message (uncompressed)
-  if (!pmOne.saveToFile(tempName, true))
+  // save message (compressed)
+  if (!pmOne.saveToFile(tempName, Compression::zlib))
   {
     std::cout << "Error: Could not save PM with compression to " << tempName << "!\n";
     if (!libstriezel::filesystem::file::remove(tempName))
@@ -63,9 +63,9 @@ int main()
     return 1;
   }
 
-  //second PM instance for loading the file (uncompressed)
+  // second PM instance for loading the file (compressed)
   PrivateMessage pmTwo;
-  if (!pmTwo.loadFromFile(tempName, true))
+  if (!pmTwo.loadFromFile(tempName, Compression::zlib))
   {
     std::cout << "Error: Could not load compressed PM from " << tempName << "!\n";
     if (!libstriezel::filesystem::file::remove(tempName))
@@ -76,17 +76,17 @@ int main()
     return 1;
   }
 
-  //remove temporary file, no  longer needed
+  // remove temporary file, no longer needed
   if (!libstriezel::filesystem::file::remove(tempName))
   {
     std::cout << "Hint: The temporary file " << tempName
               << "could not be removed.\n";
   }
 
-  //check for inequalities
+  // check for inequalities
   if (pmTwo != pmOne)
   {
-    std::cout << "Error: The loaded PM is not equal to the saved PM!\n";
+    std::cerr << "Error: The loaded PM is not equal to the saved PM!\n";
     return 1;
   }
   // ...and use equality operator, too!
@@ -96,21 +96,21 @@ int main()
   }
   else
   {
-    std::cout << "Error: The loaded PM is not equal to the saved PM!\n";
+    std::cerr << "Error: The loaded PM is not equal to the saved PM!\n";
     return 1;
   }
-  //just to be on the safe side, check hashes, too
+  // just to be on the safe side, check hashes, too
   try
   {
     if (pmTwo.getHash() != pmOne.getHash())
     {
-      std::cout << "Error: The loaded PM's hash is not equal to the saved PM's hash!\n";
+      std::cerr << "Error: The loaded PM's hash is not equal to the saved PM's hash!\n";
       return 1;
     }
   }
   catch (...)
   {
-    std::cout << "Error: Caught an exception while calculating SHA-256 hashes!\n";
+    std::cerr << "Error: Caught an exception while calculating SHA-256 hashes!\n";
     return 1;
   }
 

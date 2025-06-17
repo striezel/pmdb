@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database test suite.
-    Copyright (C) 2015  Dirk Stolle
+    Copyright (C) 2015, 2025  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -32,9 +32,9 @@
 int main(int argc, char **argv)
 {
   std::string tempDir;
-  if ((argc==2) and (argv!=NULL))
+  if ((argc == 2) && (argv != nullptr))
   {
-    if (argv[1]!=NULL)
+    if (argv[1] != nullptr)
     {
       tempDir = std::string(argv[1]);
     }//parameter exists
@@ -53,7 +53,7 @@ int main(int argc, char **argv)
 
   MessageDatabase mdb;
 
-  //some random content
+  // some random content
   PrivateMessage pm;
   pm.setDatestamp("2007-06-14 12:34");
   pm.setTitle("This is the title");
@@ -62,51 +62,51 @@ int main(int argc, char **argv)
   pm.setToUser("Poseidon");
   pm.setMessage("This is a message.");
 
-  //add some PMs to the database
-  unsigned int i;
-  // limit is the number of different PMs in the database
+  // Add some PMs to the database.
+  // limit is the number of different PMs in the database.
   const unsigned int limit = 2000;
   try
   {
-    for (i=1; i <= limit; ++i)
+    for (unsigned int i = 1; i <= limit; ++i)
     {
-      //change user ID to get a "different" message
+      // change user ID to get a "different" message
       pm.setFromUserID(i);
-      //database should accept message
+      // database should accept message
       if (!mdb.addMessage(pm))
       {
         std::cout << "Error: Could not add message with user ID " << i << " to DB!\n";
         return 1;
       }
     } //for
-  } //try
+  }
   catch (...)
   {
-    std::cout << "Error: Caught exception while trying to add messages!\n";
+    std::cerr << "Error: Caught exception while trying to add messages!\n";
     return 1;
-  } //catch
+  }
   std::cout << "Test info: Added " << limit << " messages successfully!\n";
 
 
-  if (!mdb.saveMessages(tempDir, true))
+  if (!mdb.saveMessages(tempDir, Compression::zlib))
   {
-    std::cout << "Error: Could not save compressed messages to \"" << tempDir << "\"!\n";
+    std::cerr << "Error: Could not save compressed messages to \"" << tempDir << "\"!\n";
     return 1;
   }
-  uint32_t readMessages = 0, newMessages = 0;
+  uint32_t readMessages = 0;
+  uint32_t newMessages = 0;
   try
   {
-    if (!mdb.loadMessages(tempDir, readMessages, newMessages, true))
+    if (!mdb.loadMessages(tempDir, readMessages, newMessages, Compression::zlib))
     {
       std::cout << "Error: Could not load compressed messages from \"" << tempDir << "\"!\n";
       return 1;
-    } //if
-  }//try
+    }
+  }
   catch (...)
   {
-    std::cout << "Error: Caught exception while trying to load messages!\n";
+    std::cerr << "Error: Caught exception while trying to load messages!\n";
     return 1;
-  } //catch
+  }
   if ((readMessages != limit) || (newMessages != 0))
   {
     std::cout << "Error: Unexpected message count!\n"
@@ -115,21 +115,21 @@ int main(int argc, char **argv)
               << newMessages << ").\n";
     return 1;
   }
-  //now clear and do the same again
+  // now clear and do the same again
   mdb.clear();
   try
   {
-    if (!mdb.loadMessages(tempDir, readMessages, newMessages, true))
+    if (!mdb.loadMessages(tempDir, readMessages, newMessages, Compression::zlib))
     {
-      std::cout << "Error: Could not load compressed messages from \"" << tempDir << "\" a second time!\n";
+      std::cerr << "Error: Could not load compressed messages from \"" << tempDir << "\" a second time!\n";
       return 1;
-    } //if
-  }//try
+    }
+  }
   catch (...)
   {
-    std::cout << "Error: Caught exception while trying to load compressed messages a second time!\n";
+    std::cerr << "Error: Caught exception while trying to load compressed messages a second time!\n";
     return 1;
-  } //catch
+  }
   if ((readMessages != limit) || (newMessages != limit))
   {
     std::cout << "Error: Unexpected message count!\n"

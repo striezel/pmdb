@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2014  Dirk Stolle
+    Copyright (C) 2014, 2025  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -20,26 +20,30 @@
 
 #include "FilterUser.hpp"
 
-FilterUser::FilterUser(const std::string& username, const bool isSender, const bool onlyFullName)
+FilterUser::FilterUser(const std::string& username, const UserType type, const Match match)
 : user(username),
-  sender(isSender),
-  fullName(onlyFullName)
+  type_of_user(type),
+  match_kind(match)
 { }
 
 bool FilterUser::match(const PrivateMessage& pm) const
 {
-  if (fullName)
+  if (match_kind == Match::FullName)
   {
-    if (sender)
-      //compare with name of person who sent the PM
+    if (type_of_user == UserType::Sender)
+    {
+      // compare with name of person who sent the PM
       return pm.getFromUser() == user;
-    //compare with name of recipient
+    }
+    // compare with name of recipient
     return pm.getToUser() == user;
-  }//if
-  //find partial matches
-  if (sender)
-    //search in name of person who sent the PM
+  }
+  // find partial matches
+  if (type_of_user == UserType::Sender)
+  {
+    // search in name of person who sent the PM
     return pm.getFromUser().find(user) != std::string::npos;
-  //search in name of recipient
+  }
+  // search in name of recipient
   return pm.getToUser().find(user) != std::string::npos;
 }

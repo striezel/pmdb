@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2014  Dirk Stolle
+    Copyright (C) 2014, 2025  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -27,19 +27,15 @@
 class Filter
 {
   public:
-      ///constructor
-      Filter() {}
-
-      /// destructor
-      virtual ~Filter() {}
+      virtual ~Filter() = default;
 
 
-      /** \brief checks, if a given PM matches the filter criterion
+      /** \brief Checks, if a given PM matches the filter criterion.
        *
-       * \param pm reference to the private message
+       * \param pm  reference to the private message
        * \return Returns true, if criterion is fulfilled. Returns false otherwise.
        */
       virtual bool match(const PrivateMessage& pm) const = 0;
-}; //class
+}; // class
 
 #endif // FILTER_HPP

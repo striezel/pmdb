@@ -335,7 +335,7 @@ int main(int argc, char **argv)
           if ((i + 1 < argc) && (argv[i+1] != nullptr))
           {
             const std::string user = std::string(argv[i+1]);
-            const FilterUser f(user, true, true);
+            const FilterUser f(user, UserType::Sender, Match::FullName);
             filters.push_back(f);
             ++i; //skip next parameter, because it's used as user name already
             std::cout << "Added PMs from user \"" << user << "\" to filter criteria.\n";
@@ -352,7 +352,7 @@ int main(int argc, char **argv)
           if ((i + 1 < argc) && (argv[i+1] != nullptr))
           {
             const std::string user = std::string(argv[i+1]);
-            const FilterUser f(user, false, true);
+            const FilterUser f(user, UserType::Recipient, Match::FullName);
             filters.push_back(f);
             ++i; //skip next parameter, because it's used as user name already
             std::cout << "Added PMs to user \"" << user << "\" to filter criteria.\n";

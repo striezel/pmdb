@@ -28,6 +28,9 @@
 			<Add option="-std=c++17" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Linker>
+			<Add library="z" />
+		</Linker>
 		<Unit filename="../../code/Config.cpp" />
 		<Unit filename="../../code/Config.hpp" />
 		<Unit filename="../../code/ConsoleColours.cpp" />
@@ -36,6 +39,10 @@
 		<Unit filename="../../code/FolderMap.hpp" />
 		<Unit filename="../../code/MsgTemplate.cpp" />
 		<Unit filename="../../code/MsgTemplate.hpp" />
+		<Unit filename="../../code/PMSource.cpp" />
+		<Unit filename="../../code/PMSource.hpp" />
+		<Unit filename="../../code/PrivateMessage.cpp" />
+		<Unit filename="../../code/PrivateMessage.hpp" />
 		<Unit filename="../../code/bbcode/AdvancedTemplateBBCode.cpp" />
 		<Unit filename="../../code/bbcode/AdvancedTemplateBBCode.hpp" />
 		<Unit filename="../../code/bbcode/AdvancedTplAmpTransformBBCode.hpp" />
@@ -55,12 +62,17 @@
 		<Unit filename="../../code/bbcode/Smilie.hpp" />
 		<Unit filename="../../code/bbcode/TableBBCode.cpp" />
 		<Unit filename="../../code/bbcode/TableBBCode.hpp" />
+		<Unit filename="../../code/filters/Filter.hpp" />
+		<Unit filename="../../code/filters/FilterUser.cpp" />
+		<Unit filename="../../code/filters/FilterUser.hpp" />
 		<Unit filename="../../libstriezel/common/StringUtils.cpp" />
 		<Unit filename="../../libstriezel/common/StringUtils.hpp" />
 		<Unit filename="../../libstriezel/hash/sha256/MessageSource.cpp" />
 		<Unit filename="../../libstriezel/hash/sha256/MessageSource.hpp" />
 		<Unit filename="../../libstriezel/hash/sha256/sha256.cpp" />
 		<Unit filename="../../libstriezel/hash/sha256/sha256.hpp" />
+		<Unit filename="../../libstriezel/zlib/CompressionFunctions.cpp" />
+		<Unit filename="../../libstriezel/zlib/CompressionFunctions.hpp" />
 		<Unit filename="../locate_catch.hpp" />
 		<Unit filename="Config.cpp" />
 		<Unit filename="FolderMap.cpp" />
@@ -74,6 +86,7 @@
 		<Unit filename="bbcode/SimpleTplAmpTransformBBCode.cpp" />
 		<Unit filename="bbcode/Smilie.cpp" />
 		<Unit filename="bbcode/TableBBCode.cpp" />
+		<Unit filename="filter/FilterUser.cpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="names_to_controlsequences.cpp" />
 		<Extensions>

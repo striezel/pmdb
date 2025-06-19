@@ -8,6 +8,8 @@ set(component_tests_sources
     ../../code/ConsoleColours.cpp
     ../../code/FolderMap.cpp
     ../../code/MsgTemplate.cpp
+    ../../code/PMSource.cpp
+    ../../code/PrivateMessage.cpp
     ../../code/bbcode/AdvancedTemplateBBCode.cpp
     ../../code/bbcode/CustomizedSimpleBBCode.cpp
     ../../code/bbcode/HorizontalRuleBBCode.cpp
@@ -16,9 +18,11 @@ set(component_tests_sources
     ../../code/bbcode/SimpleTemplateBBCode.cpp
     ../../code/bbcode/Smilie.cpp
     ../../code/bbcode/TableBBCode.cpp
+    ../../code/filters/FilterUser.cpp
     ../../libstriezel/common/StringUtils.cpp
     ../../libstriezel/hash/sha256/MessageSource.cpp
     ../../libstriezel/hash/sha256/sha256.cpp
+    ../../libstriezel/zlib/CompressionFunctions.cpp
     Config.cpp
     FolderMap.cpp
     bbcode/AdvancedTemplateBBCode.cpp
@@ -31,6 +35,7 @@ set(component_tests_sources
     bbcode/SimpleTplAmpTransformBBCode.cpp
     bbcode/Smilie.cpp
     bbcode/TableBBCode.cpp
+    filter/FilterUser.cpp
     names_to_controlsequences.cpp
     main.cpp)
 
@@ -55,3 +60,18 @@ endif ()
 # --- add it as a test
 add_test(NAME component_testing
          COMMAND $<TARGET_FILE:component_tests>)
+
+# find zlib
+find_package (PkgConfig)
+pkg_search_module (ZLIB REQUIRED zlib)
+if (ZLIB_FOUND)
+  if (ENABLE_STATIC_LINKING)
+    include_directories(${ZLIB_STATIC_INCLUDE_DIRS})
+    target_link_libraries (component_tests ${ZLIB_STATIC_LIBRARIES})
+  else ()
+    include_directories(${ZLIB_INCLUDE_DIRS})
+    target_link_libraries (component_tests ${ZLIB_LIBRARIES})
+  endif ()
+else ()
+  message ( FATAL_ERROR "zlib was not found!" )
+endif (ZLIB_FOUND)

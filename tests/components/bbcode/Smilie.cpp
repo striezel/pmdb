@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database test suite.
-    Copyright (C) 2015, 2022  Dirk Stolle
+    Copyright (C) 2015, 2022, 2025  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -45,7 +45,7 @@ TEST_CASE("Smilie")
 
   SECTION("smilie with relative URL")
   {
-    Smilie happy_relative(":)", "happy.png", true);
+    Smilie happy_relative(":)", "happy.png", UrlType::Relative);
 
     // Populate map with data for tests.
     std::vector<TData> tests;
@@ -77,7 +77,7 @@ TEST_CASE("Smilie")
 
   SECTION("smilie with absolute URL")
   {
-    Smilie happy_absolute(":)", "happy.png", false);
+    Smilie happy_absolute(":)", "happy.png", UrlType::Absolute);
 
     // Populate map with data for tests.
     std::vector<TData> tests;

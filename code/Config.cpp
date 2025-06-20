@@ -138,7 +138,7 @@ bool Config::loadFromFile(const std::string& fileName)
           input.close();
           return false;
         }
-        smilies.push_back(Smilie(code, s_url, (name == "smilie_r")));
+        smilies.push_back(Smilie(code, s_url, (name == "smilie_r" ? UrlType::Relative : UrlType::Absolute)));
       } // smilie
       #endif
     }

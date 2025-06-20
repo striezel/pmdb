@@ -23,22 +23,28 @@
 
 #include <string>
 
-/** \brief represents a smilie code and its replacement image
+enum class UrlType: bool
+{
+  Absolute = false,
+  Relative = true
+};
+
+/** \brief Represents a smilie code and its replacement image.
  */
 struct Smilie
 {
   public:
-    /** \brief constructor
+    /** \brief Creates a new smilie code.
      *
-     * \param code       code for that smilie
+     * \param code       code for that smilie, e. g. ":)"
      * \param url        URL of the smilie image
-     * \param relative   set to true, if the URL is relative to the forum URL
+     * \param url_type   set to UrlType::Relative, if the URL is relative to the forum URL
      */
-    Smilie(const std::string& code, const std::string& url, const bool relative);
+    Smilie(const std::string& code, const std::string& url, const UrlType url_type);
 
 
-    /** \brief "applies" the smilie to the given text, i.e. transforms the smilie code
-     *         into its HTML representation
+    /** \brief "Applies" the smilie to the given text, i.e. transforms the smilie code
+     *         into its HTML representation.
      *
      * \param text       the message text that (may) contain the smilie code
      * \param forumURL   base URL of the forum
@@ -49,7 +55,7 @@ struct Smilie
   private:
     std::string m_Code;
     std::string m_URL;
-    bool m_Relative;
-};//struct
+    UrlType type_of_url;
+}; // struct
 
 #endif // SMILIE_HPP

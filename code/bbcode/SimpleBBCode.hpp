@@ -26,9 +26,9 @@
 
 
 /* struct SimpleBBCode:
-       handles "simple" BB codes, where the square brackets can be transformed
+       Handles "simple" BB codes, where the square brackets can be transformed
        to < or > to produce the proper HTML code, e.g. where
-       "[TAG]content[/TAG]" becomes "<tag>content</tag>"
+       "[TAG]content[/TAG]" becomes "<tag>content</tag>".
 */
 struct SimpleBBCode: public BBCode
 {
@@ -39,15 +39,13 @@ struct SimpleBBCode: public BBCode
      */
     SimpleBBCode(const std::string& code);
 
-    /** destructor */
-    virtual ~SimpleBBCode() {}
 
-    /** \brief "applies" the BB code to the given text, i.e. transforms the BB code
-     * into its HTML representation
+    /** \brief "Applies" the BB code to the given text, i.e. transforms the BB code
+     * into its (X)HTML representation.
      *
      * \param text - the message text that (may) contain the BB code
      */
     virtual void applyToText(std::string& text) const;
-};//struct SimpleBBCode
+}; // struct
 
 #endif // SIMPLEBBCODE_HPP

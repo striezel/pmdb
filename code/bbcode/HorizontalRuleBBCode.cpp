@@ -23,7 +23,8 @@
 
 HorizontalRuleBBCode::HorizontalRuleBBCode(const std::string& code, const HTMLStandard standard)
 : BBCode(code), m_standard(standard)
-{ }
+{
+}
 
 void HorizontalRuleBBCode::applyToText(std::string& text) const
 {

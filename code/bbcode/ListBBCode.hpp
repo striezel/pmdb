@@ -41,19 +41,15 @@ struct ListBBCode: public BBCode
     ListBBCode(const std::string& code, bool unordered=true);
 
 
-    /** destructor */
-    virtual ~ListBBCode() {}
-
-
-    /** \brief "applies" the BB code to the given text, i.e. transforms the BB code
-     * into its HTML representation
+    /** \brief "Applies" the BB code to the given text, i.e. transforms the BB code
+     * into its (X)HTML representation.
      *
      * \param text   the message text that (may) contain the BB code
      */
     virtual void applyToText(std::string& text) const;
 
 
-    /** returns true, if the code creates an unordered list */
+    /** Returns true, if the code creates an unordered list. */
     inline bool createsUnordered() const
     {
       return m_Unordered;
@@ -61,6 +57,6 @@ struct ListBBCode: public BBCode
   private:
     bool actualApply(std::string& text, const std::string::size_type offset) const;
     bool m_Unordered;
-};//struct
+}; // struct
 
 #endif // LISTBBCODE_HPP

@@ -24,21 +24,21 @@
 SimpleBBCode::SimpleBBCode(const std::string& code)
 : BBCode(toLowerString(code))
 {
-
 }
 
 void SimpleBBCode::applyToText(std::string& text) const
 {
-  const std::string code = "["+getName()+"]";
-  const std::string end_code = "[/"+getName()+"]";
+  const std::string code = "[" + getName() + "]";
+  const std::string end_code = "[/" + getName() + "]";
   std::string::size_type pos = find_ci(text, code);
   std::string::size_type end_pos = std::string::npos;
-  while (pos!=std::string::npos)
+  while (pos != std::string::npos)
   {
-    end_pos = find_ci(text, end_code, pos+1);
-    if (end_pos==std::string::npos) return;
-    text.replace(pos, code.length(), "<"+getName()+">");
-    text.replace(end_pos, end_code.length(), "</"+getName()+">");
+    end_pos = find_ci(text, end_code, pos + 1);
+    if (end_pos == std::string::npos)
+      return;
+    text.replace(pos, code.length(), "<" + getName() + ">");
+    text.replace(end_pos, end_code.length(), "</" + getName() + ">");
     pos = find_ci(text, code, pos);
-  }//while
+  }
 }

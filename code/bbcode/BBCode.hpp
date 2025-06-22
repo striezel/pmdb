@@ -28,7 +28,7 @@
 struct BBCode
 {
   public:
-    /** \brief constructor
+    /** \brief Creates a new BB code.
      *
      * \param code   "name" of the code, i.e. "b" for [B]bold text[/B]
      */
@@ -37,19 +37,18 @@ struct BBCode
     { }
 
 
-    /** destructor */
-    virtual ~BBCode() {}
+    virtual ~BBCode() = default;
 
 
-    /** \brief returns the code's "name"
+    /** \brief Gets the code's "name".
      */
     inline const std::string& getName() const
     {
       return m_Name;
     }
 
-    /** \brief "applies" the BB code to the given text, i.e. transforms the BB code
-     * into its HTML representation
+    /** \brief "Applies" the BB code to the given text, i.e. transforms the BB code
+     * into its (X)HTML representation.
      *
      * \param text   the message text that (may) contain the BB code
      */
@@ -64,6 +63,6 @@ struct BBCode
     #endif
   private:
     std::string m_Name;
-};//struct
+}; // struct
 
 #endif // BBCODE_HPP

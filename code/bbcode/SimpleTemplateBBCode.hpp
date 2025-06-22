@@ -27,7 +27,7 @@
 
 
 /** \brief SimpleTemplateBBCode:
-       struct for BB codes that use templates (class MsgTemplate) for the
+       Struct for BB codes that use templates (class MsgTemplate) for the
        proper replacement of BB code. However, this class will just handle
        "simple" BB codes of the form "[TAG]content[/TAG]" and NOT codes of the
        form "[TAG=value]content[/TAG]". See AdvancedTemplateBBCode for the
@@ -42,35 +42,31 @@ struct SimpleTemplateBBCode: public BBCode
      * \param tpl     the template that shall be used
      * \param inner   name of the template tag for the inner code
      */
-    SimpleTemplateBBCode(const std::string& code, const MsgTemplate& tpl, const std::string& inner="inner");
+    SimpleTemplateBBCode(const std::string& code, const MsgTemplate& tpl, const std::string& inner = "inner");
 
 
-    /** destructor */
-    virtual ~SimpleTemplateBBCode() {}
-
-
-    /** \brief "applies" the BB code to the given text, i.e. transforms the BB code
-     * into its HTML representation
+    /** \brief "Applies" the BB code to the given text, i.e. transforms the BB code
+     * into its (X)HTML representation.
      *
      * \param text - the message text that (may) contain the BB code
      */
     virtual void applyToText(std::string& text) const;
 
 
-    /** returns the current template */
+    /** Returns the current template. */
     inline const MsgTemplate& getTemplate() const
     {
       return m_Template;
     }
 
-    /** returns the name of the template tag for the inner code */
+    /** Returns the name of the template tag for the inner code. */
     inline const std::string& getInnerName() const
     {
       return m_InnerName;
     }
   protected:
-    /** \brief applies a transformation (if any) to the inner content of the BB code
-     * during translation
+    /** \brief Applies a transformation (if any) to the inner content of the BB code
+     * during translation.
      *
      * \param inner   the content
      */
@@ -81,6 +77,6 @@ struct SimpleTemplateBBCode: public BBCode
   private:
     MsgTemplate m_Template;
     std::string m_InnerName;
-};//struct
+}; // struct
 
 #endif // SIMPLETEMPLATEBBCODE_HPP

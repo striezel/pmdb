@@ -24,11 +24,13 @@
 
 MsgTemplate::MsgTemplate()
 : m_Tags(std::map<std::string, std::string>()), m_Template("")
-{ }
+{
+}
 
 MsgTemplate::MsgTemplate(const std::string& tplText)
 : m_Tags(std::map<std::string, std::string>()), m_Template(tplText)
-{ }
+{
+}
 
 bool MsgTemplate::loadFromFile(const std::string& fileName)
 {

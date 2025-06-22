@@ -24,7 +24,8 @@ FilterUser::FilterUser(const std::string& username, const UserType type, const M
 : user(username),
   type_of_user(type),
   match_kind(match)
-{ }
+{
+}
 
 bool FilterUser::match(const PrivateMessage& pm) const
 {

@@ -28,7 +28,7 @@
 struct TableBBCode: public BBCode
 {
   public:
-    //constants for default class names used in constructor
+    // constants for default class names used in constructor
     static const std::string DefaultTableClass;
     static const std::string DefaultRowClass;
     static const std::string DefaultCellClass;
@@ -51,20 +51,20 @@ struct TableBBCode: public BBCode
      * If useGridClasses is set to false, the next three parameters do not
      * have any effect on the generated HTML code.
      */
-    TableBBCode(const std::string& code, const bool useGridClasses=false,
-                const std::string& tableClass=DefaultTableClass, const std::string& rowClass=DefaultRowClass,
-                const std::string& cellClass=DefaultCellClass,
-                const unsigned int tableWidthMax=0);
+    TableBBCode(const std::string& code, const bool useGridClasses = false,
+                const std::string& tableClass = DefaultTableClass, const std::string& rowClass = DefaultRowClass,
+                const std::string& cellClass = DefaultCellClass,
+                const unsigned int tableWidthMax = 0);
 
-    /** \brief "applies" the BB code to the given text, i.e. transforms the BB code
-     *         into its HTML representation
+    /** \brief "Applies" the BB code to the given text, i.e. transforms the BB code
+     *         into its (X)HTML representation.
      *
      * \param text   the message text that (may) contain the BB code
      */
     virtual void applyToText(std::string& text) const;
 
 
-    ///aux. structure
+    /// aux. structure
     struct OpeningElem
     {
       std::string::size_type open_pos, open_end;
@@ -73,13 +73,13 @@ struct TableBBCode: public BBCode
       /** constructor */
       OpeningElem();
 
-      /** \brief returns true, if the structure contains valid positions
+      /** \brief Returns true, if the structure contains valid positions.
        */
       virtual inline bool isValid() const
       {
-        return ((open_pos!=std::string::npos) and (open_end!=std::string::npos));
+        return (open_pos != std::string::npos) && (open_end != std::string::npos);
       }
-    }; //struct
+    }; // struct
   private:
     bool m_UseClasses; /**< whether or not to use the tree classes below */
     std::string m_TableClass; /**< class for use in table tags */
@@ -93,7 +93,7 @@ struct TableBBCode: public BBCode
     enum TableElementType {tetTable, tetRow, tetCell};
 
 
-    /** \brief appends style or class attributes (HTML) to the text
+    /** \brief Appends style or class attributes (HTML) to the text.
      *
      * \param text  the text to which the attributes shall be appended
      * \param eleType  type of element
@@ -102,7 +102,7 @@ struct TableBBCode: public BBCode
     void appendGridAttributes(std::string& text, const TableElementType eleType) const;
 
 
-    /** \brief does the work that applyToText() is supposed to do in a recursive way
+    /** \brief Does the work that applyToText() is supposed to do in a recursive way.
      *
      * \param text  the text message that may contain the BB code
      * \param offset offset at which processing should start
@@ -112,21 +112,21 @@ struct TableBBCode: public BBCode
     bool actualApplyToText(std::string& text, const std::string::size_type offset) const;
 
 
-    ///another aux. structure, this time for a complete table element
+    /// another aux. structure, this time for a complete table element
     struct TableElem: public OpeningElem
     {
       std::string::size_type end_pos; /**< end position of the table element */
 
-      /** \brief returns true, if the structure contains valid positions
+      /** \brief Returns true, if the structure contains valid positions.
        */
       virtual inline bool isValid() const
       {
-        return ((open_pos!=std::string::npos) and (open_end!=std::string::npos) and (end_pos!=std::string::npos));
+        return ((open_pos != std::string::npos) && (open_end != std::string::npos) && (end_pos != std::string::npos));
       }
-    }; //struct
+    }; // struct
 
 
-    /** \brief gets the positions of the next opening element
+    /** \brief Gets the positions of the next opening element.
      *
      * \param text    the text that will be searched
      * \param offset  offset at which the search begins
@@ -135,7 +135,7 @@ struct TableBBCode: public BBCode
      */
     OpeningElem getNextOpeningElement(const std::string& text, const std::string::size_type offset, const std::string& tag) const;
 
-    /** \brief splits the string of bb code attributes into a dictionary
+    /** \brief Splits the string of BB code attributes into a dictionary.
      *
      * \param attr the string that contains the attributes, e.g. "align: center, width: 680, class: grid"
      * \return Returns a std::map where attribute name maps to attribute value.
@@ -144,7 +144,7 @@ struct TableBBCode: public BBCode
     static std::map<std::string, std::string> explodeAttributes(std::string attr);
 
 
-    /** \brief combines all given attributes to an HTML code string
+    /** \brief Combines all given attributes to an HTML code string.
      *
      * \param eleType  the type of the element
      * \param attrs    attributes of the element itself
@@ -158,12 +158,12 @@ struct TableBBCode: public BBCode
                                    const std::map<std::string, std::string>& grandparent_attrs  = std::map<std::string, std::string>()) const;
 
 
-    /** \brief returns true, if the passed attribute value contains an integer value
-     *         that passes the table width limit
+    /** \brief Returns true, if the passed attribute value contains an integer value
+     *         that passes the table width limit.
      *
      * \param attrValue   the attribute string (e.g. "650")
      */
     bool passesWidthLimit(const std::string& attrValue) const;
-}; //struct
+}; // struct
 
 #endif // BBCODE_TABLE_HPP

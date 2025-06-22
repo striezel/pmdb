@@ -26,7 +26,7 @@
 
 
 /** \brief CustomizedSimpleBBCode:
-       like SimpleBBCode, but with a custom replacement for opening and closing
+       Like SimpleBBCode, but with a custom replacement for opening and closing
        tags.
 */
 struct CustomizedSimpleBBCode: public BBCode
@@ -41,18 +41,14 @@ struct CustomizedSimpleBBCode: public BBCode
     CustomizedSimpleBBCode(const std::string& code, const std::string& before, const std::string& after);
 
 
-    /** destructor */
-    virtual ~CustomizedSimpleBBCode() {}
-
-
-    /** \brief "applies" the BB code to the given text, i.e. transforms the BB code
-     * into its HTML representation
+    /** \brief "Applies" the BB code to the given text, i.e. transforms the BB code
+     * into its (X)HTML representation.
      *
      * \param text   the message text that (may) contain the BB code
      */
     virtual void applyToText(std::string& text) const;
   private:
     std::string m_Before, m_After;
-};//struct
+}; // struct
 
 #endif // CUSTOMIZEDSIMPLEBBCODE_HPP

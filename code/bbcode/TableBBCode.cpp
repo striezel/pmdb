@@ -52,18 +52,20 @@ void TableBBCode::applyToText(std::string& text) const
 
 bool TableBBCode::actualApplyToText(std::string& text, const std::string::size_type offset) const
 {
-  const std::string end_code = "[/"+getName()+"]";
+  const std::string end_code = "[/" + getName() + "]";
   std::string::size_type end_pos = std::string::npos;
   OpeningElem elemOpener = getNextOpeningElement(text, offset, getName());
   while (elemOpener.isValid())
   {
     end_pos = find_ci(text, end_code, elemOpener.open_end);
-    if (end_pos==std::string::npos) return false;
+    if (end_pos == std::string::npos)
+      return false;
     OpeningElem innerOpener = getNextOpeningElement(text, elemOpener.open_end, getName());
-    while (innerOpener.isValid() and (innerOpener.open_pos<end_pos))
+    while (innerOpener.isValid() && (innerOpener.open_pos < end_pos))
     {
-      //we have an inner element, process it first
-      if (!actualApplyToText(text, innerOpener.open_pos)) return false;
+      // We have an inner element, process it first.
+      if (!actualApplyToText(text, innerOpener.open_pos))
+        return false;
       innerOpener = getNextOpeningElement(text, elemOpener.open_end, getName());
     }//inner while
 
@@ -71,47 +73,52 @@ bool TableBBCode::actualApplyToText(std::string& text, const std::string::size_t
     #ifdef DEBUG
     std::map<std::string, std::string>::const_iterator dbg_iter = elemOpener.attributes.begin();
     std::cout << "table attributes:\n";
-    while (dbg_iter!=elemOpener.attributes.end())
+    while (dbg_iter != elemOpener.attributes.end())
     {
-      std::cout << dbg_iter->first << " = " << dbg_iter->second <<"\n";
+      std::cout << dbg_iter->first << " = " << dbg_iter->second << "\n";
       ++dbg_iter;
     }//while
-    std::cout << "total: "<<elemOpener.attributes.size() <<"\n";
+    std::cout << "total: "<<elemOpener.attributes.size() << "\n";
     #endif
-    //update end position
+    // update end position
     end_pos = find_ci(text, end_code, elemOpener.open_end);
-    if (end_pos==std::string::npos) return false;
+    if (end_pos == std::string::npos)
+      return false;
     OpeningElem rowOpener = getNextOpeningElement(text, elemOpener.open_end, "tr");
-    if (!rowOpener.isValid() or (rowOpener.open_pos>=end_pos)) return false;
-    while (rowOpener.isValid() and (rowOpener.open_end<end_pos))
+    if (!rowOpener.isValid() || (rowOpener.open_pos >= end_pos))
+      return false;
+    while (rowOpener.isValid() && (rowOpener.open_end < end_pos))
     {
       std::string::size_type row_end = find_ci(text, "[/tr]", rowOpener.open_end);
-      if (row_end==std::string::npos) return false;
+      if (row_end == std::string::npos)
+        return false;
       OpeningElem cellOpener = getNextOpeningElement(text, rowOpener.open_end, "td");
-      if (!cellOpener.isValid() or (cellOpener.open_pos>row_end)) return false;
-      while (cellOpener.isValid() and (cellOpener.open_end<row_end))
+      if (!cellOpener.isValid() || (cellOpener.open_pos > row_end))
+        return false;
+      while (cellOpener.isValid() && (cellOpener.open_end < row_end))
       {
         std::string::size_type cell_end = find_ci(text, "[/td]", cellOpener.open_end);
-        if ((cell_end==std::string::npos) or (cell_end>=row_end)) return false;
-        //replace cell codes with HTML code
+        if ((cell_end == std::string::npos) || (cell_end >= row_end))
+          return false;
+        // replace cell codes with HTML code
         text.replace(cell_end, 5, "</td>");
-        text.replace(cellOpener.open_pos, cellOpener.open_end-cellOpener.open_pos+1, "<td"+attributesToString(tetCell, cellOpener.attributes, rowOpener.attributes, elemOpener.attributes)+">");
-        //update row end position
+        text.replace(cellOpener.open_pos, cellOpener.open_end - cellOpener.open_pos + 1, "<td" + attributesToString(tetCell, cellOpener.attributes, rowOpener.attributes, elemOpener.attributes) + ">");
+        // update row end position
         row_end = find_ci(text, "[/tr]", rowOpener.open_end);
-        //get next open cell position
-        cellOpener = getNextOpeningElement(text, cellOpener.open_pos+1, "td");
+        // get next open cell position
+        cellOpener = getNextOpeningElement(text, cellOpener.open_pos + 1, "td");
       }//while cell opener
       //replace row codes with HTML code
       text.replace(row_end, 5, "</tr>");
-      text.replace(rowOpener.open_pos, rowOpener.open_end-rowOpener.open_pos+1, "<tr"+attributesToString(tetRow, rowOpener.attributes, elemOpener.attributes)+">");
-      //update table end position
+      text.replace(rowOpener.open_pos, rowOpener.open_end - rowOpener.open_pos + 1, "<tr" + attributesToString(tetRow, rowOpener.attributes, elemOpener.attributes) + ">");
+      // update table end position
       end_pos = find_ci(text, end_code, elemOpener.open_end);
-      //get next open row position
-      rowOpener = getNextOpeningElement(text, rowOpener.open_pos+1, "tr");
+      // get next open row position
+      rowOpener = getNextOpeningElement(text, rowOpener.open_pos + 1, "tr");
     }//while row
     //replace "table" codes with HTML code
     text.replace(end_pos, end_code.length(), "</table>");
-    text.replace(elemOpener.open_pos, elemOpener.open_end-elemOpener.open_pos+1, "<table"+attributesToString(tetTable, elemOpener.attributes)+">");
+    text.replace(elemOpener.open_pos, elemOpener.open_end - elemOpener.open_pos + 1, "<table" + attributesToString(tetTable, elemOpener.attributes) + ">");
     //get next table
     elemOpener = getNextOpeningElement(text, elemOpener.open_pos, getName());
   }//while

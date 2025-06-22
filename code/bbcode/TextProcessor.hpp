@@ -30,16 +30,15 @@
 struct TextProcessor
 {
   public:
-    /** destructor */
-    virtual ~TextProcessor() {}
+    virtual ~TextProcessor() = default;
 
 
-    /** \brief processes the given text, i.e. performs transformations
+    /** \brief Processes the given text, i.e. performs transformations.
      *
      * \param text   the message text that should be processed
      */
     virtual void applyToText(std::string& text) const = 0;
-};//struct
+}; // struct
 
 
 /* struct ListNewlinePreProcessor:
@@ -76,75 +75,75 @@ struct TextProcessor
 struct ListNewlinePreProcessor: public TextProcessor
 {
   public:
-    /** \brief processes the given text, i.e. performs transformations
+    /** \brief Processes the given text, i.e. performs transformations.
      *
      * \param text   the message text that should be processed
      */
     virtual void applyToText(std::string& text) const
     {
       std::string::size_type pos = text.find("\n[*]");
-      while (pos!=std::string::npos)
+      while (pos != std::string::npos)
       {
         text.replace(pos, 1, "");
         pos = text.find("\n[*]", pos+2);
-      }//while
+      }
     }
-};//struct
+}; // struct
 
 
 /** \brief KillSpacesBeforeNewline:
-      removes spaces at the end of lines
+      Removes spaces at the end of lines.
 */
 struct KillSpacesBeforeNewline: public TextProcessor
 {
   public:
-    /** \brief processes the given text, i.e. performs transformations
+    /** \brief Processes the given text, i.e. performs transformations.
      *
      * \param text   the message text that should be processed
      */
     virtual void applyToText(std::string& text) const
     {
       std::string::size_type pos = text.find(" \n");
-      while (pos!=std::string::npos)
+      while (pos != std::string::npos)
       {
         text.replace(pos, 1, "");
-        pos = text.find(" \n", (pos==0) ? 0 : pos-1);
-      }//while
+        pos = text.find(" \n", (pos == 0) ? 0 : pos - 1);
+      }
 
       pos = text.find(" \r\n");
-      while (pos!=std::string::npos)
+      while (pos != std::string::npos)
       {
         text.replace(pos, 1, "");
-        pos = text.find(" \r\n", (pos==0) ? 0 : pos-1);
-      }//while
+        pos = text.find(" \r\n", (pos == 0) ? 0 : pos - 1);
+      }
     }
-};//struct
+}; // struct
 
 
 /** \brief ShortenDoubleSpaces:
-      replaces occurrences of two or more consecutive spaces by one single space
+      Replaces occurrences of two or more consecutive spaces by one single space.
 */
 struct ShortenDoubleSpaces: public TextProcessor
 {
   public:
-    /** \brief processes the given text, i.e. performs transformations
+    /** \brief Processes the given text, i.e. performs transformations.
      *
      * \param text   the message text that should be processed
      */
     virtual void applyToText(std::string& text) const
     {
       std::string::size_type pos = text.find("  ");
-      while (pos!=std::string::npos)
+      while (pos != std::string::npos)
       {
         text.replace(pos, 1, "");
-        pos = text.find("  ", (pos==0) ? 0 : pos-1);
-      }//while
+        pos = text.find("  ", (pos == 0) ? 0 : pos - 1);
+      }
     }
-};//struct
+}; // struct
 
 
 /** \brief TablePreprocessor:
-      removes occurrences of line feeds after table-related codes
+      Removes occurrences of line feeds after table-related codes.
 */
 struct TablePreprocessor: public TextProcessor
 {
@@ -159,26 +158,26 @@ struct TablePreprocessor: public TextProcessor
     { }
 
 
-    /** \brief processes the given text, i.e. performs transformations
+    /** \brief Processes the given text, i.e. performs transformations.
      *
      * \param text   the message text that should be processed
      */
     virtual void applyToText(std::string& text) const
     {
-      auxApply(text, "[/"+m_Row+"] ");
-      auxApply(text, "[/"+m_Row+"]\n");
-      auxApply(text, "["+m_Row+"] ");
-      auxApply(text, "["+m_Row+"]\n");
-      auxApply(text, "[/"+m_Cell+"] ");
-      auxApply(text, "[/"+m_Cell+"]\n");
+      auxApply(text, "[/" + m_Row + "] ");
+      auxApply(text, "[/" + m_Row + "]\n");
+      auxApply(text, "[" + m_Row + "] ");
+      auxApply(text, "[" + m_Row + "]\n");
+      auxApply(text, "[/" + m_Cell + "] ");
+      auxApply(text, "[/" + m_Cell + "]\n");
 
-      const std::string needle = "]\n["+m_Row;
+      const std::string needle = "]\n[" + m_Row;
       std::string::size_type pos = find_ci(text, needle);
-      while (pos!=std::string::npos)
+      while (pos != std::string::npos)
       {
         text.replace(pos+1, 1, "");
         pos = find_ci(text, needle, pos);
-      }//while
+      }
     }
   private:
     std::string m_Row, m_Cell;
@@ -187,11 +186,11 @@ struct TablePreprocessor: public TextProcessor
     inline void auxApply(std::string& text, const std::string& needle) const
     {
       std::string::size_type pos = find_ci(text, needle);
-      while (pos!=std::string::npos)
+      while (pos != std::string::npos)
       {
-        text.replace(pos+needle.length()-1, 1, "");
+        text.replace(pos + needle.length() - 1, 1, "");
         pos = find_ci(text, needle, pos);
-      }//while
+      }
     }
 };//struct
 

@@ -28,16 +28,17 @@ CustomizedSimpleBBCode::CustomizedSimpleBBCode(const std::string& code, const st
 
 void CustomizedSimpleBBCode::applyToText(std::string& text) const
 {
-  const std::string code = "["+getName()+"]";
-  const std::string end_code = "[/"+getName()+"]";
+  const std::string code = "[" + getName() + "]";
+  const std::string end_code = "[/" + getName() + "]";
   std::string::size_type pos = find_ci(text, code);
   std::string::size_type end_pos = std::string::npos;
-  while (pos!=std::string::npos)
+  while (pos != std::string::npos)
   {
-    end_pos = find_ci(text, end_code, pos+1);
-    if (end_pos==std::string::npos) return;
+    end_pos = find_ci(text, end_code, pos + 1);
+    if (end_pos == std::string::npos)
+      return;
     text.replace(end_pos, end_code.length(), m_After);
     text.replace(pos, code.length(), m_Before);
     pos = find_ci(text, code, pos);
-  }//while
+  }
 }

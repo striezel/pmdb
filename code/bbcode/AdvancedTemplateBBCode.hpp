@@ -24,7 +24,7 @@
 #include "SimpleTemplateBBCode.hpp"
 
 /** \brief AdvancedTemplateBBCode:
-       struct for BB codes that use templates (class MsgTemplate) for the
+       Struct for BB codes that use templates (class MsgTemplate) for the
        proper replacement of BB code. However, this class will just handle
        "advanced" BB codes of the form "[TAG=value]content[/TAG]" and NOT the
        simpler codes of the form "[TAG]content[/TAG]". See SimpleTemplateBBCode
@@ -40,22 +40,18 @@ struct AdvancedTemplateBBCode: public SimpleTemplateBBCode
      * \param inner   name of the template tag for the inner code
      * \param attr    name of the template tag for the attribute value
      */
-    AdvancedTemplateBBCode(const std::string& code, const MsgTemplate& tpl, const std::string& inner="inner", const std::string& attr="attribute");
+    AdvancedTemplateBBCode(const std::string& code, const MsgTemplate& tpl, const std::string& inner = "inner", const std::string& attr = "attribute");
 
 
-    /** destructor */
-    virtual ~AdvancedTemplateBBCode() {}
-
-
-    /** \brief "applies" the BB code to the given text, i.e. transforms the BB code
-     * into its HTML representation
+    /** \brief "Applies" the BB code to the given text, i.e. transforms the BB code
+     * into its (X)HTML representation.
      *
      * \param text   the message text that (may) contain the BB code
      */
     virtual void applyToText(std::string& text) const;
   protected:
-    /** \brief applies a transformation (if any) to the attribute value of the BB code
-     * during translation
+    /** \brief Applies a transformation (if any) to the attribute value of the BB code
+     * during translation.
      *
      * \param attr   the attribute value
      */
@@ -65,6 +61,6 @@ struct AdvancedTemplateBBCode: public SimpleTemplateBBCode
     }
   private:
     std::string m_AttrName;
-};//struct
+}; // struct
 
 #endif // ADVANCEDTEMPLATEBBCODE_HPP

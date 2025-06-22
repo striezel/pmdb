@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2012, 2014, 2015  Dirk Stolle
+    Copyright (C) 2012, 2014, 2015, 2025  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@
 
 #include <string>
 #include "BBCode.hpp"
+#include "HTMLStandard.hpp"
 
 /** \brief HorizontalRuleBBCode:
        struct for hr BB code
@@ -30,21 +31,22 @@
 struct HorizontalRuleBBCode: public BBCode
 {
   public:
-    /** constructor
+    /** Creates a new instance.
      *
-     * \param code   "name" of the code, i.e. "b" for [B]bold text[/B]
+     * \param code      "name" of the code, i.e. "b" for [B]bold text[/B]
+     * \param standard  the HTML standard to use during transformation (HTML or XHTML)
      */
-    HorizontalRuleBBCode(const std::string& code, const bool isXHTML);
+    HorizontalRuleBBCode(const std::string& code, const HTMLStandard standard);
 
 
-    /** \brief "applies" the BB code to the given text, i.e. transforms the BB code
-     * into its HTML representation
+    /** \brief "Applies" the BB code to the given text, i.e. transforms the BB code
+     * into its (X)HTML representation.
      *
      * \param text   the message text that (may) contain the BB code
      */
     virtual void applyToText(std::string& text) const;
   private:
-    bool m_isXHTML;
-};//struct HorizontalRuleBBCode
+    HTMLStandard m_standard;
+}; // struct
 
 #endif // HORIZONTALRULEBBCODE_HPP

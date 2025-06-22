@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2012, 2013, 2014  Dirk Stolle
+    Copyright (C) 2012, 2013, 2014, 2025  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -36,6 +36,7 @@
 #include <string>
 #include <vector>
 #include "BBCode.hpp"
+#include "HTMLStandard.hpp"
 #ifndef NO_SMILIES_IN_PARSER
   #include "Smilie.hpp"
 #endif
@@ -44,7 +45,7 @@
 #endif
 
 /** \brief BBCodeParser:
-       transforms a given text containing BB codes to HTML code via the
+       Transforms a given text containing BB codes to (X)HTML code via the
        parse() function. All codes that should be replaced have to be added
        before parsing. Use addCode() for that. Smilies added via addSmilie()
        will be replaced, too.
@@ -52,26 +53,24 @@
 class BBCodeParser
 {
   public:
-    /** constructor */
     BBCodeParser();
 
 
-    /** \brief transforms BB codes in text to HTML codes (still incomplete)
+    /** \brief Transforms BB codes in text to (X)HTML codes (still incomplete).
      *
      * \param text       the original text
      * \param forumURL   the base URL of the forum (some BB codes might require
-                         this URL for proper transformation of code to HTML)
-     * \param isXHTML    if set to true, smilie transformations will produce XHTML
-                         image tags
+                         this URL for proper transformation of code to (X)HTML)
+     * \param standard   the HTML standard to use during transformation (HTML or XHTML)
      * \param nl2br      if set to true, new line characters will be converted to
                          the corresponding (X)HTML code for line breaks
      * \return Returns the transformed/parsed text.
      */
-    std::string parse(std::string text, const std::string& forumURL, const bool isXHTML, const bool nl2br) const;
+    std::string parse(std::string text, const std::string& forumURL, const HTMLStandard standard, const bool nl2br) const;
 
 
     #ifndef NO_PREPROCESSORS_IN_PARSER
-    /** \brief adds a new text preprocessor to the parser
+    /** \brief Adds a new text preprocessor to the parser.
      *
      * \param preProc  pointer to the text processor object that should be added
      * \remarks The passed pointers must live for the whole lifetime of the
@@ -92,7 +91,7 @@ class BBCodeParser
     #endif
 
 
-    /** \brief adds a new bb code to the parser
+    /** \brief Adds a new BB code to the parser.
      *
      * \param code   pointer to the BB code object that should be added
      * \remarks
@@ -113,16 +112,16 @@ class BBCodeParser
 
 
     #ifndef NO_SMILIES_IN_PARSER
-    /** \brief adds a new smilie to the parser
+    /** \brief Adds a new smilie to the parser.
      *
-     * \param sm   the smilie
+     * \param sm   the smilie to add
      */
     void addSmilie(const Smilie& sm);
     #endif
 
 
     #ifndef NO_POSTPROCESSORS_IN_PARSER
-    /** \brief adds a new text postprocessor to the parser
+    /** \brief Adds a new text postprocessor to the parser.
      *
      * \param postProc   pointer to the text processor object that should be added
      *
@@ -145,7 +144,7 @@ class BBCodeParser
     #endif
 
     #ifndef NO_PREPROCESSORS_IN_PARSER
-    /** clears all added preprocessors */
+    /** Clears all added preprocessors. */
     inline void clearPreProcessors()
     {
       m_PreProcs.clear();
@@ -153,18 +152,18 @@ class BBCodeParser
     #endif
 
 
-    /** \brief clears all added BB codes
+    /** \brief Clears all added BB codes.
      *
      * \remarks
      *  Clearing codes right before calling parse() without any addCode()
      *  calls in between will result in no BB codes being parsed. However,
-     *  smilies might still get parsed.
+     *  smilies might still get parsed, if there are any.
      */
     void clearCodes();
 
 
     #ifndef NO_SMILIES_IN_PARSER
-    /** \brief clears all added smilies
+    /** \brief Clears all added smilies.
      *
      * \remarks
      * Clearing smilies right before calling parse() without any addSmile()
@@ -175,7 +174,7 @@ class BBCodeParser
     #endif
 
     #ifndef NO_POSTPROCESSORS_IN_PARSER
-    /** clears all added postprocessors */
+    /** Clears all added postprocessors. */
     inline void clearPostProcessors()
     {
       m_PostProcs.clear();
@@ -192,6 +191,6 @@ class BBCodeParser
     std::vector<TextProcessor*> m_PostProcs;
     #endif
     std::vector<BBCode*> m_Codes;
-};//class
+}; // class
 
 #endif // BBCODEPARSER_HPP

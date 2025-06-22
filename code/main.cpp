@@ -135,7 +135,7 @@ int main(int argc, char **argv)
     defaultSaveDirectory = std::string(".pmdb") + libstriezel::filesystem::pathDelimiter;
   }
   bool doHTML = false;
-  bool forceXHTML = false;
+  HTMLStandard standard = HTMLStandard::HTML4_01;
   bool nl2br = true;
   bool noList = false;
 
@@ -257,14 +257,14 @@ int main(int argc, char **argv)
         }//param == html
         else if ((param == "--xhtml") || (param == "--XHTML"))
         {
-          if (doHTML || forceXHTML)
+          if (doHTML || standard == HTMLStandard::XHTML)
           {
             std::cerr << "Parameter " << param << " must not occur more than once "
                       << "or in combination with --html!\n";
             return rcInvalidParameter;
           }
           doHTML = true;
-          forceXHTML = true;
+          standard = HTMLStandard::XHTML;
         }//param == xhtml
         else if ((param == "--no-br") || (param == "--no-breaks"))
         {
@@ -485,7 +485,7 @@ int main(int argc, char **argv)
           return 0;
         }
         std::cout << "success!\n";
-      }//if html directory does not exist
+      } // if html directory does not exist
       htmlDir = libstriezel::filesystem::slashify(htmlDir);
 
       BBCodeParser parser;
@@ -525,7 +525,7 @@ int main(int argc, char **argv)
       /* prepare BB code parser with BB codes */
       // image tags
       CustomizedSimpleBBCode img_simple("img", "<img border=\"0\" src=\"",
-                                        forceXHTML ? "\" alt=\"\" />" : "\" alt=\"\">");
+                                        standard == HTMLStandard::XHTML ? "\" alt=\"\" />" : "\" alt=\"\">");
 
       MsgTemplate tpl;
       // thread tag - simple variant
@@ -543,7 +543,7 @@ int main(int argc, char **argv)
       // tag for tables
       TableBBCode table("table", useTableClasses, classTable, classRow, classCell);
       // hr code
-      HorizontalRuleBBCode hr("hr", forceXHTML);
+      HorizontalRuleBBCode hr("hr", standard);
 
       bbcode_default::addDefaultCodes(parser);
       parser.addCode(&img_simple);
@@ -580,7 +580,7 @@ int main(int argc, char **argv)
         theTemplate.addReplacement("fromuser", msgIter->second.getFromUser(), true);
         theTemplate.addReplacement("fromuserid", intToString(msgIter->second.getFromUserID()), true);
         theTemplate.addReplacement("touser", msgIter->second.getToUser(), true);
-        theTemplate.addReplacement("message", parser.parse(msgIter->second.getMessage(), conf.getForumURL(), forceXHTML, nl2br), false);
+        theTemplate.addReplacement("message", parser.parse(msgIter->second.getMessage(), conf.getForumURL(), standard, nl2br), false);
         const std::string output = theTemplate.show();
         std::ofstream htmlFile;
         htmlFile.open(htmlDir + msgIter->first.toHexString() + ".html",

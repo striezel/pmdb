@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database test suite.
-    Copyright (C) 2015, 2022  Dirk Stolle
+    Copyright (C) 2015, 2022, 2025  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -28,11 +28,11 @@ TEST_CASE("HorizontalRuleBBCode")
   using TestData = std::tuple<std::string, std::string, std::string>;
 
   // We just use the hr code for testing.
-  HorizontalRuleBBCode rule_html("hr", false);
-  HorizontalRuleBBCode rule_xhtml("hr", true);
+  HorizontalRuleBBCode rule_html("hr", HTMLStandard::HTML4_01);
+  HorizontalRuleBBCode rule_xhtml("hr", HTMLStandard::XHTML);
   /* upper-case HR code -> should be the same as lower-case hr */
-  HorizontalRuleBBCode rule_html_up("HR", false);
-  HorizontalRuleBBCode rule_xhtml_up("HR", true);
+  HorizontalRuleBBCode rule_html_up("HR", HTMLStandard::HTML4_01);
+  HorizontalRuleBBCode rule_xhtml_up("HR", HTMLStandard::XHTML);
 
   // Populate vector with strings for testing.
   //   1st element: input string

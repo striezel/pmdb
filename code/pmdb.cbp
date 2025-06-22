@@ -120,6 +120,7 @@
 		<Unit filename="bbcode/CustomizedSimpleBBCode.cpp" />
 		<Unit filename="bbcode/CustomizedSimpleBBCode.hpp" />
 		<Unit filename="bbcode/DefaultCodes.hpp" />
+		<Unit filename="bbcode/HTMLStandard.hpp" />
 		<Unit filename="bbcode/HorizontalRuleBBCode.cpp" />
 		<Unit filename="bbcode/HorizontalRuleBBCode.hpp" />
 		<Unit filename="bbcode/ListBBCode.cpp" />

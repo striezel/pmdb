@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2012  Dirk Stolle
+    Copyright (C) 2012, 2025  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@
 #define SMILIE_HPP
 
 #include <string>
+#include "HTMLStandard.hpp"
 
 enum class UrlType: bool
 {
@@ -48,10 +49,9 @@ struct Smilie
      *
      * \param text       the message text that (may) contain the smilie code
      * \param forumURL   base URL of the forum
-     * \param isXHTML    if set to true, the replacement will XHTML code. Otherwise
-     *                   HTML code is used.
+     * \param standard   Indicates the HTML standard to use for the replacement (HTML or XHTML).
      */
-    void applyToText(std::string& text, const std::string& forumURL, const bool isXHTML) const;
+    void applyToText(std::string& text, const std::string& forumURL, const HTMLStandard standard) const;
   private:
     std::string m_Code;
     std::string m_URL;

@@ -24,20 +24,20 @@
 
 struct TData
 {
-  TData(const std::string& txt, const std::string& fURL, const bool xhtml, const std::string& out)
+  TData(const std::string& txt, const std::string& fURL, const HTMLStandard the_standard, const std::string& out)
   : text(txt),
     forumURL(fURL),
-    XHTML(xhtml),
+    standard(the_standard),
     output(out)
   {
   }
 
   std::string text;
   std::string forumURL;
-  bool XHTML;
+  HTMLStandard standard;
 
   std::string output;
-}; //struct
+}; // struct
 
 TEST_CASE("Smilie")
 {
@@ -50,26 +50,26 @@ TEST_CASE("Smilie")
     // Populate map with data for tests.
     std::vector<TData> tests;
     // empty string - should be unchanged
-    tests.push_back(TData("", URL, true, ""));
-    tests.push_back(TData("", URL, false, ""));
+    tests.push_back(TData("", URL, HTMLStandard::XHTML, ""));
+    tests.push_back(TData("", URL, HTMLStandard::HTML4_01, ""));
     // text without smilie code - no changes in output
-    tests.push_back(TData("foo bar baz", URL, true, "foo bar baz"));
-    tests.push_back(TData("foo bar baz", URL, false, "foo bar baz"));
+    tests.push_back(TData("foo bar baz", URL, HTMLStandard::XHTML, "foo bar baz"));
+    tests.push_back(TData("foo bar baz", URL, HTMLStandard::HTML4_01, "foo bar baz"));
     // just smilie code
-    tests.push_back(TData(":)", URL, true,  "<img src=\"" + URL + "happy.png\" alt=\":)\" border=\"0\" />"));
-    tests.push_back(TData(":)", URL, false, "<img src=\"" + URL + "happy.png\" alt=\":)\" border=\"0\">"));
+    tests.push_back(TData(":)", URL, HTMLStandard::XHTML,  "<img src=\"" + URL + "happy.png\" alt=\":)\" border=\"0\" />"));
+    tests.push_back(TData(":)", URL, HTMLStandard::HTML4_01, "<img src=\"" + URL + "happy.png\" alt=\":)\" border=\"0\">"));
     // two consecutive smilies
-    tests.push_back(TData(":):)", URL, true,  "<img src=\"" + URL + "happy.png\" alt=\":)\" border=\"0\" /><img src=\"" + URL + "happy.png\" alt=\":)\" border=\"0\" />"));
-    tests.push_back(TData(":):)", URL, false, "<img src=\"" + URL + "happy.png\" alt=\":)\" border=\"0\"><img src=\"" + URL + "happy.png\" alt=\":)\" border=\"0\">"));
+    tests.push_back(TData(":):)", URL, HTMLStandard::XHTML,  "<img src=\"" + URL + "happy.png\" alt=\":)\" border=\"0\" /><img src=\"" + URL + "happy.png\" alt=\":)\" border=\"0\" />"));
+    tests.push_back(TData(":):)", URL, HTMLStandard::HTML4_01, "<img src=\"" + URL + "happy.png\" alt=\":)\" border=\"0\"><img src=\"" + URL + "happy.png\" alt=\":)\" border=\"0\">"));
     // smilie within text
-    tests.push_back(TData("Hey! :) Happy face here.", URL, true,  "Hey! <img src=\"" + URL + "happy.png\" alt=\":)\" border=\"0\" /> Happy face here."));
-    tests.push_back(TData("Hey! :) Happy face here.", URL, false, "Hey! <img src=\"" + URL + "happy.png\" alt=\":)\" border=\"0\"> Happy face here."));
+    tests.push_back(TData("Hey! :) Happy face here.", URL, HTMLStandard::XHTML,  "Hey! <img src=\"" + URL + "happy.png\" alt=\":)\" border=\"0\" /> Happy face here."));
+    tests.push_back(TData("Hey! :) Happy face here.", URL, HTMLStandard::HTML4_01, "Hey! <img src=\"" + URL + "happy.png\" alt=\":)\" border=\"0\"> Happy face here."));
 
-    //Iterate over all given data and check, if the output is as expected.
+    // Iterate over all given data and check, if the output is as expected.
     for (const auto& element: tests)
     {
       std::string input(element.text);
-      happy_relative.applyToText(input, element.forumURL, element.XHTML);
+      happy_relative.applyToText(input, element.forumURL, element.standard);
       REQUIRE( input == element.output );
     }
   }
@@ -82,25 +82,25 @@ TEST_CASE("Smilie")
     // Populate map with data for tests.
     std::vector<TData> tests;
     // empty string - should be unchanged
-    tests.push_back(TData("", URL, true, ""));
-    tests.push_back(TData("", URL, false, ""));
+    tests.push_back(TData("", URL, HTMLStandard::XHTML, ""));
+    tests.push_back(TData("", URL, HTMLStandard::HTML4_01, ""));
     // text without smilie code - no changes in output
-    tests.push_back(TData("foo bar baz", URL, true, "foo bar baz"));
-    tests.push_back(TData("foo bar baz", URL, false, "foo bar baz"));
+    tests.push_back(TData("foo bar baz", URL, HTMLStandard::XHTML, "foo bar baz"));
+    tests.push_back(TData("foo bar baz", URL, HTMLStandard::HTML4_01, "foo bar baz"));
     // just smilie code
-    tests.push_back(TData(":)", URL, true,  "<img src=\"happy.png\" alt=\":)\" border=\"0\" />"));
-    tests.push_back(TData(":)", URL, false, "<img src=\"happy.png\" alt=\":)\" border=\"0\">"));
+    tests.push_back(TData(":)", URL, HTMLStandard::XHTML,  "<img src=\"happy.png\" alt=\":)\" border=\"0\" />"));
+    tests.push_back(TData(":)", URL, HTMLStandard::HTML4_01, "<img src=\"happy.png\" alt=\":)\" border=\"0\">"));
     // two consecutive smilies
-    tests.push_back(TData(":):)", URL, true,  "<img src=\"happy.png\" alt=\":)\" border=\"0\" /><img src=\"happy.png\" alt=\":)\" border=\"0\" />"));
-    tests.push_back(TData(":):)", URL, false, "<img src=\"happy.png\" alt=\":)\" border=\"0\"><img src=\"happy.png\" alt=\":)\" border=\"0\">"));
+    tests.push_back(TData(":):)", URL, HTMLStandard::XHTML,  "<img src=\"happy.png\" alt=\":)\" border=\"0\" /><img src=\"happy.png\" alt=\":)\" border=\"0\" />"));
+    tests.push_back(TData(":):)", URL, HTMLStandard::HTML4_01, "<img src=\"happy.png\" alt=\":)\" border=\"0\"><img src=\"happy.png\" alt=\":)\" border=\"0\">"));
     // smilie within text
-    tests.push_back(TData("Hey! :) Happy face here.", URL, true,  "Hey! <img src=\"happy.png\" alt=\":)\" border=\"0\" /> Happy face here."));
-    tests.push_back(TData("Hey! :) Happy face here.", URL, false, "Hey! <img src=\"happy.png\" alt=\":)\" border=\"0\"> Happy face here."));
+    tests.push_back(TData("Hey! :) Happy face here.", URL, HTMLStandard::XHTML,  "Hey! <img src=\"happy.png\" alt=\":)\" border=\"0\" /> Happy face here."));
+    tests.push_back(TData("Hey! :) Happy face here.", URL, HTMLStandard::HTML4_01, "Hey! <img src=\"happy.png\" alt=\":)\" border=\"0\"> Happy face here."));
 
     for (const auto& element: tests)
     {
       std::string input(element.text);
-      happy_absolute.applyToText(input, element.forumURL, element.XHTML);
+      happy_absolute.applyToText(input, element.forumURL, element.standard);
       REQUIRE( input == element.output );
     }
   }

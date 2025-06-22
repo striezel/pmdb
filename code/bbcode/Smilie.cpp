@@ -25,13 +25,13 @@ Smilie::Smilie(const std::string& code, const std::string& url, const UrlType ur
 {
 }
 
-void Smilie::applyToText(std::string& text, const std::string& forumURL, const bool isXHTML) const
+void Smilie::applyToText(std::string& text, const std::string& forumURL, const HTMLStandard standard) const
 {
   std::string::size_type pos = text.find(m_Code);
 
   const std::string replacement = "<img src=\""
                                 + (type_of_url == UrlType::Relative ? forumURL + m_URL : m_URL) + "\" alt=\"" + m_Code
-                                + (isXHTML ? "\" border=\"0\" />" : "\" border=\"0\">");
+                                + (standard == HTMLStandard::XHTML ? "\" border=\"0\" />" : "\" border=\"0\">");
   while (pos != std::string::npos)
   {
     text.replace(pos, m_Code.length(), replacement);

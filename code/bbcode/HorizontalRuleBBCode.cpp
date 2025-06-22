@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2012, 2015, 2016  Dirk Stolle
+    Copyright (C) 2012, 2015, 2016, 2025  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -21,17 +21,17 @@
 #include "HorizontalRuleBBCode.hpp"
 #include "../../libstriezel/common/StringUtils.hpp"
 
-HorizontalRuleBBCode::HorizontalRuleBBCode(const std::string& code, const bool isXHTML)
-: BBCode(code), m_isXHTML(isXHTML)
+HorizontalRuleBBCode::HorizontalRuleBBCode(const std::string& code, const HTMLStandard standard)
+: BBCode(code), m_standard(standard)
 { }
 
 void HorizontalRuleBBCode::applyToText(std::string& text) const
 {
-  const std::string code = "["+getName()+"][/"+getName()+"]";
+  const std::string code = "[" + getName() + "][/" + getName() + "]";
   std::string::size_type pos = find_ci(text, code);
-  while (pos!=std::string::npos)
+  while (pos != std::string::npos)
   {
-    text.replace(pos, code.length(), m_isXHTML ? "<hr />" : "<hr>");
+    text.replace(pos, code.length(), m_standard == HTMLStandard::XHTML ? "<hr />" : "<hr>");
     pos = find_ci(text, code);
-  }//while
+  }
 }

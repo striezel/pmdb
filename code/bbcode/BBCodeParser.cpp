@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2012, 2013  Dirk Stolle
+    Copyright (C) 2012, 2013, 2025  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -36,58 +36,51 @@ BBCodeParser::BBCodeParser()
 {
 }
 
-std::string BBCodeParser::parse(std::string text, const std::string& forumURL, const bool isXHTML, const bool nl2br) const
+std::string BBCodeParser::parse(std::string text, const std::string& forumURL, const HTMLStandard standard, const bool nl2br) const
 {
   #ifndef NO_PREPROCESSORS_IN_PARSER
-  //handle pre processors
-  std::vector<TextProcessor*>::const_iterator pre_iter = m_PreProcs.begin();
-  while (pre_iter!=m_PreProcs.end())
+  // handle pre processors
+  for (const auto * pre_ptr: m_PreProcs)
   {
-    (*pre_iter)->applyToText(text);
-    ++pre_iter;
-  }//while
+    pre_ptr->applyToText(text);
+  }
   #endif
 
-  //handle line breaks
+  // handle line breaks
   if (nl2br)
   {
     std::string::size_type pos = text.find("\n");
-    while (pos!=std::string::npos)
+    const bool isXHTML = standard == HTMLStandard::XHTML;
+    while (pos != std::string::npos)
     {
       text.replace(pos, 1, isXHTML ? "<br />\n" : "<br>\n");
-      pos = text.find("\n", isXHTML ? pos+7 : pos+5);
-    }//while
-  }//if
+      pos = text.find("\n", isXHTML ? pos + 7 : pos + 5);
+    }
+  } // if
 
-  //handle bb codes
-  std::vector<BBCode*>::const_iterator iter = m_Codes.begin();
-  while (iter!=m_Codes.end())
+  // handle bb codes
+  for (const BBCode* code: m_Codes)
   {
-    (*iter)->applyToText(text);
-    ++iter;
-  }//while
+    code->applyToText(text);
+  }
 
   #ifndef NO_SMILIES_IN_PARSER
-  //handle smilies
-  std::vector<Smilie>::const_iterator sm_iter = m_Smilies.begin();
-  while (sm_iter!=m_Smilies.end())
+  // handle smilies
+  for (const auto& sm: m_Smilies)
   {
-    sm_iter->applyToText(text, forumURL, isXHTML);
-    ++sm_iter;
-  }//while
+    sm.applyToText(text, forumURL, standard);
+  }
   #endif
 
-  //handle quotes
+  // handle quotes
   text = handleQuotes(text, forumURL);
 
   #ifndef NO_POSTPROCESSORS_IN_PARSER
-  //handle post processors
-  std::vector<TextProcessor*>::const_iterator post_iter = m_PostProcs.begin();
-  while (post_iter!=m_PostProcs.end())
+  // handle post processors
+  for (const auto* post_ptr: m_PostProcs)
   {
-    (*post_iter)->applyToText(text);
-    ++post_iter;
-  }//while
+    post_ptr->applyToText(text);
+  }
   #endif
 
   return text;
@@ -96,14 +89,14 @@ std::string BBCodeParser::parse(std::string text, const std::string& forumURL, c
 #ifndef NO_PREPROCESSORS_IN_PARSER
 void BBCodeParser::addPreProcessor(TextProcessor* preProc)
 {
-  if (preProc!=NULL)
+  if (preProc != nullptr)
     m_PreProcs.push_back(preProc);
 }
 #endif
 
 void BBCodeParser::addCode(BBCode* code)
 {
-  if (code!=NULL)
+  if (code != nullptr)
     m_Codes.push_back(code);
 }
 
@@ -117,7 +110,7 @@ void BBCodeParser::addSmilie(const Smilie& sm)
 #ifndef NO_POSTPROCESSORS_IN_PARSER
 void BBCodeParser::addPostProcessor(TextProcessor* postProc)
 {
-  if (postProc!=NULL)
+  if (postProc != nullptr)
     m_PostProcs.push_back(postProc);
 }
 #endif

@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2014, 2016  Dirk Stolle
+    Copyright (C) 2014, 2016, 2025  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -36,40 +36,39 @@ void FolderMap::add(const SHA256::MessageDigest& pm_digest, const std::string& f
 
 bool FolderMap::hasEntry(const SHA256::MessageDigest& pm_digest) const
 {
-  return (m_FolderMap.find(pm_digest)!=m_FolderMap.end());
+  return m_FolderMap.find(pm_digest) != m_FolderMap.end();
 }
 
 const std::string& FolderMap::getFolderName(const SHA256::MessageDigest& pm_digest) const
 {
   const std::map<SHA256::MessageDigest, std::string>::const_iterator iter = m_FolderMap.find(pm_digest);
-  if (iter!=m_FolderMap.end()) return iter->second;
-  throw std::runtime_error("The message database's folder map has no message entry for the given hash "+pm_digest.toHexString()+"!");
+  if (iter != m_FolderMap.end())
+    return iter->second;
+  throw std::runtime_error("The message database's folder map has no message entry for the given hash " + pm_digest.toHexString() + "!");
 }
 
 bool FolderMap::save(const std::string& directory) const
 {
   std::ofstream output;
-  output.open((directory+"foldermap").c_str(), std::ios_base::out | std::ios_base::binary | std::ios_base::trunc);
+  output.open(directory + "foldermap", std::ios_base::out | std::ios_base::binary | std::ios_base::trunc);
   if (!output)
   {
     return false;
   }
   const char space = ' ';
   const char end = '\n';
-  std::map<SHA256::MessageDigest, std::string>::const_iterator iter = m_FolderMap.begin();
-  while (iter!=m_FolderMap.end())
+  for (const auto& [digest, folder]: m_FolderMap)
   {
-    const std::string hexRepresentation = iter->first.toHexString();
-    //write hash
+    const std::string hexRepresentation = digest.toHexString();
+    // write hash
     output.write(hexRepresentation.c_str(), hexRepresentation.length());
-    //write space
+    // write space
     output.write(&space, 1);
-    //write folder name
-    output.write(iter->second.c_str(), iter->second.length());
-    //write end of line character
+    // write folder name
+    output.write(folder.c_str(), folder.length());
+    // write end of line character
     output.write(&end, 1);
-    ++iter;
-  }//while
+  }
   const bool well = output.good();
   output.close();
   return well;
@@ -88,25 +87,25 @@ bool FolderMap::load(const std::string& directory)
   const unsigned int cMaxLine = 1024;
   char buffer[cMaxLine];
   std::string line = "";
-  while (inFile.getline(buffer, cMaxLine-1))
+  while (inFile.getline(buffer, cMaxLine - 1))
   {
     buffer[cMaxLine-1] = '\0';
     line = std::string(buffer);
     if (!md.fromHexString(line.substr(0, 64)))
     {
       inFile.close();
-      std::cout << "Error: string \""<<line.substr(0,64)<<"\" is no valid hash!\n";
+      std::cout << "Error: String \"" << line.substr(0,64) << "\" is no valid hash!\n";
       return false;
     }
-    //remove hash
+    // remove hash
     line.erase(0, 64);
-    //remove leading spaces
+    // remove leading spaces
     trimLeft(line);
     if (!line.empty())
     {
       m_FolderMap[md] = line;
-    }//if
-  }//while
+    }
+  }
   inFile.close();
   return true;
 }
@@ -115,10 +114,10 @@ std::set<std::string> FolderMap::getPresentFolders() const
 {
   std::set<std::string> allFolders;
   std::map<SHA256::MessageDigest, std::string>::const_iterator iter = m_FolderMap.begin();
-  while (iter!=m_FolderMap.end())
+  while (iter != m_FolderMap.end())
   {
     allFolders.insert(iter->second);
     ++iter;
-  }//while
+  }
   return allFolders;
 }

@@ -142,6 +142,8 @@
 		<Unit filename="filters/FilterUser.cpp" />
 		<Unit filename="filters/FilterUser.hpp" />
 		<Unit filename="main.cpp" />
+		<Unit filename="paths.cpp" />
+		<Unit filename="paths.hpp" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>

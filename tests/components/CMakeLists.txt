@@ -19,7 +19,9 @@ set(component_tests_sources
     ../../code/bbcode/Smilie.cpp
     ../../code/bbcode/TableBBCode.cpp
     ../../code/filters/FilterUser.cpp
+    ../../code/paths.cpp
     ../../libstriezel/common/StringUtils.cpp
+    ../../libstriezel/filesystem/directory.cpp
     ../../libstriezel/hash/sha256/MessageSource.cpp
     ../../libstriezel/hash/sha256/sha256.cpp
     ../../libstriezel/zlib/CompressionFunctions.cpp
@@ -37,6 +39,7 @@ set(component_tests_sources
     bbcode/TableBBCode.cpp
     filter/FilterUser.cpp
     names_to_controlsequences.cpp
+    paths.cpp
     main.cpp)
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")

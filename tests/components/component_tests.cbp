@@ -65,8 +65,12 @@
 		<Unit filename="../../code/filters/Filter.hpp" />
 		<Unit filename="../../code/filters/FilterUser.cpp" />
 		<Unit filename="../../code/filters/FilterUser.hpp" />
+		<Unit filename="../../code/paths.cpp" />
+		<Unit filename="../../code/paths.hpp" />
 		<Unit filename="../../libstriezel/common/StringUtils.cpp" />
 		<Unit filename="../../libstriezel/common/StringUtils.hpp" />
+		<Unit filename="../../libstriezel/filesystem/directory.cpp" />
+		<Unit filename="../../libstriezel/filesystem/directory.hpp" />
 		<Unit filename="../../libstriezel/hash/sha256/MessageSource.cpp" />
 		<Unit filename="../../libstriezel/hash/sha256/MessageSource.hpp" />
 		<Unit filename="../../libstriezel/hash/sha256/sha256.cpp" />
@@ -89,6 +93,7 @@
 		<Unit filename="filter/FilterUser.cpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="names_to_controlsequences.cpp" />
+		<Unit filename="paths.cpp" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>

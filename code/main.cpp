@@ -29,6 +29,7 @@
 #include "Config.hpp"
 #include "ConsoleColours.hpp"
 #include "ColourMap.hpp"
+#include "paths.hpp"
 #include "Version.hpp"
 #include "bbcode/BBCodeParser.hpp"
 #include "bbcode/DefaultCodes.hpp"
@@ -120,20 +121,10 @@ int main(int argc, char **argv)
   std::set<std::string> loadDirs;
   bool doSave = true;
   bool saveModeSpecified = false;
-  std::string homeDirectory;
-  std::string defaultSaveDirectory;
   Compression compression = Compression::none;
 
-  if (libstriezel::filesystem::directory::getHome(homeDirectory))
-  {
-    homeDirectory = libstriezel::filesystem::slashify(homeDirectory);
-    defaultSaveDirectory = homeDirectory + std::string(".pmdb") + libstriezel::filesystem::pathDelimiter;
-  }
-  else
-  {
-    homeDirectory = std::string(".") + libstriezel::filesystem::pathDelimiter;
-    defaultSaveDirectory = std::string(".pmdb") + libstriezel::filesystem::pathDelimiter;
-  }
+  const std::string defaultSaveDirectory = pmdb::paths::main() + libstriezel::filesystem::pathDelimiter;
+
   bool doHTML = false;
   HTMLStandard standard = HTMLStandard::HTML4_01;
   bool nl2br = true;
@@ -449,7 +440,7 @@ int main(int argc, char **argv)
         if (!libstriezel::filesystem::directory::createRecursive(realDir))
         {
           std::cout << "failed!\nAborting.\n";
-          return 0;
+          return rcFileError;
         }
         std::cout << "success!\n";
       }
@@ -475,7 +466,7 @@ int main(int argc, char **argv)
     if (msgIter != mdb.getEnd())
     {
       // directory creation
-      std::string htmlDir = libstriezel::filesystem::slashify(defaultSaveDirectory) + "html";
+      std::string htmlDir = pmdb::paths::html();
       if (!libstriezel::filesystem::directory::exists(htmlDir))
       {
         std::cout << "Trying to create HTML directory \"" << htmlDir << "\"...";
@@ -493,9 +484,10 @@ int main(int argc, char **argv)
       conf.setForumURL("http://www.example.com/forum/");
       conf.setTPLFile("message.tpl");
       // try to load configuration file
-      if (libstriezel::filesystem::file::exists(defaultSaveDirectory + "pmdb.conf"))
+      const std::string conf_path = pmdb::paths::conf();
+      if (libstriezel::filesystem::file::exists(conf_path))
       {
-        if (!conf.loadFromFile(defaultSaveDirectory + "pmdb.conf"))
+        if (!conf.loadFromFile(conf_path))
         {
           std::cout << "Could not load pmdb.conf, using default/incomplete values instead.\n";
           conf.setTPLFile("message.tpl");
@@ -640,7 +632,7 @@ int main(int argc, char **argv)
   if (searchForSubsets)
   {
     ColourMap cMap;
-    const std::string pathToColourMap = defaultSaveDirectory + "pmdb.colourmap";
+    const std::string pathToColourMap = pmdb::paths::colourmap();
     if (libstriezel::filesystem::file::exists(pathToColourMap))
     {
       if (!cMap.loadFromFile(pathToColourMap))

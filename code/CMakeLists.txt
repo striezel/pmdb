@@ -27,6 +27,7 @@ set(pmdb_sources
     bbcode/TableBBCode.cpp
     bbcode/quotes.cpp
     filters/FilterUser.cpp
+    functions.cpp
     paths.cpp
     ../libstriezel/common/DirectoryFileList.cpp
     ../libstriezel/common/StringUtils.cpp

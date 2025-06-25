@@ -37,6 +37,7 @@
 #include "bbcode/ListBBCode.hpp"
 #include "bbcode/TableBBCode.hpp"
 #include "filters/FilterUser.hpp"
+#include "functions.hpp"
 #include "../libstriezel/filesystem/directory.hpp"
 #include "../libstriezel/filesystem/file.hpp"
 #include "../libstriezel/common/DirectoryFileList.hpp"
@@ -701,45 +702,8 @@ int main(int argc, char **argv)
   // list messages by given filter conditions
   if (!filters.empty())
   {
-    std::vector<SortType> matches;
-    MessageDatabase::Iterator msgIter = mdb.getBegin();
-    while (msgIter != mdb.getEnd())
-    {
-      std::vector<FilterUser>::const_iterator filterIter = filters.begin();
-      while (filterIter != filters.end())
-      {
-        if (filterIter->match(msgIter->second))
-        {
-          matches.push_back( md_date(msgIter->second.getDatestamp(), msgIter->first));
-          filterIter = filters.end();
-        }
-        else
-        {
-          ++filterIter;
-        }
-      }//while (inner)
-      ++msgIter;
-    }//while
-
-    std::sort(matches.begin(), matches.end());
-    std::cout << "Filtered messages:\n";
-    std::vector<SortType>::const_iterator mdIter = matches.begin();
-    while (mdIter != matches.end())
-    {
-      const PrivateMessage & pm = mdb.getMessage(mdIter->md);
-      std::cout << "Message \"" << pm.getTitle() << "\" of " << pm.getDatestamp();
-      if (fm.hasEntry(mdIter->md))
-      {
-        std::cout << " in \"" << fm.getFolderName(mdIter->md) << "\"";
-      }
-      std::cout << std::endl;
-      ++mdIter;
-    }//while
-    if (matches.empty())
-      std::cout << "  no matches\n";
-    else
-      std::cout << "Total: " << matches.size() << "\n";
-  }//if filters are set
+    showFilteredMessages(mdb, fm, filters);
+  }
 
   return 0;
 }

@@ -38,15 +38,11 @@
 #include "bbcode/TableBBCode.hpp"
 #include "filters/FilterUser.hpp"
 #include "functions.hpp"
+#include "ReturnCodes.hpp"
 #include "../libstriezel/filesystem/directory.hpp"
 #include "../libstriezel/filesystem/file.hpp"
 #include "../libstriezel/common/DirectoryFileList.hpp"
 #include "../libstriezel/common/StringUtils.hpp"
-
-// return codes
-const int rcInvalidParameter = 1;
-const int rcFileError        = 2;
-const int rcCaughtException  = 3;
 
 void showVersion()
 {
@@ -431,34 +427,11 @@ int main(int argc, char **argv)
 
   if (doSave)
   {
-    // directory creation - only necessary, if there are any messages
-    if (mdb.getNumberOfMessages() != 0)
+    const int rc = saveMessages(mdb, fm, compression);
+    if (rc != 0)
     {
-      const std::string realDir = libstriezel::filesystem::unslashify(defaultSaveDirectory);
-      if (!libstriezel::filesystem::directory::exists(realDir))
-      {
-        std::cout << "Trying to create save directory \"" << realDir << "\"...";
-        if (!libstriezel::filesystem::directory::createRecursive(realDir))
-        {
-          std::cout << "failed!\nAborting.\n";
-          return rcFileError;
-        }
-        std::cout << "success!\n";
-      }
-    } // if more than zero messages
-
-    if (!mdb.saveMessages(libstriezel::filesystem::slashify(defaultSaveDirectory), compression))
-    {
-      std::cout << "Could not save messages!\n";
-      return 0;
+      return rc;
     }
-    std::cout << "Messages saved successfully!\n";
-    if (!fm.save(libstriezel::filesystem::slashify(defaultSaveDirectory)))
-    {
-      std::cout << "Could not save folder map!\n";
-      return 0;
-    }
-    std::cout << "Folder map saved successfully!\n";
   } // if save requested
 
   if (doHTML)

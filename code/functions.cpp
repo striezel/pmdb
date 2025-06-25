@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2014, 2015, 2025  Dirk Stolle
+    Copyright (C) 2012, 2013, 2014, 2015, 2016, 2025  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -21,6 +21,9 @@
 #include "functions.hpp"
 #include <algorithm>
 #include <iostream>
+#include "../libstriezel/filesystem/directory.hpp"
+#include "paths.hpp"
+#include "ReturnCodes.hpp"
 
 void showFilteredMessages(const MessageDatabase& mdb, const FolderMap& fm, const std::vector<FilterUser>& filters)
 {
@@ -55,4 +58,37 @@ void showFilteredMessages(const MessageDatabase& mdb, const FolderMap& fm, const
     std::cout << "  no matches\n";
   else
     std::cout << "Total: " << matches.size() << "\n";
+}
+
+int saveMessages(const MessageDatabase& mdb, const FolderMap& fm, const Compression compression)
+{
+  const std::string save_dir = pmdb::paths::main();
+  // directory creation - only necessary, if there are any messages
+  if (mdb.getNumberOfMessages() != 0)
+  {
+    if (!libstriezel::filesystem::directory::exists(save_dir))
+    {
+      std::cout << "Trying to create save directory \"" << save_dir << "\"...";
+      if (!libstriezel::filesystem::directory::createRecursive(save_dir))
+      {
+        std::cout << "failed!\nAborting.\n";
+        return rcFileError;
+      }
+      std::cout << "success!\n";
+    }
+  } // if more than zero messages
+
+  if (!mdb.saveMessages(save_dir, compression))
+  {
+    std::cout << "Could not save messages!\n";
+    return rcFileError;
+  }
+  std::cout << "Messages saved successfully!\n";
+  if (!fm.save(save_dir))
+  {
+    std::cout << "Could not save folder map!\n";
+    return rcFileError;
+  }
+  std::cout << "Folder map saved successfully!\n";
+  return 0;
 }

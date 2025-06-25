@@ -35,4 +35,15 @@
  */
 void showFilteredMessages(const MessageDatabase& mdb, const FolderMap& fm, const std::vector<FilterUser>& filters);
 
+/** \brief Saves messages to the default save directory.
+ *
+ * \param mdb          the database containing the messages
+ * \param fm           folder mappings for the message database
+ * \param compression  if set to Compression::zlib, the saved files will be
+ *                     compressed with zlib
+ * \return Returns zero, if all messages could be saved.
+ *         Returns non-zero exit code, if an error occurred.
+ */
+int saveMessages(const MessageDatabase& mdb, const FolderMap& fm, const Compression compression);
+
 #endif // PMDB_FUNCTIONS_HPP

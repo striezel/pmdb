@@ -23,6 +23,7 @@
 #include <iostream>
 #include <stdexcept>
 #include "../libstriezel/common/StringUtils.hpp"
+#include "../libstriezel/filesystem/directory.hpp"
 
 FolderMap::FolderMap()
 : m_FolderMap(std::map<SHA256::MessageDigest, std::string>())
@@ -50,7 +51,7 @@ const std::string& FolderMap::getFolderName(const SHA256::MessageDigest& pm_dige
 bool FolderMap::save(const std::string& directory) const
 {
   std::ofstream output;
-  output.open(directory + "foldermap", std::ios_base::out | std::ios_base::binary | std::ios_base::trunc);
+  output.open(libstriezel::filesystem::slashify(directory) + "foldermap", std::ios_base::out | std::ios_base::binary | std::ios_base::trunc);
   if (!output)
   {
     return false;

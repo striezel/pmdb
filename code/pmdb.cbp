@@ -103,6 +103,7 @@
 		<Unit filename="PMSource.hpp" />
 		<Unit filename="PrivateMessage.cpp" />
 		<Unit filename="PrivateMessage.hpp" />
+		<Unit filename="ReturnCodes.hpp" />
 		<Unit filename="SortType.cpp" />
 		<Unit filename="SortType.hpp" />
 		<Unit filename="Version.cpp" />

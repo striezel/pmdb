@@ -94,7 +94,7 @@ bool TableBBCode::actualApplyToText(std::string& text, const std::string::size_t
           return false;
         // replace cell codes with HTML code
         text.replace(cell_end, 5, "</td>");
-        text.replace(cellOpener.open_pos, cellOpener.open_end - cellOpener.open_pos + 1, "<td" + attributesToString(tetCell, cellOpener.attributes, rowOpener.attributes, elemOpener.attributes) + ">");
+        text.replace(cellOpener.open_pos, cellOpener.open_end - cellOpener.open_pos + 1, "<td" + attributesToString(TableElementType::Cell, cellOpener.attributes, rowOpener.attributes, elemOpener.attributes) + ">");
         // update row end position
         row_end = find_ci(text, "[/tr]", rowOpener.open_end);
         // get next open cell position
@@ -102,7 +102,7 @@ bool TableBBCode::actualApplyToText(std::string& text, const std::string::size_t
       }//while cell opener
       //replace row codes with HTML code
       text.replace(row_end, 5, "</tr>");
-      text.replace(rowOpener.open_pos, rowOpener.open_end - rowOpener.open_pos + 1, "<tr" + attributesToString(tetRow, rowOpener.attributes, elemOpener.attributes) + ">");
+      text.replace(rowOpener.open_pos, rowOpener.open_end - rowOpener.open_pos + 1, "<tr" + attributesToString(TableElementType::Row, rowOpener.attributes, elemOpener.attributes) + ">");
       // update table end position
       end_pos = find_ci(text, end_code, elemOpener.open_end);
       // get next open row position
@@ -110,7 +110,7 @@ bool TableBBCode::actualApplyToText(std::string& text, const std::string::size_t
     }//while row
     //replace "table" codes with HTML code
     text.replace(end_pos, end_code.length(), "</table>");
-    text.replace(elemOpener.open_pos, elemOpener.open_end - elemOpener.open_pos + 1, "<table" + attributesToString(tetTable, elemOpener.attributes) + ">");
+    text.replace(elemOpener.open_pos, elemOpener.open_end - elemOpener.open_pos + 1, "<table" + attributesToString(TableElementType::Table, elemOpener.attributes) + ">");
     //get next table
     elemOpener = getNextOpeningElement(text, elemOpener.open_pos, getName());
   }//while
@@ -206,10 +206,10 @@ void TableBBCode::appendGridAttributes(std::string& text, const TableElementType
     text += " class=\"";
     switch (eleType)
     {
-      case tetTable:
+      case TableElementType::Table:
            text += classes.table;
            break;
-      case tetRow:
+      case TableElementType::Row:
            text += classes.row;
            break;
       default:
@@ -239,7 +239,7 @@ std::string TableBBCode::attributesToString(const TableElementType eleType,
     }
     else if (iter->first=="width")
     {
-      if ((eleType==tetTable))
+      if (eleType == TableElementType::Table)
       {
         if (passesWidthLimit(iter->second))
         {

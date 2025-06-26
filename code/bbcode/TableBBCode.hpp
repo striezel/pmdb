@@ -74,7 +74,7 @@ struct TableBBCode: public BBCode
 
 
     /** enumeration type for different elements of a table (table, row, cell) */
-    enum TableElementType {tetTable, tetRow, tetCell};
+    enum class TableElementType {Table, Row, Cell};
 
 
     /** \brief Appends style or class attributes (HTML) to the text.

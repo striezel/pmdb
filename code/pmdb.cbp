@@ -137,6 +137,8 @@
 		<Unit filename="bbcode/Smilie.hpp" />
 		<Unit filename="bbcode/TableBBCode.cpp" />
 		<Unit filename="bbcode/TableBBCode.hpp" />
+		<Unit filename="bbcode/TableClasses.cpp" />
+		<Unit filename="bbcode/TableClasses.hpp" />
 		<Unit filename="bbcode/TextProcessor.hpp" />
 		<Unit filename="bbcode/quotes.cpp" />
 		<Unit filename="bbcode/quotes.hpp" />

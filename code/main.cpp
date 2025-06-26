@@ -102,9 +102,9 @@ void showHelp(const std::string& name)
             << "                     Must occur together with --table and --row.\n"
             << "  --std-classes    - Sets the 'standard' classes for the three class options.\n"
             << "                     This is equivalent to specifying all these parameters:\n"
-            << "                         --table=" << TableBBCode::DefaultTableClass << "\n"
-            << "                         --row=" << TableBBCode::DefaultRowClass << "\n"
-            << "                         --cell=" << TableBBCode::DefaultCellClass << "\n"
+            << "                         --table=" << TableClasses::DefaultTableClass << "\n"
+            << "                         --row=" << TableClasses::DefaultRowClass << "\n"
+            << "                         --cell=" << TableClasses::DefaultCellClass << "\n"
             << "  --subset-check   - Search for messages with texts that are completely\n"
             << "                     contained in other messages, too.\n"
             << "  --list-from X    - List all messages that were sent by user X.\n"
@@ -283,25 +283,25 @@ int main(int argc, char **argv)
         }//param == compression
         else if ((param.substr(0,8) == "--table=") && (param.length() > 8))
         {
-          htmlOptions.classTable = param.substr(8);
-          htmlOptions.useTableClasses = true;
+          htmlOptions.tableClasses.table = param.substr(8);
+          htmlOptions.tableClasses.useClasses = true;
         }//param == 'table=...'
         else if ((param.substr(0,6) == "--row=") && (param.length() > 6))
         {
-          htmlOptions.classRow = param.substr(6);
-          htmlOptions.useTableClasses = true;
+          htmlOptions.tableClasses.row = param.substr(6);
+          htmlOptions.tableClasses.useClasses = true;
         }//param == 'row=...'
         else if ((param.substr(0,7) == "--cell=") && (param.length() > 7))
         {
-          htmlOptions.classCell = param.substr(7);
-          htmlOptions.useTableClasses = true;
+          htmlOptions.tableClasses.cell = param.substr(7);
+          htmlOptions.tableClasses.useClasses = true;
         }//param == 'cell=...'
         else if ((param == "--std-classes") || (param == "--classes") || (param == "--default-classes"))
         {
-          htmlOptions.classTable = TableBBCode::DefaultTableClass;
-          htmlOptions.classRow   = TableBBCode::DefaultRowClass;
-          htmlOptions.classCell  = TableBBCode::DefaultCellClass;
-          htmlOptions.useTableClasses = true;
+          htmlOptions.tableClasses.table      = TableClasses::DefaultTableClass;
+          htmlOptions.tableClasses.row        = TableClasses::DefaultRowClass;
+          htmlOptions.tableClasses.cell       = TableClasses::DefaultCellClass;
+          htmlOptions.tableClasses.useClasses = true;
         }//param == std-classes
         else if ((param == "--subset-check") || (param == "--redundant-check"))
         {
@@ -371,10 +371,10 @@ int main(int argc, char **argv)
     return rcInvalidParameter;
   }
 
-  if (htmlOptions.useTableClasses)
+  if (htmlOptions.tableClasses.useClasses)
   {
-    if (htmlOptions.classTable.empty() || htmlOptions.classRow.empty()
-        || htmlOptions.classCell.empty())
+    if (htmlOptions.tableClasses.table.empty() || htmlOptions.tableClasses.row.empty()
+        || htmlOptions.tableClasses.cell.empty())
     {
       std::cerr << "If at least one of the parameters --table, --row or --cell"
                 << " is given, the other two have to be specified, too!\n";
@@ -502,7 +502,7 @@ int main(int argc, char **argv)
       // tag for unordered lists
       ListBBCode list_unordered("list", true);
       // tag for tables
-      TableBBCode table("table", htmlOptions.useTableClasses, htmlOptions.classTable, htmlOptions.classRow, htmlOptions.classCell);
+      TableBBCode table("table", htmlOptions.tableClasses);
       // hr code
       HorizontalRuleBBCode hr("hr", htmlOptions.standard);
 

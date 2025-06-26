@@ -31,6 +31,7 @@ set(pmdb_no_comp_sources
     ../code/bbcode/SimpleTemplateBBCode.cpp
     ../code/bbcode/Smilie.cpp
     ../code/bbcode/TableBBCode.cpp
+    ../code/bbcode/TableClasses.cpp
     ../code/bbcode/quotes.cpp
     ../code/filters/FilterUser.cpp
     ../code/functions.cpp

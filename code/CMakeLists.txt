@@ -25,6 +25,7 @@ set(pmdb_sources
     bbcode/SimpleTemplateBBCode.cpp
     bbcode/Smilie.cpp
     bbcode/TableBBCode.cpp
+    bbcode/TableClasses.cpp
     bbcode/quotes.cpp
     filters/FilterUser.cpp
     functions.cpp

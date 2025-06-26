@@ -18,6 +18,7 @@ set(component_tests_sources
     ../../code/bbcode/SimpleTemplateBBCode.cpp
     ../../code/bbcode/Smilie.cpp
     ../../code/bbcode/TableBBCode.cpp
+    ../../code/bbcode/TableClasses.cpp
     ../../code/filters/FilterUser.cpp
     ../../code/paths.cpp
     ../../libstriezel/common/StringUtils.cpp

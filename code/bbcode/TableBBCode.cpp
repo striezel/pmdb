@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2012, 2013, 2016  Dirk Stolle
+    Copyright (C) 2012, 2013, 2016, 2025  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -31,17 +31,9 @@ TableBBCode::OpeningElem::OpeningElem()
 {
 }
 
-//constants for default class names used in constructor
-const std::string TableBBCode::DefaultTableClass = "grid_table";
-const std::string TableBBCode::DefaultRowClass   = "grid_tr";
-const std::string TableBBCode::DefaultCellClass  = "grid_td";
-
-TableBBCode::TableBBCode(const std::string& code, const bool useGridClasses,
-                const std::string& tableClass, const std::string& rowClass,
-                const std::string& cellClass,
+TableBBCode::TableBBCode(const std::string& code, const TableClasses tblClasses,
                 const unsigned int tableWidthMax)
-: BBCode(code), m_UseClasses(useGridClasses), m_TableClass(tableClass),
-  m_RowClass(rowClass), m_CellClass(cellClass), m_TableWidthLimit(tableWidthMax)
+: BBCode(code), classes(tblClasses), m_TableWidthLimit(tableWidthMax)
 {
 }
 
@@ -209,19 +201,19 @@ std::map<std::string, std::string> TableBBCode::explodeAttributes(std::string at
 
 void TableBBCode::appendGridAttributes(std::string& text, const TableElementType eleType) const
 {
-  if (m_UseClasses)
+  if (classes.useClasses)
   {
     text += " class=\"";
     switch (eleType)
     {
       case tetTable:
-           text += m_TableClass;
+           text += classes.table;
            break;
       case tetRow:
-           text += m_RowClass;
+           text += classes.row;
            break;
       default:
-           text += m_CellClass;
+           text += classes.cell;
            break;
     }//swi
     text += "\"";

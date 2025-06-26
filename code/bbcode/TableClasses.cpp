@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2025  Dirk Stolle
+    Copyright (C) 2012, 2025  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,27 +18,17 @@
  -------------------------------------------------------------------------------
 */
 
-#ifndef PMDB_HTMLOPTIONS_HPP
-#define PMDB_HTMLOPTIONS_HPP
+#include "TableClasses.hpp"
 
-#include <string>
-#include "bbcode/HTMLStandard.hpp"
-#include "bbcode/TableClasses.hpp"
+// constants for default class names used in constructor
+const std::string TableClasses::DefaultTableClass = "grid_table";
+const std::string TableClasses::DefaultRowClass   = "grid_tr";
+const std::string TableClasses::DefaultCellClass  = "grid_td";
 
-struct HTMLOptions
+TableClasses::TableClasses(const bool useGridClasses,
+                           const std::string& tableClass,
+                           const std::string& rowClass,
+                           const std::string& cellClass)
+: useClasses(useGridClasses), table(tableClass), row(rowClass), cell(cellClass)
 {
-  public:
-    /// The HTML standard version to use when creating HTML files.
-    HTMLStandard standard{HTMLStandard::HTML4_01};
-
-    /// Whether to convert new line characters to line breaks in (X)HTML.
-    bool nl2br{true};
-
-    /// Whether NOT o parse [LIST] codes.
-    bool noList{false};
-
-    /// Whether table classes (table, row, cell) should be used, and which classes to use.
-    TableClasses tableClasses;
-};
-
-#endif // PMDB_HTMLOPTIONS_HPP
+}

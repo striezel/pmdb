@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2012  Dirk Stolle
+    Copyright (C) 2012, 2025  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -23,26 +23,16 @@
 
 #include "BBCode.hpp"
 #include <map>
+#include "TableClasses.hpp"
 
 /** BBCode to handle table codes */
 struct TableBBCode: public BBCode
 {
   public:
-    // constants for default class names used in constructor
-    static const std::string DefaultTableClass;
-    static const std::string DefaultRowClass;
-    static const std::string DefaultCellClass;
-
     /** \brief constructor
      *
      * \param code             "name" of the code, i.e. "b" for [B]bold text[/B]
-     * \param useGridClasses   if set to true, the generated HTML code will use
-     *                         classes (as in CSS class) instead of a somewhat
-     *                         bloated style attribute to generate the grids around
-     *                         the table elements, if such the grids are required
-     * \param tableClass       name of the class for grids on &lt;table&gt; tags
-     * \param rowClass         name of the class for grids on &lt;tr&gt; tags
-     * \param cellClass        name of the class for grids on &lt;td&gt; tags
+     * \param tblClasses       classes for grids on &lt;table&gt; tags, etc.
      * \param tableWidthMax    the maximum width value (in pixels) that is allowed
      *                         in table attributes. Larger values will be ignored.
      *                         A value of zero means no limit.
@@ -51,9 +41,7 @@ struct TableBBCode: public BBCode
      * If useGridClasses is set to false, the next three parameters do not
      * have any effect on the generated HTML code.
      */
-    TableBBCode(const std::string& code, const bool useGridClasses = false,
-                const std::string& tableClass = DefaultTableClass, const std::string& rowClass = DefaultRowClass,
-                const std::string& cellClass = DefaultCellClass,
+    TableBBCode(const std::string& code, const TableClasses tblClasses = TableClasses(),
                 const unsigned int tableWidthMax = 0);
 
     /** \brief "Applies" the BB code to the given text, i.e. transforms the BB code
@@ -81,11 +69,7 @@ struct TableBBCode: public BBCode
       }
     }; // struct
   private:
-    bool m_UseClasses; /**< whether or not to use the tree classes below */
-    std::string m_TableClass; /**< class for use in table tags */
-    std::string m_RowClass;   /**< class for use in tr tags */
-    std::string m_CellClass;  /**< class for use in td tags */
-
+    TableClasses classes; /**< classes for use in table/tr/td tags */
     unsigned int m_TableWidthLimit; /**< max. width value (in px) allowed in tables */
 
 

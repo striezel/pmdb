@@ -95,6 +95,7 @@
 		<Unit filename="ConsoleColours.hpp" />
 		<Unit filename="FolderMap.cpp" />
 		<Unit filename="FolderMap.hpp" />
+		<Unit filename="HTMLOptions.hpp" />
 		<Unit filename="MessageDatabase.cpp" />
 		<Unit filename="MessageDatabase.hpp" />
 		<Unit filename="MsgTemplate.cpp" />

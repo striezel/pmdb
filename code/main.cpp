@@ -38,6 +38,7 @@
 #include "bbcode/TableBBCode.hpp"
 #include "filters/FilterUser.hpp"
 #include "functions.hpp"
+#include "HTMLOptions.hpp"
 #include "ReturnCodes.hpp"
 #include "../libstriezel/filesystem/directory.hpp"
 #include "../libstriezel/filesystem/file.hpp"
@@ -123,14 +124,7 @@ int main(int argc, char **argv)
   const std::string defaultSaveDirectory = pmdb::paths::main() + libstriezel::filesystem::pathDelimiter;
 
   bool doHTML = false;
-  HTMLStandard standard = HTMLStandard::HTML4_01;
-  bool nl2br = true;
-  bool noList = false;
-
-  bool useTableClasses = false;
-  std::string classTable;
-  std::string classRow;
-  std::string classCell;
+  HTMLOptions htmlOptions;
 
   bool searchForSubsets = false;
   std::vector<FilterUser> filters = std::vector<FilterUser>();
@@ -245,32 +239,32 @@ int main(int argc, char **argv)
         }//param == html
         else if ((param == "--xhtml") || (param == "--XHTML"))
         {
-          if (doHTML || standard == HTMLStandard::XHTML)
+          if (doHTML || htmlOptions.standard == HTMLStandard::XHTML)
           {
             std::cerr << "Parameter " << param << " must not occur more than once "
                       << "or in combination with --html!\n";
             return rcInvalidParameter;
           }
           doHTML = true;
-          standard = HTMLStandard::XHTML;
+          htmlOptions.standard = HTMLStandard::XHTML;
         }//param == xhtml
         else if ((param == "--no-br") || (param == "--no-breaks"))
         {
-          if (!nl2br)
+          if (!htmlOptions.nl2br)
           {
             std::cerr << "Parameter " << param << " must not occur more than once!\n";
             return rcInvalidParameter;
           }
-          nl2br = false;
+          htmlOptions.nl2br = false;
         }//param == no-br
         else if (param == "--no-list")
         {
-          if (noList)
+          if (htmlOptions.noList)
           {
             std::cerr << "Parameter --no-list must not occur more than once!\n";
             return rcInvalidParameter;
           }
-          noList = true;
+          htmlOptions.noList = true;
         }//param == no-list
         else if ((param == "--compress") || (param == "--compression") || (param == "--zlib"))
         {
@@ -289,25 +283,25 @@ int main(int argc, char **argv)
         }//param == compression
         else if ((param.substr(0,8) == "--table=") && (param.length() > 8))
         {
-          classTable = param.substr(8);
-          useTableClasses = true;
+          htmlOptions.classTable = param.substr(8);
+          htmlOptions.useTableClasses = true;
         }//param == 'table=...'
         else if ((param.substr(0,6) == "--row=") && (param.length() > 6))
         {
-          classRow = param.substr(6);
-          useTableClasses = true;
+          htmlOptions.classRow = param.substr(6);
+          htmlOptions.useTableClasses = true;
         }//param == 'row=...'
         else if ((param.substr(0,7) == "--cell=") && (param.length() > 7))
         {
-          classCell = param.substr(7);
-          useTableClasses = true;
+          htmlOptions.classCell = param.substr(7);
+          htmlOptions.useTableClasses = true;
         }//param == 'cell=...'
         else if ((param == "--std-classes") || (param == "--classes") || (param == "--default-classes"))
         {
-          classTable = TableBBCode::DefaultTableClass;
-          classRow   = TableBBCode::DefaultRowClass;
-          classCell  = TableBBCode::DefaultCellClass;
-          useTableClasses = true;
+          htmlOptions.classTable = TableBBCode::DefaultTableClass;
+          htmlOptions.classRow   = TableBBCode::DefaultRowClass;
+          htmlOptions.classCell  = TableBBCode::DefaultCellClass;
+          htmlOptions.useTableClasses = true;
         }//param == std-classes
         else if ((param == "--subset-check") || (param == "--redundant-check"))
         {
@@ -377,9 +371,10 @@ int main(int argc, char **argv)
     return rcInvalidParameter;
   }
 
-  if (useTableClasses)
+  if (htmlOptions.useTableClasses)
   {
-    if (classTable.empty() || classRow.empty() || classCell.empty())
+    if (htmlOptions.classTable.empty() || htmlOptions.classRow.empty()
+        || htmlOptions.classCell.empty())
     {
       std::cerr << "If at least one of the parameters --table, --row or --cell"
                 << " is given, the other two have to be specified, too!\n";
@@ -491,7 +486,7 @@ int main(int argc, char **argv)
       /* prepare BB code parser with BB codes */
       // image tags
       CustomizedSimpleBBCode img_simple("img", "<img border=\"0\" src=\"",
-                                        standard == HTMLStandard::XHTML ? "\" alt=\"\" />" : "\" alt=\"\">");
+                                        htmlOptions.standard == HTMLStandard::XHTML ? "\" alt=\"\" />" : "\" alt=\"\">");
 
       MsgTemplate tpl;
       // thread tag - simple variant
@@ -507,16 +502,16 @@ int main(int argc, char **argv)
       // tag for unordered lists
       ListBBCode list_unordered("list", true);
       // tag for tables
-      TableBBCode table("table", useTableClasses, classTable, classRow, classCell);
+      TableBBCode table("table", htmlOptions.useTableClasses, htmlOptions.classTable, htmlOptions.classRow, htmlOptions.classCell);
       // hr code
-      HorizontalRuleBBCode hr("hr", standard);
+      HorizontalRuleBBCode hr("hr", htmlOptions.standard);
 
       bbcode_default::addDefaultCodes(parser);
       parser.addCode(&img_simple);
       parser.addCode(&thread_simple);
       parser.addCode(&thread_advanced);
       parser.addCode(&wiki);
-      if (!noList)
+      if (!htmlOptions.noList)
       {
         parser.addCode(&list_unordered);
       }
@@ -527,11 +522,11 @@ int main(int argc, char **argv)
       ListNewlinePreProcessor preProc_List;
       TablePreprocessor table_killLF("tr", "td");
       parser.addPreProcessor(&eatRedundantSpaces);
-      if (nl2br && !noList)
+      if (htmlOptions.nl2br && !htmlOptions.noList)
       {
         parser.addPreProcessor(&preProc_List);
       }
-      if (nl2br)
+      if (htmlOptions.nl2br)
       {
         parser.addPreProcessor(&table_killLF);
       }
@@ -546,7 +541,7 @@ int main(int argc, char **argv)
         theTemplate.addReplacement("fromuser", msgIter->second.getFromUser(), true);
         theTemplate.addReplacement("fromuserid", intToString(msgIter->second.getFromUserID()), true);
         theTemplate.addReplacement("touser", msgIter->second.getToUser(), true);
-        theTemplate.addReplacement("message", parser.parse(msgIter->second.getMessage(), conf.getForumURL(), standard, nl2br), false);
+        theTemplate.addReplacement("message", parser.parse(msgIter->second.getMessage(), conf.getForumURL(), htmlOptions.standard, htmlOptions.nl2br), false);
         const std::string output = theTemplate.show();
         std::ofstream htmlFile;
         htmlFile.open(htmlDir + msgIter->first.toHexString() + ".html",

@@ -147,6 +147,8 @@
 		<Unit filename="filters/FilterUser.hpp" />
 		<Unit filename="functions.cpp" />
 		<Unit filename="functions.hpp" />
+		<Unit filename="html_generation.cpp" />
+		<Unit filename="html_generation.hpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="paths.cpp" />
 		<Unit filename="paths.hpp" />

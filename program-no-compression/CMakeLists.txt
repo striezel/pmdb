@@ -35,6 +35,7 @@ set(pmdb_no_comp_sources
     ../code/bbcode/quotes.cpp
     ../code/filters/FilterUser.cpp
     ../code/functions.cpp
+    ../code/html_generation.cpp
     ../code/paths.cpp
     ../libstriezel/common/DirectoryFileList.cpp
     ../libstriezel/common/StringUtils.cpp

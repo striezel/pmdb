@@ -57,7 +57,7 @@ jobs:
           cp LICENSE artifacts/
           cp third-party.md artifacts/
           # template files
-          cp code/*.tpl artifacts/
+          cp code/templates/*.tpl artifacts/
           # determine version
           VERSION=$(git describe --always)
           echo Version is $VERSION.

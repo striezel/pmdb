@@ -31,6 +31,8 @@ set(pmdb_sources
     functions.cpp
     html_generation.cpp
     paths.cpp
+    templates/defaults.hpp
+    templates/functions.cpp
     ../libstriezel/common/DirectoryFileList.cpp
     ../libstriezel/common/StringUtils.cpp
     ../libstriezel/filesystem/directory.cpp
@@ -81,3 +83,44 @@ if (ZLIB_FOUND)
 else ()
   message ( FATAL_ERROR "zlib was not found!" )
 endif (ZLIB_FOUND)
+
+## get the default templates
+execute_process(
+  COMMAND cat folder.tpl
+  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/templates
+  OUTPUT_VARIABLE FOLDER_TPL
+  OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+
+execute_process(
+  COMMAND cat folder_entry.tpl
+  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/templates
+  OUTPUT_VARIABLE FOLDER_ENTRY_TPL
+  OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+
+execute_process(
+  COMMAND cat folder_list.tpl
+  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/templates
+  OUTPUT_VARIABLE FOLDER_LIST_TPL
+  OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+
+execute_process(
+  COMMAND cat index_entry.tpl
+  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/templates
+  OUTPUT_VARIABLE INDEX_ENTRY_TPL
+  OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+
+execute_process(
+  COMMAND cat message.tpl
+  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/templates
+  OUTPUT_VARIABLE MESSAGE_TPL
+  OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+
+# replace placeholders in defaults.prototype.hpp and create defaults.hpp
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/templates/defaults.prototype.hpp
+               ${CMAKE_CURRENT_SOURCE_DIR}/templates/defaults.hpp
+               @ONLY)

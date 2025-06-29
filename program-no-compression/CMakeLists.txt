@@ -37,6 +37,8 @@ set(pmdb_no_comp_sources
     ../code/functions.cpp
     ../code/html_generation.cpp
     ../code/paths.cpp
+    ../code/templates/defaults.hpp
+    ../code/templates/functions.cpp
     ../libstriezel/common/DirectoryFileList.cpp
     ../libstriezel/common/StringUtils.cpp
     ../libstriezel/filesystem/directory.cpp
@@ -69,3 +71,44 @@ if (LIBXML2_FOUND)
 else ()
   message ( FATAL_ERROR "libxml2 was not found!" )
 endif (LIBXML2_FOUND)
+
+# get the default templates
+execute_process(
+  COMMAND cat folder.tpl
+  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../code/templates
+  OUTPUT_VARIABLE FOLDER_TPL
+  OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+
+execute_process(
+  COMMAND cat folder_entry.tpl
+  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../code/templates
+  OUTPUT_VARIABLE FOLDER_ENTRY_TPL
+  OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+
+execute_process(
+  COMMAND cat folder_list.tpl
+  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../code/templates
+  OUTPUT_VARIABLE FOLDER_LIST_TPL
+  OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+
+execute_process(
+  COMMAND cat index_entry.tpl
+  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../code/templates
+  OUTPUT_VARIABLE INDEX_ENTRY_TPL
+  OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+
+execute_process(
+  COMMAND cat message.tpl
+  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../code/templates
+  OUTPUT_VARIABLE MESSAGE_TPL
+  OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+
+# replace placeholders in defaults.prototype.hpp and create defaults.hpp
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/../code/templates/defaults.prototype.hpp
+               ${CMAKE_CURRENT_SOURCE_DIR}/../code/templates/defaults.hpp
+               @ONLY)

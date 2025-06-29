@@ -1,6 +1,6 @@
 /*
  -------------------------------------------------------------------------------
-    This file is part of the Private Message Database.
+    This file is part of the Private Message Database test suite.
     Copyright (C) 2025  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
@@ -18,41 +18,20 @@
  -------------------------------------------------------------------------------
 */
 
-#include "paths.hpp"
-#include "../libstriezel/filesystem/directory.hpp"
+#ifndef PMDB_TPL_FUNCTIONS_HPP
+#define PMDB_TPL_FUNCTIONS_HPP
 
-namespace pmdb
+namespace pmdb::tpl
 {
 
-std::string paths::main()
-{
-  std::string home;
-  if (!libstriezel::filesystem::directory::getHome(home))
-  {
-    home = std::string(".");
-  }
-
-  return libstriezel::filesystem::slashify(home) + std::string(".pmdb");
-}
-
-std::string paths::html()
-{
-  return main() + libstriezel::filesystem::pathDelimiter + "html";
-}
-
-std::string paths::templates()
-{
-  return main() + libstriezel::filesystem::pathDelimiter + "templates";
-}
-
-std::string paths::conf()
-{
-  return main() + libstriezel::filesystem::pathDelimiter + "pmdb.conf";
-}
-
-std::string paths::colourmap()
-{
-  return main() + libstriezel::filesystem::pathDelimiter + "pmdb.colourmap";
-}
+/** \brief Ensures that all required template files for HTML code generation
+ *         exist by creating missing files with default template content.
+ *
+ * \return Returns zero in case of success.
+ *         Returns a non-zero exit code, if an error occurred.
+ */
+int ensureFilesExist();
 
 } // namespace
+
+#endif // PMDB_TPL_FUNCTIONS_HPP

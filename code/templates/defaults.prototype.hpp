@@ -18,41 +18,26 @@
  -------------------------------------------------------------------------------
 */
 
-#include "paths.hpp"
-#include "../libstriezel/filesystem/directory.hpp"
+#ifndef PMDB_TEMPLATES_DEFAULTS_HPP
+#define PMDB_TEMPLATES_DEFAULTS_HPP
 
-namespace pmdb
+#include <string_view>
+
+namespace pmdb::tpl::defaults
 {
 
-std::string paths::main()
-{
-  std::string home;
-  if (!libstriezel::filesystem::directory::getHome(home))
-  {
-    home = std::string(".");
-  }
+using namespace std::string_view_literals;
 
-  return libstriezel::filesystem::slashify(home) + std::string(".pmdb");
-}
+constexpr std::string_view folder = R"(@FOLDER_TPL@)"sv;
 
-std::string paths::html()
-{
-  return main() + libstriezel::filesystem::pathDelimiter + "html";
-}
+constexpr std::string_view folder_entry = R"(@FOLDER_ENTRY_TPL@)"sv;
 
-std::string paths::templates()
-{
-  return main() + libstriezel::filesystem::pathDelimiter + "templates";
-}
+constexpr std::string_view folder_list = R"(@FOLDER_LIST_TPL@)"sv;
 
-std::string paths::conf()
-{
-  return main() + libstriezel::filesystem::pathDelimiter + "pmdb.conf";
-}
+constexpr std::string_view index_entry = R"(@INDEX_ENTRY_TPL@)"sv;
 
-std::string paths::colourmap()
-{
-  return main() + libstriezel::filesystem::pathDelimiter + "pmdb.colourmap";
-}
+constexpr std::string_view message = R"(@MESSAGE_TPL@)"sv;
 
 } // namespace
+
+#endif // PMDB_TEMPLATES_DEFAULTS_HPP

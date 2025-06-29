@@ -43,6 +43,18 @@ TEST_CASE("pmdb::paths")
     REQUIRE( html.find(main) == 0 );
   }
 
+  SECTION("templates")
+  {
+    const std::string main = pmdb::paths::main();
+    const std::string templates = pmdb::paths::templates();
+
+    REQUIRE_FALSE( templates.empty() );
+    REQUIRE( templates.find("templates") != std::string::npos );
+
+    // Must be below main path.
+    REQUIRE( templates.find(main) == 0 );
+  }
+
   SECTION("conf")
   {
     const std::string main = pmdb::paths::main();

@@ -152,6 +152,9 @@
 		<Unit filename="main.cpp" />
 		<Unit filename="paths.cpp" />
 		<Unit filename="paths.hpp" />
+		<Unit filename="templates/defaults.hpp" />
+		<Unit filename="templates/functions.cpp" />
+		<Unit filename="templates/functions.hpp" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>

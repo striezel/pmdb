@@ -43,6 +43,12 @@ struct paths
      */
     static std::string html();
 
+    /** \brief Gets the directory where HTML template files are saved.
+     *
+     * \return Returns the directory where HTML template files are saved.
+     * \remarks This is usually ~/.pmdb/templates or the equivalent.
+     */
+    static std::string templates();
 
     /** \brief Gets the default path for the configuration file.
      *

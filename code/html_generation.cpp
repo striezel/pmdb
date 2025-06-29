@@ -29,6 +29,7 @@
 #include "bbcode/HorizontalRuleBBCode.hpp"
 #include "bbcode/ListBBCode.hpp"
 #include "bbcode/TableBBCode.hpp"
+#include "templates/functions.hpp"
 #include "../libstriezel/filesystem/directory.hpp"
 #include "../libstriezel/filesystem/file.hpp"
 
@@ -80,12 +81,20 @@ int generateHtmlFiles(const MessageDatabase& mdb, const FolderMap& fm, const HTM
   }
   #endif
 
+  // Ensure that template files exist.
+  const int tpl_exit_code = pmdb::tpl::ensureFilesExist();
+  if (tpl_exit_code != 0)
+  {
+    return tpl_exit_code;
+  }
+
   // load template for HTML files
   MsgTemplate theTemplate;
-  if (!theTemplate.loadFromFile(conf.getTPL()))
+  const auto template_directory = libstriezel::filesystem::slashify(pmdb::paths::templates());
+  if (!theTemplate.loadFromFile(template_directory + "message.tpl"))
   {
-    std::cerr << "Error: Could not load template file \"" << conf.getTPL()
-              << "\" for messages!\n";
+    std::cerr << "Error: Could not load template file \"" << template_directory
+              << "message.tpl\" for messages!\n";
     return rcFileError;
   }
 
@@ -170,22 +179,22 @@ int generateHtmlFiles(const MessageDatabase& mdb, const FolderMap& fm, const HTM
   } // while
   // create index file
   MsgTemplate tplIndex, tplEntry, tplFolderList, tplFolderEntry;
-  if (!tplIndex.loadFromFile("folder.tpl"))
+  if (!tplIndex.loadFromFile(template_directory + "folder.tpl"))
   {
     std::cerr << "Could not load folder.tpl!\n";
     return rcFileError;
   }
-  if (!tplEntry.loadFromFile("index_entry.tpl"))
+  if (!tplEntry.loadFromFile(template_directory + "index_entry.tpl"))
   {
     std::cerr << "Could not load index_entry.tpl!\n";
     return rcFileError;
   }
-  if (!tplFolderList.loadFromFile("folder_list.tpl"))
+  if (!tplFolderList.loadFromFile(template_directory + "folder_list.tpl"))
   {
     std::cerr << "Could not load folder_list.tpl!\n";
     return rcFileError;
   }
-  if (!tplFolderEntry.loadFromFile("folder_entry.tpl"))
+  if (!tplFolderEntry.loadFromFile(template_directory + "folder_entry.tpl"))
   {
     std::cerr << "Could not load folder_entry.tpl!\n";
     return rcFileError;

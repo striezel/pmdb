@@ -23,8 +23,7 @@
 #include <iostream>
 
 Config::Config()
-: forumURL(""),
-  tplFile("")
+: forumURL("")
   #ifndef NO_SMILIES_IN_PARSER
   , smilies(std::vector<Smilie>())
   #endif // NO_SMILIES_IN_PARSER,
@@ -42,17 +41,6 @@ void Config::setForumURL(const std::string& newURL)
     forumURL = newURL;
 }
 
-const std::string& Config::getTPL() const
-{
-  return tplFile;
-}
-
-void Config::setTPLFile(const std::string& newTPL)
-{
-  if (!newTPL.empty())
-    tplFile = newTPL;
-}
-
 #ifndef NO_SMILIES_IN_PARSER
 const std::vector<Smilie>& Config::getSmilies() const
 {
@@ -63,7 +51,6 @@ const std::vector<Smilie>& Config::getSmilies() const
 void Config::clear()
 {
   forumURL.clear();
-  tplFile.clear();
   #ifndef NO_SMILIES_IN_PARSER
   smilies.clear();
   #endif
@@ -103,7 +90,7 @@ bool Config::loadFromFile(const std::string& fileName)
       sep_pos = line.find('=');
       if (sep_pos == std::string::npos || sep_pos == 0)
       {
-        std::cout << "Config::loadFromFile: ERROR: Invalid line found: \""
+        std::cerr << "Config::loadFromFile: ERROR: Invalid line found: \""
                   << line << "\".\nGeneral format: \"Name of Setting=value\"\n"
                   << "Loading from file cancelled.\n";
         input.close();
@@ -115,10 +102,6 @@ bool Config::loadFromFile(const std::string& fileName)
       {
         forumURL = line.substr(sep_pos+1);
       }
-      else if (name == "template")
-      {
-        tplFile = line.substr(sep_pos+1);
-      }
       #ifndef NO_SMILIES_IN_PARSER
       else if ((name == "smilie") || (name == "smilie_r"))
       {
@@ -126,7 +109,7 @@ bool Config::loadFromFile(const std::string& fileName)
         sep_pos = line.find('=');
         if (sep_pos == std::string::npos || sep_pos == 0)
         {
-          std::cout << "Config::loadFromFile: ERROR: Invalid smilie specification!\n";
+          std::cerr << "Config::loadFromFile: ERROR: Invalid smilie specification!\n";
           input.close();
           return false;
         }
@@ -134,13 +117,19 @@ bool Config::loadFromFile(const std::string& fileName)
         const std::string s_url = line.substr(sep_pos+1);
         if (s_url.empty())
         {
-          std::cout << "Config::loadFromFile: ERROR: Invalid smilie specification!\n";
+          std::cerr << "Config::loadFromFile: ERROR: Invalid smilie specification!\n";
           input.close();
           return false;
         }
         smilies.push_back(Smilie(code, s_url, (name == "smilie_r" ? UrlType::Relative : UrlType::Absolute)));
       } // smilie
       #endif
+      else
+      {
+        std::cerr << "Config::loadFromFile: ERROR: Found unknown setting name '"
+                  << name << "'!\n";
+        return false;
+      }
     }
   }
   input.close();

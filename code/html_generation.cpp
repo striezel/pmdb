@@ -59,7 +59,6 @@ int generateHtmlFiles(const MessageDatabase& mdb, const FolderMap& fm, const HTM
   BBCodeParser parser;
   Config conf;
   conf.setForumURL("http://www.example.com/forum/");
-  conf.setTPLFile("message.tpl");
   // try to load configuration file
   const std::string conf_path = pmdb::paths::conf();
   if (libstriezel::filesystem::file::exists(conf_path))
@@ -67,7 +66,6 @@ int generateHtmlFiles(const MessageDatabase& mdb, const FolderMap& fm, const HTM
     if (!conf.loadFromFile(conf_path))
     {
       std::cout << "Could not load pmdb.conf, using default/incomplete values instead.\n";
-      conf.setTPLFile("message.tpl");
     }
     else
       std::cout << "Loading pmdb.conf was successful.\n";

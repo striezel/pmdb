@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2015, 2022  Dirk Stolle
+    Copyright (C) 2015, 2022, 2025  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -27,17 +27,7 @@ TEST_CASE("Config")
   {
     Config conf;
     REQUIRE( conf.getForumURL().empty() );
-    REQUIRE( conf.getTPL().empty() );
     REQUIRE( conf.getSmilies().empty() );
-  }
-
-  SECTION("set / get template")
-  {
-    Config conf;
-
-    conf.setTPLFile("/some/nice/path/to/file.tpl");
-    // tpl file name should match value above
-    REQUIRE( conf.getTPL() == "/some/nice/path/to/file.tpl" );
   }
 
   SECTION("set / get URL")

@@ -21,7 +21,7 @@ build_gcc:
     # check is done.
     - cp ./code/templates/defaults.prototype.hpp ./code/templates/defaults.hpp
     - ./ci/cpplint.sh
-    - unlink ./code/templates/default.hpp
+    - unlink ./code/templates/defaults.hpp
     # build and run tests
     - mkdir ./build
     - cd ./build
@@ -46,7 +46,7 @@ build_clang:
     # check is done.
     - cp ./code/templates/defaults.prototype.hpp ./code/templates/defaults.hpp
     - ./ci/cpplint.sh
-    - unlink ./code/templates/default.hpp
+    - unlink ./code/templates/defaults.hpp
     # build and run tests
     - mkdir ./build
     - cd ./build

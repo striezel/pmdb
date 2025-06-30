@@ -58,6 +58,9 @@ jobs:
           cp third-party.md artifacts/
           # template files
           cp code/templates/*.tpl artifacts/
+          # documentation
+          cp -R documentation artifacts/documentation
+          unlink artifacts/documentation/msys2-build.md
           # determine version
           VERSION=$(git describe --always)
           echo Version is $VERSION.

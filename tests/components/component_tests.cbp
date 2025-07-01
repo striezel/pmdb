@@ -80,6 +80,7 @@
 		<Unit filename="../../libstriezel/hash/sha256/sha256.hpp" />
 		<Unit filename="../../libstriezel/zlib/CompressionFunctions.cpp" />
 		<Unit filename="../../libstriezel/zlib/CompressionFunctions.hpp" />
+		<Unit filename="../FileGuard.hpp" />
 		<Unit filename="../locate_catch.hpp" />
 		<Unit filename="Config.cpp" />
 		<Unit filename="FolderMap.cpp" />

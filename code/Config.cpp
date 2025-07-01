@@ -22,6 +22,8 @@
 #include <fstream>
 #include <iostream>
 
+const char Config::commentCharacter = '#';
+
 Config::Config()
 : forumURL("")
   #ifndef NO_SMILIES_IN_PARSER
@@ -71,7 +73,6 @@ bool Config::loadFromFile(const std::string& fileName)
   const unsigned int cMaxLine = 1024;
   char buffer[cMaxLine];
   std::string line = "";
-  std::string::size_type sep_pos = 0;
   while (input.getline(buffer, cMaxLine-1))
   {
     buffer[cMaxLine-1] = '\0';
@@ -85,51 +86,58 @@ bool Config::loadFromFile(const std::string& fileName)
       }
     }
 
-    if (!line.empty())
+    // Empty lines and comments are skipped.
+    if (line.empty())
     {
+      continue;
+    }
+    if (line[0] == commentCharacter)
+    {
+      continue;
+    }
+
+    std::string::size_type sep_pos = line.find('=');
+    if (sep_pos == std::string::npos || sep_pos == 0)
+    {
+      std::cerr << "Config::loadFromFile: ERROR: Invalid line found: \""
+                << line << "\".\nGeneral format: \"Name of Setting=value\"\n"
+                << "Loading from file cancelled.\n";
+      input.close();
+      return false;
+    }
+
+    const std::string name = line.substr(0, sep_pos);
+    if (name == "forum")
+    {
+      forumURL = line.substr(sep_pos+1);
+    }
+    #ifndef NO_SMILIES_IN_PARSER
+    else if ((name == "smilie") || (name == "smilie_r"))
+    {
+      line = line.substr(sep_pos + 1);
       sep_pos = line.find('=');
       if (sep_pos == std::string::npos || sep_pos == 0)
       {
-        std::cerr << "Config::loadFromFile: ERROR: Invalid line found: \""
-                  << line << "\".\nGeneral format: \"Name of Setting=value\"\n"
-                  << "Loading from file cancelled.\n";
+        std::cerr << "Config::loadFromFile: ERROR: Invalid smilie specification!\n";
         input.close();
         return false;
       }
-
-      const std::string name = line.substr(0, sep_pos);
-      if (name == "forum")
+      const std::string code = line.substr(0, sep_pos);
+      const std::string s_url = line.substr(sep_pos + 1);
+      if (s_url.empty())
       {
-        forumURL = line.substr(sep_pos+1);
-      }
-      #ifndef NO_SMILIES_IN_PARSER
-      else if ((name == "smilie") || (name == "smilie_r"))
-      {
-        line = line.substr(sep_pos + 1);
-        sep_pos = line.find('=');
-        if (sep_pos == std::string::npos || sep_pos == 0)
-        {
-          std::cerr << "Config::loadFromFile: ERROR: Invalid smilie specification!\n";
-          input.close();
-          return false;
-        }
-        const std::string code = line.substr(0, sep_pos);
-        const std::string s_url = line.substr(sep_pos+1);
-        if (s_url.empty())
-        {
-          std::cerr << "Config::loadFromFile: ERROR: Invalid smilie specification!\n";
-          input.close();
-          return false;
-        }
-        smilies.push_back(Smilie(code, s_url, (name == "smilie_r" ? UrlType::Relative : UrlType::Absolute)));
-      } // smilie
-      #endif
-      else
-      {
-        std::cerr << "Config::loadFromFile: ERROR: Found unknown setting name '"
-                  << name << "'!\n";
+        std::cerr << "Config::loadFromFile: ERROR: Invalid smilie specification!\n";
+        input.close();
         return false;
       }
+      smilies.push_back(Smilie(code, s_url, (name == "smilie_r" ? UrlType::Relative : UrlType::Absolute)));
+    } // smilie
+    #endif
+    else
+    {
+      std::cerr << "Config::loadFromFile: ERROR: Found unknown setting name '"
+                << name << "'!\n";
+      return false;
     }
   }
   input.close();

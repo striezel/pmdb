@@ -70,6 +70,10 @@ class Config
      * \return Returns true in case of success, or false if an error occurred.
      */
     bool loadFromFile(const std::string& fileName);
+
+
+    /** \brief character that starts comment lines in configuration file */
+    static const char commentCharacter;
   private:
     std::string forumURL;
     #ifndef NO_SMILIES_IN_PARSER

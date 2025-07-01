@@ -38,3 +38,18 @@ void Smilie::applyToText(std::string& text, const std::string& forumURL, const H
     pos = text.find(m_Code, pos + replacement.length() - 1);
   }
 }
+
+const std::string& Smilie::code() const
+{
+  return m_Code;
+}
+
+const std::string& Smilie::url() const
+{
+  return m_URL;
+}
+
+UrlType Smilie::type() const
+{
+  return type_of_url;
+}

@@ -37,7 +37,7 @@ struct Smilie
   public:
     /** \brief Creates a new smilie code.
      *
-     * \param code       code for that smilie, e. g. ":)"
+     * \param code       code for that smilie, e.g. ":)"
      * \param url        URL of the smilie image
      * \param url_type   set to UrlType::Relative, if the URL is relative to the forum URL
      */
@@ -52,6 +52,15 @@ struct Smilie
      * \param standard   Indicates the HTML standard to use for the replacement (HTML or XHTML).
      */
     void applyToText(std::string& text, const std::string& forumURL, const HTMLStandard standard) const;
+
+    /// Gets the code for the smilie, e.g. ":)".
+    const std::string& code() const;
+
+    /// Gets the URL of the smilie image.
+    const std::string& url() const;
+
+    /// Gets the URL type (absolute or relative).
+    UrlType type() const;
   private:
     std::string m_Code;
     std::string m_URL;

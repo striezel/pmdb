@@ -21,3 +21,11 @@ pmdb uses [templates](templates.md) to generate HTML files. Those templates are
 stored within the `templates` sub-directory of the main directory, e.g.
 `/home/name/.pmdb/templates`  on Unix-like systems or
 `C:\Users\name\.pmdb\templates` on Windows systems.
+
+## Configuration file
+
+pmdb's configuration file is named `pmdb.conf` and located inside the main
+directory. This means its location could be `/home/name/.pmdb/pmdb.conf` on
+Unix-like systems or `C:\Users\name\.pmdb\pmdb.conf` on Windows systems, for
+example. For more information on the file and its contents
+see [configuration.md](configuration.md).

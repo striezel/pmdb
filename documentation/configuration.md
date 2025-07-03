@@ -84,3 +84,7 @@ smile_r=:o=image/surprise.png
 # -- sticking out tongue
 smilie_r=:p=image/tongue_out.png
 ```
+
+Furthermore, the file `pmdb.conf.example.worldofplayers` contains a complete
+configuration file ready for use for private messages from the World of Players
+forum.

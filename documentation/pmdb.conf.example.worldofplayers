@@ -1,0 +1,87 @@
+# This is an example configuration file for pmdb. It contains the values for
+# use with private messages from the World of Players forum. To use that file,
+# copy it to /home/name/.pmdb/pmdb.conf on Unix-like systemts or to
+# C:\Users\name\.pmdb\pmdb.conf on Windows systems, but replace `name` by your
+# actual user name.
+
+# basic forum URL
+forum=https://forum.worldofplayers.de/forum/
+
+# smilie codes
+smilie_r=:)=images/smilies/s_064.gif
+smilie_r=:D=images/smilies/s_004.gif
+smilie_r=;)=images/smilies/s_072.gif
+smilie_r=:p=images/smilies/s_067.gif
+smilie_r=§wink=images/smilies/s_065.gif
+smilie_r=§knuff=images/smilies/1/knuffel.gif
+smilie_r=:(=images/smilies/s_018.gif
+smilie_r=§cry=images/smilies/s_024.gif
+smilie_r=:mad:=images/smilies/s_030.gif
+smilie_r=:o=images/smilies/s_037.gif
+smilie_r=:eek:=images/smilies/s_013.gif
+smilie_r=:rolleyes:=images/smilies/s_038.gif
+smilie_r=$§p4=images/smilies/pirates4.gif
+smilie_r=:gratz=images/smilies/smileys68.gif
+smilie_r=:dnuhr:=images/smilies/3/fressehalten.gif
+smilie_r=:scared:=images/smilies/scared.gif
+smilie_r=§hand=images/smilies/s_017.gif
+smilie_r=§ice=images/smilies/sm_08.gif
+smilie_r=§omg=images/smilies/aa_omg.gif
+smilie_r=:cool:=images/smilies/s_007.gif
+smilie_r=:grinundwe=images/smilies/grinundwech.gif
+smilie_r=$ausheck=images/smilies/ausheck.gif
+smilie_r=§zweifel=images/smilies/zweifel.gif
+smilie_r=§herz=images/smilies/s_021.gif
+smilie_r=§eomg=images/smilies/excited_omg.gif
+smilie_r=:C:=images/smilies/s_010.gif
+smilie_r=:B=images/smilies/s_025.gif
+smilie_r=:A=images/smilies/s_034.gif
+smilie_r=§klatsch=images/smilies/zUZTb9pU.gif
+smilie_r=§motz=images/smilies/s_032.gif
+smilie_r=§medi=images/smilies/s_038.gif
+smilie_r=§hhmpf=images/smilies/zornstampf.gif
+smilie_r=$zuck=images/smilies/szuck.gif
+smilie_r=§engel=images/smilies/s_059.gif
+smilie_r=§prost=images/smilies/s_060.gif
+smilie=:igitt:=https://www.worldofplayers.de/allgemein/files/igitt.gif
+smilie=§chill=https://www.worldofplayers.de/allgemein/files/Troll_Chiller05.gif
+smilie_r=§cat=images/smilies/Katzensmiley.gif
+smilie_r=§danke=images/smilies/sm_12.gif
+smilie_r=§finger2=images/smilies/s_066.gif
+smilie_r=$tanz=images/smilies/tanzendespaerchen.gif
+smilie_r=§nana=images/smilies/s_063.gif
+smilie_r=§baeh=images/smilies/s_074.gif
+smilie_r=§wall=images/smilies/s_076.gif
+smilie_r=§rofl=images/smilies/sm_03.gif
+smilie_r=§gnah=images/smilies/s_005.gif
+smilie_r=§list=images/smilies/s_057.gif
+smilie_r=§xlol=images/smilies/sm_16.gif
+smilie_r=:G=images/smilies/smilie_01.gif
+smilie_r=§burn=images/smilies/s_001.gif
+smilie_r=§thx=images/smilies/thx.gif
+smilie_r=§pl=images/smilies/s_003.gif
+smilie_r=§hehe=images/smilies/s_028.gif
+smilie_r=§knin=images/smilies/s_047.gif
+smilie_r=§xmas=images/smilies/s_040.gif
+smilie_r=§weissnich=images/smilies/1/nixweiss.gif
+smilie_r=§gn8=images/smilies/1/muede028.gif
+smilie_r=§lehrer=images/smilies/1/znaika.gif
+smilie_r=§troet=images/smilies/1/party2.gif
+smilie_r=§5troet=images/smilies/1/party.gif
+smilie_r=§knutsch=images/smilies/1/bussi.gif
+smilie_r=§respekt=images/smilies/1/respekt_2.gif
+smilie_r=§kratz=images/smilies/1/gruebel.gif
+smilie_r=§ugly=images/smilies/1/ugly.gif
+smilie_r=§knuddel=images/smilies/1/knuddel.gif
+smilie_r=§keks=images/smilies/1/keks.gif
+smilie_r=§enjo=images/smilies/1/knuffel.gif
+smilie_r=:tanz:=images/smilies/2/smiliez.de_2124.gif
+smilie_r=:baetsch:=images/smilies/2/smiliez.de_2136.gif
+smilie_r=:confused:=images/smilies/s_006.gif
+smilie_r=^2^=images/smilies/4/pinky.gif
+smilie_r=:dup:=images/smilies/3/respekt6.gif
+smilie_r=$bsg=images/smilies/bschlaeger.gif
+smilie=§$grr=https://upload.worldofplayers.de/files6/smilie_wut_005.gif
+smilie_r=§enton=images/smilies/enton.gif
+smilie_r=§held=images/smilies/held.png
+smilie=§$wt=https://www.worldofplayers.de/allgemein/files/witcher_animation.gif

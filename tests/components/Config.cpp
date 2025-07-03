@@ -248,6 +248,30 @@ TEST_CASE("Config")
       REQUIRE( iter->type() == UrlType::Absolute );
     }
 
+    SECTION("load World of Players configuration example")
+    {
+      std::filesystem::path path{__FILE__};
+      path.remove_filename();
+      path = path / ".." / ".." / "documentation" / "pmdb.conf.example.worldofplayers";
+
+      Config conf;
+      REQUIRE( conf.loadFromFile(path.string()) );
+
+      REQUIRE( conf.getForumURL() == "https://forum.worldofplayers.de/forum/" );
+      const auto& smilies = conf.getSmilies();
+      REQUIRE( smilies.size() > 70 );
+
+      auto iter = std::find_if(smilies.begin(), smilies.end(), [](const Smilie& s) { return s.code() == ":)"; });
+      REQUIRE( iter != smilies.end() );
+      REQUIRE( iter->url() == "images/smilies/s_064.gif" );
+      REQUIRE( iter->type() == UrlType::Relative );
+
+      iter = std::find_if(smilies.begin(), smilies.end(), [](const Smilie& s) { return s.code() == "§hehe"; });
+      REQUIRE( iter != smilies.end() );
+      REQUIRE( iter->url() == "images/smilies/s_028.gif" );
+      REQUIRE( iter->type() == UrlType::Relative );
+    }
+
     SECTION("invalid: configuration with unknown setting name")
     {
       const std::filesystem::path path{std::filesystem::temp_directory_path() / "unknown-name.conf"};

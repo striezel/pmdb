@@ -2,7 +2,7 @@
 
 ## Main directory
 
-pmdb's files are stored in a directroy named `.pmdb` in the user's home
+pmdb's files are stored in a directory named `.pmdb` in the user's home
 directory. That's usually something like `/home/name/.pmdb` on Linux systems or
 `C:\Users\name\.pmdb` on Windows systems, where `name` stands for the actual
 user name. All relevant files are kept in that directory or one of its

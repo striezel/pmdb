@@ -41,9 +41,12 @@ bool ListBBCode::actualApply(std::string& text, const std::string::size_type off
     if (end_pos==std::string::npos) return false;
     std::string::size_type item_pos = find_ci(text, item_code, pos+1);
     //no [*] within opening and closing tag means error
-    if ((item_pos==std::string::npos) or (item_pos>end_pos)) return false;
+    if ((item_pos == std::string::npos) || (item_pos > end_pos))
+    {
+      return false;
+    }
     std::string::size_type inner_pos = find_ci(text, code, pos+1);
-    while ((inner_pos!=std::string::npos) and (inner_pos<end_pos))
+    while ((inner_pos != std::string::npos) && (inner_pos < end_pos))
     {
       //malformed code, if next list starts before first list item
       if (inner_pos<item_pos) return false;
@@ -54,7 +57,7 @@ bool ListBBCode::actualApply(std::string& text, const std::string::size_type off
       inner_pos = find_ci(text, code, pos+1);
       end_pos = find_ci(text, end_code, pos+1);
       //If there are no more end tags or item "tags" left, the code is invalid.
-      if ((item_pos==std::string::npos) or (end_pos==std::string::npos))
+      if ((item_pos == std::string::npos) || (end_pos == std::string::npos))
         return false;
     }//inner while
 
@@ -64,7 +67,7 @@ bool ListBBCode::actualApply(std::string& text, const std::string::size_type off
     ++end_pos;
     item_pos = find_ci(text, item_code, item_pos+3);
     //replace all remaining "[*]" of that list
-    while ((item_pos!=std::string::npos) and (item_pos<end_pos))
+    while ((item_pos != std::string::npos) && (item_pos < end_pos))
     {
       text.replace(item_pos, 3, "</li><li>");
       end_pos += 6;

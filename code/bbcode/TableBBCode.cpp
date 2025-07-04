@@ -230,9 +230,9 @@ std::string TableBBCode::attributesToString(const TableElementType eleType,
   std::string result;
   std::map<std::string, std::string>::const_iterator iter = attrs.begin();
   bool got_grid = false;
-  while (iter!=attrs.end())
+  while (iter != attrs.end())
   {
-    if ((iter->first=="class") and (iter->second=="grid"))
+    if ((iter->first == "class") && (iter->second == "grid"))
     {
       appendGridAttributes(result, eleType);
       got_grid = true;
@@ -257,7 +257,7 @@ std::string TableBBCode::attributesToString(const TableElementType eleType,
     else if (iter->first=="align")
     {
       //align
-      if ((iter->second=="left") or (iter->second=="right") or (iter->second=="center"))
+      if ((iter->second == "left") || (iter->second == "right") || (iter->second == "center"))
       {
         result += " align=\""+iter->second+"\"";
       }
@@ -271,13 +271,13 @@ std::string TableBBCode::attributesToString(const TableElementType eleType,
   if (!got_grid)
   {
     iter = parent_attrs.find("class");
-    if ((iter!=parent_attrs.end()) and (iter->second == "grid"))
+    if ((iter != parent_attrs.end()) && (iter->second == "grid"))
     {
       appendGridAttributes(result, eleType);
       got_grid = true;
     }
     iter = grandparent_attrs.find("class");
-    if (!got_grid and (iter!=grandparent_attrs.end()) and (iter->second == "grid"))
+    if (!got_grid && (iter != grandparent_attrs.end()) && (iter->second == "grid"))
     {
       appendGridAttributes(result, eleType);
     }

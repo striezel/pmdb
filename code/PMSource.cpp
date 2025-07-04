@@ -34,31 +34,31 @@ PMSource::PMSource(const PrivateMessage& pm)
 {
   const std::string uid_string = uintToString(pm.getFromUserID());
   const std::string::size_type origLen =
-       pm.getDatestamp().length()+1
-      +pm.getTitle().length()+1
-      +pm.getFromUser().length()+1
-      +uid_string.length()+1
-      +pm.getToUser().length()+1
-      +pm.getMessage().length()+1;
+        pm.getDatestamp().length() + 1
+      + pm.getTitle().length() + 1
+      + pm.getFromUser().length() + 1
+      + uid_string.length() + 1
+      + pm.getToUser().length() + 1
+      + pm.getMessage().length() + 1;
   m_PaddingBuffer = new uint8_t[origLen];
   //copy datestamp
-  uint64_t done = pm.getDatestamp().length()+1;
+  uint64_t done = pm.getDatestamp().length() + 1;
   memcpy(&m_PaddingBuffer[0], pm.getDatestamp().c_str(), done);
   //copy title
-  memcpy(&m_PaddingBuffer[done], pm.getTitle().c_str(), pm.getTitle().length()+1);
-  done = done + pm.getTitle().length()+1;
+  memcpy(&m_PaddingBuffer[done], pm.getTitle().c_str(), pm.getTitle().length() + 1);
+  done = done + pm.getTitle().length() + 1;
   //copy fromUser
-  memcpy(&m_PaddingBuffer[done], pm.getFromUser().c_str(), pm.getFromUser().length()+1);
-  done = done + pm.getFromUser().length()+1;
+  memcpy(&m_PaddingBuffer[done], pm.getFromUser().c_str(), pm.getFromUser().length() + 1);
+  done = done + pm.getFromUser().length() + 1;
   //copy fromUserID
-  memcpy(&m_PaddingBuffer[done], uid_string.c_str(), uid_string.length()+1);
-  done = done + uid_string.length()+1;
+  memcpy(&m_PaddingBuffer[done], uid_string.c_str(), uid_string.length() + 1);
+  done = done + uid_string.length() + 1;
   //copy toUser
-  memcpy(&m_PaddingBuffer[done], pm.getToUser().c_str(), pm.getToUser().length()+1);
-  done = done + pm.getToUser().length()+1;
+  memcpy(&m_PaddingBuffer[done], pm.getToUser().c_str(), pm.getToUser().length() + 1);
+  done = done + pm.getToUser().length() + 1;
   //copy message
-  memcpy(&m_PaddingBuffer[done], pm.getMessage().c_str(), pm.getMessage().length()+1);
-  done = done + pm.getMessage().length()+1;
+  memcpy(&m_PaddingBuffer[done], pm.getMessage().c_str(), pm.getMessage().length() + 1);
+  done = done + pm.getMessage().length() + 1;
   #ifdef DEBUG
   if (done!=origLen)
   {
@@ -66,15 +66,10 @@ PMSource::PMSource(const PrivateMessage& pm)
     throw std::runtime_error("PMSource::PMSource(): Number of written bytes does not match expected number!");
   }
   #endif
-  m_BufStream.buffer((const char*) m_PaddingBuffer, origLen);
+  m_BufStream.buffer(reinterpret_cast<const char*>(m_PaddingBuffer), origLen);
   m_BitsRead = 0;
-  //BufferStream takes care of pointer, so we set it to NULL here to avoid conflicts
-  m_PaddingBuffer = NULL;
-}
-
-PMSource::~PMSource()
-{
-  //empty
+  // BufferStream takes care of pointer, so we set it to NULL here to avoid conflicts.
+  m_PaddingBuffer = nullptr;
 }
 
 bool PMSource::getNextMessageBlock(MessageBlock& mBlock)
@@ -83,9 +78,9 @@ bool PMSource::getNextMessageBlock(MessageBlock& mBlock)
   switch (m_Status)
   {
     case psUnpadded:
-         m_BufStream.read((char*) &(mBlock.words[0]), 64);
+         m_BufStream.read(reinterpret_cast<char*>(&(mBlock.words[0])), 64);
          bytesRead = m_BufStream.gcount();
-         if (bytesRead==64)
+         if (bytesRead == 64)
          {
            m_BitsRead += 512;
            mBlock.reverseBlock();
@@ -100,7 +95,7 @@ bool PMSource::getNextMessageBlock(MessageBlock& mBlock)
          //zero out rest of message block
          memset(&(((uint8_t*) &(mBlock.words[0]))[bytesRead+1]), 0, 64 - (bytesRead+1));
          //pad size value in there, too, if possible
-         if (bytesRead+1<=56)
+         if (bytesRead + 1 <= 56)
          {
            #if BYTE_ORDER == LITTLE_ENDIAN
            reverse64(m_BitsRead, m_BitsRead);
@@ -115,9 +110,9 @@ bool PMSource::getNextMessageBlock(MessageBlock& mBlock)
          return true;
          break;
     case psPadded1024And512Read:
-         //fill all with zeros (padding)
+         // fill all with zeros (padding)
          memset(&(mBlock.words[0]), 0, 64);
-         //pad size value in there, too
+         // pad size value in there, too
          #if BYTE_ORDER == LITTLE_ENDIAN
          reverse64(m_BitsRead, m_BitsRead);
          #endif
@@ -135,10 +130,10 @@ bool PMSource::getNextMessageBlock(MessageBlock& mBlock)
          throw std::logic_error("PMSource::getNextMessageBlock(): Code execution should never get to this point!");
          return false;
          break;
-  }//swi
+  } // switch
   //We should never get to this point either!
   throw std::logic_error("PMSource::getNextMessageBlock(): Code execution should never get to this point either!");
   return false;
 }
 
-} //namespace
+} // namespace

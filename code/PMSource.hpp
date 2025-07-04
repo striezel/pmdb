@@ -28,8 +28,8 @@
 namespace SHA256
 {
 
-/** class that uses a PrivateMessage class instance as message source
- *  for SHA-256 hash calculation
+/** Class that uses a PrivateMessage class instance as message source
+ *  for SHA-256 hash calculation.
  */
 class PMSource: public MessageSource
 {
@@ -38,11 +38,7 @@ class PMSource: public MessageSource
     PMSource(const PrivateMessage& pm);
 
 
-    /** destructor */
-    virtual ~PMSource();
-
-
-    /** \brief puts the next message block from the source in mBlock
+    /** \brief Puts the next message block from the source in mBlock.
      *
      * \param mBlock   reference to the message blocked that should be filled
      * \return Returns true, if there is at least one more message block.
@@ -52,8 +48,8 @@ class PMSource: public MessageSource
     virtual bool getNextMessageBlock(MessageBlock& mBlock);
   private:
     libstriezel::InBufferStream m_BufStream;
-}; //class
+}; // class
 
-} //namespace
+} // namespace
 
 #endif // PMSOURCE_HPP

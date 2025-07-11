@@ -293,5 +293,16 @@ TEST_CASE("Config")
       Config conf;
       REQUIRE_FALSE( conf.loadFromFile(path.string()) );
     }
+
+    SECTION("invalid: same smilie code occurs twice")
+    {
+      const std::filesystem::path path{std::filesystem::temp_directory_path() / "duplicate-smilie-code.conf"};
+      const std::string content = "forum=https://forum.example.com/\nsmilie_r=:)=smile.png\nsmilie_r=:)=smile2.png\n";
+      REQUIRE( writeConfiguration(path, content) );
+      FileGuard guard{path};
+
+      Config conf;
+      REQUIRE_FALSE( conf.loadFromFile(path.string()) );
+    }
   }
 }

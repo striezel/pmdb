@@ -19,6 +19,7 @@
 */
 
 #include "Config.hpp"
+#include <algorithm>
 #include <fstream>
 #include <iostream>
 
@@ -127,6 +128,12 @@ bool Config::loadFromFile(const std::string& fileName)
       if (s_url.empty())
       {
         std::cerr << "Config::loadFromFile: ERROR: Invalid smilie specification!\n";
+        input.close();
+        return false;
+      }
+      if (std::find_if(smilies.begin(), smilies.end(), [&code](const Smilie& s) { return s.code() == code; }) != smilies.end())
+      {
+        std::cerr << "Config::loadFromFile: ERROR: Smilie code " << code << " is specified more than once!\n";
         input.close();
         return false;
       }

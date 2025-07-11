@@ -14,6 +14,9 @@ TODO: Add more information.
 
 ```
 pmdb
+
+Manages private messages exported from vBulletin in XML format.
+
 options:
   --help           - Displays this help message and quits.
   -?               - same as --help
@@ -55,9 +58,11 @@ options:
                          --cell=grid_td
   --subset-check   - Search for messages with texts that are completely
                      contained in other messages, too.
-  --list-from X    - List all messages that were sent by user X.
+  --list-from X    - List all messages that were sent by user X, where X stands
+                     for the name of the user (not the numeric user id).
                      Can occur multiple times for more than one user.
-  --list-to X      - List all messages that were sent to user X.
+  --list-to X      - List all messages that were sent to user X, where X stands
+                     for the name of the user (not the numeric user id).
                      Can occur multiple times for more than one user.
 ```
 

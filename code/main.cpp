@@ -58,7 +58,10 @@ void showVersion()
 
 void showHelp(const std::string& name)
 {
-  std::cout << "\n" << name << "\n"
+  std::cout << "\n" << name << '\n'
+            << '\n'
+            << "Manages private messages exported from vBulletin in XML format.\n"
+            << '\n'
             << "options:\n"
             << "  --help           - Displays this help message and quits.\n"
             << "  -?               - same as --help\n"
@@ -102,9 +105,11 @@ void showHelp(const std::string& name)
             << "                         --cell=" << TableClasses::DefaultCellClass << "\n"
             << "  --subset-check   - Search for messages with texts that are completely\n"
             << "                     contained in other messages, too.\n"
-            << "  --list-from X    - List all messages that were sent by user X.\n"
+            << "  --list-from X    - List all messages that were sent by user X, where X stands\n"
+            << "                     for the name of the user (not the numeric user id).\n"
             << "                     Can occur multiple times for more than one user.\n"
-            << "  --list-to X      - List all messages that were sent to user X.\n"
+            << "  --list-to X      - List all messages that were sent to user X, where X stands\n"
+            << "                     for the name of the user (not the numeric user id).\n"
             << "                     Can occur multiple times for more than one user.\n";
 }
 

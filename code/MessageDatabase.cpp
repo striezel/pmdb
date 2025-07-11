@@ -341,23 +341,24 @@ bool MessageDatabase::loadMessages(const std::string& directory, uint32_t& readP
     {
       continue;
     }
-    if (SHA256::isValidHash(entry.FileName))
+    if (!SHA256::isValidHash(entry.FileName))
     {
-      if (!tempPM.loadFromFile(realDirectory + entry.FileName, compression))
-      {
-        std::cerr << "Error while loading message from file \"" << realDirectory + entry.FileName << "\"!\n";
-        return false;
-      }
-      if (entry.FileName != tempPM.getHash().toHexString())
-      {
-        std::cerr << "Error: Content of message file has been altered!\n";
-        return false;
-      }
-      ++readPMs;
-      if (addMessage(tempPM))
-      {
-        ++newPMs;
-      }
+      continue;
+    }
+    if (!tempPM.loadFromFile(realDirectory + entry.FileName, compression))
+    {
+      std::cerr << "Error while loading message from file \"" << realDirectory + entry.FileName << "\"!\n";
+      return false;
+    }
+    if (entry.FileName != tempPM.getHash().toHexString())
+    {
+      std::cerr << "Error: Content of message file " << realDirectory + entry.FileName << " has been altered!\n";
+      return false;
+    }
+    ++readPMs;
+    if (addMessage(tempPM))
+    {
+      ++newPMs;
     }
   }
   return true;

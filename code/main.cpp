@@ -116,8 +116,6 @@ int main(int argc, char **argv)
   bool saveModeSpecified = false;
   Compression compression = Compression::none;
 
-  const std::string defaultSaveDirectory = pmdb::paths::main() + libstriezel::filesystem::pathDelimiter;
-
   bool doHTML = false;
   HTMLOptions htmlOptions;
 
@@ -202,13 +200,14 @@ int main(int argc, char **argv)
         }//param == no-save
         else if (param == "--load")
         {
-          if (loadDirs.find(defaultSaveDirectory) != loadDirs.end())
+          const std::string defaultMessageDirectory = pmdb::paths::messages() + libstriezel::filesystem::pathDelimiter;
+          if (loadDirs.find(defaultMessageDirectory) != loadDirs.end())
           {
             std::cerr << "Parameter --load must not occur more than once!\n";
             return rcInvalidParameter;
           }
-          loadDirs.insert(defaultSaveDirectory);
-          std::cout << "Directory \"" << defaultSaveDirectory << "\" was chained for loading.\n";
+          loadDirs.insert(defaultMessageDirectory);
+          std::cout << "Directory \"" << defaultMessageDirectory << "\" was chained for loading.\n";
         }//param == load
         else if ((param.substr(0,7) == "--load=") && (param.length() > 7))
         {

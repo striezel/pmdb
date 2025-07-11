@@ -31,6 +31,18 @@ TEST_CASE("pmdb::paths")
     REQUIRE( main.find(".pmdb") != std::string::npos );
   }
 
+  SECTION("messages")
+  {
+    const std::string main = pmdb::paths::main();
+    const std::string messages = pmdb::paths::messages();
+
+    REQUIRE_FALSE( messages.empty() );
+    REQUIRE( messages.find("messages") != std::string::npos );
+
+    // Must be below main path.
+    REQUIRE( messages.find(main) == 0 );
+  }
+
   SECTION("html")
   {
     const std::string main = pmdb::paths::main();

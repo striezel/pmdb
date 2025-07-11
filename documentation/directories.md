@@ -29,3 +29,11 @@ directory. This means its location could be `/home/name/.pmdb/pmdb.conf` on
 Unix-like systems or `C:\Users\name\.pmdb\pmdb.conf` on Windows systems, for
 example. For more information on the file and its contents
 see [configuration.md](configuration.md).
+
+## Saved messages
+
+The messages that are saved by pmdb are stored within the `messages`
+sub-directory of the main directory, e.g. `/home/name/.pmdb/messages`  on
+Unix-like systems or `C:\Users\name\.pmdb\messages` on Windows systems.
+The file names are [SHA-256 hashes](https://en.wikipedia.org/wiki/SHA-2) of the
+message content.

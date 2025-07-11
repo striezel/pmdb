@@ -35,6 +35,11 @@ std::string paths::main()
   return libstriezel::filesystem::slashify(home) + std::string(".pmdb");
 }
 
+std::string paths::messages()
+{
+  return main() + libstriezel::filesystem::pathDelimiter + "messages";
+}
+
 std::string paths::html()
 {
   return main() + libstriezel::filesystem::pathDelimiter + "html";

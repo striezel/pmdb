@@ -62,7 +62,7 @@ void showFilteredMessages(const MessageDatabase& mdb, const FolderMap& fm, const
 
 int saveMessages(const MessageDatabase& mdb, const FolderMap& fm, const Compression compression)
 {
-  const std::string save_dir = pmdb::paths::main();
+  const std::string save_dir = pmdb::paths::messages();
   // directory creation - only necessary, if there are any messages
   if (mdb.getNumberOfMessages() != 0)
   {

@@ -36,6 +36,13 @@ struct paths
      */
     static std::string main();
 
+    /** \brief Gets the directory where private messages are saved.
+     *
+     * \return Returns the directory where private messages are saved.
+     * \remarks This is usually ~/.pmdb/messages or the equivalent.
+     */
+    static std::string messages();
+
     /** \brief Gets the directory where HTML files are saved.
      *
      * \return Returns the directory where HTML files are saved.

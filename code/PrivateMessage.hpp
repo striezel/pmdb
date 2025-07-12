@@ -23,14 +23,8 @@
 
 #include <cstdint>
 #include <string>
+#include "Compression.hpp"
 #include "../libstriezel/hash/sha256/sha256.hpp"
-
-/// enumeration for types of compression
-enum class Compression: bool
-{
-  none = false,
-  zlib = true
-};
 
 /** Holds information about a private message. */
 class PrivateMessage

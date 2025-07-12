@@ -21,8 +21,8 @@
 #ifndef PRIVATEMESSAGE_HPP
 #define PRIVATEMESSAGE_HPP
 
+#include <cstdint>
 #include <string>
-#include <stdint.h>
 #include "../libstriezel/hash/sha256/sha256.hpp"
 
 /// enumeration for types of compression

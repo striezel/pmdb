@@ -1,6 +1,6 @@
 # This is an example configuration file for pmdb. It contains the values for
 # use with private messages from the World of Players forum. To use that file,
-# copy it to /home/name/.pmdb/pmdb.conf on Unix-like systemts or to
+# copy it to /home/name/.pmdb/pmdb.conf on Unix-like systems or to
 # C:\Users\name\.pmdb\pmdb.conf on Windows systems, but replace `name` by your
 # actual user name.
 

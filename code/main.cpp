@@ -86,6 +86,12 @@ void showHelp(const std::string& name)
             << "                     pressed when they are loaded from files. By default,\n"
             << "                     messages will NOT be compressed for backwards compatibi-\n"
             << "                     lity with earlier pmdb versions.\n"
+            << "  --no-save-check  - This option prevents the program from checking the\n"
+            << "                     compression status of messages when saving to an existing\n"
+            << "                     directory. Note that this is not recommended, because it\n"
+            << "                     could result in a mixup where a directory contains both\n"
+            << "                     compressed and uncompressed messages, making some of the\n"
+            << "                     messages unreadable by the program.\n"
             #endif // NO_PM_COMPRESSION
             << "  --html           - Creates HTML files for every message.\n"
             << "  --xhtml          - Like --html, but use XHTML instead of HTML.\n"
@@ -120,6 +126,7 @@ int main(int argc, char **argv)
   bool doSave = true;
   bool saveModeSpecified = false;
   Compression compression = Compression::none;
+  CompressionCheck compressionCheck = CompressionCheck::Perform;
 
   bool doHTML = false;
   HTMLOptions htmlOptions;
@@ -280,6 +287,15 @@ int main(int argc, char **argv)
           return rcInvalidParameter;
           #endif // NO_PM_COMPRESSION
         }//param == compression
+        else if ((param == "--no-save-check") || (param == "--skip-save-check"))
+        {
+          if (compressionCheck == CompressionCheck::Skip)
+          {
+            std::cerr << "Parameter " << param << " must not occur more than once!\n";
+            return rcInvalidParameter;
+          }
+          compressionCheck = CompressionCheck::Skip;
+        }
         else if ((param.substr(0,8) == "--table=") && (param.length() > 8))
         {
           htmlOptions.tableClasses.table = param.substr(8);
@@ -421,7 +437,7 @@ int main(int argc, char **argv)
 
   if (doSave)
   {
-    const int rc = saveMessages(mdb, fm, compression);
+    const int rc = saveMessages(mdb, fm, compression, compressionCheck);
     if (rc != 0)
     {
       return rc;

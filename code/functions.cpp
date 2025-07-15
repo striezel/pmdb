@@ -61,7 +61,7 @@ void showFilteredMessages(const MessageDatabase& mdb, const FolderMap& fm, const
     std::cout << "Total: " << matches.size() << "\n";
 }
 
-int saveMessages(const MessageDatabase& mdb, const FolderMap& fm, const Compression compression)
+int saveMessages(const MessageDatabase& mdb, const FolderMap& fm, const Compression compression, const CompressionCheck check)
 {
   const std::string save_dir = pmdb::paths::messages();
   // directory creation - only necessary, if there are any messages
@@ -79,20 +79,24 @@ int saveMessages(const MessageDatabase& mdb, const FolderMap& fm, const Compress
     }
     else
     {
-      // Directory already exists, so check for matching compression.
-      const auto existing_compression = detect_compression(save_dir);
-      if (existing_compression.has_value())
+      // Directory already exists, so check for matching compression, if check
+      // has not been disabled.
+      if (check == CompressionCheck::Perform)
       {
-        if (existing_compression.value() != compression)
+        const auto existing_compression = detect_compression(save_dir);
+        if (existing_compression.has_value())
         {
-          const auto existing = existing_compression.value() == Compression::none ? "uncompressed" : "compressed";
-          const auto saving = compression == Compression::none ? "uncompressed" : "compressed";
-          std::cout << "Error: Directory " << save_dir << " already seems to "
-                    << "contain " << existing << " messages, but you attempt to"
-                    << " save " << saving << " messages there. This could result"
-                    << " in a mixup which makes the directory unreadable by the"
-                    << " application.\n";
-          return rcCompressionMismatch;
+          if (existing_compression.value() != compression)
+          {
+            const auto existing = existing_compression.value() == Compression::none ? "uncompressed" : "compressed";
+            const auto saving = compression == Compression::none ? "uncompressed" : "compressed";
+            std::cout << "Error: Directory " << save_dir << " already seems to "
+                      << "contain " << existing << " messages, but you attempt to"
+                      << " save " << saving << " messages there. This could result"
+                      << " in a mixup which makes the directory unreadable by the"
+                      << " application.\n";
+            return rcCompressionMismatch;
+          }
         }
       }
     }

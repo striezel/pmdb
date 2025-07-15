@@ -28,4 +28,11 @@ enum class Compression: bool
   zlib = true
 };
 
+/// enumeration for compression check setting
+enum class CompressionCheck: bool
+{
+  Perform = false,
+  Skip = true
+};
+
 #endif // PMDB_COMPRESSION_HPP

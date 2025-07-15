@@ -40,6 +40,12 @@ options:
                      pressed when they are loaded from files. By default,
                      messages will NOT be compressed for backwards compatibi-
                      lity with earlier pmdb versions.
+  --no-save-check  - This option prevents the program from checking the
+                     compression status of messages when saving to an existing
+                     directory. Note that this is not recommended, because it
+                     could result in a mixup where a directory contains both
+                     compressed and uncompressed messages, making some of the
+                     messages unreadable by the program.
   --html           - Creates HTML files for every message.
   --xhtml          - Like --html, but use XHTML instead of HTML.
   --no-br          - Do not convert new line characters to line breaks in

@@ -66,7 +66,7 @@ TEST_CASE("detect_compression")
 
     auto pm = getExampleMessage();
     const auto hash = pm.getHash().toHexString();
-    REQUIRE( pm.saveToFile(path / hash, Compression::none) );
+    REQUIRE( pm.saveToFile((path / hash).string(), Compression::none) );
 
     const auto detected = detect_compression(path.string());
     REQUIRE( detected.has_value() );
@@ -82,7 +82,7 @@ TEST_CASE("detect_compression")
 
     auto pm = getExampleMessage();
     const auto hash = pm.getHash().toHexString();
-    REQUIRE( pm.saveToFile(path / hash, Compression::zlib) );
+    REQUIRE( pm.saveToFile((path / hash).string(), Compression::zlib) );
 
     const auto detected = detect_compression(path.string());
     REQUIRE( detected.has_value() );

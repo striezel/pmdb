@@ -31,6 +31,8 @@
 		<Linker>
 			<Add library="z" />
 		</Linker>
+		<Unit filename="../../code/CompressionDetection.cpp" />
+		<Unit filename="../../code/CompressionDetection.hpp" />
 		<Unit filename="../../code/Config.cpp" />
 		<Unit filename="../../code/Config.hpp" />
 		<Unit filename="../../code/ConsoleColours.cpp" />
@@ -82,6 +84,7 @@
 		<Unit filename="../../libstriezel/zlib/CompressionFunctions.hpp" />
 		<Unit filename="../FileGuard.hpp" />
 		<Unit filename="../locate_catch.hpp" />
+		<Unit filename="CompressionDetections.cpp" />
 		<Unit filename="Config.cpp" />
 		<Unit filename="FolderMap.cpp" />
 		<Unit filename="bbcode/AdvancedTemplateBBCode.cpp" />

@@ -90,6 +90,8 @@
 		<Unit filename="ColourMap.cpp" />
 		<Unit filename="ColourMap.hpp" />
 		<Unit filename="Compression.hpp" />
+		<Unit filename="CompressionDetection.cpp" />
+		<Unit filename="CompressionDetection.hpp" />
 		<Unit filename="Config.cpp" />
 		<Unit filename="Config.hpp" />
 		<Unit filename="ConsoleColours.cpp" />

@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2012, 2014, 2025  Dirk Stolle
+    Copyright (C) 2025  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,13 +18,20 @@
  -------------------------------------------------------------------------------
 */
 
-#ifndef PMDB_RETURNCODES_HPP
-#define PMDB_RETURNCODES_HPP
+#ifndef PMDB_COMPRESSION_DETECTION_HPP
+#define PMDB_COMPRESSION_DETECTION_HPP
 
-// return codes
-const int rcInvalidParameter    = 1;
-const int rcFileError           = 2;
-const int rcCaughtException     = 3;
-const int rcCompressionMismatch = 4;
+#include <optional>
+#include <string>
+#include "Compression.hpp"
 
-#endif // PMDB_RETURNCODES_HPP
+
+/** \brief Attempts to detect the compression used for PMs in a folder.
+ *
+ * \param directory   the directory that contains the private messages
+ * \return Returns the compression mode (none or zlib) in case of success.
+ *         Returns an empty optional, if an error occurred.
+ */
+std::optional<Compression> detect_compression(const std::string& directory);
+
+#endif // PMDB_COMPRESSION_DETECTION_HPP

@@ -4,6 +4,7 @@ cmake_minimum_required (VERSION 3.8...3.31)
 project(component_tests)
 
 set(component_tests_sources
+    ../../code/CompressionDetection.cpp
     ../../code/Config.cpp
     ../../code/ConsoleColours.cpp
     ../../code/FolderMap.cpp
@@ -28,6 +29,7 @@ set(component_tests_sources
     ../../libstriezel/hash/sha256/sha256.cpp
     ../../libstriezel/zlib/CompressionFunctions.cpp
     ../FileGuard.hpp
+    CompressionDetections.cpp
     Config.cpp
     FolderMap.cpp
     bbcode/AdvancedTemplateBBCode.cpp

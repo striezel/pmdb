@@ -90,7 +90,7 @@ int saveMessages(const MessageDatabase& mdb, const FolderMap& fm, const Compress
           {
             const auto existing = existing_compression.value() == Compression::none ? "uncompressed" : "compressed";
             const auto saving = compression == Compression::none ? "uncompressed" : "compressed";
-            std::cout << "Error: Directory " << save_dir << " already seems to "
+            std::cerr << "Error: Directory " << save_dir << " already seems to "
                       << "contain " << existing << " messages, but you attempt to"
                       << " save " << saving << " messages there. This could result"
                       << " in a mixup which makes the directory unreadable by the"
@@ -104,13 +104,13 @@ int saveMessages(const MessageDatabase& mdb, const FolderMap& fm, const Compress
 
   if (!mdb.saveMessages(save_dir, compression))
   {
-    std::cout << "Could not save messages!\n";
+    std::cerr << "Could not save messages!\n";
     return rcFileError;
   }
   std::cout << "Messages saved successfully!\n";
   if (!fm.save(save_dir))
   {
-    std::cout << "Could not save folder map!\n";
+    std::cerr << "Could not save folder map!\n";
     return rcFileError;
   }
   std::cout << "Folder map saved successfully!\n";

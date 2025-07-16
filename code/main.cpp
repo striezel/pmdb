@@ -357,7 +357,7 @@ int main(int argc, char **argv)
           else
           {
             std::cerr << "Error: You have to specify a user name after \""
-                      << param <<"\".\n";
+                      << param << "\".\n";
             return rcInvalidParameter;
           }
         }//param == list-to-user
@@ -420,7 +420,7 @@ int main(int argc, char **argv)
   {
     if (!mdb.loadMessages(directory, PMs_done, PMs_new, compression))
     {
-      std::cout << "Could not load all messages from \"" << directory
+      std::cerr << "Could not load all messages from \"" << directory
                 << "\"!\nRead so far: " << PMs_done << "; new: " << PMs_new
                 << "\n";
       return rcFileError;

@@ -1,0 +1,36 @@
+name: Samitizers
+
+on: push
+
+jobs:
+  gcc:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - version: 14
+            os: ubuntu-24.04
+    runs-on: ${{ matrix.os }}
+    steps:
+      # Checks-out the repository under $GITHUB_WORKSPACE.
+      - uses: actions/checkout@v4
+        with:
+          submodules: 'recursive'
+      - name: Install Debian packages
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y catch2 cmake g++-${{ matrix.version }} libxml2-dev pkg-config zlib1g-dev
+          sudo apt-get install -y libasan8 libubsan1
+      - name: Build with GNU GCC ${{ matrix.version }}
+        run: |
+          export CXX=g++-${{ matrix.version }}
+          export CC=gcc-${{ matrix.version }}
+          cd $GITHUB_WORKSPACE
+          mkdir build
+          cd build
+          cmake ../ -DENABLE_SANITIZER=ON
+          make -j4
+      - name: Tests
+        run: |
+          cd "$GITHUB_WORKSPACE"/build
+          ctest -V

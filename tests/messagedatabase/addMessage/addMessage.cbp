@@ -20,6 +20,11 @@
 			</Target>
 		</Build>
 		<Compiler>
+			<Add option="-Wshadow" />
+			<Add option="-Weffc++" />
+			<Add option="-pedantic-errors" />
+			<Add option="-pedantic" />
+			<Add option="-Wextra" />
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 			<Add option="-DNO_PM_COMPRESSION" />
@@ -60,9 +65,6 @@
 		<Unit filename="../../../libstriezel/hash/sha256/sha256.hpp" />
 		<Unit filename="addMessage.cpp" />
 		<Extensions>
-			<code_completion />
-			<envvars />
-			<debugger />
 			<lib_finder disable_auto="1" />
 		</Extensions>
 	</Project>

@@ -47,6 +47,20 @@ if (ENABLE_STATIC_LINKING)
   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static-libgcc -static-libstdc++ -static")
 endif ()
 
+# option to enable sanitizers
+option(ENABLE_SANITIZER "Enable sanitizer options" OFF)
+if (ENABLE_SANITIZER)
+  if (NOT CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND NOT CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    message(FATAL_ERROR "Sanitizer builds need GCC or Clang compiler!")
+  endif()
+  message(STATUS "Enabling address sanitizer and the undefined behaviour sanitizer.")
+  add_compile_options(-fsanitize=address -fno-omit-frame-pointer
+                      -fsanitize=undefined -fno-sanitize-recover=all
+                      -g)
+  link_libraries(-fsanitize=address -fno-omit-frame-pointer
+                 -fsanitize=undefined -fno-sanitize-recover=all)
+endif (ENABLE_SANITIZER)
+
 #actual project
 add_subdirectory (code)
 

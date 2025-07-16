@@ -1,6 +1,7 @@
 cmake_minimum_required (VERSION 3.8...3.31)
 
-# binary for Config creation test
+# binary for tests of MessageDatabase::addMessage()
+# TODO: move to component tests
 project(addMessage_test)
 
 set(addMessage_test_src
@@ -22,7 +23,12 @@ set(addMessage_test_src
     addMessage.cpp)
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-  add_definitions(-Wall -O2 -fexceptions)
+  add_definitions(-Wall -Wextra -Wpedantic -pedantic-errors -Wshadow -fexceptions)
+  if (ENABLE_SANITIZER)
+    add_definitions (-O0)
+  else ()
+    add_definitions (-O2)
+  endif ()
 
   set( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -s" )
 endif ()

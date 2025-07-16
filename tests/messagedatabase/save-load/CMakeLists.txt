@@ -1,6 +1,6 @@
 cmake_minimum_required (VERSION 3.8...3.31)
 
-# binary for Config creation test
+# binary for test of saving/loading uncompressed messages
 project(MessageDatabase_saveload_test)
 
 set(MessageDatabase_saveload_test_src
@@ -22,7 +22,12 @@ set(MessageDatabase_saveload_test_src
     save-load-test.cpp)
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-  add_definitions(-Wall -O2 -fexceptions)
+  add_definitions(-Wall -Wextra -Wpedantic -pedantic-errors -Wshadow -fexceptions)
+  if (ENABLE_SANITIZER)
+    add_definitions (-O0)
+  else ()
+    add_definitions (-O2)
+  endif ()
 
   set( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -s" )
 endif ()

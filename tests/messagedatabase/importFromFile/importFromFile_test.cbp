@@ -20,8 +20,13 @@
 			</Target>
 		</Build>
 		<Compiler>
-			<Add option="-std=c++17" />
+			<Add option="-Wshadow" />
+			<Add option="-Weffc++" />
+			<Add option="-pedantic-errors" />
+			<Add option="-pedantic" />
+			<Add option="-Wextra" />
 			<Add option="-Wall" />
+			<Add option="-std=c++17" />
 			<Add option="-fexceptions" />
 			<Add option="-DNO_PM_COMPRESSION" />
 			<Add directory="/usr/include/libxml2/" />
@@ -54,20 +59,17 @@
 		<Unit filename="../../../libstriezel/filesystem/directory.cpp" />
 		<Unit filename="../../../libstriezel/filesystem/directory.hpp" />
 		<Unit filename="../../../libstriezel/hash/sha-1-256_functions.h" />
-		<Unit filename="../../../libstriezel/hash/sha256/sha256.cpp" />
-		<Unit filename="../../../libstriezel/hash/sha256/sha256.hpp" />
-		<Unit filename="../../../libstriezel/hash/sha256/functions.hpp" />
 		<Unit filename="../../../libstriezel/hash/sha256/BufferSource.cpp" />
 		<Unit filename="../../../libstriezel/hash/sha256/BufferSource.hpp" />
 		<Unit filename="../../../libstriezel/hash/sha256/BufferSourceUtility.cpp" />
 		<Unit filename="../../../libstriezel/hash/sha256/BufferSourceUtility.hpp" />
 		<Unit filename="../../../libstriezel/hash/sha256/MessageSource.cpp" />
 		<Unit filename="../../../libstriezel/hash/sha256/MessageSource.hpp" />
+		<Unit filename="../../../libstriezel/hash/sha256/functions.hpp" />
+		<Unit filename="../../../libstriezel/hash/sha256/sha256.cpp" />
+		<Unit filename="../../../libstriezel/hash/sha256/sha256.hpp" />
 		<Unit filename="importFromFile_test.cpp" />
 		<Extensions>
-			<code_completion />
-			<envvars />
-			<debugger />
 			<lib_finder disable_auto="1" />
 		</Extensions>
 	</Project>

@@ -1,6 +1,6 @@
 cmake_minimum_required (VERSION 3.8...3.31)
 
-# binary for Config creation test
+# binary for colourmap load test
 project(colourmap_test_load)
 
 set(colourmap_test_load_src
@@ -9,7 +9,12 @@ set(colourmap_test_load_src
     colourmap_load.cpp)
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-    add_definitions(-Wall -O3 -fexceptions)
+    add_definitions(-Wall -Wextra -Wpedantic -pedantic-errors -Wshadow -fexceptions)
+    if (ENABLE_SANITIZER)
+        add_definitions (-O0)
+    else ()
+        add_definitions (-O3)
+    endif ()
 
     set( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -s" )
 endif ()

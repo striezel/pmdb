@@ -70,7 +70,7 @@ void showHelp(const std::string& name)
             << "  -xml FILENAME    - Sets the name of the XML file that contains the private\n"
             << "                     messages to FILENAME. Must not be omitted.\n"
             << "  --xml=FILENAME   - same as -xml\n"
-            << "  --load           - Tries to load messages from the default directory.\n"
+            << "  --load-default   - Tries to load messages from the default directory.\n"
             << "  --load=DIR       - Tries to load all messages saved in the directory DIR.\n"
             << "                     This option can be given more than once, however the\n"
             << "                     directory has to be different every time.\n"
@@ -210,17 +210,17 @@ int main(int argc, char **argv)
           saveModeSpecified = true;
           std::cout << "Files will NOT be saved as requested via " << param << ".\n";
         }//param == no-save
-        else if (param == "--load")
+        else if (param == "--load-default")
         {
           const std::string defaultMessageDirectory = pmdb::paths::messages() + libstriezel::filesystem::pathDelimiter;
           if (loadDirs.find(defaultMessageDirectory) != loadDirs.end())
           {
-            std::cerr << "Parameter --load must not occur more than once!\n";
+            std::cerr << "Parameter --load-default must not occur more than once!\n";
             return rcInvalidParameter;
           }
           loadDirs.insert(defaultMessageDirectory);
           std::cout << "Directory \"" << defaultMessageDirectory << "\" was chained for loading.\n";
-        }//param == load
+        }
         else if ((param.substr(0,7) == "--load=") && (param.length() > 7))
         {
           std::string pathToDir = param.substr(7);
@@ -422,7 +422,7 @@ int main(int argc, char **argv)
       std::cout << "Could not load all messages from \"" << directory
                 << "\"!\nRead so far: " << PMs_done << "; new: " << PMs_new
                 << "\n";
-      return 0;
+      return rcFileError;
     }
     std::cout << "All messages from \"" << directory << "\" loaded! Read: "
               << PMs_done << "; new: " << PMs_new << "\n";

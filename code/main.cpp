@@ -409,8 +409,9 @@ int main(int argc, char **argv)
     }
     else
     {
-      std::cout << "Import of private messages from \"" << path << "\" failed!\n"
+      std::cerr << "Import of private messages from \"" << path << "\" failed!\n"
                 << "  PMs read from file so far: " << PMs_done << "\nNew PMs: " << PMs_new << "\n";
+      return rcFileError;
     }
   }
 

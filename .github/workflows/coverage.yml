@@ -1,0 +1,49 @@
+name: Code coverage
+
+on: push
+
+jobs:
+  gcc:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - version: 14
+            os: ubuntu-24.04
+    runs-on: ${{ matrix.os }}
+    steps:
+      # Checks-out the repository under $GITHUB_WORKSPACE.
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: 'recursive'
+          persist-credentials: false
+      - name: Install Debian packages
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y catch2 cmake g++-${{ matrix.version }} libxml2-dev pkg-config zlib1g-dev
+          sudo apt-get install -y lcov
+      - name: Build with GNU GCC ${{ matrix.version }}
+        run: |
+          export CXX=g++-${{ matrix.version }}
+          export CC=gcc-${{ matrix.version }}
+          cd "$GITHUB_WORKSPACE"
+          mkdir build-coverage
+          cd build-coverage
+          cmake ../ -DCODE_COVERAGE=ON
+          make -j4
+      - name: Tests
+        run: |
+          cd "$GITHUB_WORKSPACE"/build-coverage
+          ctest -V
+      - name: Collect code coverage data
+        run: |
+          lcov -c --directory . --output-file coverage.info
+          lcov --remove coverage.info '/usr/*' '*tests/*' '*libstriezel/*' -o main_coverage.info
+          genhtml main_coverage.info --output-directory ../public
+      - name: Upload code coverage data
+        uses: actions/upload-artifact@v4
+        with:
+          name: pmdb_coverage
+          path: public
+          if-no-files-found: error

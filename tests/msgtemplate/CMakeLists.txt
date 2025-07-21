@@ -10,7 +10,7 @@ set(test_msgtemplate_loadequality_src
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     add_definitions(-Wall -Wextra -Wpedantic -pedantic-errors -Wshadow -fexceptions)
-    if (ENABLE_SANITIZER)
+    if (ENABLE_SANITIZER OR CODE_COVERAGE)
         add_definitions (-O0)
     else ()
         add_definitions (-O3)

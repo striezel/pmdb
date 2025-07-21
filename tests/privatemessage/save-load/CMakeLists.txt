@@ -14,7 +14,7 @@ set(PM_save_load_test_src
 
 if (CMAKE_COMPILER_IS_GNUCC)
     add_definitions(-Wall -Wextra -Wpedantic -pedantic-errors -Wshadow -fexceptions)
-    if (ENABLE_SANITIZER)
+    if (ENABLE_SANITIZER OR CODE_COVERAGE)
         add_definitions (-O0)
     else ()
         add_definitions (-O3)

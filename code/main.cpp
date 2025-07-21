@@ -164,6 +164,11 @@ int main(int argc, char **argv)
               std::cerr << "Parameter " << param << " must not occur more than once for the same file!\n";
               return rcInvalidParameter;
             }
+            if (!libstriezel::filesystem::file::exists(pathToXML))
+            {
+              std::cerr << "Error: XML file " << pathToXML << " does not exist!\n";
+              return rcInvalidParameter;
+            }
             pathXML.insert(pathToXML);
             ++i; // skip next parameter, because it's used as file name already
             std::cout << "XML file \"" << pathToXML << "\" was chained for loading.\n";
@@ -181,6 +186,11 @@ int main(int argc, char **argv)
           if (pathXML.find(pathToXML) != pathXML.end())
           {
             std::cerr << "Parameter --xml must not occur more than once for the same XML file!\n";
+            return rcInvalidParameter;
+          }
+          if (!libstriezel::filesystem::file::exists(pathToXML))
+          {
+            std::cerr << "Error: XML file " << pathToXML << " does not exist!\n";
             return rcInvalidParameter;
           }
           pathXML.insert(pathToXML);
@@ -229,6 +239,11 @@ int main(int argc, char **argv)
           if (loadDirs.find(pathToDir) != loadDirs.end())
           {
             std::cerr << "Parameter --load must not occur more than once for the same directory!\n";
+            return rcInvalidParameter;
+          }
+          if (!libstriezel::filesystem::directory::exists(libstriezel::filesystem::unslashify(pathToDir)))
+          {
+            std::cerr << "Error: Directory " << pathToDir << " does not exist!\n";
             return rcInvalidParameter;
           }
           loadDirs.insert(pathToDir);

@@ -441,11 +441,21 @@ int main(int argc, char **argv)
     }
   }
 
-  //no files to load?
+  // No files to load?
   if (pathXML.empty() && loadDirs.empty())
   {
-    std::cerr << "You have to specify certain parameters for this program to run properly.\n"
-              << "Use --help to get a list of valid parameters.\n";
+    std::cerr << "Error: The program needs some input data to work with, for "
+              << "example an XML file\ncontaining saved messages or a directory "
+              << "which contains previously saved\nmessages. To load messages "
+              << "from an XML file use the --xml command-line option.\n"
+              << "For example, to load messages from the file ";
+    #if defined(_WIN32)
+    constexpr auto path = "C:\\path\\to\\messages.xml";
+    #else
+    constexpr auto path = "/path/to/messages.xml";
+    #endif
+    std::cerr << path << " type\n\n    pmdb --xml " << path << "\n\n"
+              << "For more information use --help to get a list of all valid parameters.\n";
     return rcInvalidParameter;
   }
 

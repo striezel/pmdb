@@ -71,6 +71,7 @@ void showHelp(const std::string& name)
             << "                     messages to FILENAME. Must not be omitted.\n"
             << "  --xml=FILENAME   - same as -xml\n"
             << "  --load-default   - Tries to load messages from the default directory.\n"
+            << "                     This option is enabled by default.\n"
             << "  --load=DIR       - Tries to load all messages saved in the directory DIR.\n"
             << "                     This option can be given more than once, however the\n"
             << "                     directory has to be different every time.\n"
@@ -228,8 +229,16 @@ int main(int argc, char **argv)
             std::cerr << "Parameter --load-default must not occur more than once!\n";
             return rcInvalidParameter;
           }
-          loadDirs.insert(defaultMessageDirectory);
-          std::cout << "Directory \"" << defaultMessageDirectory << "\" was chained for loading.\n";
+          if (!libstriezel::filesystem::directory::exists(defaultMessageDirectory))
+          {
+            std::cout << "Default message directory " << defaultMessageDirectory
+                      << " does not exist, so it will not be loaded.\n";
+          }
+          else
+          {
+            loadDirs.insert(defaultMessageDirectory);
+            std::cout << "Directory \"" << defaultMessageDirectory << "\" was chained for loading.\n";
+          }
         }
         else if ((param.substr(0,7) == "--load=") && (param.length() > 7))
         {
@@ -392,6 +401,14 @@ int main(int argc, char **argv)
       ++i;//on to next parameter
     }//while
   }//if arguments present
+
+  // Load default message directory, if it exists.
+  const auto defaultMessageDirectory = pmdb::paths::messages();
+  if ((loadDirs.find(defaultMessageDirectory + libstriezel::filesystem::pathDelimiter) == loadDirs.end())
+    && libstriezel::filesystem::directory::exists(defaultMessageDirectory))
+  {
+    loadDirs.insert(defaultMessageDirectory + libstriezel::filesystem::pathDelimiter);
+  }
 
   //no files to load?
   if (pathXML.empty() && loadDirs.empty())

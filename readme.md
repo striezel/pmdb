@@ -26,6 +26,7 @@ options:
                      messages to FILENAME. Must not be omitted.
   --xml=FILENAME   - same as -xml
   --load-default   - Tries to load messages from the default directory.
+                     This option is enabled by default.
   --load=DIR       - Tries to load all messages saved in the directory DIR.
                      This option can be given more than once, however the
                      directory has to be different every time.

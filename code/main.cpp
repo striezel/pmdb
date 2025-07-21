@@ -21,6 +21,7 @@
 #include <algorithm>
 #include <fstream>
 #include <iostream>
+#include <optional>
 #include <set>
 #include <string>
 #include <vector>
@@ -63,67 +64,71 @@ void showHelp(const std::string& name)
             << "Manages private messages exported from vBulletin in XML format.\n"
             << '\n'
             << "options:\n"
-            << "  --help           - Displays this help message and quits.\n"
-            << "  -?               - same as --help\n"
-            << "  --version        - Displays the version of the program and quits.\n"
-            << "  -v               - same as --version\n"
-            << "  -xml FILENAME    - Sets the name of the XML file that contains the private\n"
-            << "                     messages to FILENAME. Must not be omitted.\n"
-            << "  --xml=FILENAME   - same as -xml\n"
-            << "  --load-default   - Tries to load messages from the default directory.\n"
-            << "                     This option is enabled by default.\n"
-            << "  --load=DIR       - Tries to load all messages saved in the directory DIR.\n"
-            << "                     This option can be given more than once, however the\n"
-            << "                     directory has to be different every time.\n"
-            << "  --save           - All messages will be saved after the XML files were read\n"
-            << "                     and the messages from the load directories have been\n"
-            << "                     loaded. Enabled by default.\n"
-            << "  --no-save        - Prevents the program from saving any read messages.\n"
-            << "                     Mutually exclusive with --save.\n"
+            << "  --help            - Displays this help message and quits.\n"
+            << "  -?                - same as --help\n"
+            << "  --version         - Displays the version of the program and quits.\n"
+            << "  -v                - same as --version\n"
+            << "  -xml FILENAME     - Sets the name of the XML file that contains the private\n"
+            << "                      messages to FILENAME. Must not be omitted.\n"
+            << "  --xml=FILENAME    - same as -xml\n"
+            << "  --load-default    - Tries to load messages from the default directory.\n"
+            << "                      This option is enabled by default.\n"
+            << "  --no-load-default - Prevents the program from automatically loading messages\n"
+            << "                      from the default directory.\n"
+            << "                      Mutually exclusive with --load-default.\n"
+            << "  --load=DIR        - Tries to load all messages saved in the directory DIR.\n"
+            << "                      This option can be given more than once, however the\n"
+            << "                      directory has to be different every time.\n"
+            << "  --save            - All messages will be saved after the XML files were read\n"
+            << "                      and the messages from the load directories have been\n"
+            << "                      loaded. Enabled by default.\n"
+            << "  --no-save         - Prevents the program from saving any read messages.\n"
+            << "                      Mutually exclusive with --save.\n"
             #ifndef NO_PM_COMPRESSION
-            << "  --compress       - Save and load operations (see --save and --load) will use\n"
-            << "                     compression, i.e. messages are compressed using zlib\n"
-            << "                     before they are saved to files, and they will be decom-\n"
-            << "                     pressed when they are loaded from files. By default,\n"
-            << "                     messages will NOT be compressed for backwards compatibi-\n"
-            << "                     lity with earlier pmdb versions.\n"
-            << "  --no-save-check  - This option prevents the program from checking the\n"
-            << "                     compression status of messages when saving to an existing\n"
-            << "                     directory. Note that this is not recommended, because it\n"
-            << "                     could result in a mixup where a directory contains both\n"
-            << "                     compressed and uncompressed messages, making some of the\n"
-            << "                     messages unreadable by the program.\n"
+            << "  --compress        - Save and load operations (see --save and --load) will use\n"
+            << "                      compression, i.e. messages are compressed using zlib\n"
+            << "                      before they are saved to files, and they will be decom-\n"
+            << "                      pressed when they are loaded from files. By default,\n"
+            << "                      messages will NOT be compressed for backwards compatibi-\n"
+            << "                      lity with earlier pmdb versions.\n"
+            << "  --no-save-check   - This option prevents the program from checking the\n"
+            << "                      compression status of messages when saving to an existing\n"
+            << "                      directory. Note that this is not recommended, because it\n"
+            << "                      could result in a mixup where a directory contains both\n"
+            << "                      compressed and uncompressed messages, making some of the\n"
+            << "                      messages unreadable by the program.\n"
             #endif // NO_PM_COMPRESSION
-            << "  --html           - Creates HTML files for every message.\n"
-            << "  --xhtml          - Like --html, but use XHTML instead of HTML.\n"
-            << "  --no-br          - Do not convert new line characters to line breaks in\n"
-            << "                     (X)HTML output.\n"
-            << "  --no-list        - Do not parse [LIST] codes when creating HTML files.\n"
-            << "  --table=CLASS    - Sets the class for grids in <table> to CLASS.\n"
-            << "                     Must occur together with --row and --cell.\n"
-            << "  --row=CLASS      - Sets the class for grids in <tr> to CLASS.\n"
-            << "                     Must occur together with --table and --cell.\n"
-            << "  --cell=CLASS     - Sets the class for grids in <td> to CLASS.\n"
-            << "                     Must occur together with --table and --row.\n"
-            << "  --std-classes    - Sets the 'standard' classes for the three class options.\n"
-            << "                     This is equivalent to specifying all these parameters:\n"
-            << "                         --table=" << TableClasses::DefaultTableClass << "\n"
-            << "                         --row=" << TableClasses::DefaultRowClass << "\n"
-            << "                         --cell=" << TableClasses::DefaultCellClass << "\n"
-            << "  --subset-check   - Search for messages with texts that are completely\n"
-            << "                     contained in other messages, too.\n"
-            << "  --list-from X    - List all messages that were sent by user X, where X stands\n"
-            << "                     for the name of the user (not the numeric user id).\n"
-            << "                     Can occur multiple times for more than one user.\n"
-            << "  --list-to X      - List all messages that were sent to user X, where X stands\n"
-            << "                     for the name of the user (not the numeric user id).\n"
-            << "                     Can occur multiple times for more than one user.\n";
+            << "  --html            - Creates HTML files for every message.\n"
+            << "  --xhtml           - Like --html, but use XHTML instead of HTML.\n"
+            << "  --no-br           - Do not convert new line characters to line breaks in\n"
+            << "                      (X)HTML output.\n"
+            << "  --no-list         - Do not parse [LIST] codes when creating HTML files.\n"
+            << "  --table=CLASS     - Sets the class for grids in <table> to CLASS.\n"
+            << "                      Must occur together with --row and --cell.\n"
+            << "  --row=CLASS       - Sets the class for grids in <tr> to CLASS.\n"
+            << "                      Must occur together with --table and --cell.\n"
+            << "  --cell=CLASS      - Sets the class for grids in <td> to CLASS.\n"
+            << "                      Must occur together with --table and --row.\n"
+            << "  --std-classes     - Sets the 'standard' classes for the three class options.\n"
+            << "                      This is equivalent to specifying all these parameters:\n"
+            << "                          --table=" << TableClasses::DefaultTableClass << "\n"
+            << "                          --row=" << TableClasses::DefaultRowClass << "\n"
+            << "                          --cell=" << TableClasses::DefaultCellClass << "\n"
+            << "  --subset-check    - Search for messages with texts that are completely\n"
+            << "                      contained in other messages, too.\n"
+            << "  --list-from X     - List all messages that were sent by user X, where X stands\n"
+            << "                      for the name of the user (not the numeric user id).\n"
+            << "                      Can occur multiple times for more than one user.\n"
+            << "  --list-to X       - List all messages that were sent to user X, where X stands\n"
+            << "                      for the name of the user (not the numeric user id).\n"
+            << "                      Can occur multiple times for more than one user.\n";
 }
 
 int main(int argc, char **argv)
 {
   std::set<std::string> pathXML;
   std::set<std::string> loadDirs;
+  std::optional<bool> loadDefault {};
   bool doSave = true;
   bool saveModeSpecified = false;
   Compression compression = Compression::none;
@@ -229,6 +234,13 @@ int main(int argc, char **argv)
             std::cerr << "Parameter --load-default must not occur more than once!\n";
             return rcInvalidParameter;
           }
+          if (loadDefault.has_value())
+          {
+            std::cerr << "Error: Parameter " << param << " cannot be used "
+                      << "together with --no-load-default.\n";
+            return rcInvalidParameter;
+          }
+          loadDefault = true;
           if (!libstriezel::filesystem::directory::exists(defaultMessageDirectory))
           {
             std::cout << "Default message directory " << defaultMessageDirectory
@@ -239,6 +251,22 @@ int main(int argc, char **argv)
             loadDirs.insert(defaultMessageDirectory);
             std::cout << "Directory \"" << defaultMessageDirectory << "\" was chained for loading.\n";
           }
+        }
+        else if (param == "--no-load-default")
+        {
+          if (loadDefault.has_value())
+          {
+            if (loadDefault.value())
+            {
+              std::cerr << "Error: Parameter " << param << " cannot be used "
+                      << "together with --load-default.\n";
+              return rcInvalidParameter;
+            }
+            std::cerr << "Parameter " << param << " must not occur more than once!\n";
+            return rcInvalidParameter;
+          }
+          loadDefault = false;
+          std::cout << "Info: Attempt to load from default directory will be skipped.\n";
         }
         else if ((param.substr(0,7) == "--load=") && (param.length() > 7))
         {
@@ -403,11 +431,14 @@ int main(int argc, char **argv)
   }//if arguments present
 
   // Load default message directory, if it exists.
-  const auto defaultMessageDirectory = pmdb::paths::messages();
-  if ((loadDirs.find(defaultMessageDirectory + libstriezel::filesystem::pathDelimiter) == loadDirs.end())
-    && libstriezel::filesystem::directory::exists(defaultMessageDirectory))
+  if (loadDefault.value_or(true))
   {
-    loadDirs.insert(defaultMessageDirectory + libstriezel::filesystem::pathDelimiter);
+    const auto defaultMessageDirectory = pmdb::paths::messages();
+    if ((loadDirs.find(defaultMessageDirectory + libstriezel::filesystem::pathDelimiter) == loadDirs.end())
+      && libstriezel::filesystem::directory::exists(defaultMessageDirectory))
+    {
+      loadDirs.insert(defaultMessageDirectory + libstriezel::filesystem::pathDelimiter);
+    }
   }
 
   //no files to load?

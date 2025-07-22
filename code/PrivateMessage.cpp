@@ -147,7 +147,7 @@ bool PrivateMessage::saveToFile(const std::string& fileName, const Compression c
   if (compression == Compression::none)
   {
     std::ofstream output;
-    output.open(fileName.c_str(), std::ios_base::out | std::ios_base::binary);
+    output.open(fileName, std::ios_base::out | std::ios_base::binary);
     if (!output)
     {
       return false;
@@ -213,7 +213,7 @@ bool PrivateMessage::saveToFile(const std::string& fileName, const Compression c
       return false;
     }
     std::ofstream output;
-    output.open(fileName.c_str(), std::ios_base::out | std::ios_base::binary);
+    output.open(fileName, std::ios_base::out | std::ios_base::binary);
     if (!output)
     {
       delete[] buffer;
@@ -365,7 +365,7 @@ bool PrivateMessage::loadFromFile(const std::string& fileName, const Compression
     return false;
     #else
     std::ifstream input;
-    input.open(fileName.c_str(), std::ios_base::in | std::ios_base::binary);
+    input.open(fileName, std::ios_base::in | std::ios_base::binary);
     if (!input)
     {
       return false;
@@ -468,7 +468,7 @@ bool PrivateMessage::loadFromFile(const std::string& fileName, const Compression
   else
   {
     std::ifstream input;
-    input.open(fileName.c_str(), std::ios_base::in | std::ios_base::binary);
+    input.open(fileName, std::ios_base::in | std::ios_base::binary);
     if (!input)
     {
       return false;

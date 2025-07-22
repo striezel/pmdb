@@ -445,7 +445,7 @@ bool MessageDatabase::saveIndexFiles(const std::string& directory, MsgTemplate i
     else
       fileName = fileName + "index.html";
 
-    indexFile.open(fileName.c_str(), std::ios_base::out | std::ios_base::binary);
+    indexFile.open(fileName, std::ios_base::out | std::ios_base::binary);
     if (!indexFile)
     {
       return false;

@@ -38,7 +38,7 @@ void ColourMap::clear()
 bool ColourMap::loadFromFile(const std::string& fileName)
 {
   std::ifstream input;
-  input.open(fileName.c_str(), std::ios::in | std::ios::binary);
+  input.open(fileName, std::ios::in | std::ios::binary);
   if (!input)
   {
     return false;

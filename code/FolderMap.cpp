@@ -78,10 +78,10 @@ bool FolderMap::save(const std::string& directory) const
 bool FolderMap::load(const std::string& directory)
 {
   std::ifstream inFile;
-  inFile.open((directory+"foldermap").c_str(), std::ios_base::in | std::ios_base::binary);
+  inFile.open(directory + "foldermap", std::ios_base::in | std::ios_base::binary);
   if (!inFile)
   {
-    std::cout << "Error: could not open folder map in \"" << directory << "\"!\n";
+    std::cout << "Error: Could not open folder map in \"" << directory << "\"!\n";
     return false;
   }
   SHA256::MessageDigest md;

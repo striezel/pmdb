@@ -35,7 +35,7 @@ MsgTemplate::MsgTemplate(const std::string& tplText)
 bool MsgTemplate::loadFromFile(const std::string& fileName)
 {
   std::ifstream inputFile;
-  inputFile.open(fileName.c_str(), std::ios_base::in | std::ios_base::binary);
+  inputFile.open(fileName, std::ios_base::in | std::ios_base::binary);
   if (!inputFile.is_open())
   {
     return false;

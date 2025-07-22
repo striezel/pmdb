@@ -32,7 +32,7 @@ BBCodeParser::BBCodeParser()
   #ifndef NO_POSTPROCESSORS_IN_PARSER
   m_PostProcs(std::vector<TextProcessor*>()),
   #endif
-  m_Codes(std::vector<BBCode*>())
+  m_Codes(std::vector<const BBCode*>())
 {
 }
 
@@ -94,7 +94,7 @@ void BBCodeParser::addPreProcessor(TextProcessor* preProc)
 }
 #endif
 
-void BBCodeParser::addCode(BBCode* code)
+void BBCodeParser::addCode(const BBCode* code)
 {
   if (code != nullptr)
     m_Codes.push_back(code);

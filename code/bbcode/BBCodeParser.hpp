@@ -108,7 +108,7 @@ class BBCodeParser
            to be applied twice - although the second pass should not find any
            codes to replace, because the first one already took care of that.
     */
-    void addCode(BBCode* code);
+    void addCode(const BBCode* code);
 
 
     #ifndef NO_SMILIES_IN_PARSER
@@ -190,7 +190,7 @@ class BBCodeParser
     #ifndef NO_POSTPROCESSORS_IN_PARSER
     std::vector<TextProcessor*> m_PostProcs;
     #endif
-    std::vector<BBCode*> m_Codes;
+    std::vector<const BBCode*> m_Codes;
 }; // class
 
 #endif // BBCODEPARSER_HPP

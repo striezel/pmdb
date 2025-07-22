@@ -38,6 +38,7 @@ jobs:
           ctest -V
       - name: Collect code coverage data
         run: |
+          cd "$GITHUB_WORKSPACE"/build-coverage
           lcov -c --directory . --output-file coverage.info
           lcov --remove coverage.info '/usr/*' '*tests/*' '*libstriezel/*' -o main_coverage.info
           genhtml main_coverage.info --output-directory ../public

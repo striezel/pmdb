@@ -33,14 +33,18 @@ SortType::SortType(const SHA256::MessageDigest& dig, const std::string& ds)
 bool operator<(const SortType& a, const SortType& b)
 {
   const int cmp1 = a.datestamp.compare(b.datestamp);
-  if (cmp1<0) return true;
-  if (cmp1>0) return false;
-  return (a.md<b.md);
+  if (cmp1 < 0)
+    return true;
+  if (cmp1 > 0)
+    return false;
+  return a.md < b.md;
 }
 
 bool ST_greater(const SortType& __x, const SortType& __y)
 {
-  if (__x.datestamp>__y.datestamp) return true;
-  if (__x.datestamp<__y.datestamp) return false;
+  if (__x.datestamp > __y.datestamp)
+    return true;
+  if (__x.datestamp < __y.datestamp)
+    return false;
   return __x.md.toHexString() > __y.md.toHexString();
 }

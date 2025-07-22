@@ -100,7 +100,7 @@ bool TableBBCode::actualApplyToText(std::string& text, const std::string::size_t
         // get next open cell position
         cellOpener = getNextOpeningElement(text, cellOpener.open_pos + 1, "td");
       }//while cell opener
-      //replace row codes with HTML code
+      // replace row codes with HTML code
       text.replace(row_end, 5, "</tr>");
       text.replace(rowOpener.open_pos, rowOpener.open_end - rowOpener.open_pos + 1, "<tr" + attributesToString(TableElementType::Row, rowOpener.attributes, elemOpener.attributes) + ">");
       // update table end position
@@ -108,10 +108,10 @@ bool TableBBCode::actualApplyToText(std::string& text, const std::string::size_t
       // get next open row position
       rowOpener = getNextOpeningElement(text, rowOpener.open_pos + 1, "tr");
     }//while row
-    //replace "table" codes with HTML code
+    // replace "table" codes with HTML code
     text.replace(end_pos, end_code.length(), "</table>");
     text.replace(elemOpener.open_pos, elemOpener.open_end - elemOpener.open_pos + 1, "<table" + attributesToString(TableElementType::Table, elemOpener.attributes) + ">");
-    //get next table
+    // get next table
     elemOpener = getNextOpeningElement(text, elemOpener.open_pos, getName());
   }//while
   return true;
@@ -124,58 +124,60 @@ TableBBCode::OpeningElem TableBBCode::getNextOpeningElement(const std::string& t
   result.open_end = std::string::npos;
   result.attributes.clear();
 
-  const std::string code = "["+tag;
+  const std::string code = "[" + tag;
   std::string::size_type start = find_ci(text, code, offset);
-  //if nothing found, return
-  if (start==std::string::npos) return result;
+  // if nothing found, return
+  if (start == std::string::npos)
+    return result;
 
   //check for length
   const std::string::size_type len = text.length();
-  if (len<=start+code.length()) return result;
+  if (len <= start + code.length())
+    return result;
 
   switch (text[start+code.length()])
   {
     case ']':
-         //normal opening table element with no attribute
+         // normal opening table element with no attribute
          result.open_pos = start;
-         result.open_end = start+code.length();
+         result.open_end = start + code.length();
          return result;
          break;
     case '=':
-         //element with attributes found
+         // element with attributes found
          result.open_pos = start;
          break;
     default:
-         //No valid character, i.e. no real tag. Search for next one.
-         return getNextOpeningElement(text, start+code.length(), tag);
+         // No valid character, i.e. no real tag. Search for next one.
+         return getNextOpeningElement(text, start + code.length(), tag);
          break;
-  }//swi
+  }
 
-  //if we get here, an attribute should be present
-  if (len<start+code.length()+5) //minimum value has five chars: '"a:b"'
+  // if we get here, an attribute should be present
+  if (len < start + code.length() + 5) //minimum value has five chars: '"a:b"'
   {
-    //too short
+    // too short
     result.open_pos = std::string::npos;
     return result;
   }
 
-  //quotes there?
-  if (text[start+code.length()+1]!='"')
+  // quotes there?
+  if (text[start + code.length() + 1] != '"')
   {
-    //no, wrong syntax, search next
-    return getNextOpeningElement(text, start+code.length()+1, tag);
+    // no, wrong syntax, search next
+    return getNextOpeningElement(text, start+code.length() + 1, tag);
   }
-  //quotes there, search for end
-  std::string::size_type maybe_end = text.find("\"]", start+code.length()+2);
-  if (maybe_end==std::string::npos)
+  // quotes there, search for end
+  std::string::size_type maybe_end = text.find("\"]", start+code.length() + 2);
+  if (maybe_end == std::string::npos)
   {
-    //nothing found, incomplete syntax
+    // nothing found, incomplete syntax
     result.open_pos = std::string::npos;
     return result;
   }
-  //end found
-  result.open_end = maybe_end+1;
-  result.attributes = explodeAttributes(text.substr(start+code.length()+2, maybe_end-(start+code.length()+2)));
+  // end found
+  result.open_end = maybe_end + 1;
+  result.attributes = explodeAttributes(text.substr(start+code.length() + 2, maybe_end-(start + code.length() + 2)));
   return result;
 }
 
@@ -188,12 +190,14 @@ std::map<std::string, std::string> TableBBCode::explodeAttributes(std::string at
     std::string key_value = attr.substr(0, pos);
     trim(key_value);
     std::string::size_type sep_pos = key_value.find(':');
-    if (sep_pos==std::string::npos) return result;
+    if (sep_pos == std::string::npos)
+      return result;
     std::string key = key_value.substr(0, sep_pos);
-    std::string value = key_value.substr(sep_pos+1);
-    trim(key); trim(value);
+    std::string value = key_value.substr(sep_pos + 1);
+    trim(key);
+    trim(value);
     result[key] = value;
-    attr.erase(0, pos!=std::string::npos ? pos+1 : pos);
+    attr.erase(0, pos != std::string::npos ? pos + 1 : pos);
     pos = attr.find(';');
   } while (!attr.empty());
   return result;
@@ -215,9 +219,9 @@ void TableBBCode::appendGridAttributes(std::string& text, const TableElementType
       default:
            text += classes.cell;
            break;
-    }//swi
+    }
     text += "\"";
-  }//if
+  }
   else
     text += " style=\"border: 1px solid #000000; border-collapse: collapse;\"";
 }
@@ -237,34 +241,34 @@ std::string TableBBCode::attributesToString(const TableElementType eleType,
       appendGridAttributes(result, eleType);
       got_grid = true;
     }
-    else if (iter->first=="width")
+    else if (iter->first == "width")
     {
       if (eleType == TableElementType::Table)
       {
         if (passesWidthLimit(iter->second))
         {
-          result += " width=\""+iter->second+"\"";
+          result += " width=\"" + iter->second + "\"";
         }
         else
         {
-          //notify user about change
-          notify<DefaultNotifier>("Width value of "+iter->second+" pixels was ignored in table code, because the table width limit is set to "
-                                  +intToString(m_TableWidthLimit)+" pixels.\n");
+          // notify user about change
+          notify<DefaultNotifier>("Width value of " + iter->second + " pixels was ignored in table code, because the table width limit is set to "
+                                  + intToString(m_TableWidthLimit) + " pixels.\n");
         }
       }//if element==table
-      else result += " width=\""+iter->second+"\"";
+      else result += " width=\"" + iter->second + "\"";
     }
-    else if (iter->first=="align")
+    else if (iter->first == "align")
     {
-      //align
+      // align
       if ((iter->second == "left") || (iter->second == "right") || (iter->second == "center"))
       {
-        result += " align=\""+iter->second+"\"";
+        result += " align=\"" + iter->second + "\"";
       }
     }
-    else if (iter->first=="colspan")
+    else if (iter->first == "colspan")
     {
-      result += " colspan=\""+iter->second+"\"";
+      result += " colspan=\"" + iter->second + "\"";
     }
     ++iter;
   }//while
@@ -287,11 +291,15 @@ std::string TableBBCode::attributesToString(const TableElementType eleType,
 
 bool TableBBCode::passesWidthLimit(const std::string& attrValue) const
 {
-  if (m_TableWidthLimit==0) return true; //zero means no limit
+  if (m_TableWidthLimit == 0)
+  {
+    // zero means no limit
+    return true;
+  }
   unsigned int width = 0;
   if (stringToUnsignedInt(attrValue, width))
   {
-    return (width<=m_TableWidthLimit);
+    return (width <= m_TableWidthLimit);
   }
   /* String conversion failed, so it's no plain integer value, but maybe a
      percentage, and those don't need to be limited. */

@@ -24,60 +24,64 @@
 ListBBCode::ListBBCode(const std::string& code, bool unordered)
 : BBCode(code), m_Unordered(unordered)
 {
-
 }
 
 bool ListBBCode::actualApply(std::string& text, const std::string::size_type offset) const
 {
-  const std::string code = "["+getName()+"]";
-  const std::string end_code = "[/"+getName()+"]";
+  const std::string code = "[" + getName() + "]";
+  const std::string end_code = "[/" + getName() + "]";
   const std::string item_code = "[*]";
   std::string::size_type pos = find_ci(text, code, offset);
   std::string::size_type end_pos = std::string::npos;
-  while (pos!=std::string::npos)
+  while (pos != std::string::npos)
   {
-    end_pos = find_ci(text, end_code, pos+1);
-    //no closing tag means invalid BB code use
-    if (end_pos==std::string::npos) return false;
-    std::string::size_type item_pos = find_ci(text, item_code, pos+1);
+    end_pos = find_ci(text, end_code, pos + 1);
+    // no closing tag means invalid BB code use
+    if (end_pos == std::string::npos)
+    {
+      return false;
+    }
+    std::string::size_type item_pos = find_ci(text, item_code, pos + 1);
     //no [*] within opening and closing tag means error
     if ((item_pos == std::string::npos) || (item_pos > end_pos))
     {
       return false;
     }
-    std::string::size_type inner_pos = find_ci(text, code, pos+1);
+    std::string::size_type inner_pos = find_ci(text, code, pos + 1);
     while ((inner_pos != std::string::npos) && (inner_pos < end_pos))
     {
-      //malformed code, if next list starts before first list item
-      if (inner_pos<item_pos) return false;
-      //We have nested list tags, so treat them first.
-      if (!actualApply(text, inner_pos)) return false;
-      //update positions
-      item_pos = find_ci(text, item_code, pos+1);
-      inner_pos = find_ci(text, code, pos+1);
-      end_pos = find_ci(text, end_code, pos+1);
-      //If there are no more end tags or item "tags" left, the code is invalid.
+      // malformed code, if next list starts before first list item
+      if (inner_pos < item_pos)
+        return false;
+      // We have nested list tags, so treat them first.
+      if (!actualApply(text, inner_pos))
+        return false;
+      // update positions
+      item_pos = find_ci(text, item_code, pos + 1);
+      inner_pos = find_ci(text, code, pos + 1);
+      end_pos = find_ci(text, end_code, pos + 1);
+      // If there are no more end tags or item "tags" left, the code is invalid.
       if ((item_pos == std::string::npos) || (end_pos == std::string::npos))
         return false;
     }//inner while
 
-    //replace first "[*]" with "<li>"
+    // replace first "[*]" with "<li>"
     text.replace(item_pos, 3, "<li>");
-    //update end_pos and search next item
+    // update end_pos and search next item
     ++end_pos;
-    item_pos = find_ci(text, item_code, item_pos+3);
-    //replace all remaining "[*]" of that list
+    item_pos = find_ci(text, item_code, item_pos + 3);
+    // replace all remaining "[*]" of that list
     while ((item_pos != std::string::npos) && (item_pos < end_pos))
     {
       text.replace(item_pos, 3, "</li><li>");
       end_pos += 6;
       item_pos = find_ci(text, item_code, item_pos+8);
     }//while (item code [*])
-    //replace end tag
+    // replace end tag
     text.replace(end_pos, end_code.length(), std::string("</li></") + (m_Unordered ? "ul>" : "ol>"));
-    //replace start tag
+    // replace start tag
     text.replace(pos, code.length(), m_Unordered ? "<ul>" : "<ol>");
-    pos = find_ci(text, code, pos+1);
+    pos = find_ci(text, code, pos + 1);
   }//while
   return true;
 }

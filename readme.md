@@ -117,7 +117,7 @@ Starting in the root directory of the source, you can do the following steps:
     mkdir build
     cd build
     cmake ../
-    make pmdb -j2
+    cmake --build . --target pmdb -j4
 
 Now the pmdb binary is built and ready for use.
 

@@ -45,5 +45,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: pmdb_coverage
-          path: public
+          path: ${{ github.workspace }}/public
           if-no-files-found: error

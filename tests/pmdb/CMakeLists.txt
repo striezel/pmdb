@@ -26,3 +26,13 @@ add_test(NAME pmdb_version
 # test that actually loads an XML file with a single message
 add_test(NAME pmdb_load_single_message_from_xml
          COMMAND $<TARGET_FILE:pmdb> --no-load-default --no-save --xml "${CMAKE_CURRENT_SOURCE_DIR}/test-messages.xml")
+
+IF (NOT WIN32)
+    set(EXT "sh")
+else ()
+    set(EXT "cmd")
+endif ()
+
+# test: handling of invalid parameters
+add_test(NAME pmdb_invalid_parameters
+         COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/parameter-misuse.${EXT} $<TARGET_FILE:pmdb> "${CMAKE_CURRENT_SOURCE_DIR}/test-messages.xml")

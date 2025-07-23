@@ -286,11 +286,12 @@ int main(int argc, char **argv)
           loadDirs.insert(pathToDir);
           std::cout << "Directory \"" << pathToDir << "\" was queued for loading.\n";
         }//param == 'load=...'
-        else if (param == "--html")
+        else if ((param == "--html") || (param == "--HTML"))
         {
           if (doHTML)
           {
-            std::cerr << "Parameter --html must not occur more than once!\n";
+            std::cerr << "Parameter " << param << " must not occur more than once "
+                      << "or in combination with --xhtml!\n";
             return rcInvalidParameter;
           }
           doHTML = true;

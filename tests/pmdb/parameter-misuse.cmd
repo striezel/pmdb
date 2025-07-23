@@ -108,6 +108,48 @@ if %ERRORLEVEL% NEQ 1 (
   exit /B 1
 )
 
+:: --load-default: parameter given twice
+"%EXECUTABLE%" --no-save --xml "%XML_FILE%" --load-default --load-default
+if %ERRORLEVEL% NEQ 1 (
+  echo Executable did not exit with code 1 when load-default option was given twice.
+  exit /B 1
+)
+
+:: --no-load-default: parameter given twice
+"%EXECUTABLE%" --no-save --xml "%XML_FILE%" --no-load-default --no-load-default
+if %ERRORLEVEL% NEQ 1 (
+  echo Executable did not exit with code 1 when no-load-default option was given twice.
+  exit /B 1
+)
+
+:: --no-load-default and --load-default: conflict
+"%EXECUTABLE%" --no-save --xml "%XML_FILE%" --no-load-default --load-default
+if %ERRORLEVEL% NEQ 1 (
+  echo Executable did not exit with code 1 when no-load-default and load-default were given.
+  exit /B 1
+)
+
+:: --no-br: parameter given twice
+"%EXECUTABLE%" --no-save --no-load-default --xml "%XML_FILE%" --no-br --no-br
+if %ERRORLEVEL% NEQ 1 (
+  echo Executable did not exit with code 1 when no-br option was given twice.
+  exit /B 1
+)
+
+:: --no-list: parameter given twice
+"%EXECUTABLE%" --no-save --no-load-default --xml "%XML_FILE%" --no-list --no-list
+if %ERRORLEVEL% NEQ 1 (
+  echo Executable did not exit with code 1 when no-list option was given twice.
+  exit /B 1
+)
+
+:: --compress: parameter given twice
+"%EXECUTABLE%" --no-save --no-load-default --xml "%XML_FILE%" --compress --compress
+if %ERRORLEVEL% NEQ 1 (
+  echo Executable did not exit with code 1 when compress option was given twice.
+  exit /B 1
+)
+
 echo Parameter tests succeeded.
 
 exit /B 0

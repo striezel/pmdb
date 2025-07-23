@@ -121,6 +121,54 @@ then
   exit 1
 fi
 
+# --load-default: parameter given twice
+"$EXECUTABLE" --no-save --xml "$XML_FILE" --load-default --load-default
+if [ $? -ne 1 ]
+then
+  echo "Executable did not exit with code 1 when --load-default was given twice."
+  exit 1
+fi
+
+# --no-load-default: parameter given twice
+"$EXECUTABLE" --no-save --xml "$XML_FILE" --no-load-default --no-load-default
+if [ $? -ne 1 ]
+then
+  echo "Executable did not exit with code 1 when --no-load-default was given twice."
+  exit 1
+fi
+
+# --no-load-default and --load-default: conflict
+"$EXECUTABLE" --no-save --xml "$XML_FILE" --no-load-default --load-default
+if [ $? -ne 1 ]
+then
+  echo "Executable did not exit with code 1 when --no-load-default and --load-default were given."
+  exit 1
+fi
+
+# --no-br: parameter given twice
+"$EXECUTABLE" --no-save --no-load-default --xml "$XML_FILE" --no-br --no-br
+if [ $? -ne 1 ]
+then
+  echo "Executable did not exit with code 1 when --no-br was given twice."
+  exit 1
+fi
+
+# --no-list: parameter given twice
+"$EXECUTABLE" --no-save --no-load-default --xml "$XML_FILE" --no-list --no-list
+if [ $? -ne 1 ]
+then
+  echo "Executable did not exit with code 1 when --no-list was given twice."
+  exit 1
+fi
+
+# --compress: parameter given twice
+"$EXECUTABLE" --no-save --no-load-default --xml "$XML_FILE" --compress --compress
+if [ $? -ne 1 ]
+then
+  echo "Executable did not exit with code 1 when --compress was given twice."
+  exit 1
+fi
+
 echo Parameter tests succeeded.
 
 exit 0

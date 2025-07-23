@@ -19,7 +19,9 @@
 */
 
 #include "../locate_catch.hpp"
+#include <filesystem>
 #include "../../code/FolderMap.hpp"
+#include "../FileGuard.hpp"
 
 TEST_CASE("FolderMap")
 {
@@ -133,5 +135,59 @@ TEST_CASE("FolderMap")
     // check name of folder
     REQUIRE( *folders.begin() == "A folder's name" );
     REQUIRE(*(++folders.begin()) == "Folder #2" );
+  }
+
+  SECTION("save + load")
+  {
+    namespace fs = std::filesystem;
+
+    SECTION("save to non-existent directory")
+    {
+      FolderMap fm;
+
+      // create two example hashes
+      SHA256::MessageDigest digest_one;
+      REQUIRE( digest_one.fromHexString("0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef") );
+      SHA256::MessageDigest digest_two;
+      REQUIRE( digest_two.fromHexString("abacab120d0aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa") );
+
+      // add entries
+      fm.add(digest_one, "First folder");
+      fm.add(digest_two, "Folder #2");
+
+      const fs::path path{fs::temp_directory_path() / "does" / "not" / "exist"};
+      REQUIRE_FALSE( fm.save(path.string()) );
+    }
+
+    SECTION("save and load again")
+    {
+      FolderMap fm;
+
+      // create two example hashes
+      SHA256::MessageDigest digest_one;
+      REQUIRE( digest_one.fromHexString("0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef") );
+      SHA256::MessageDigest digest_two;
+      REQUIRE( digest_two.fromHexString("abacab120d0aabbccaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa") );
+
+      // add entries
+      fm.add(digest_one, "First folder");
+      fm.add(digest_two, "Folder #2");
+
+      const fs::path path{fs::temp_directory_path() / "save-foldermap-test"};
+      REQUIRE( fs::create_directory(path) );
+      FileGuard guard{path};
+      REQUIRE( fm.save(path.string()) );
+      FileGuard guard2{path / "foldermap"};
+
+      // loading should succeed. too
+      FolderMap fm_load;
+      REQUIRE( fm_load.load(path.string()) );
+      // Both entries should be present.
+      REQUIRE( fm_load.hasEntry(digest_one) );
+      REQUIRE( fm_load.hasEntry(digest_two) );
+      // ... and so should be the folder names.
+      REQUIRE( fm_load.getFolderName(digest_one) == "First folder" );
+      REQUIRE( fm_load.getFolderName(digest_two) == "Folder #2" );
+    }
   }
 }

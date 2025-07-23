@@ -78,7 +78,7 @@ bool FolderMap::save(const std::string& directory) const
 bool FolderMap::load(const std::string& directory)
 {
   std::ifstream inFile;
-  inFile.open(directory + "foldermap", std::ios_base::in | std::ios_base::binary);
+  inFile.open(libstriezel::filesystem::slashify(directory) + "foldermap", std::ios_base::in | std::ios_base::binary);
   if (!inFile)
   {
     std::cout << "Error: Could not open folder map in \"" << directory << "\"!\n";

@@ -504,7 +504,7 @@ int main(int argc, char **argv)
     // try to load folder map, too, but don't return, if it failed
     if (fm.load(directory))
     {
-      std::cout << "Loaded folder map from \"" << directory << "\".\n";
+      std::cout << "Loaded folder map from \"" << directory << "\", too.\n";
     }
   }
 

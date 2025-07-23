@@ -169,6 +169,46 @@ then
   exit 1
 fi
 
+# --no-save-check: parameter given twice
+"$EXECUTABLE" --no-save --no-load-default --xml "$XML_FILE" --no-save-check --no-save-check
+if [ $? -ne 1 ]
+then
+  echo "Executable did not exit with code 1 when --no-save-check was given twice."
+  exit 1
+fi
+
+# --subset-check: parameter given twice
+"$EXECUTABLE" --no-save --no-load-default --xml "$XML_FILE" --subset-check --subset-check
+if [ $? -ne 1 ]
+then
+  echo "Executable did not exit with code 1 when --subset-check was given twice."
+  exit 1
+fi
+
+# --list-from: no name given
+"$EXECUTABLE" --no-save --no-load-default --xml "$XML_FILE" --list-from
+if [ $? -ne 1 ]
+then
+  echo "Executable did not exit with code 1 when --list-from was missing the name."
+  exit 1
+fi
+
+# --list-to: no name given
+"$EXECUTABLE" --no-save --no-load-default --xml "$XML_FILE" --list-to
+if [ $? -ne 1 ]
+then
+  echo "Executable did not exit with code 1 when --list-to was missing the name."
+  exit 1
+fi
+
+# unrecognized parameter given
+"$EXECUTABLE" --no-save --no-load-default --xml "$XML_FILE" --invalid-param
+if [ $? -ne 1 ]
+then
+  echo "Executable did not exit with code 1 when an invalid parameter was given."
+  exit 1
+fi
+
 echo Parameter tests succeeded.
 
 exit 0

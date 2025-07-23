@@ -150,6 +150,41 @@ if %ERRORLEVEL% NEQ 1 (
   exit /B 1
 )
 
+:: --no-save-check: parameter given twice
+"%EXECUTABLE%" --no-save --no-load-default --xml "%XML_FILE%" --no-save-check --no-save-check
+if %ERRORLEVEL% NEQ 1 (
+  echo Executable did not exit with code 1 when no-save-check option was given twice.
+  exit /B 1
+)
+
+:: --subset-check: parameter given twice
+"%EXECUTABLE%" --no-save --no-load-default --xml "%XML_FILE%" --subset-check --subset-check
+if %ERRORLEVEL% NEQ 1 (
+  echo Executable did not exit with code 1 when subset-check option was given twice.
+  exit /B 1
+)
+
+:: --list-from: no name given
+"%EXECUTABLE%" --no-save --no-load-default --xml "%XML_FILE%" --list-from
+if %ERRORLEVEL% NEQ 1 (
+  echo Executable did not exit with code 1 when list-from option was missing the name.
+  exit /B 1
+)
+
+:: --list-to: no name given
+"%EXECUTABLE%" --no-save --no-load-default --xml "%XML_FILE%" --list-to
+if %ERRORLEVEL% NEQ 1 (
+  echo Executable did not exit with code 1 when list-to option was missing the name.
+  exit /B 1
+)
+
+:: unrecognized parameter given
+"%EXECUTABLE%" --no-save --no-load-default --xml "%XML_FILE%" --invalid-param
+if %ERRORLEVEL% NEQ 1 (
+  echo Executable did not exit with code 1 when an invalid parameter was given.
+  exit /B 1
+)
+
 echo Parameter tests succeeded.
 
 exit /B 0

@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database test suite.
-    Copyright (C) 2015, 2022  Dirk Stolle
+    Copyright (C) 2015, 2022, 2025  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -20,6 +20,8 @@
 
 #include "../locate_catch.hpp"
 #include <filesystem>
+#include <fstream>
+#include <string_view>
 #include "../../code/FolderMap.hpp"
 #include "../FileGuard.hpp"
 
@@ -188,6 +190,38 @@ TEST_CASE("FolderMap")
       // ... and so should be the folder names.
       REQUIRE( fm_load.getFolderName(digest_one) == "First folder" );
       REQUIRE( fm_load.getFolderName(digest_two) == "Folder #2" );
+    }
+
+    SECTION("load from non-existent directory")
+    {
+      FolderMap fm;
+
+      const fs::path path{fs::temp_directory_path() / "does" / "not" / "exist"};
+      REQUIRE_FALSE( fm.load(path.string()) );
+    }
+
+    SECTION("load foldermap with invalid hash")
+    {
+      const fs::path path{fs::temp_directory_path() / "pmdb_foldermap_invalid_hash"};
+      REQUIRE( fs::create_directory(path) );
+      const FileGuard guard{path};
+
+      {
+        // Write raw foldermap file with invalid hash.
+        using namespace std::string_view_literals;
+        constexpr std::string_view data = "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef One Folder\n01234_not_a_sha-256_hash_9abcdef0123456789abcdef0123456789abcdef Fol derp\n"sv;
+        std::ofstream stream(path / "foldermap", std::ios::out | std::ios::binary);
+        REQUIRE( stream.good() );
+        REQUIRE( stream.write(data.data(), data.size()).good() );
+        stream.close();
+        REQUIRE( stream.good() );
+      }
+
+      const FileGuard guard2{path / "foldermap"};
+
+      // loading the foldermap file fails
+      FolderMap fm;
+      REQUIRE_FALSE( fm.load(path.string()) );
     }
   }
 }

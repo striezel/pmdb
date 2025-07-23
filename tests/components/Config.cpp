@@ -304,5 +304,38 @@ TEST_CASE("Config")
       Config conf;
       REQUIRE_FALSE( conf.loadFromFile(path.string()) );
     }
+
+    SECTION("invalid: smilie setting without code")
+    {
+      const std::filesystem::path path{std::filesystem::temp_directory_path() / "smilie-setting-without-code.conf"};
+      const std::string content = "forum=https://forum.example.com/nay/\nsmilie_r==foo.png\n";
+      REQUIRE( writeConfiguration(path, content) );
+      FileGuard guard{path};
+
+      Config conf;
+      REQUIRE_FALSE( conf.loadFromFile(path.string()) );
+    }
+
+    SECTION("invalid: smilie setting with missing '=' sign")
+    {
+      const std::filesystem::path path{std::filesystem::temp_directory_path() / "smilie-setting-without-equals.conf"};
+      const std::string content = "forum=https://forum.example.com/nay/\nsmilie_r=:)foo.png\n";
+      REQUIRE( writeConfiguration(path, content) );
+      FileGuard guard{path};
+
+      Config conf;
+      REQUIRE_FALSE( conf.loadFromFile(path.string()) );
+    }
+
+    SECTION("invalid: smilie setting with empty URL")
+    {
+      const std::filesystem::path path{std::filesystem::temp_directory_path() / "smilie-code-with-empty-url.conf"};
+      const std::string content = "forum=https://forum.example.com/nay/\nsmilie_r=§no=\n";
+      REQUIRE( writeConfiguration(path, content) );
+      FileGuard guard{path};
+
+      Config conf;
+      REQUIRE_FALSE( conf.loadFromFile(path.string()) );
+    }
   }
 }

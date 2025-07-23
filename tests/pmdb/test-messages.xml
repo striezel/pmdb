@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!-- Example forum;https://www.example.org/forum -->
+<!-- Backup der Privaten Nachrichten von Hermes; 31.12.2007 23:45 -->
+
+<privatemessages>
+        <folder name="Postausgang">
+                <privatemessage>
+                        <datestamp>2007-06-14 12:34</datestamp>
+                        <title>This is the title</title>
+                        <fromuser>Hermes</fromuser>
+                        <fromuserid>234</fromuserid>
+                        <touser>Poseidon</touser>
+                        <message>This is some random text.</message>
+                </privatemessage>
+        </folder>
+</privatemessages>

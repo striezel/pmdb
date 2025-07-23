@@ -22,3 +22,7 @@ endif ()
 # parameter to show version number
 add_test(NAME pmdb_version
          COMMAND $<TARGET_FILE:pmdb> --version)
+
+# test that actually loads an XML file with a single message
+add_test(NAME pmdb_load_single_message_from_xml
+         COMMAND $<TARGET_FILE:pmdb> --no-load-default --no-save --xml "${CMAKE_CURRENT_SOURCE_DIR}/test-messages.xml")

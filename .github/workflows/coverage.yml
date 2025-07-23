@@ -3,7 +3,7 @@ name: Code coverage
 on: push
 
 jobs:
-  gcc:
+  coverage:
     strategy:
       fail-fast: false
       matrix:

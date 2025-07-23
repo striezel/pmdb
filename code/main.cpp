@@ -177,7 +177,7 @@ int main(int argc, char **argv)
             }
             pathXML.insert(pathToXML);
             ++i; // skip next parameter, because it's used as file name already
-            std::cout << "XML file \"" << pathToXML << "\" was chained for loading.\n";
+            std::cout << "XML file \"" << pathToXML << "\" was queued for loading.\n";
           }
           else
           {
@@ -200,7 +200,7 @@ int main(int argc, char **argv)
             return rcInvalidParameter;
           }
           pathXML.insert(pathToXML);
-          std::cout << "XML file \"" << pathToXML << "\" was chained for loading.\n";
+          std::cout << "XML file \"" << pathToXML << "\" was queued for loading.\n";
         } // param == xml (single parameter version)
         else if (param == "--save")
         {
@@ -249,7 +249,7 @@ int main(int argc, char **argv)
           else
           {
             loadDirs.insert(defaultMessageDirectory);
-            std::cout << "Directory \"" << defaultMessageDirectory << "\" was chained for loading.\n";
+            std::cout << "Directory \"" << defaultMessageDirectory << "\" was queued for loading.\n";
           }
         }
         else if (param == "--no-load-default")
@@ -284,7 +284,7 @@ int main(int argc, char **argv)
             return rcInvalidParameter;
           }
           loadDirs.insert(pathToDir);
-          std::cout << "Directory \"" << pathToDir << "\" was chained for loading.\n";
+          std::cout << "Directory \"" << pathToDir << "\" was queued for loading.\n";
         }//param == 'load=...'
         else if (param == "--html")
         {

@@ -387,7 +387,7 @@ int main(int argc, char **argv)
             const std::string user = std::string(argv[i+1]);
             const FilterUser f(user, UserType::Sender, Match::FullName);
             filters.push_back(f);
-            ++i; //skip next parameter, because it's used as user name already
+            ++i; // skip next parameter, because it's used as user name already
             std::cout << "Added PMs from user \"" << user << "\" to filter criteria.\n";
           }
           else
@@ -404,7 +404,7 @@ int main(int argc, char **argv)
             const std::string user = std::string(argv[i+1]);
             const FilterUser f(user, UserType::Recipient, Match::FullName);
             filters.push_back(f);
-            ++i; //skip next parameter, because it's used as user name already
+            ++i; // skip next parameter, because it's used as user name already
             std::cout << "Added PMs to user \"" << user << "\" to filter criteria.\n";
           }
           else
@@ -416,7 +416,7 @@ int main(int argc, char **argv)
         }//param == list-to-user
         else
         {
-          //unknown or wrong parameter
+          // unknown or wrong parameter
           std::cerr << "Invalid parameter given: \"" << param << "\".\n"
                     << "Use --help to get a list of valid parameters.\n";
           return rcInvalidParameter;
@@ -427,9 +427,9 @@ int main(int argc, char **argv)
         std::cerr << "Parameter at index " << i << " is NULL.\n";
         return rcInvalidParameter;
       }
-      ++i;//on to next parameter
-    }//while
-  }//if arguments present
+      ++i; // on to next parameter
+    } // while
+  } // if arguments present
 
   // Load default message directory, if it exists.
   if (loadDefault.value_or(true))
@@ -478,6 +478,7 @@ int main(int argc, char **argv)
   // try to load data from directories
   for (const auto& directory: loadDirs)
   {
+    std::cout << "Loading messages from " << directory << " ...\n";
     if (!mdb.loadMessages(directory, PMs_done, PMs_new, compression))
     {
       std::cerr << "Could not load all messages from \"" << directory
@@ -485,12 +486,12 @@ int main(int argc, char **argv)
                 << "\n";
       return rcFileError;
     }
-    std::cout << "All messages from \"" << directory << "\" loaded! Read: "
+    std::cout << "All messages from " << directory << " loaded. Read: "
               << PMs_done << "; new: " << PMs_new << "\n";
     // try to load folder map, too, but don't return, if it failed
     if (fm.load(directory))
     {
-      std::cout << "Loaded folder map from \"" << directory << "\", too.\n";
+      std::cout << "Loaded folder map from " << directory << ", too.\n";
     }
   }
 
@@ -499,12 +500,12 @@ int main(int argc, char **argv)
   {
     if (mdb.importFromFile(path, PMs_done, PMs_new, fm))
     {
-      std::cout << "Import of private messages from \"" << path << "\" was successful!\n  "
+      std::cout << "Import of private messages from " << path << " was successful.\n  "
                 << PMs_done << " PMs read, new PMs: " << PMs_new << "\n";
     }
     else
     {
-      std::cerr << "Import of private messages from \"" << path << "\" failed!\n"
+      std::cerr << "Error: Import of private messages from " << path << " failed!\n"
                 << "  PMs read from file so far: " << PMs_done << "\nNew PMs: " << PMs_new << "\n";
       return rcFileError;
     }
@@ -541,7 +542,7 @@ int main(int argc, char **argv)
         std::cerr << "Error: Failed to load colour map from " << pathToColourMap << "!\n";
         return rcFileError;
       }
-    }//if colour map file exists
+    }
 
     std::cout << "Searching for message texts that are contained in others. This may take a while...\n";
     std::map<md_date, std::vector<md_date> > subsets = mdb.getTextSubsets();
@@ -562,7 +563,7 @@ int main(int argc, char **argv)
       {
         std::cerr << "\nCaught exception: " << ex.what() << "\n.";
         return rcCaughtException;
-      }//try-catch
+      }
       std::cout << " contains the following " << subIter->second.size() << " message(s):\n";
       std::sort(subIter->second.begin(), subIter->second.end());
       std::vector<md_date>::const_iterator secondIter = subIter->second.begin();
@@ -583,9 +584,9 @@ int main(int argc, char **argv)
         }
         redundantMessages.insert(secondIter->md);
         ++secondIter;
-      }//while (inner)
+      } // while (inner)
       ++subIter;
-    }//while (outer, subIter)
+    } // while (outer, subIter)
 
     if (!redundantMessages.empty())
     {
@@ -596,8 +597,8 @@ int main(int argc, char **argv)
                 << "reducing the message count from currently " << current
                 << " message(s) to " << (current-redundant) << " message(s)."
                 << std::endl;
-    } //if redundant message(s)
-  }//if search for duplicates/subsets
+    } // if redundant message(s)
+  } // if search for duplicates/subsets
 
   // list messages by given filter conditions
   if (!filters.empty())

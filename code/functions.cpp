@@ -104,15 +104,15 @@ int saveMessages(const MessageDatabase& mdb, const FolderMap& fm, const Compress
 
   if (!mdb.saveMessages(save_dir, compression))
   {
-    std::cerr << "Could not save messages!\n";
+    std::cerr << "Error: Could not save messages!\n";
     return rcFileError;
   }
-  std::cout << "Messages saved successfully!\n";
+  std::cout << "Messages saved successfully.\n";
   if (!fm.save(save_dir))
   {
     std::cerr << "Could not save folder map!\n";
     return rcFileError;
   }
-  std::cout << "Folder map saved successfully!\n";
+  std::cout << "Folder map saved successfully.\n";
   return 0;
 }

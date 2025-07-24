@@ -8,9 +8,13 @@ set(component_tests_sources
     ../../code/Config.cpp
     ../../code/ConsoleColours.cpp
     ../../code/FolderMap.cpp
+    ../../code/MessageDatabase.cpp
     ../../code/MsgTemplate.cpp
     ../../code/PMSource.cpp
     ../../code/PrivateMessage.cpp
+    ../../code/SortType.cpp
+    ../../code/XMLDocument.cpp
+    ../../code/XMLNode.cpp
     ../../code/bbcode/AdvancedTemplateBBCode.cpp
     ../../code/bbcode/CustomizedSimpleBBCode.cpp
     ../../code/bbcode/HorizontalRuleBBCode.cpp
@@ -23,8 +27,11 @@ set(component_tests_sources
     ../../code/filters/FilterUser.cpp
     ../../code/paths.cpp
     ../../code/templates/defaults.hpp
+    ../../libstriezel/common/DirectoryFileList.cpp
     ../../libstriezel/common/StringUtils.cpp
     ../../libstriezel/filesystem/directory.cpp
+    ../../libstriezel/hash/sha256/BufferSource.cpp
+    ../../libstriezel/hash/sha256/BufferSourceUtility.cpp
     ../../libstriezel/hash/sha256/MessageSource.cpp
     ../../libstriezel/hash/sha256/sha256.cpp
     ../../libstriezel/zlib/CompressionFunctions.cpp
@@ -32,6 +39,7 @@ set(component_tests_sources
     CompressionDetections.cpp
     Config.cpp
     FolderMap.cpp
+    MessageDatabase.cpp
     bbcode/AdvancedTemplateBBCode.cpp
     bbcode/AdvancedTplAmpTransformBBCode.cpp
     bbcode/CustomizedSimpleBBCode.cpp
@@ -89,6 +97,20 @@ if (ZLIB_FOUND)
 else ()
   message ( FATAL_ERROR "zlib was not found!" )
 endif (ZLIB_FOUND)
+
+# find libxml2
+pkg_search_module (LIBXML2 REQUIRED libxml-2.0)
+if (LIBXML2_FOUND)
+  if (ENABLE_STATIC_LINKING)
+    include_directories(${LIBXML2_STATIC_INCLUDE_DIRS})
+    target_link_libraries (component_tests ${LIBXML2_STATIC_LIBRARIES})
+  else ()
+    include_directories(${LIBXML2_INCLUDE_DIRS})
+    target_link_libraries (component_tests ${LIBXML2_LIBRARIES})
+  endif ()
+else ()
+  message ( FATAL_ERROR "libxml2 was not found!" )
+endif (LIBXML2_FOUND)
 
 # GNU GCC before 9.1.0 needs to link to libstdc++fs explicitly.
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS "9.1.0")

@@ -1,8 +1,5 @@
 cmake_minimum_required (VERSION 3.8...3.31)
 
-# Recurse into subdirectory for addMessage() test.
-add_subdirectory (addMessage)
-
 # Recurse into subdirectory for importFromFile() test.
 add_subdirectory (importFromFile)
 

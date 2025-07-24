@@ -13,6 +13,7 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-O2" />
+					<Add directory="/usr/include/libxml2" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -30,6 +31,7 @@
 		</Compiler>
 		<Linker>
 			<Add library="z" />
+			<Add library="xml2" />
 		</Linker>
 		<Unit filename="../../code/CompressionDetection.cpp" />
 		<Unit filename="../../code/CompressionDetection.hpp" />
@@ -39,12 +41,20 @@
 		<Unit filename="../../code/ConsoleColours.hpp" />
 		<Unit filename="../../code/FolderMap.cpp" />
 		<Unit filename="../../code/FolderMap.hpp" />
+		<Unit filename="../../code/MessageDatabase.cpp" />
+		<Unit filename="../../code/MessageDatabase.hpp" />
 		<Unit filename="../../code/MsgTemplate.cpp" />
 		<Unit filename="../../code/MsgTemplate.hpp" />
 		<Unit filename="../../code/PMSource.cpp" />
 		<Unit filename="../../code/PMSource.hpp" />
 		<Unit filename="../../code/PrivateMessage.cpp" />
 		<Unit filename="../../code/PrivateMessage.hpp" />
+		<Unit filename="../../code/SortType.cpp" />
+		<Unit filename="../../code/SortType.hpp" />
+		<Unit filename="../../code/XMLDocument.cpp" />
+		<Unit filename="../../code/XMLDocument.hpp" />
+		<Unit filename="../../code/XMLNode.cpp" />
+		<Unit filename="../../code/XMLNode.hpp" />
 		<Unit filename="../../code/bbcode/AdvancedTemplateBBCode.cpp" />
 		<Unit filename="../../code/bbcode/AdvancedTemplateBBCode.hpp" />
 		<Unit filename="../../code/bbcode/AdvancedTplAmpTransformBBCode.hpp" />
@@ -72,10 +82,16 @@
 		<Unit filename="../../code/paths.cpp" />
 		<Unit filename="../../code/paths.hpp" />
 		<Unit filename="../../code/templates/defaults.hpp" />
+		<Unit filename="../../libstriezel/common/DirectoryFileList.cpp" />
+		<Unit filename="../../libstriezel/common/DirectoryFileList.hpp" />
 		<Unit filename="../../libstriezel/common/StringUtils.cpp" />
 		<Unit filename="../../libstriezel/common/StringUtils.hpp" />
 		<Unit filename="../../libstriezel/filesystem/directory.cpp" />
 		<Unit filename="../../libstriezel/filesystem/directory.hpp" />
+		<Unit filename="../../libstriezel/hash/sha256/BufferSource.cpp" />
+		<Unit filename="../../libstriezel/hash/sha256/BufferSource.hpp" />
+		<Unit filename="../../libstriezel/hash/sha256/BufferSourceUtility.cpp" />
+		<Unit filename="../../libstriezel/hash/sha256/BufferSourceUtility.hpp" />
 		<Unit filename="../../libstriezel/hash/sha256/MessageSource.cpp" />
 		<Unit filename="../../libstriezel/hash/sha256/MessageSource.hpp" />
 		<Unit filename="../../libstriezel/hash/sha256/sha256.cpp" />
@@ -87,6 +103,7 @@
 		<Unit filename="CompressionDetections.cpp" />
 		<Unit filename="Config.cpp" />
 		<Unit filename="FolderMap.cpp" />
+		<Unit filename="MessageDatabase.cpp" />
 		<Unit filename="bbcode/AdvancedTemplateBBCode.cpp" />
 		<Unit filename="bbcode/AdvancedTplAmpTransformBBCode.cpp" />
 		<Unit filename="bbcode/CustomizedSimpleBBCode.cpp" />

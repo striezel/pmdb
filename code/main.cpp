@@ -474,20 +474,6 @@ int main(int argc, char **argv)
   MessageDatabase mdb;
   FolderMap fm;
   uint32_t PMs_done, PMs_new;
-  for (const auto& path: pathXML)
-  {
-    if (mdb.importFromFile(path, PMs_done, PMs_new, fm))
-    {
-      std::cout << "Import of private messages from \"" << path << "\" was successful!\n  "
-                << PMs_done << " PMs read, new PMs: " << PMs_new << "\n";
-    }
-    else
-    {
-      std::cerr << "Import of private messages from \"" << path << "\" failed!\n"
-                << "  PMs read from file so far: " << PMs_done << "\nNew PMs: " << PMs_new << "\n";
-      return rcFileError;
-    }
-  }
 
   // try to load data from directories
   for (const auto& directory: loadDirs)
@@ -505,6 +491,22 @@ int main(int argc, char **argv)
     if (fm.load(directory))
     {
       std::cout << "Loaded folder map from \"" << directory << "\", too.\n";
+    }
+  }
+
+  // try to load XML files
+  for (const auto& path: pathXML)
+  {
+    if (mdb.importFromFile(path, PMs_done, PMs_new, fm))
+    {
+      std::cout << "Import of private messages from \"" << path << "\" was successful!\n  "
+                << PMs_done << " PMs read, new PMs: " << PMs_new << "\n";
+    }
+    else
+    {
+      std::cerr << "Import of private messages from \"" << path << "\" failed!\n"
+                << "  PMs read from file so far: " << PMs_done << "\nNew PMs: " << PMs_new << "\n";
+      return rcFileError;
     }
   }
 

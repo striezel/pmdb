@@ -3,7 +3,7 @@ name: Sanitizers
 on: push
 
 jobs:
-  gcc:
+  sanitizer:
     strategy:
       fail-fast: false
       matrix:

@@ -24,6 +24,7 @@ set(component_tests_sources
     ../../code/bbcode/Smilie.cpp
     ../../code/bbcode/TableBBCode.cpp
     ../../code/bbcode/TableClasses.cpp
+    ../../code/bbcode/TextProcessor.hpp
     ../../code/filters/FilterUser.cpp
     ../../code/paths.cpp
     ../../code/templates/defaults.hpp
@@ -45,6 +46,7 @@ set(component_tests_sources
     bbcode/CustomizedSimpleBBCode.cpp
     bbcode/HorizontalRuleBBCode.cpp
     bbcode/ListBBCode.cpp
+    bbcode/ListNewlinePreProcessor.cpp
     bbcode/SimpleBBCode.cpp
     bbcode/SimpleTemplateBBCode.cpp
     bbcode/SimpleTplAmpTransformBBCode.cpp

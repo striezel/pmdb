@@ -85,7 +85,7 @@ struct ListNewlinePreProcessor: public TextProcessor
       while (pos != std::string::npos)
       {
         text.replace(pos, 1, "");
-        pos = text.find("\n[*]", pos+2);
+        pos = text.find("\n[*]", pos + 2);
       }
     }
 }; // struct

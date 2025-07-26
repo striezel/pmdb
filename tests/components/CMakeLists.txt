@@ -45,6 +45,7 @@ set(component_tests_sources
     bbcode/AdvancedTplAmpTransformBBCode.cpp
     bbcode/CustomizedSimpleBBCode.cpp
     bbcode/HorizontalRuleBBCode.cpp
+    bbcode/KillSpacesBeforeNewline.cpp
     bbcode/ListBBCode.cpp
     bbcode/ListNewlinePreProcessor.cpp
     bbcode/SimpleBBCode.cpp

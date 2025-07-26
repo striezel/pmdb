@@ -109,6 +109,7 @@
 		<Unit filename="bbcode/AdvancedTplAmpTransformBBCode.cpp" />
 		<Unit filename="bbcode/CustomizedSimpleBBCode.cpp" />
 		<Unit filename="bbcode/HorizontalRuleBBCode.cpp" />
+		<Unit filename="bbcode/KillSpacesBeforeNewline.cpp" />
 		<Unit filename="bbcode/ListBBCode.cpp" />
 		<Unit filename="bbcode/ListNewlinePreProcessor.cpp" />
 		<Unit filename="bbcode/SimpleBBCode.cpp" />

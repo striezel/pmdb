@@ -117,6 +117,7 @@
 		<Unit filename="bbcode/SimpleTplAmpTransformBBCode.cpp" />
 		<Unit filename="bbcode/Smilie.cpp" />
 		<Unit filename="bbcode/TableBBCode.cpp" />
+		<Unit filename="bbcode/TablePreProcessor.cpp" />
 		<Unit filename="filter/FilterUser.cpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="names_to_controlsequences.cpp" />

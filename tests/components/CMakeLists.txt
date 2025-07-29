@@ -53,6 +53,7 @@ set(component_tests_sources
     bbcode/SimpleTplAmpTransformBBCode.cpp
     bbcode/Smilie.cpp
     bbcode/TableBBCode.cpp
+    bbcode/TablePreProcessor.cpp
     filter/FilterUser.cpp
     names_to_controlsequences.cpp
     paths.cpp

@@ -134,7 +134,7 @@ int generateHtmlFiles(const MessageDatabase& mdb, const FolderMap& fm, const HTM
 
   KillSpacesBeforeNewline eatRedundantSpaces;
   ListNewlinePreProcessor preProc_List;
-  TablePreprocessor table_killLF("tr", "td");
+  TablePreProcessor table_killLF("tr", "td");
   parser.addPreProcessor(&eatRedundantSpaces);
   if (htmlOptions.nl2br && !htmlOptions.noList)
   {

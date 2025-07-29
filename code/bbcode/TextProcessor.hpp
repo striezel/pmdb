@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2012, 2016  Dirk Stolle
+    Copyright (C) 2012, 2016, 2025  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -142,18 +142,18 @@ struct ShortenDoubleSpaces: public TextProcessor
 }; // struct
 
 
-/** \brief TablePreprocessor:
+/** \brief TablePreProcessor:
       Removes occurrences of line feeds after table-related codes.
 */
-struct TablePreprocessor: public TextProcessor
+struct TablePreProcessor: public TextProcessor
 {
   public:
-    /** \brief constructor
+    /** \brief Constructs a new instance.
      *
      * \param row   name of the row tag (e.g. "tr" for "[tr]")
      * \param cell  name of the cell tag (e.g. "td" for "[td]")
      */
-    TablePreprocessor(const std::string& row, const std::string& cell)
+    TablePreProcessor(const std::string& row, const std::string& cell)
     : m_Row(row), m_Cell(cell)
     { }
 
@@ -175,7 +175,7 @@ struct TablePreprocessor: public TextProcessor
       std::string::size_type pos = find_ci(text, needle);
       while (pos != std::string::npos)
       {
-        text.replace(pos+1, 1, "");
+        text.replace(pos + 1, 1, "");
         pos = find_ci(text, needle, pos);
       }
     }
@@ -192,6 +192,6 @@ struct TablePreprocessor: public TextProcessor
         pos = find_ci(text, needle, pos);
       }
     }
-};//struct
+}; // struct
 
 #endif // BBCODE_TEXTPROCESSOR_HPP

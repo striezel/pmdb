@@ -25,6 +25,7 @@ set(component_tests_sources
     ../../code/bbcode/TableBBCode.cpp
     ../../code/bbcode/TableClasses.cpp
     ../../code/bbcode/TextProcessor.hpp
+    ../../code/bbcode/quotes.cpp
     ../../code/filters/FilterUser.cpp
     ../../code/paths.cpp
     ../../code/templates/defaults.hpp
@@ -54,6 +55,7 @@ set(component_tests_sources
     bbcode/Smilie.cpp
     bbcode/TableBBCode.cpp
     bbcode/TablePreProcessor.cpp
+    bbcode/quotes.cpp
     filter/FilterUser.cpp
     names_to_controlsequences.cpp
     paths.cpp

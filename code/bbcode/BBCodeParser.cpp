@@ -114,15 +114,3 @@ void BBCodeParser::addPostProcessor(TextProcessor* postProc)
     m_PostProcs.push_back(postProc);
 }
 #endif
-
-void BBCodeParser::clearCodes()
-{
-  m_Codes.clear();
-}
-
-#ifndef NO_SMILIES_IN_PARSER
-void BBCodeParser::clearSmilies()
-{
-  m_Smilies.clear();
-}
-#endif

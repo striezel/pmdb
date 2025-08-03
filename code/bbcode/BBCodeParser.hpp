@@ -152,27 +152,6 @@ class BBCodeParser
     #endif
 
 
-    /** \brief Clears all added BB codes.
-     *
-     * \remarks
-     *  Clearing codes right before calling parse() without any addCode()
-     *  calls in between will result in no BB codes being parsed. However,
-     *  smilies might still get parsed, if there are any.
-     */
-    void clearCodes();
-
-
-    #ifndef NO_SMILIES_IN_PARSER
-    /** \brief Clears all added smilies.
-     *
-     * \remarks
-     * Clearing smilies right before calling parse() without any addSmile()
-     * calls in between will result in no smilies being parsed. However,
-     * BB codes might still get parsed, if they are present.
-     */
-    void clearSmilies();
-    #endif
-
     #ifndef NO_POSTPROCESSORS_IN_PARSER
     /** Clears all added postprocessors. */
     inline void clearPostProcessors()

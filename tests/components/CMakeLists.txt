@@ -29,9 +29,11 @@ set(component_tests_sources
     ../../code/filters/FilterUser.cpp
     ../../code/paths.cpp
     ../../code/templates/defaults.hpp
+    ../../code/templates/functions.cpp
     ../../libstriezel/common/DirectoryFileList.cpp
     ../../libstriezel/common/StringUtils.cpp
     ../../libstriezel/filesystem/directory.cpp
+    ../../libstriezel/filesystem/file.cpp
     ../../libstriezel/hash/sha256/BufferSource.cpp
     ../../libstriezel/hash/sha256/BufferSourceUtility.cpp
     ../../libstriezel/hash/sha256/MessageSource.cpp
@@ -61,6 +63,7 @@ set(component_tests_sources
     names_to_controlsequences.cpp
     paths.cpp
     templates/defaults.cpp
+    templates/functions.cpp
     main.cpp)
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")

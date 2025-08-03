@@ -85,12 +85,16 @@
 		<Unit filename="../../code/paths.cpp" />
 		<Unit filename="../../code/paths.hpp" />
 		<Unit filename="../../code/templates/defaults.hpp" />
+		<Unit filename="../../code/templates/functions.cpp" />
+		<Unit filename="../../code/templates/functions.hpp" />
 		<Unit filename="../../libstriezel/common/DirectoryFileList.cpp" />
 		<Unit filename="../../libstriezel/common/DirectoryFileList.hpp" />
 		<Unit filename="../../libstriezel/common/StringUtils.cpp" />
 		<Unit filename="../../libstriezel/common/StringUtils.hpp" />
 		<Unit filename="../../libstriezel/filesystem/directory.cpp" />
 		<Unit filename="../../libstriezel/filesystem/directory.hpp" />
+		<Unit filename="../../libstriezel/filesystem/file.cpp" />
+		<Unit filename="../../libstriezel/filesystem/file.hpp" />
 		<Unit filename="../../libstriezel/hash/sha256/BufferSource.cpp" />
 		<Unit filename="../../libstriezel/hash/sha256/BufferSource.hpp" />
 		<Unit filename="../../libstriezel/hash/sha256/BufferSourceUtility.cpp" />
@@ -127,6 +131,7 @@
 		<Unit filename="names_to_controlsequences.cpp" />
 		<Unit filename="paths.cpp" />
 		<Unit filename="templates/defaults.cpp" />
+		<Unit filename="templates/functions.cpp" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>

@@ -59,6 +59,8 @@
 		<Unit filename="../../code/bbcode/AdvancedTemplateBBCode.hpp" />
 		<Unit filename="../../code/bbcode/AdvancedTplAmpTransformBBCode.hpp" />
 		<Unit filename="../../code/bbcode/BBCode.hpp" />
+		<Unit filename="../../code/bbcode/BBCodeParser.cpp" />
+		<Unit filename="../../code/bbcode/BBCodeParser.hpp" />
 		<Unit filename="../../code/bbcode/CustomizedSimpleBBCode.cpp" />
 		<Unit filename="../../code/bbcode/CustomizedSimpleBBCode.hpp" />
 		<Unit filename="../../code/bbcode/HorizontalRuleBBCode.cpp" />
@@ -114,6 +116,7 @@
 		<Unit filename="SortType.cpp" />
 		<Unit filename="bbcode/AdvancedTemplateBBCode.cpp" />
 		<Unit filename="bbcode/AdvancedTplAmpTransformBBCode.cpp" />
+		<Unit filename="bbcode/BBCodeParser.cpp" />
 		<Unit filename="bbcode/CustomizedSimpleBBCode.cpp" />
 		<Unit filename="bbcode/HorizontalRuleBBCode.cpp" />
 		<Unit filename="bbcode/KillSpacesBeforeNewline.cpp" />

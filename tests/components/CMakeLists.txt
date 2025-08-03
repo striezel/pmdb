@@ -16,6 +16,7 @@ set(component_tests_sources
     ../../code/XMLDocument.cpp
     ../../code/XMLNode.cpp
     ../../code/bbcode/AdvancedTemplateBBCode.cpp
+    ../../code/bbcode/BBCodeParser.cpp
     ../../code/bbcode/CustomizedSimpleBBCode.cpp
     ../../code/bbcode/HorizontalRuleBBCode.cpp
     ../../code/bbcode/ListBBCode.cpp
@@ -47,6 +48,7 @@ set(component_tests_sources
     SortType.cpp
     bbcode/AdvancedTemplateBBCode.cpp
     bbcode/AdvancedTplAmpTransformBBCode.cpp
+    bbcode/BBCodeParser.cpp
     bbcode/CustomizedSimpleBBCode.cpp
     bbcode/HorizontalRuleBBCode.cpp
     bbcode/KillSpacesBeforeNewline.cpp

@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database test suite.
-    Copyright (C) 2015, 2022  Dirk Stolle
+    Copyright (C) 2015, 2022, 2025  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -42,6 +42,8 @@ TEST_CASE("AdvancedTemplateBBCode")
   tests["[Tag=abc]123[/Tag]"] = "<tag value=\"abc\">123</tag>";
   // mixed case code
   tests["[TaG=def]123[/tAg]"] = "<tag value=\"def\">123</tag>";
+  // simple code with quoted attribute
+  tests["[tag=\"abc\"]123[/tag]"] = "<tag value=\"abc\">123</tag>";
   // letters inside
   tests["[tag=qwert]abcdefgh[/tag]"] = "<tag value=\"qwert\">abcdefgh</tag>";
   // HTML entity inside - should not get escaped

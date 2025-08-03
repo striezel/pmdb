@@ -107,6 +107,7 @@
 		<Unit filename="Config.cpp" />
 		<Unit filename="FolderMap.cpp" />
 		<Unit filename="MessageDatabase.cpp" />
+		<Unit filename="SortType.cpp" />
 		<Unit filename="bbcode/AdvancedTemplateBBCode.cpp" />
 		<Unit filename="bbcode/AdvancedTplAmpTransformBBCode.cpp" />
 		<Unit filename="bbcode/CustomizedSimpleBBCode.cpp" />

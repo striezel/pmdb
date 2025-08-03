@@ -119,6 +119,32 @@ TEST_CASE("Quotes")
       REQUIRE( with_quotes == expected );
     }
 
+    SECTION("quote with name in single quotes")
+    {
+      const std::string text = "Blah, blah.\n[quote='[W]orld']Hello![/quote]\nMore blah.";
+      const auto with_quotes = handleQuotes(text, forum_url);
+      const std::string expected = std::string("Blah, blah.\n")
+                                 + "<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"20\">\n"
+                                 + "  <tr><td>\n"
+                                 + "    <div class=\"smallfont\" style=\"margin-bottom:2px\">Zitat:</div>\n"
+                                 + "    <table cellpadding=\"6\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n"
+                                 + "    <tr>\n"
+                                 + "        <td style=\"border:1px inset\">\n"
+                                 + "            <div>\n"
+                                 + "                Zitat von <strong>[W]orld</strong>\n"
+                                 + "           </div>\n"
+                                 + "           <div style=\"font-style:italic\">"
+                                 + "Hello!"
+                                 + "</div>\n"
+                                 + "        </td>\n"
+                                 + "    </tr>\n"
+                                 + "    </table>\n"
+                                 + "</td></tr>\n"
+                                 + "</table>"
+                                 + "\nMore blah.";
+      REQUIRE( with_quotes == expected );
+    }
+
     SECTION("quote with name and post number")
     {
       const std::string text = "Blah, blah.\n[quote=World;123654789]Hello![/quote]\nMore blah.";
@@ -140,6 +166,248 @@ TEST_CASE("Quotes")
                                  + "</div>\n      </td>\n    </tr>\n"
                                  + "    </table>\n  </td></tr>\n</table>"
                                  + "\nMore blah.";
+      REQUIRE( with_quotes == expected );
+    }
+
+    SECTION("quote with name in and post number in single quotes")
+    {
+      const std::string text = "Blah, blah.\n[quote='[W]orld;21973207']Hello![/quote]\nMore blah.";
+      const auto with_quotes = handleQuotes(text, forum_url);
+      const std::string expected = std::string("Blah, blah.\n")
+                                 + "<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"20\">\n"
+                                 + "  <tr><td>\n"
+                                 + "    <div class=\"smallfont\" style=\"margin-bottom:2px\">Zitat:</div>\n"
+                                 + "    <table cellpadding=\"6\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n"
+                                 + "    <tr>\n"
+                                 + "      <td class=\"alt2\" style=\"border:1px inset\">\n"
+                                 + "        <div>\n"
+                                 + "            Zitat von <strong>[W]orld</strong>\n"
+                                 + "            <a href=\"https://for.um/showthread.php?p=21973207#post21973207"
+                                 + "\" rel=\"nofollow\"><img class=\"inlineimg\" src=\"img/buttons/viewpost.gif\" border=\"0\" alt=\"Beitrag anzeigen\"></a>\n"
+                                 + "        </div>\n"
+                                 + "        <div style=\"font-style:italic\">"
+                                 + "Hello!"
+                                 + "</div>\n      </td>\n    </tr>\n"
+                                 + "    </table>\n  </td></tr>\n</table>"
+                                 + "\nMore blah.";
+      REQUIRE( with_quotes == expected );
+    }
+
+    SECTION("nested quote: simple")
+    {
+      const std::string text = "Blah, blah.\n[quote]This is a quote.\n[quote]Another quote.[/quote][/quote]\nMore blah.";
+      const auto with_quotes = handleQuotes(text, forum_url);
+      const std::string expected = std::string("Blah, blah.\n")
+                                 + "<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"20\">\n"
+                                 + "<tr><td><div class=\"smallfont\" style=\"margin-bottom:2px\">Zitat:</div>\n"
+                                 + "    <table cellpadding=\"6\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n"
+                                 + "    <tr>\n"
+                                 + "        <td style=\"border:1px inset\">"
+                                 + "This is a quote.\n"
+                                 + "<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"20\">\n"
+                                 + "<tr><td><div class=\"smallfont\" style=\"margin-bottom:2px\">Zitat:</div>\n"
+                                 + "    <table cellpadding=\"6\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n"
+                                 + "    <tr>\n"
+                                 + "        <td style=\"border:1px inset\">"
+                                 + "Another quote."
+                                 + "</td>\n"
+                                 + "    </tr>\n"
+                                 + "    </table>\n"
+                                 + "</td></tr>\n"
+                                 + "</table>"
+                                 + "</td>\n"
+                                 + "    </tr>\n"
+                                 + "    </table>\n"
+                                 + "</td></tr>\n"
+                                 + "</table>"
+                                 + "\nMore blah.";
+      REQUIRE( with_quotes == expected );
+    }
+
+    SECTION("nested quote: simple outer quote, inner quote with name")
+    {
+      const std::string text = "Blah, blah.\n[quote]This is a quote.\n[quote=Author]Another quote.[/quote][/quote]\nMore blah.";
+      const auto with_quotes = handleQuotes(text, forum_url);
+      const std::string expected = std::string("Blah, blah.\n")
+                                 + "<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"20\">\n"
+                                 + "<tr><td><div class=\"smallfont\" style=\"margin-bottom:2px\">Zitat:</div>\n"
+                                 + "    <table cellpadding=\"6\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n"
+                                 + "    <tr>\n"
+                                 + "        <td style=\"border:1px inset\">"
+                                 + "This is a quote.\n"
+                                 + "<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"20\">\n"
+                                 + "  <tr><td>\n"
+                                 + "    <div class=\"smallfont\" style=\"margin-bottom:2px\">Zitat:</div>\n"
+                                 + "    <table cellpadding=\"6\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n"
+                                 + "    <tr>\n"
+                                 + "        <td style=\"border:1px inset\">\n"
+                                 + "            <div>\n"
+                                 + "                Zitat von <strong>Author</strong>\n"
+                                 + "           </div>\n"
+                                 + "           <div style=\"font-style:italic\">"
+                                 + "Another quote."
+                                 + "</div>\n"
+                                 + "        </td>\n"
+                                 + "    </tr>\n"
+                                 + "    </table>\n"
+                                 + "</td></tr>\n"
+                                 + "</table>"
+                                 + "</td>\n"
+                                 + "    </tr>\n"
+                                 + "    </table>\n"
+                                 + "</td></tr>\n"
+                                 + "</table>"
+                                 + "\nMore blah.";
+      REQUIRE( with_quotes == expected );
+    }
+
+    SECTION("nested quote: simple outer quote, inner quote with name and post number")
+    {
+      const std::string text = "Blah, blah.\n[quote]This is a quote.\n[quote=Author;987654321]Another quote.[/quote][/quote]\nMore blah.";
+      const auto with_quotes = handleQuotes(text, forum_url);
+      const std::string expected = std::string("Blah, blah.\n")
+                                 + "<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"20\">\n"
+                                 + "<tr><td><div class=\"smallfont\" style=\"margin-bottom:2px\">Zitat:</div>\n"
+                                 + "    <table cellpadding=\"6\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n"
+                                 + "    <tr>\n"
+                                 + "        <td style=\"border:1px inset\">"
+                                 + "This is a quote.\n"
+                                 + "<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"20\">\n"
+                                 + "  <tr><td>\n"
+                                 + "    <div class=\"smallfont\" style=\"margin-bottom:2px\">Zitat:</div>\n"
+                                 + "    <table cellpadding=\"6\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n"
+                                 + "    <tr>\n"
+                                 + "      <td class=\"alt2\" style=\"border:1px inset\">\n"
+                                 + "        <div>\n"
+                                 + "            Zitat von <strong>Author</strong>\n"
+                                 + "            <a href=\"https://for.um/showthread.php?p=987654321#post987654321"
+                                 + "\" rel=\"nofollow\"><img class=\"inlineimg\" src=\"img/buttons/viewpost.gif\" border=\"0\" alt=\"Beitrag anzeigen\"></a>\n"
+                                 + "        </div>\n"
+                                 + "        <div style=\"font-style:italic\">"
+                                 + "Another quote."
+                                 + "</div>\n      </td>\n    </tr>\n"
+                                 + "    </table>\n  </td></tr>\n</table>"
+                                 + "</td>\n"
+                                 + "    </tr>\n"
+                                 + "    </table>\n"
+                                 + "</td></tr>\n"
+                                 + "</table>"
+                                 + "\nMore blah.";
+      REQUIRE( with_quotes == expected );
+    }
+
+    SECTION("nested quote: outer quote with name, simple inner quote")
+    {
+      const std::string text = "Blah, blah.\n[quote=Alice]This is a quote.\n[quote]Another quote.[/quote][/quote]\nMore blah.";
+      const auto with_quotes = handleQuotes(text, forum_url);
+      const std::string expected = std::string("Blah, blah.\n")
+                                 + "<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"20\">\n"
+                                 + "  <tr><td>\n"
+                                 + "    <div class=\"smallfont\" style=\"margin-bottom:2px\">Zitat:</div>\n"
+                                 + "    <table cellpadding=\"6\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n"
+                                 + "    <tr>\n"
+                                 + "        <td style=\"border:1px inset\">\n"
+                                 + "            <div>\n"
+                                 + "                Zitat von <strong>Alice</strong>\n"
+                                 + "           </div>\n"
+                                 + "           <div style=\"font-style:italic\">"
+                                 + "This is a quote.\n"
+                                 + "<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"20\">\n"
+                                 + "<tr><td><div class=\"smallfont\" style=\"margin-bottom:2px\">Zitat:</div>\n"
+                                 + "    <table cellpadding=\"6\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n"
+                                 + "    <tr>\n"
+                                 + "        <td style=\"border:1px inset\">"
+                                 + "Another quote."
+                                 + "</td>\n"
+                                 + "    </tr>\n"
+                                 + "    </table>\n"
+                                 + "</td></tr>\n"
+                                 + "</table>"
+                                 + "</div>\n"
+                                 + "        </td>\n"
+                                 + "    </tr>\n"
+                                 + "    </table>\n"
+                                 + "</td></tr>\n"
+                                 + "</table>"
+                                 + "\nMore blah.";
+      REQUIRE( with_quotes == expected );
+    }
+
+    SECTION("nested quote: outer quote with name and post number, simple inner quote")
+    {
+      const std::string text = "Blah, blah.\n[quote=Alice;42]This is a quote.\n[quote]Another quote.[/quote][/quote]\nMore blah.";
+      const auto with_quotes = handleQuotes(text, forum_url);
+      const std::string expected = std::string("Blah, blah.\n")
+                                 + "<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"20\">\n"
+                                 + "  <tr><td>\n"
+                                 + "    <div class=\"smallfont\" style=\"margin-bottom:2px\">Zitat:</div>\n"
+                                 + "    <table cellpadding=\"6\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n"
+                                 + "    <tr>\n"
+                                 + "      <td class=\"alt2\" style=\"border:1px inset\">\n"
+                                 + "        <div>\n"
+                                 + "            Zitat von <strong>Alice</strong>\n"
+                                 + "            <a href=\"https://for.um/showthread.php?p=42#post42"
+                                 + "\" rel=\"nofollow\"><img class=\"inlineimg\" src=\"img/buttons/viewpost.gif\" border=\"0\" alt=\"Beitrag anzeigen\"></a>\n"
+                                 + "        </div>\n"
+                                 + "        <div style=\"font-style:italic\">"
+                                 + "This is a quote.\n"
+                                 + "<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"20\">\n"
+                                 + "<tr><td><div class=\"smallfont\" style=\"margin-bottom:2px\">Zitat:</div>\n"
+                                 + "    <table cellpadding=\"6\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n"
+                                 + "    <tr>\n"
+                                 + "        <td style=\"border:1px inset\">"
+                                 + "Another quote."
+                                 + "</td>\n"
+                                 + "    </tr>\n"
+                                 + "    </table>\n"
+                                 + "</td></tr>\n"
+                                 + "</table>"
+                                 + "</div>\n      </td>\n    </tr>\n"
+                                 + "    </table>\n  </td></tr>\n</table>"
+                                 + "\nMore blah.";
+      REQUIRE( with_quotes == expected );
+    }
+
+    SECTION("nested quote: outer and inner quote with name")
+    {
+      const std::string text = "Yo dawg.\n[quote=Dawg]I heard you like quotes.\n[quote=Us]So we put a quote in your quote.[/quote][/quote]\nSo you can quote while you quote.";
+      const auto with_quotes = handleQuotes(text, forum_url);
+      const std::string expected = std::string("Yo dawg.\n")
+                                 + "<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"20\">\n"
+                                 + "  <tr><td>\n"
+                                 + "    <div class=\"smallfont\" style=\"margin-bottom:2px\">Zitat:</div>\n"
+                                 + "    <table cellpadding=\"6\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n"
+                                 + "    <tr>\n"
+                                 + "        <td style=\"border:1px inset\">\n"
+                                 + "            <div>\n"
+                                 + "                Zitat von <strong>Dawg</strong>\n"
+                                 + "           </div>\n"
+                                 + "           <div style=\"font-style:italic\">"
+                                 + "I heard you like quotes.\n"
+                                 + "<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"20\">\n"
+                                 + "  <tr><td>\n"
+                                 + "    <div class=\"smallfont\" style=\"margin-bottom:2px\">Zitat:</div>\n"
+                                 + "    <table cellpadding=\"6\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n"
+                                 + "    <tr>\n"
+                                 + "        <td style=\"border:1px inset\">\n"
+                                 + "            <div>\n"
+                                 + "                Zitat von <strong>Us</strong>\n"
+                                 + "           </div>\n"
+                                 + "           <div style=\"font-style:italic\">"
+                                 + "So we put a quote in your quote."
+                                 + "</div>\n"
+                                 + "        </td>\n"
+                                 + "    </tr>\n"
+                                 + "    </table>\n"
+                                 + "</td></tr>\n"
+                                 + "</table>"
+                                 + "</div>\n"
+                                 + "        </td>\n"
+                                 + "    </tr>\n"
+                                 + "    </table>\n"
+                                 + "</td></tr>\n"
+                                 + "</table>"
+                                 + "\nSo you can quote while you quote.";
       REQUIRE( with_quotes == expected );
     }
   }

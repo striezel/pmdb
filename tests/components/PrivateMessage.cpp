@@ -140,4 +140,32 @@ TEST_CASE("PrivateMessage")
       REQUIRE( pm.getMessage() == expected );
     }
   }
+
+  SECTION("loadFromFile")
+  {
+    PrivateMessage pm;
+
+    SECTION("failure: file does not exist")
+    {
+      REQUIRE_FALSE( pm.loadFromFile("/does/not/exist/load.txt", Compression::none) );
+      REQUIRE_FALSE( pm.loadFromFile("/does/not/exist/load.txt", Compression::zlib) );
+    }
+  }
+
+  SECTION("saveToFile")
+  {
+    PrivateMessage pm;
+    pm.setDatestamp("2007-06-14 12:34");
+    pm.setTitle("This is the title");
+    pm.setFromUser("Hermes");
+    pm.setFromUserID(234);
+    pm.setToUser("Poseidon");
+    pm.setMessage("Hello!");
+
+    SECTION("failure: containing directory does not exist")
+    {
+      REQUIRE_FALSE( pm.saveToFile("/does/not/exist/message.txt", Compression::none) );
+      REQUIRE_FALSE( pm.saveToFile("/does/not/exist/message.txt", Compression::zlib) );
+    }
+  }
 }

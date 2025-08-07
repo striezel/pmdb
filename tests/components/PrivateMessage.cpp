@@ -23,6 +23,17 @@
 
 TEST_CASE("PrivateMessage")
 {
+  SECTION("constructor")
+  {
+    PrivateMessage pm;
+    REQUIRE( pm.getDatestamp().empty() );
+    REQUIRE( pm.getTitle().empty() );
+    REQUIRE( pm.getFromUser().empty() );
+    REQUIRE( pm.getFromUserID() == 0 );
+    REQUIRE( pm.getToUser().empty() );
+    REQUIRE( pm.getMessage().empty() );
+  }
+
   SECTION("normalise")
   {
     PrivateMessage pm;

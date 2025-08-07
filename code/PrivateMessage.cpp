@@ -43,18 +43,6 @@ PrivateMessage::PrivateMessage()
 {
 }
 
-void PrivateMessage::clear()
-{
-  datestamp.clear();
-  title.clear();
-  fromUser.clear();
-  fromUserID = 0;
-  toUser.clear();
-  message.clear();
-  m_NeedsHashUpdate = true;
-  m_Hash.setToNull();
-}
-
 void PrivateMessage::normalise()
 {
   std::string::size_type pos = message.find("\r\n");

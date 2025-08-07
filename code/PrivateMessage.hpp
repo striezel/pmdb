@@ -33,10 +33,6 @@ class PrivateMessage
     PrivateMessage();
 
 
-    /** Clears/resets all data members. */
-    void clear();
-
-
     /** Normalises the line breaks in the message text. */
     void normalise();
 

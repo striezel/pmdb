@@ -45,6 +45,7 @@ set(component_tests_sources
     Config.cpp
     FolderMap.cpp
     MessageDatabase.cpp
+    PrivateMessage.cpp
     SortType.cpp
     bbcode/AdvancedTemplateBBCode.cpp
     bbcode/AdvancedTplAmpTransformBBCode.cpp

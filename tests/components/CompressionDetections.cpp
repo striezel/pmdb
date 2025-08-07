@@ -90,4 +90,49 @@ TEST_CASE("detect_compression")
     REQUIRE( fs::remove(path / hash) );
     REQUIRE( fs::remove(path) );
   }
+
+  SECTION("directory without private message")
+  {
+    const fs::path path{fs::temp_directory_path() / "pm_no_messages_directory"};
+    REQUIRE( fs::create_directory(path) );
+    FileGuard guard{path};
+
+    {
+      std::ofstream stream(path / "not_a_pm.dat", std::ios::out | std::ios::binary);
+      REQUIRE( stream.good() );
+      REQUIRE( stream.write("foo", 3).good() );
+      stream.close();
+      REQUIRE( stream.good() );
+    }
+
+    const auto detected = detect_compression(path.string());
+    REQUIRE_FALSE( detected.has_value() );
+    REQUIRE( fs::remove(path / "not_a_pm.dat") );
+    REQUIRE( fs::remove(path) );
+  }
+
+  SECTION("directory with corrupted private message file")
+  {
+    const fs::path path{fs::temp_directory_path() / "pm_corrupt_messages_directory"};
+    REQUIRE( fs::create_directory(path) );
+    FileGuard guard{path};
+
+    const auto hash = getExampleMessage().getHash().toHexString();
+
+    {
+      using namespace std::string_view_literals;
+
+      std::ofstream stream(path / hash, std::ios::out | std::ios::binary);
+      REQUIRE( stream.good() );
+      const std::string_view data = "123\0zxy"sv;
+      REQUIRE( stream.write(data.data(), data.size()).good() );
+      stream.close();
+      REQUIRE( stream.good() );
+    }
+
+    const auto detected = detect_compression(path.string());
+    REQUIRE_FALSE( detected.has_value() );
+    REQUIRE( fs::remove(path / hash) );
+    REQUIRE( fs::remove(path) );
+  }
 }

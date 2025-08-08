@@ -162,7 +162,7 @@ bool MessageDatabase::processFolderNode(const XMLNode& node, uint32_t& readPMs, 
 
     if (current.getNameAsString() != "privatemessage")
     {
-      std::cerr << "Current node should habe name \"privatemessage\", but it is \""
+      std::cerr << "Current node should have name \"privatemessage\", but it is \""
                 << current.getNameAsString() << "\" instead!\n";
       return false;
     }
@@ -234,7 +234,8 @@ bool MessageDatabase::processPrivateMessageNode(const XMLNode& node, uint32_t& r
 
       const std::string temp = current.getPlainTextContent();
       uint32_t tempUint;
-      if (!(std::stringstream (temp) >> tempUint))
+      if (!(std::stringstream (temp) >> tempUint)
+          || (std::to_string(tempUint) != temp))
       {
         std::cerr << "Error: Could not convert \"" << temp << "\" to integer!\n";
         return false;

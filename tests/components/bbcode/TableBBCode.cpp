@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database test suite.
-    Copyright (C) 2015, 2022  Dirk Stolle
+    Copyright (C) 2015, 2022, 2025  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -26,84 +26,149 @@ TEST_CASE("TableBBCode")
   // some rather standard table BB code
   TableBBCode table("table");
 
-  // Populate map with strings for testing.
-  //   Keys:   input string
-  //   Values: expected output string
-  std::map<std::string, std::string> tests;
-  // empty string stays unchanged
-  tests[""] = "";
-  // unchanged, no code
-  tests["There is no table here."] = "There is no table here.";
-  // simple table, one cell only
-  tests["[table][tr][td]Content goes here.[/td][/tr][/table]"]
-      = "<table><tr><td>Content goes here.</td></tr></table>";
-  // simple table, two cells in one row
-  tests["[table][tr][td]Content[/td][td]more text[/td][/tr][/table]"]
-     = "<table><tr><td>Content</td><td>more text</td></tr></table>";
-  // simple table, two cells only in two rows
-  tests["[table][tr][td]Content[/td][/tr][tr][td]more text[/td][/tr][/table]"]
-      = "<table><tr><td>Content</td></tr><tr><td>more text</td></tr></table>";
-  // four cells in two rows: two cells in each row
-  tests["[table][tr][td]one[/td][td]two[/td][/tr][tr][td]three[/td][td]four[/td][/tr][/table]"]
-      = "<table><tr><td>one</td><td>two</td></tr><tr><td>three</td><td>four</td></tr></table>";
-  // same, but with colspan
-  tests["[table][tr][td=\"colspan: 2\"]one[/td][/tr][tr][td]three[/td][td]four[/td][/tr][/table]"]
-      = "<table><tr><td colspan=\"2\">one</td></tr><tr><td>three</td><td>four</td></tr></table>";
-
-  // table with width
-  tests["[table=\"width: 250\"][tr][td]Content goes here.[/td][/tr][/table]"]
-      = "<table width=\"250\"><tr><td>Content goes here.</td></tr></table>";
-  // table with width in percent
-  tests["[table=\"width: 25%\"][tr][td]Content goes here.[/td][/tr][/table]"]
-      = "<table width=\"25%\"><tr><td>Content goes here.</td></tr></table>";
-
-  // cell with width
-  tests["[table][tr][td=\"width: 250\"]Content goes here.[/td][/tr][/table]"]
-      = "<table><tr><td width=\"250\">Content goes here.</td></tr></table>";
-  // cell with width in percent
-  tests["[table][tr][td=\"width: 25%\"]Content goes here.[/td][/tr][/table]"]
-      = "<table><tr><td width=\"25%\">Content goes here.</td></tr></table>";
-
-  // table with align left
-  tests["[table=\"align: left\"][tr][td]Content goes here.[/td][/tr][/table]"]
-      = "<table align=\"left\"><tr><td>Content goes here.</td></tr></table>";
-  // table with align right
-  tests["[table=\"align: right\"][tr][td]Content goes here.[/td][/tr][/table]"]
-      = "<table align=\"right\"><tr><td>Content goes here.</td></tr></table>";
-  // table with align center
-  tests["[table=\"align: center\"][tr][td]Content goes here.[/td][/tr][/table]"]
-      = "<table align=\"center\"><tr><td>Content goes here.</td></tr></table>";
-
-  // cell with align left
-  tests["[table][tr][td=\"align: left\"]Content goes here.[/td][/tr][/table]"]
-      = "<table><tr><td align=\"left\">Content goes here.</td></tr></table>";
-  // cell with align right
-  tests["[table][tr][td=\"align: right\"]Content goes here.[/td][/tr][/table]"]
-      = "<table><tr><td align=\"right\">Content goes here.</td></tr></table>";
-  // cell with align center
-  tests["[table][tr][td=\"align: center\"]Content goes here.[/td][/tr][/table]"]
-      = "<table><tr><td align=\"center\">Content goes here.</td></tr></table>";
-
-  // cell with border
-  tests["[table][tr][td=\"class: grid\"]Content goes here.[/td][/tr][/table]"]
-      = "<table><tr><td style=\"border: 1px solid #000000; border-collapse: collapse;\">Content goes here.</td></tr></table>";
-  // row with border - border style gets applied to child elements, too
-  tests["[table][tr=\"class: grid\"][td]Content goes here.[/td][/tr][/table]"]
-      = "<table>"
-       + std::string("<tr style=\"border: 1px solid #000000; border-collapse: collapse;\">")
-       + "<td style=\"border: 1px solid #000000; border-collapse: collapse;\">Content goes here.</td></tr></table>";
-  // table with border - border style gets applied to child elements, too
-  tests["[table=\"class: grid\"][tr][td]Content goes here.[/td][/tr][/table]"]
-      = "<table style=\"border: 1px solid #000000; border-collapse: collapse;\">"
-       + std::string("<tr style=\"border: 1px solid #000000; border-collapse: collapse;\">")
-       + "<td style=\"border: 1px solid #000000; border-collapse: collapse;\">Content goes here.</td></tr></table>";
-
-
-  // iterate over all given strings and check, if they get the expected result
-  for (const auto& [key, value]: tests)
+  SECTION("empty string stays unchanged")
   {
-    std::string text = key;
+    std::string text = "";
     table.applyToText(text);
-    REQUIRE( text == value );
+    REQUIRE( text == "" );
+  }
+
+  SECTION("text without table code is not changed")
+  {
+    std::string text = "There is no table here.";
+    table.applyToText(text);
+    REQUIRE( text == "There is no table here." );
+  }
+
+  SECTION("simple table, one cell only")
+  {
+    std::string text = "[table][tr][td]Content goes here.[/td][/tr][/table]";
+    table.applyToText(text);
+    REQUIRE( text == "<table><tr><td>Content goes here.</td></tr></table>" );
+  }
+
+  SECTION("simple table, two cells in one row")
+  {
+    std::string text = "[table][tr][td]Content[/td][td]more text[/td][/tr][/table]";
+    table.applyToText(text);
+    REQUIRE( text == "<table><tr><td>Content</td><td>more text</td></tr></table>" );
+  }
+
+  SECTION("simple table, two cells only in two rows")
+  {
+    std::string text = "[table][tr][td]Content[/td][/tr][tr][td]more text[/td][/tr][/table]";
+    table.applyToText(text);
+    REQUIRE( text == "<table><tr><td>Content</td></tr><tr><td>more text</td></tr></table>" );
+  }
+
+  SECTION("four cells in two rows: two cells in each row")
+  {
+    std::string text = "[table][tr][td]one[/td][td]two[/td][/tr][tr][td]three[/td][td]four[/td][/tr][/table]";
+    table.applyToText(text);
+    REQUIRE( text == "<table><tr><td>one</td><td>two</td></tr><tr><td>three</td><td>four</td></tr></table>" );
+  }
+
+  SECTION("four cells in two rows: two cells in each row, but with colspan")
+  {
+    std::string text = "[table][tr][td=\"colspan: 2\"]one[/td][/tr][tr][td]three[/td][td]four[/td][/tr][/table]";
+    table.applyToText(text);
+    REQUIRE( text == "<table><tr><td colspan=\"2\">one</td></tr><tr><td>three</td><td>four</td></tr></table>" );
+  }
+
+  SECTION("table with width in pixels")
+  {
+    std::string text = "[table=\"width: 250\"][tr][td]Content goes here.[/td][/tr][/table]";
+    table.applyToText(text);
+    REQUIRE( text == "<table width=\"250\"><tr><td>Content goes here.</td></tr></table>" );
+  }
+
+  SECTION("table with width in percent")
+  {
+    std::string text = "[table=\"width: 25%\"][tr][td]Content goes here.[/td][/tr][/table]";
+    table.applyToText(text);
+    REQUIRE( text == "<table width=\"25%\"><tr><td>Content goes here.</td></tr></table>" );
+  }
+
+  SECTION("cell with width in pixels")
+  {
+    std::string text = "[table][tr][td=\"width: 250\"]Content goes here.[/td][/tr][/table]";
+    table.applyToText(text);
+    REQUIRE( text == "<table><tr><td width=\"250\">Content goes here.</td></tr></table>" );
+  }
+
+  SECTION("cell with width in percent")
+  {
+    std::string text = "[table][tr][td=\"width: 25%\"]Content goes here.[/td][/tr][/table]";
+    table.applyToText(text);
+    REQUIRE( text == "<table><tr><td width=\"25%\">Content goes here.</td></tr></table>" );
+  }
+
+  SECTION("table with align left")
+  {
+    std::string text = "[table=\"align: left\"][tr][td]Content goes here.[/td][/tr][/table]";
+    table.applyToText(text);
+    REQUIRE( text == "<table align=\"left\"><tr><td>Content goes here.</td></tr></table>" );
+  }
+
+  SECTION("table with align right")
+  {
+    std::string text = "[table=\"align: right\"][tr][td]Content goes here.[/td][/tr][/table]";
+    table.applyToText(text);
+    REQUIRE( text == "<table align=\"right\"><tr><td>Content goes here.</td></tr></table>" );
+  }
+
+  SECTION("table with align center")
+  {
+    std::string text = "[table=\"align: center\"][tr][td]Content goes here.[/td][/tr][/table]";
+    table.applyToText(text);
+    REQUIRE( text == "<table align=\"center\"><tr><td>Content goes here.</td></tr></table>" );
+  }
+
+  SECTION("cell with align left")
+  {
+    std::string text = "[table][tr][td=\"align: left\"]Content goes here.[/td][/tr][/table]";
+    table.applyToText(text);
+    REQUIRE( text == "<table><tr><td align=\"left\">Content goes here.</td></tr></table>" );
+  }
+
+  SECTION("cell with align right")
+  {
+    std::string text = "[table][tr][td=\"align: right\"]Content goes here.[/td][/tr][/table]";
+    table.applyToText(text);
+    REQUIRE( text == "<table><tr><td align=\"right\">Content goes here.</td></tr></table>" );
+  }
+
+  SECTION("cell with align center")
+  {
+    std::string text = "[table][tr][td=\"align: center\"]Content goes here.[/td][/tr][/table]";
+    table.applyToText(text);
+    REQUIRE( text == "<table><tr><td align=\"center\">Content goes here.</td></tr></table>" );
+  }
+
+  SECTION("cell with border")
+  {
+    std::string text = "[table][tr][td=\"class: grid\"]Content goes here.[/td][/tr][/table]";
+    table.applyToText(text);
+    REQUIRE( text == "<table><tr><td style=\"border: 1px solid #000000; border-collapse: collapse;\">Content goes here.</td></tr></table>" );
+  }
+
+  SECTION("row with border - border style gets applied to child elements, too")
+  {
+    std::string text = "[table][tr=\"class: grid\"][td]Content goes here.[/td][/tr][/table]";
+    table.applyToText(text);
+    const std::string expected = "<table>"
+       + std::string("<tr style=\"border: 1px solid #000000; border-collapse: collapse;\">")
+       + "<td style=\"border: 1px solid #000000; border-collapse: collapse;\">Content goes here.</td></tr></table>";
+    REQUIRE( text == expected );
+  }
+
+  SECTION("table with border - border style gets applied to child elements, too")
+  {
+    std::string text = "[table=\"class: grid\"][tr][td]Content goes here.[/td][/tr][/table]";
+    table.applyToText(text);
+    const std::string expected = "<table style=\"border: 1px solid #000000; border-collapse: collapse;\">"
+       + std::string("<tr style=\"border: 1px solid #000000; border-collapse: collapse;\">")
+       + "<td style=\"border: 1px solid #000000; border-collapse: collapse;\">Content goes here.</td></tr></table>";
+    REQUIRE( text == expected );
   }
 }

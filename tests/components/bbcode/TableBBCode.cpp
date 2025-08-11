@@ -152,6 +152,27 @@ TEST_CASE("TableBBCode")
     REQUIRE( text == "<table><tr><td style=\"border: 1px solid #000000; border-collapse: collapse;\">Content goes here.</td></tr></table>" );
   }
 
+  SECTION("cell with border using custom cell class")
+  {
+    const TableClasses classes(true, TableClasses::DefaultTableClass, TableClasses::DefaultRowClass, "my_cell_class_name");
+    const TableBBCode code("table", classes);
+
+    std::string text = "[table][tr][td=\"class: grid\"]Content goes here.[/td][/tr][/table]";
+    code.applyToText(text);
+    REQUIRE( text == "<table><tr><td class=\"my_cell_class_name\">Content goes here.</td></tr></table>" );
+  }
+
+  SECTION("cell with border using default cell class")
+  {
+    const TableClasses classes(true, TableClasses::DefaultTableClass, TableClasses::DefaultRowClass, TableClasses::DefaultCellClass);
+    const TableBBCode code("table", classes);
+
+    std::string text = "[table][tr][td=\"class: grid\"]Content goes here.[/td][/tr][/table]";
+    code.applyToText(text);
+    const std::string expected = "<table><tr><td class=\"" + TableClasses::DefaultCellClass + "\">Content goes here.</td></tr></table>";
+    REQUIRE( text == expected );
+  }
+
   SECTION("row with border - border style gets applied to child elements, too")
   {
     std::string text = "[table][tr=\"class: grid\"][td]Content goes here.[/td][/tr][/table]";
@@ -162,6 +183,32 @@ TEST_CASE("TableBBCode")
     REQUIRE( text == expected );
   }
 
+  SECTION("row with border using custom row and cell class")
+  {
+    const TableClasses classes(true, TableClasses::DefaultTableClass, "my_row_class_name", "my_cell_class_name");
+    const TableBBCode code("table", classes);
+
+    std::string text = "[table][tr=\"class: grid\"][td]Content goes here.[/td][/tr][/table]";
+    code.applyToText(text);
+    const std::string expected = "<table>"
+       + std::string("<tr class=\"my_row_class_name\">")
+       + "<td class=\"my_cell_class_name\">Content goes here.</td></tr></table>";
+    REQUIRE( text == expected );
+  }
+
+  SECTION("row with border using default row and cell class")
+  {
+    const TableClasses classes(true, TableClasses::DefaultTableClass, TableClasses::DefaultRowClass, TableClasses::DefaultCellClass);
+    const TableBBCode code("table", classes);
+
+    std::string text = "[table][tr=\"class: grid\"][td]Content goes here.[/td][/tr][/table]";
+    code.applyToText(text);
+    const std::string expected = "<table>"
+       + std::string("<tr class=\"") + TableClasses::DefaultRowClass + "\">"
+       + "<td class=\"" + TableClasses::DefaultCellClass + "\">Content goes here.</td></tr></table>";
+    REQUIRE( text == expected );
+  }
+
   SECTION("table with border - border style gets applied to child elements, too")
   {
     std::string text = "[table=\"class: grid\"][tr][td]Content goes here.[/td][/tr][/table]";
@@ -169,6 +216,32 @@ TEST_CASE("TableBBCode")
     const std::string expected = "<table style=\"border: 1px solid #000000; border-collapse: collapse;\">"
        + std::string("<tr style=\"border: 1px solid #000000; border-collapse: collapse;\">")
        + "<td style=\"border: 1px solid #000000; border-collapse: collapse;\">Content goes here.</td></tr></table>";
+    REQUIRE( text == expected );
+  }
+
+  SECTION("table with border using custom table, row and cell class")
+  {
+    const TableClasses classes(true, "my_table_class_name", "my_row_class_name", "my_cell_class_name");
+    const TableBBCode code("table", classes);
+
+    std::string text = "[table=\"class: grid\"][tr][td]Content goes here.[/td][/tr][/table]";
+    code.applyToText(text);
+    const std::string expected = "<table class=\"my_table_class_name\">"
+       + std::string("<tr class=\"my_row_class_name\">")
+       + "<td class=\"my_cell_class_name\">Content goes here.</td></tr></table>";
+    REQUIRE( text == expected );
+  }
+
+  SECTION("table with border using default table, row and cell class")
+  {
+    const TableClasses classes(true, TableClasses::DefaultTableClass, TableClasses::DefaultRowClass, TableClasses::DefaultCellClass);
+    const TableBBCode code("table", classes);
+
+    std::string text = "[table=\"class: grid\"][tr][td]Content goes here.[/td][/tr][/table]";
+    code.applyToText(text);
+    const std::string expected = "<table class=\"" + TableClasses::DefaultTableClass + "\">"
+       + std::string("<tr class=\"") + TableClasses::DefaultRowClass + "\">"
+       + "<td class=\"" + TableClasses::DefaultCellClass + "\">Content goes here.</td></tr></table>";
     REQUIRE( text == expected );
   }
 

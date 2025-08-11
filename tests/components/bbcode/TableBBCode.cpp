@@ -171,4 +171,19 @@ TEST_CASE("TableBBCode")
        + "<td style=\"border: 1px solid #000000; border-collapse: collapse;\">Content goes here.</td></tr></table>";
     REQUIRE( text == expected );
   }
+
+  SECTION("nested tables, one cell only for each")
+  {
+    std::string text = "[table][tr][td]content[table][tr][td]inner text[/td][/tr][/table]more content[/td][/tr][/table]";
+    table.applyToText(text);
+    REQUIRE( text == "<table><tr><td>content<table><tr><td>inner text</td></tr></table>more content</td></tr></table>" );
+  }
+
+  SECTION("nested tables, but BB code for outer table is incomplete")
+  {
+    std::string text = "[table][tr][td]content[table][tr][td]inner text[/td][/tr][/table]more content[/td][/tr] no table end tag";
+    table.applyToText(text);
+    // Since BB code for outer table is incomplete only the inner table gets translated into HTML.
+    REQUIRE( text == "[table][tr][td]content<table><tr><td>inner text</td></tr></table>more content[/td][/tr] no table end tag" );
+  }
 }

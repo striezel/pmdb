@@ -24,7 +24,7 @@
 TEST_CASE("TableBBCode")
 {
   // some rather standard table BB code
-  TableBBCode table("table");
+  const TableBBCode table("table");
 
   SECTION("empty string stays unchanged")
   {
@@ -116,6 +116,84 @@ TEST_CASE("TableBBCode")
       std::string text = "[table][tr][td=\"width: 25%\"]Content goes here.[/td][/tr][/table]";
       table.applyToText(text);
       REQUIRE( text == "<table><tr><td width=\"25%\">Content goes here.</td></tr></table>" );
+    }
+  }
+
+  SECTION("width limit tests")
+  {
+    const TableBBCode limited_table("table", TableClasses(), 75);
+
+    SECTION("table with width in pixels below limit")
+    {
+      std::string text = "[table=\"width: 72\"][tr][td]Content goes here.[/td][/tr][/table]";
+      limited_table.applyToText(text);
+      REQUIRE( text == "<table width=\"72\"><tr><td>Content goes here.</td></tr></table>" );
+    }
+
+    SECTION("table with width in pixels exactly at the limit")
+    {
+      std::string text = "[table=\"width: 75\"][tr][td]Content goes here.[/td][/tr][/table]";
+      limited_table.applyToText(text);
+      REQUIRE( text == "<table width=\"75\"><tr><td>Content goes here.</td></tr></table>" );
+    }
+
+    SECTION("table with width in pixels above limit")
+    {
+      std::string text = "[table=\"width: 80\"][tr][td]Content goes here.[/td][/tr][/table]";
+      limited_table.applyToText(text);
+      REQUIRE( text == "<table><tr><td>Content goes here.</td></tr></table>" );
+    }
+
+    SECTION("table with width in percent 'below' limit")
+    {
+      std::string text = "[table=\"width: 25%\"][tr][td]Content goes here.[/td][/tr][/table]";
+      limited_table.applyToText(text);
+      REQUIRE( text == "<table width=\"25%\"><tr><td>Content goes here.</td></tr></table>" );
+    }
+
+    SECTION("table with width in percent 'above' limit")
+    {
+      std::string text = "[table=\"width: 85%\"][tr][td]Content goes here.[/td][/tr][/table]";
+      limited_table.applyToText(text);
+      // Percentage values are not subjected to the limit, so they always pass.
+      REQUIRE( text == "<table width=\"85%\"><tr><td>Content goes here.</td></tr></table>" );
+    }
+
+    SECTION("cell with width in pixels below limit")
+    {
+      std::string text = "[table][tr][td=\"width: 55\"]Content goes here.[/td][/tr][/table]";
+      limited_table.applyToText(text);
+      REQUIRE( text == "<table><tr><td width=\"55\">Content goes here.</td></tr></table>" );
+    }
+
+    SECTION("cell with width in pixels exactly at the limit")
+    {
+      std::string text = "[table][tr][td=\"width: 75\"]Content goes here.[/td][/tr][/table]";
+      limited_table.applyToText(text);
+      REQUIRE( text == "<table><tr><td width=\"75\">Content goes here.</td></tr></table>" );
+    }
+
+    SECTION("cell with width in pixels above limit")
+    {
+      std::string text = "[table][tr][td=\"width: 76\"]Content goes here.[/td][/tr][/table]";
+      limited_table.applyToText(text);
+      // Limit is currently not applied to cell width.
+      REQUIRE( text == "<table><tr><td width=\"76\">Content goes here.</td></tr></table>" );
+    }
+
+    SECTION("cell with width in percent 'below' limit")
+    {
+      std::string text = "[table][tr][td=\"width: 42%\"]Content goes here.[/td][/tr][/table]";
+      limited_table.applyToText(text);
+      CHECK( text == "<table><tr><td width=\"42%\">Content goes here.</td></tr></table>" );
+    }
+
+    SECTION("cell with width in percent 'above' limit")
+    {
+      std::string text = "[table][tr][td=\"width: 95%\"]Content goes here.[/td][/tr][/table]";
+      limited_table.applyToText(text);
+      // Percentage values are not subjected to the limit, so they always pass.
+      CHECK( text == "<table><tr><td width=\"95%\">Content goes here.</td></tr></table>" );
     }
   }
 

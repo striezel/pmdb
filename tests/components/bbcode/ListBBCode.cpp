@@ -122,4 +122,37 @@ TEST_CASE("ListBBCode")
       REQUIRE( text == value );
     }
   }
+
+  SECTION("invalid code tests")
+  {
+    SECTION("nested list starts before item [*] of outer list")
+    {
+       ListBBCode list("list", true);
+       std::string text = "I heard you like lists, so [list]I [list][*]made[*]a[*]list[/list][*]inside[*]your list.[/list]";
+       const std::string expected = text;
+       list.applyToText(text);
+       // Code is wrong, so not HTML code is generated.
+       REQUIRE( text == expected );
+    }
+
+    SECTION("nested list starts before item [*] of outer list, three level variant")
+    {
+       ListBBCode list("list", true);
+       std::string text = "I heard you like lists, so [list][*]I [list][list][*]made[*]a[/list][*]list[/list][*]inside[*]your list.[/list]";
+       const std::string expected = text;
+       list.applyToText(text);
+       // Code is wrong, so not HTML code is generated.
+       REQUIRE( text == expected );
+    }
+
+    SECTION("nested lists where outer list has no end tag")
+    {
+       ListBBCode list("list", true);
+       std::string text = "I heard you like lists, so [list][*]I [list][*]made[*]a[*]list[/list]inside your list.";
+       const std::string expected = "I heard you like lists, so [list][*]I <ul><li>made</li><li>a</li><li>list</li></ul>inside your list.";
+       list.applyToText(text);
+       // Code is incomplete, so not HTML code is generated for the outer list.
+       REQUIRE( text == expected );
+    }
+  }
 }

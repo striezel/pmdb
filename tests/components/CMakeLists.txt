@@ -18,6 +18,7 @@ set(component_tests_sources
     ../../code/bbcode/AdvancedTemplateBBCode.cpp
     ../../code/bbcode/BBCodeParser.cpp
     ../../code/bbcode/CustomizedSimpleBBCode.cpp
+    ../../code/bbcode/DefaultCodes.hpp
     ../../code/bbcode/HorizontalRuleBBCode.cpp
     ../../code/bbcode/ListBBCode.cpp
     ../../code/bbcode/SimpleBBCode.cpp
@@ -51,6 +52,7 @@ set(component_tests_sources
     bbcode/AdvancedTplAmpTransformBBCode.cpp
     bbcode/BBCodeParser.cpp
     bbcode/CustomizedSimpleBBCode.cpp
+    bbcode/DefaultCodes.cpp
     bbcode/HorizontalRuleBBCode.cpp
     bbcode/KillSpacesBeforeNewline.cpp
     bbcode/ListBBCode.cpp

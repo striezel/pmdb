@@ -1,3 +1,3 @@
 <div class="folder_entry">
-  <a href="{..folder_link..}">{..folder_name..}</a>
+  <a class="folder_link" href="{..folder_link..}">{..marker..} {..folder_name..}</a>
 </div>

@@ -365,6 +365,36 @@ bool MessageDatabase::loadMessages(const std::string& directory, uint32_t& readP
   return true;
 }
 
+/**
+ * Generates HTML code for the folder list.
+ *
+ * \param folderList  template for the folder list
+ * \param folderEntry template for a folder entry in the list
+ * \param folderContents  map of folder names to hashes + dates of PMs in that folder (just needed for the folder names here, i. e. the keys)
+ * \param folderHashes    map of folder name to folder name's SHA-256 hash (in hexadecimal notation)
+ * \param currentFolder   name of the current folder
+ * \return Returns HTML code for the folder list.
+ */
+std::string generateFolderList(MsgTemplate folderList, MsgTemplate folderEntry, const std::map<std::string, std::vector<SortType> >& folderContents, std::map<std::string, std::string> folderHashes, const std::string currentFolder)
+{
+  std::string theEntries = "";
+  std::map<std::string, std::vector<SortType> >::const_iterator iter = folderContents.begin();
+  while (iter != folderContents.end())
+  {
+    if (iter->first != "")
+    {
+      folderEntry.addReplacement("folder_link", "folder_" + folderHashes[iter->first] + ".html", false);
+      folderEntry.addReplacement("folder_name", iter->first, true);
+      folderEntry.addReplacement("marker", currentFolder == iter->first ? "&#x2714;" : "<span style=\"visibility: hidden;\">&#x2714;</span>", false);
+      theEntries += folderEntry.show();
+    }
+    ++iter;
+  }
+
+  // put entries into folder list
+  folderList.addReplacement("folder_entries", theEntries, false);
+  return folderList.show();
+}
 
 bool MessageDatabase::saveIndexFiles(const std::string& directory, MsgTemplate index, MsgTemplate entry, MsgTemplate folderList, MsgTemplate folderEntry, const FolderMap& fm) const
 {
@@ -402,28 +432,10 @@ bool MessageDatabase::saveIndexFiles(const std::string& directory, MsgTemplate i
     ++fcIter;
   }
 
-  // generate folder entries
-  std::string theEntries = "";
   fcIter = folderContents.begin();
   while (fcIter != folderContents.end())
   {
-    if (fcIter->first != "")
-    {
-      folderEntry.addReplacement("folder_link", "folder_" + folderHashes[fcIter->first] + ".html", false);
-      folderEntry.addReplacement("folder_name", fcIter->first, true);
-      theEntries += folderEntry.show();
-    }
-    ++fcIter;
-  }
-
-  // put entries into folder list
-  folderList.addReplacement("folder_entries", theEntries, false);
-  const std::string cFolderList = folderList.show();
-
-  fcIter = folderContents.begin();
-  while (fcIter != folderContents.end())
-  {
-    theEntries.clear();
+    std::string entries;
     std::vector<SortType>::const_iterator vecIter = fcIter->second.begin();
     while (vecIter != fcIter->second.end())
     {
@@ -433,11 +445,12 @@ bool MessageDatabase::saveIndexFiles(const std::string& directory, MsgTemplate i
       entry.addReplacement("title",      currMessage.getTitle(), true);
       entry.addReplacement("fromuserid", intToString(currMessage.getFromUserID()), true);
       entry.addReplacement("fromuser",   currMessage.getFromUser(), true);
-      theEntries += entry.show();
+      entries += entry.show();
       ++vecIter;
     }
-    index.addReplacement("entries", theEntries, false);
-    index.addReplacement("folders", cFolderList, false);
+    index.addReplacement("entries", entries, false);
+    const auto codeOfFolderList = generateFolderList(folderList, folderEntry, folderContents, folderHashes, fcIter->first);
+    index.addReplacement("folders", codeOfFolderList, false);
     const std::string indexText = index.show();
     std::ofstream indexFile;
     std::string fileName = directory;

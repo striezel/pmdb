@@ -1,4 +1,6 @@
 <div class="folder_list">
-  Private Nachrichten
+  <div class="folder_head">
+    Private Nachrichten
+  </div>
   {..folder_entries..}
 </div>

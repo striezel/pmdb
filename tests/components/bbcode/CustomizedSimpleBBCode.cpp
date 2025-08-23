@@ -76,17 +76,17 @@ TEST_CASE("CustomizedSimpleBBCode")
     // Text without code should not change.
     tests["This text should be unchanged. Really, really."] = "This text should be unchanged. Really, really.";
     // [rand]...[/rand] should be replaced
-    tests["don't be [r]random[/r] here"]      = "don't be <random_start>random</random_end> here";
+    tests["don't be [r]random[/r] here"]    = "don't be <random_start>random</random_end> here";
     // ...even if the first [R] is upper case
-    tests["don't be [R]random[/r] here"]      = "don't be <random_start>random</random_end> here";
+    tests["don't be [R]random[/r] here"]    = "don't be <random_start>random</random_end> here";
     // ... or the last one ...
-    tests["don't be [r]random[/R] here"]      = "don't be <random_start>random</random_end> here";
+    tests["don't be [r]random[/R] here"]    = "don't be <random_start>random</random_end> here";
     // .. or even both.
-    tests["don't be [R]arbitrary[/R] here"]      = "don't be <random_start>arbitrary</random_end> here";
+    tests["don't be [R]arbitrary[/R] here"] = "don't be <random_start>arbitrary</random_end> here";
     // Just a single [R] should not change the text.
-    tests["don't be [r]randomized here"]          = "don't be [r]randomized here";
+    tests["don't be [r]randomized here"]    = "don't be [r]randomized here";
     // ...and neither should a single [/r].
-    tests["don't be mysterious[/r] here"]          = "don't be mysterious[/r] here";
+    tests["don't be mysterious[/r] here"]   = "don't be mysterious[/r] here";
 
     for (const auto& [key, value]: tests)
     {

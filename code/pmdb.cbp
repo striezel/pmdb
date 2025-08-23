@@ -138,6 +138,7 @@
 		<Unit filename="bbcode/SimpleTplAmpTransformBBCode.hpp" />
 		<Unit filename="bbcode/Smilie.cpp" />
 		<Unit filename="bbcode/Smilie.hpp" />
+		<Unit filename="bbcode/SpoilerBBCode.hpp" />
 		<Unit filename="bbcode/TableBBCode.cpp" />
 		<Unit filename="bbcode/TableBBCode.hpp" />
 		<Unit filename="bbcode/TableClasses.cpp" />

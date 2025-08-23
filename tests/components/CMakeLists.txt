@@ -24,6 +24,7 @@ set(component_tests_sources
     ../../code/bbcode/SimpleBBCode.cpp
     ../../code/bbcode/SimpleTemplateBBCode.cpp
     ../../code/bbcode/Smilie.cpp
+    ../../code/bbcode/SpoilerBBCode.hpp
     ../../code/bbcode/TableBBCode.cpp
     ../../code/bbcode/TableClasses.cpp
     ../../code/bbcode/TextProcessor.hpp
@@ -61,6 +62,7 @@ set(component_tests_sources
     bbcode/SimpleTemplateBBCode.cpp
     bbcode/SimpleTplAmpTransformBBCode.cpp
     bbcode/Smilie.cpp
+    bbcode/SpoilerBBCode.cpp
     bbcode/TableBBCode.cpp
     bbcode/TablePreProcessor.cpp
     bbcode/quotes.cpp

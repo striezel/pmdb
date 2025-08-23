@@ -75,6 +75,7 @@
 		<Unit filename="../../code/bbcode/SimpleTplAmpTransformBBCode.hpp" />
 		<Unit filename="../../code/bbcode/Smilie.cpp" />
 		<Unit filename="../../code/bbcode/Smilie.hpp" />
+		<Unit filename="../../code/bbcode/SpoilerBBCode.hpp" />
 		<Unit filename="../../code/bbcode/TableBBCode.cpp" />
 		<Unit filename="../../code/bbcode/TableBBCode.hpp" />
 		<Unit filename="../../code/bbcode/TableClasses.cpp" />
@@ -129,6 +130,7 @@
 		<Unit filename="bbcode/SimpleTemplateBBCode.cpp" />
 		<Unit filename="bbcode/SimpleTplAmpTransformBBCode.cpp" />
 		<Unit filename="bbcode/Smilie.cpp" />
+		<Unit filename="bbcode/SpoilerBBCode.cpp" />
 		<Unit filename="bbcode/TableBBCode.cpp" />
 		<Unit filename="bbcode/TablePreProcessor.cpp" />
 		<Unit filename="bbcode/quotes.cpp" />

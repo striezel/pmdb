@@ -28,6 +28,7 @@
 #include "bbcode/DefaultCodes.hpp"
 #include "bbcode/HorizontalRuleBBCode.hpp"
 #include "bbcode/ListBBCode.hpp"
+#include "bbcode/SpoilerBBCode.hpp"
 #include "bbcode/TableBBCode.hpp"
 #include "templates/functions.hpp"
 #include "../libstriezel/filesystem/directory.hpp"
@@ -119,6 +120,8 @@ int generateHtmlFiles(const MessageDatabase& mdb, const FolderMap& fm, const HTM
   TableBBCode table("table", htmlOptions.tableClasses);
   // hr code
   HorizontalRuleBBCode hr("hr", htmlOptions.standard);
+  // spoiler code (old style without JavaScript)
+  SpoilerBBCode spoiler("spoiler");
 
   bbcode_default::addDefaultCodes(parser);
   parser.addCode(&img_simple);
@@ -131,6 +134,7 @@ int generateHtmlFiles(const MessageDatabase& mdb, const FolderMap& fm, const HTM
   }
   parser.addCode(&table);
   parser.addCode(&hr);
+  parser.addCode(&spoiler);
 
   KillSpacesBeforeNewline eatRedundantSpaces;
   ListNewlinePreProcessor preProc_List;

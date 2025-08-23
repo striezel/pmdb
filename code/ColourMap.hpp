@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2012, 2014  Dirk Stolle
+    Copyright (C) 2012, 2014, 2025  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -24,43 +24,37 @@
 #include <string>
 #include <map>
 
-/** \brief class that holds the configuration settings
+/** \brief Holds the mappings of folder names to colours.
  */
 class ColourMap
 {
   public:
-    /// constructor
+    /// Creates an empty colour map.
     ColourMap();
 
 
-    /** \brief clears/resets existing values
-     */
-    void clear();
-
-
-    /** \brief tries to read the colour map from the given file name.
+    /** \brief Tries to read the colour map from the given file name.
      *
-     * \param fileName path to the colour map file
+     * \param fileName  path to the colour map file
      * \return Returns true in case of success, or false if an error occurred.
      */
     bool loadFromFile(const std::string& fileName);
 
 
-    /** \brief add an entry to the colour map (overwrites existing entry of same name)
+    /** \brief Add an entry to the colour map (overwrites existing entry of same name).
      *
      * \param folder name of the folder
-     * \param sequence control sequence for the desired colour
-     * \return none
+     * \param sequence  control sequence for the desired colour
      */
     void add(const std::string& folder, const std::string& sequence);
 
 
-    /** \brief gets the folder name in corresponding colour (i.e. with control sequences)
+    /** \brief Gets the folder name in corresponding colour (i.e. with control sequences).
      *
      * \param folder name of the folder
      * \return Returns string with control sequences, where appropriate.
      */
-    const std::string colouredFolder(const std::string& folder) const;
+    std::string colouredFolder(const std::string& folder) const;
 
 
     /** \brief character that starts comments line in colour map file */

@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2012, 2014  Dirk Stolle
+    Copyright (C) 2012, 2014, 2025  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -30,11 +30,6 @@ ColourMap::ColourMap()
 {
 }
 
-void ColourMap::clear()
-{
-  colours.clear();
-}
-
 bool ColourMap::loadFromFile(const std::string& fileName)
 {
   std::ifstream input;
@@ -44,24 +39,24 @@ bool ColourMap::loadFromFile(const std::string& fileName)
     return false;
   }
 
-  //clear existing values
-  clear();
+  // clear existing values
+  colours.clear();
 
   const unsigned int cMaxLine = 1024;
   char buffer[cMaxLine];
   std::string line = "";
   std::string::size_type sep_pos = 0;
-  while (input.getline(buffer, cMaxLine-1))
+  while (input.getline(buffer, cMaxLine - 1))
   {
     buffer[cMaxLine-1] = '\0';
     line = std::string(buffer);
-    //check for possible carriage return at end (happens on Windows systems)
+    // check for possible carriage return at end (happens on Windows systems)
     if (!line.empty())
     {
-      if (line.at(line.length()-1)=='\r')
+      if (line.at(line.length() - 1) == '\r')
       {
-        line.erase(line.length()-1);
-      }//if
+        line.erase(line.length() - 1);
+      }
     }
 
     if (!line.empty())
@@ -71,7 +66,7 @@ bool ColourMap::loadFromFile(const std::string& fileName)
         sep_pos = line.find('=');
         if (sep_pos == std::string::npos || sep_pos == 0)
         {
-          std::cout << "ColourMap::loadFromFile: ERROR: Invalid line found: \""
+          std::cerr << "ColourMap::loadFromFile: ERROR: Invalid line found: \""
                     << line <<"\".\nGeneral format: \"Name of folder=colour\"\n"
                     << "Loading from file cancelled.\n";
           input.close();
@@ -82,7 +77,7 @@ bool ColourMap::loadFromFile(const std::string& fileName)
         const std::string colour = line.substr(sep_pos).erase(0, 1);
         if (folder.empty() || colour.empty())
         {
-          std::cout << "ColourMap::loadFromFile: ERROR: empty folder name or empty value!\n";
+          std::cerr << "ColourMap::loadFromFile: ERROR: Empty folder name or empty value!\n";
           input.close();
           return false;
         }
@@ -93,14 +88,14 @@ bool ColourMap::loadFromFile(const std::string& fileName)
         }
         else
         {
-          std::cout << "ColourMap::loadFromFile: ERROR: Invalid colour specification!\n"
-                    << "\""<<colour<<"\" is not a known colour name.\n";
+          std::cerr << "ColourMap::loadFromFile: ERROR: Invalid colour specification!\n"
+                    << "\"" << colour << "\" is not a known colour name.\n";
             input.close();
             return false;
-        }//else
-      }//if not comment
-    }//if line not empty
-  }//while
+        }
+      } // if not comment
+    } // if line not empty
+  } // while
   input.close();
   return true;
 }
@@ -111,11 +106,11 @@ void ColourMap::add(const std::string& folder, const std::string& sequence)
     colours[folder] = sequence;
 }
 
-const std::string ColourMap::colouredFolder(const std::string& folder) const
+std::string ColourMap::colouredFolder(const std::string& folder) const
 {
   const std::map<std::string, std::string>::const_iterator iter = colours.find(folder);
-  if (iter!=colours.end())
+  if (iter != colours.end())
     return iter->second + folder + colourDefault;
-  //no colour found for that folder
+  // no colour found for that folder
   return folder;
 }

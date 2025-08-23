@@ -89,7 +89,17 @@ bool ColourMap::loadFromFile(const std::string& fileName)
         else
         {
           std::cerr << "ColourMap::loadFromFile: ERROR: Invalid colour specification!\n"
-                    << "\"" << colour << "\" is not a known colour name.\n";
+                    << "\"" << colour << "\" is not a known colour name.\n"
+                    << "Supported colour names are:\n"
+                    << "   default (default console font colour)\n"
+                    << "   black\n"
+                    << "   blue\n"
+                    << "   cyan\n"
+                    << "   green\n"
+                    << "   magenta\n"
+                    << "   red\n"
+                    << "   white\n"
+                    << "   yellow\n";
             input.close();
             return false;
         }

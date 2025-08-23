@@ -33,6 +33,8 @@
 			<Add library="z" />
 			<Add library="xml2" />
 		</Linker>
+		<Unit filename="../../code/ColourMap.cpp" />
+		<Unit filename="../../code/ColourMap.hpp" />
 		<Unit filename="../../code/CompressionDetection.cpp" />
 		<Unit filename="../../code/CompressionDetection.hpp" />
 		<Unit filename="../../code/Config.cpp" />
@@ -111,6 +113,7 @@
 		<Unit filename="../../libstriezel/zlib/CompressionFunctions.hpp" />
 		<Unit filename="../FileGuard.hpp" />
 		<Unit filename="../locate_catch.hpp" />
+		<Unit filename="ColourMap.cpp" />
 		<Unit filename="CompressionDetections.cpp" />
 		<Unit filename="Config.cpp" />
 		<Unit filename="FolderMap.cpp" />

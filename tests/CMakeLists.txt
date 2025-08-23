@@ -14,9 +14,6 @@ endif ()
 
 add_subdirectory (components)
 
-# Recurse into subdirectory for tests of ColourMap class.
-add_subdirectory (colourmap)
-
 # Recurse into subdirectory for tests of MessageDatabase class.
 add_subdirectory (messagedatabase)
 

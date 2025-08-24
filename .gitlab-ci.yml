@@ -10,7 +10,7 @@ build_gcc:
   stage: build
   before_script:
     - apt-get update
-    - apt-get -y install catch cmake g++ libxml2 libxml2-dev zlib1g-dev
+    - apt-get -y install catch cmake g++ libboost-dev libxml2 libxml2-dev zlib1g-dev
     - apt-get install -y firefox-esr --no-install-recommends
     # Remove parts of the submodule that are not used but would get into CI's
     # way when linting.
@@ -35,7 +35,7 @@ build_clang:
   stage: build
   before_script:
     - apt-get update
-    - apt-get -y install catch cmake clang libxml2 libxml2-dev pkg-config zlib1g-dev
+    - apt-get -y install catch cmake clang libboost-dev libxml2 libxml2-dev pkg-config zlib1g-dev
     - apt-get install -y firefox-esr --no-install-recommends
     # Remove parts of the submodule that are not used but would get into CI's
     # way when linting.
@@ -61,7 +61,7 @@ coverage:
   stage: build
   before_script:
     - apt-get update
-    - apt-get -y install catch cmake g++ lcov libxml2 libxml2-dev pkg-config zlib1g-dev
+    - apt-get -y install catch cmake g++ lcov libboost-dev libxml2 libxml2-dev pkg-config zlib1g-dev
     - apt-get install -y firefox-esr --no-install-recommends
   script:
     # build and run tests

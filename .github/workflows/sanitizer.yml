@@ -21,7 +21,7 @@ jobs:
       - name: Install Debian packages
         run: |
           sudo apt-get update
-          sudo apt-get install -y catch2 cmake g++-${{ matrix.version }} libxml2-dev pkg-config zlib1g-dev
+          sudo apt-get install -y catch2 cmake g++-${{ matrix.version }} libboost-dev libxml2-dev pkg-config zlib1g-dev
           sudo apt-get install -y libasan8 libubsan1
       - name: Build with GNU GCC ${{ matrix.version }}
         run: |

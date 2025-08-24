@@ -31,7 +31,7 @@ jobs:
       - name: Install Debian packages
         run: |
           sudo apt-get update
-          sudo apt-get install -y catch cmake g++-${{ matrix.version }} libxml2-dev pkg-config zlib1g-dev
+          sudo apt-get install -y catch cmake g++-${{ matrix.version }} libboost-dev libxml2-dev pkg-config zlib1g-dev
       - name: Build with GNU GCC ${{ matrix.version }}
         run: |
           export CXX=g++-${{ matrix.version }}

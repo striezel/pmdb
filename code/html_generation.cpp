@@ -21,6 +21,9 @@
 #include "html_generation.hpp"
 #include <fstream>
 #include <iostream>
+#include <boost/asio/io_context.hpp>
+#include <boost/process/v2/process.hpp>
+#include <boost/process/v2/posix/fork_and_forget_launcher.hpp>
 #include "browser_detection.hpp"
 #include "Config.hpp"
 #include "paths.hpp"
@@ -64,7 +67,14 @@ void openFirstIndexFile(const FolderMap& fm, const std::string& html_dir)
               << "Info: Open " << fullFileName << " in a browser to see the generated HTML files.\n";
     return;
   }
-  // TODO: Open file via Boost Process.
+  // Open file via Boost Process.
+  std::cout << "Opening " << fullFileName << " in browser ...\n";
+  boost::asio::io_context context;
+  std::vector<std::string> params = additional_parameters(browser.value().type);
+  params.push_back(fullFileName);
+  auto launcher = boost::process::v2::posix::fork_and_forget_launcher();
+  boost::process::v2::process proc(context, browser.value().path.string(), params);
+  proc.detach();
 }
 
 int generateHtmlFiles(const MessageDatabase& mdb, const FolderMap& fm, const HTMLOptions htmlOptions)

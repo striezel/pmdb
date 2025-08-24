@@ -33,7 +33,7 @@ jobs:
       - name: Install Debian packages
         run: |
           sudo apt-get update
-          sudo apt-get install -y catch cmake clang-${{ matrix.version }} libxml2-dev pkg-config zlib1g-dev
+          sudo apt-get install -y catch cmake clang-${{ matrix.version }} libboost-dev libxml2-dev pkg-config zlib1g-dev
       - name: Build with Clang ${{ matrix.version }}
         run: |
           export CXX=clang++-${{ matrix.version }}

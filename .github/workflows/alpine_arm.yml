@@ -47,6 +47,7 @@ jobs:
         run: |
           apk update
           apk add catch2 cmake g++ libxml2-dev make pkgconf zlib-dev
+          apk add firefox-esr
       - name: Build
         run: |
           cd "$GITHUB_WORKSPACE"

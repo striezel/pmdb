@@ -85,6 +85,8 @@
 		<Unit filename="../../code/bbcode/TextProcessor.hpp" />
 		<Unit filename="../../code/bbcode/quotes.cpp" />
 		<Unit filename="../../code/bbcode/quotes.hpp" />
+		<Unit filename="../../code/browser_detection.cpp" />
+		<Unit filename="../../code/browser_detection.hpp" />
 		<Unit filename="../../code/filters/Filter.hpp" />
 		<Unit filename="../../code/filters/FilterUser.cpp" />
 		<Unit filename="../../code/filters/FilterUser.hpp" />
@@ -137,6 +139,7 @@
 		<Unit filename="bbcode/TableBBCode.cpp" />
 		<Unit filename="bbcode/TablePreProcessor.cpp" />
 		<Unit filename="bbcode/quotes.cpp" />
+		<Unit filename="browser_detection.cpp" />
 		<Unit filename="filter/FilterUser.cpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="names_to_controlsequences.cpp" />

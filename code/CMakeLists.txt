@@ -29,6 +29,7 @@ set(pmdb_sources
     bbcode/TableBBCode.cpp
     bbcode/TableClasses.cpp
     bbcode/quotes.cpp
+    browser_detection.cpp
     filters/FilterUser.cpp
     functions.cpp
     html_generation.cpp

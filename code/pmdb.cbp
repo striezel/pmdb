@@ -146,6 +146,8 @@
 		<Unit filename="bbcode/TextProcessor.hpp" />
 		<Unit filename="bbcode/quotes.cpp" />
 		<Unit filename="bbcode/quotes.hpp" />
+		<Unit filename="browser_detection.cpp" />
+		<Unit filename="browser_detection.hpp" />
 		<Unit filename="filters/Filter.hpp" />
 		<Unit filename="filters/FilterUser.cpp" />
 		<Unit filename="filters/FilterUser.hpp" />

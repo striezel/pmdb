@@ -21,6 +21,7 @@
 #include "html_generation.hpp"
 #include <fstream>
 #include <iostream>
+#include "browser_detection.hpp"
 #include "Config.hpp"
 #include "paths.hpp"
 #include "ReturnCodes.hpp"
@@ -33,6 +34,38 @@
 #include "templates/functions.hpp"
 #include "../libstriezel/filesystem/directory.hpp"
 #include "../libstriezel/filesystem/file.hpp"
+#include "../libstriezel/hash/sha256/BufferSourceUtility.hpp"
+
+std::string getFirstFolderFileName(const FolderMap& fm)
+{
+  const auto folders = fm.getPresentFolders();
+  if (folders.empty())
+  {
+    return "";
+  }
+  const std::string& name = *folders.begin();
+  return "folder_"
+    + SHA256::computeFromBuffer((uint8_t*) name.c_str(), name.length() * 8).toHexString()
+    + ".html";
+}
+
+void openFirstIndexFile(const FolderMap& fm, const std::string& html_dir)
+{
+  auto fileName = getFirstFolderFileName(fm);
+  if (fileName.empty())
+  {
+    return;
+  }
+  const auto fullFileName = html_dir + fileName;
+  const auto browser = detect_browser();
+  if (!browser.has_value())
+  {
+    std::cout << "Info: Could not find a browser to open generated files.\n"
+              << "Info: Open " << fullFileName << " in a browser to see the generated HTML files.\n";
+    return;
+  }
+  // TODO: Open file via Boost Process.
+}
 
 int generateHtmlFiles(const MessageDatabase& mdb, const FolderMap& fm, const HTMLOptions htmlOptions)
 {
@@ -209,5 +242,7 @@ int generateHtmlFiles(const MessageDatabase& mdb, const FolderMap& fm, const HTM
     return rcFileError;
   }
   std::cout << "All HTML files were created successfully!\n";
+  // Open first HTML file in browser.
+  openFirstIndexFile(fm, htmlDir);
   return 0;
 }

@@ -34,6 +34,7 @@ set(pmdb_no_comp_sources
     ../code/bbcode/TableBBCode.cpp
     ../code/bbcode/TableClasses.cpp
     ../code/bbcode/quotes.cpp
+    ../code/browser_detection.cpp
     ../code/filters/FilterUser.cpp
     ../code/functions.cpp
     ../code/html_generation.cpp

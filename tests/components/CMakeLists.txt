@@ -30,6 +30,7 @@ set(component_tests_sources
     ../../code/bbcode/TableClasses.cpp
     ../../code/bbcode/TextProcessor.hpp
     ../../code/bbcode/quotes.cpp
+    ../../code/browser_detection.cpp
     ../../code/filters/FilterUser.cpp
     ../../code/paths.cpp
     ../../code/templates/defaults.hpp
@@ -68,6 +69,7 @@ set(component_tests_sources
     bbcode/TableBBCode.cpp
     bbcode/TablePreProcessor.cpp
     bbcode/quotes.cpp
+    browser_detection.cpp
     filter/FilterUser.cpp
     names_to_controlsequences.cpp
     paths.cpp

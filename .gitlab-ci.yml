@@ -57,7 +57,7 @@ build_clang:
     - ctest -V
 
 coverage:
-  image: debian:12-slim
+  image: debian:13-slim
   stage: build
   before_script:
     - apt-get update
@@ -82,7 +82,7 @@ coverage:
       - public
 
 pages:
-  image: debian:12-slim
+  image: debian:13-slim
   stage: deploy
   needs: ["coverage"]
   dependencies:

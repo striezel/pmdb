@@ -26,13 +26,8 @@ TEST_CASE("browser detection")
   SECTION("detect_browser")
   {
     const auto info = detect_browser();
-    #if _WIN32
-    // TODO: Change this as soon as detect_browser() works on Windows, too.
-    REQUIRE_FALSE( info.has_value() );
-    #else
     REQUIRE( info.has_value() );
     REQUIRE_FALSE( info.value().path.empty() );
-    #endif
   }
 
   SECTION("additional parameters")
@@ -49,6 +44,20 @@ TEST_CASE("browser detection")
       const auto params = additional_parameters(Browser::Firefox);
       REQUIRE( params.size() == 1 );
       REQUIRE( params[0] == "--private-window" );
+    }
+
+    SECTION("SeaMonkey")
+    {
+      const auto params = additional_parameters(Browser::SeaMonkey);
+      REQUIRE( params.size() == 1 );
+      REQUIRE( params[0] == "-private" );
+    }
+
+    SECTION("Edge")
+    {
+      const auto params = additional_parameters(Browser::Edge);
+      REQUIRE( params.size() == 1 );
+      REQUIRE( params[0] == "--inprivate" );
     }
   }
 }

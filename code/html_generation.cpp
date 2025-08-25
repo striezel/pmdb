@@ -65,6 +65,14 @@ void openFirstIndexFile(const FolderMap& fm, const std::string& html_dir)
     return;
   }
   // TODO: Open file via Boost Process.
+  std::cout << "Run\n\n\t" << browser.value().path.string();
+  const auto params = additional_parameters(browser.value().type);
+  for (const auto& param: params)
+  {
+    std::cout << " " << param;
+  }
+  std::cout << " " << fullFileName << "\n\n"
+            << "to show the generated HTML output.\n";
 }
 
 int generateHtmlFiles(const MessageDatabase& mdb, const FolderMap& fm, const HTMLOptions htmlOptions)

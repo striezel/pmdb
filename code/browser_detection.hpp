@@ -33,7 +33,13 @@ enum class Browser
   Firefox,
 
   /// Chromium browser
-  Chromium
+  Chromium,
+
+  /// SeaMonkey browser
+  SeaMonkey,
+
+  /// Microsoft Edge
+  Edge
 };
 
 struct BrowserInformation

@@ -80,13 +80,13 @@ int generateHtmlFiles(const MessageDatabase& mdb, const FolderMap& fm, const HTM
   std::string htmlDir = pmdb::paths::html();
   if (!libstriezel::filesystem::directory::exists(htmlDir))
   {
-    std::cout << "Trying to create HTML directory \"" << htmlDir << "\"...";
+    std::cout << "Trying to create HTML directory \"" << htmlDir << "\" ...";
     if (!libstriezel::filesystem::directory::createRecursive(htmlDir))
     {
-      std::cout << "failed!\nAborting.\n";
+      std::cout << " failed!\nAborting.\n";
       return rcFileError;
     }
-    std::cout << "success!\n";
+    std::cout << " success!\n";
   } // if html directory does not exist
   htmlDir = libstriezel::filesystem::slashify(htmlDir);
 

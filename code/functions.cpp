@@ -69,13 +69,13 @@ int saveMessages(const MessageDatabase& mdb, const FolderMap& fm, const Compress
   {
     if (!libstriezel::filesystem::directory::exists(save_dir))
     {
-      std::cout << "Trying to create save directory \"" << save_dir << "\"...";
+      std::cout << "Trying to create save directory \"" << save_dir << "\" ...";
       if (!libstriezel::filesystem::directory::createRecursive(save_dir))
       {
-        std::cout << "failed!\nAborting.\n";
+        std::cout << " failed!\nAborting.\n";
         return rcFileError;
       }
-      std::cout << "success!\n";
+      std::cout << " success!\n";
     }
     else
     {

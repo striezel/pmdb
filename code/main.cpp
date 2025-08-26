@@ -114,6 +114,9 @@ void showHelp(const std::string& name)
             << "                          --table=" << TableClasses::DefaultTableClass << "\n"
             << "                          --row=" << TableClasses::DefaultRowClass << "\n"
             << "                          --cell=" << TableClasses::DefaultCellClass << "\n"
+            << "  --no-open         - Usually the program tries to open the generated HTML\n"
+            << "                      files in a web browser for viewing. If this option is\n"
+            << "                      given, no such attempt is made.\n"
             << "  --subset-check    - Search for messages with texts that are completely\n"
             << "                      contained in other messages, too.\n"
             << "  --list-from X     - List all messages that were sent by user X, where X stands\n"
@@ -136,6 +139,7 @@ int main(int argc, char **argv)
 
   bool doHTML = false;
   HTMLOptions htmlOptions;
+  bool doNotOpen = false;
 
   bool searchForSubsets = false;
   std::vector<FilterUser> filters = std::vector<FilterUser>();
@@ -371,6 +375,15 @@ int main(int argc, char **argv)
           htmlOptions.tableClasses.cell       = TableClasses::DefaultCellClass;
           htmlOptions.tableClasses.useClasses = true;
         }//param == std-classes
+        else if (param == "--no-open")
+        {
+          if (doNotOpen)
+          {
+            std::cerr << "Parameter " << param << " must not occur more than once!\n";
+            return rcInvalidParameter;
+          }
+          doNotOpen = true;
+        }
         else if ((param == "--subset-check") || (param == "--redundant-check"))
         {
           if (searchForSubsets)
@@ -528,6 +541,11 @@ int main(int argc, char **argv)
     if (rc != 0)
     {
       return rc;
+    }
+    if (!doNotOpen)
+    {
+      // Open first HTML file in browser.
+      openFirstIndexFile(fm, pmdb::paths::html());
     }
   } // if HTML file generation was requested
 

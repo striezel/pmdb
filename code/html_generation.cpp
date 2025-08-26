@@ -63,12 +63,12 @@ std::string getFirstFolderFileName(const FolderMap& fm)
 
 void openFirstIndexFile(const FolderMap& fm, const std::string& html_dir)
 {
-  auto fileName = getFirstFolderFileName(fm);
+  const auto fileName = getFirstFolderFileName(fm);
   if (fileName.empty())
   {
     return;
   }
-  const auto fullFileName = html_dir + fileName;
+  const auto fullFileName = libstriezel::filesystem::slashify(html_dir) + fileName;
   const auto browser = detect_browser();
   if (!browser.has_value())
   {
@@ -277,7 +277,5 @@ int generateHtmlFiles(const MessageDatabase& mdb, const FolderMap& fm, const HTM
     return rcFileError;
   }
   std::cout << "All HTML files were created successfully!\n";
-  // Open first HTML file in browser.
-  openFirstIndexFile(fm, htmlDir);
   return 0;
 }

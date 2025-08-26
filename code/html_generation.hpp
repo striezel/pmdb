@@ -35,4 +35,11 @@
  */
 int generateHtmlFiles(const MessageDatabase& mdb, const FolderMap& fm, const HTMLOptions htmlOptions);
 
+/** \brief Attempts to open the first folder index HTML file in a browser.
+ *
+ * \param fm         folder mappings for the message database
+ * \param html_dir   directory where the HTML files reside
+ */
+void openFirstIndexFile(const FolderMap& fm, const std::string& html_dir);
+
 #endif // PMDB_HTML_GENERATION_HPP

@@ -177,6 +177,14 @@ then
   exit 1
 fi
 
+# --no-open: parameter given twice
+"$EXECUTABLE" --no-save --no-load-default --xml "$XML_FILE" --html --no-open --no-open
+if [ $? -ne 1 ]
+then
+  echo "Executable did not exit with code 1 when --no-open was given twice."
+  exit 1
+fi
+
 # --subset-check: parameter given twice
 "$EXECUTABLE" --no-save --no-load-default --xml "$XML_FILE" --subset-check --subset-check
 if [ $? -ne 1 ]

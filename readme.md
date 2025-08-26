@@ -66,6 +66,9 @@ options:
                           --table=grid_table
                           --row=grid_tr
                           --cell=grid_td
+  --no-open         - Usually the program tries to open the generated HTML
+                      files in a web browser for viewing. If this option is
+                      given, no such attempt is made.
   --subset-check    - Search for messages with texts that are completely
                       contained in other messages, too.
   --list-from X     - List all messages that were sent by user X, where X stands

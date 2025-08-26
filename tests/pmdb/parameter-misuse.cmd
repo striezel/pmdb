@@ -157,6 +157,13 @@ if %ERRORLEVEL% NEQ 1 (
   exit /B 1
 )
 
+:: --no-open: parameter given twice
+"%EXECUTABLE%" --no-save --no-load-default --xml "%XML_FILE%" --html --no-open --no-open
+if %ERRORLEVEL% NEQ 1 (
+  echo Executable did not exit with code 1 when no-open option was given twice.
+  exit /B 1
+)
+
 :: --subset-check: parameter given twice
 "%EXECUTABLE%" --no-save --no-load-default --xml "%XML_FILE%" --subset-check --subset-check
 if %ERRORLEVEL% NEQ 1 (

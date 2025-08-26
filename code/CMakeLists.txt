@@ -92,6 +92,22 @@ else ()
   message ( FATAL_ERROR "zlib was not found!" )
 endif (ZLIB_FOUND)
 
+# find Boost
+# Need to link to Boost Process, but only on Windows.
+if (WIN32)
+  if (ENABLE_STATIC_LINKING)
+    set (Boost_USE_STATIC_LIBS ON)
+  else ()
+    set (Boost_USE_STATIC_LIBS OFF)
+  endif ()
+  find_package(Boost REQUIRED COMPONENTS process)
+  if (Boost_FOUND)
+    target_link_libraries(pmdb Boost::process)
+  else ()
+    message ( FATAL_ERROR "Boost was not found!" )
+  endif ()
+endif (WIN32)
+
 ## get the default templates
 execute_process(
   COMMAND cat folder.tpl

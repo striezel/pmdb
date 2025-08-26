@@ -21,9 +21,14 @@
 #include "html_generation.hpp"
 #include <fstream>
 #include <iostream>
-#include <boost/asio/io_context.hpp>
-#include <boost/process/v2/process.hpp>
-#include <boost/process/v2/posix/fork_and_forget_launcher.hpp>
+#include <boost/version.hpp>
+#if BOOST_VERSION <= 108100
+  #include <boost/process.hpp>
+#else
+  #include <boost/asio/io_context.hpp>
+  #include <boost/process/v2/process.hpp>
+  #include <boost/process/v2/posix/fork_and_forget_launcher.hpp>
+#endif
 #include "browser_detection.hpp"
 #include "Config.hpp"
 #include "paths.hpp"
@@ -69,12 +74,24 @@ void openFirstIndexFile(const FolderMap& fm, const std::string& html_dir)
   }
   // Open file via Boost Process.
   std::cout << "Opening " << fullFileName << " in browser ...\n";
-  boost::asio::io_context context;
   std::vector<std::string> params = additional_parameters(browser.value().type);
+  #if BOOST_VERSION <= 108100
+  std::string command = browser.value().path.string();
+  for (const auto& param: params)
+  {
+    command += " " + param;
+  }
+  command += " " + fullFileName;
+  boost::process::child child(command);
+  child.detach();
+  #else
+  // After Boost 1.81.0 use process v2 API.
+  boost::asio::io_context context;
   params.push_back(fullFileName);
   auto launcher = boost::process::v2::posix::fork_and_forget_launcher();
   boost::process::v2::process proc(context, browser.value().path.string(), params);
   proc.detach();
+  #endif
 }
 
 int generateHtmlFiles(const MessageDatabase& mdb, const FolderMap& fm, const HTMLOptions htmlOptions)

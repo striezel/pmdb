@@ -58,6 +58,16 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clan
     set( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -s" )
 endif ()
 
+# Check for Alpine Linux.
+if (UNIX AND CMAKE_VERSION VERSION_GREATER_EQUAL "3.22.0")
+  cmake_host_system_information(RESULT DIST_ID QUERY DISTRIB_ID)
+  cmake_host_system_information(RESULT DIST_NAME QUERY DISTRIB_NAME)
+  if (DIST_ID STREQUAL "alpine" OR DIST_NAME STREQUAL "Alpine Linux")
+    # Alpine currently seems to have problems with Boost Process vs, so use v1.
+    add_definitions (-DUSE_BOOST_PROCESS_V1=1)
+  endif ()
+endif ()
+
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 

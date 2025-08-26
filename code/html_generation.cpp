@@ -22,7 +22,7 @@
 #include <fstream>
 #include <iostream>
 #include <boost/version.hpp>
-#if BOOST_VERSION <= 108100
+#if (BOOST_VERSION <= 108100) || defined(USE_BOOST_PROCESS_V1)
   #include <boost/process.hpp>
 #else
   #include <boost/asio/io_context.hpp>
@@ -79,7 +79,7 @@ void openFirstIndexFile(const FolderMap& fm, const std::string& html_dir)
   // Open file via Boost Process.
   std::cout << "Opening " << fullFileName << " in browser ...\n";
   std::vector<std::string> params = additional_parameters(browser.value().type);
-  #if BOOST_VERSION <= 108100
+  #if (BOOST_VERSION <= 108100) || defined(USE_BOOST_PROCESS_V1)
   std::string command = browser.value().path.string();
   for (const auto& param: params)
   {

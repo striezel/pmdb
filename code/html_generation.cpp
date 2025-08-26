@@ -27,7 +27,11 @@
 #else
   #include <boost/asio/io_context.hpp>
   #include <boost/process/v2/process.hpp>
-  #include <boost/process/v2/posix/fork_and_forget_launcher.hpp>
+  #if defined(_WIN32)
+    #include <boost/process/v2/windows/default_launcher.hpp>
+  #else
+    #include <boost/process/v2/posix/fork_and_forget_launcher.hpp>
+  #endif
 #endif
 #include "browser_detection.hpp"
 #include "Config.hpp"
@@ -88,7 +92,11 @@ void openFirstIndexFile(const FolderMap& fm, const std::string& html_dir)
   // After Boost 1.81.0 use process v2 API.
   boost::asio::io_context context;
   params.push_back(fullFileName);
+  #if defined(_WIN32)
+  auto launcher = boost::process::v2::windows::default_launcher();
+  #else
   auto launcher = boost::process::v2::posix::fork_and_forget_launcher();
+  #endif
   boost::process::v2::process proc(context, browser.value().path.string(), params);
   proc.detach();
   #endif

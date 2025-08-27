@@ -22,6 +22,6 @@ forum. Just rename it to `pmdb.conf` and place it in pmdb's
 
 **Question: The style of the generated HTML files is too simple / boring / ugly. Can I change it?**
 
-Answer: Yes. pmdb use [templates](templates.md) to generate the HTML files. If
+Answer: Yes. pmdb uses [templates](templates.md) to generate the HTML files. If
 you know a bit of HTML and/or CSS, you can modify those templates according to
 your preference.

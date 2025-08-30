@@ -28,19 +28,19 @@ TEST_CASE("default BB codes")
   // Currently, the BBCodeParser has no way to directly get the added codes.
   // So we just check whether they are actually applied to texts instead.
 
-  SECTION("check that [b], [i], [s] and [u] codes get applied")
+  SECTION("[b], [i], [s] and [u] codes get applied")
   {
     BBCodeParser parser;
     bbcode_default::addDefaultCodes(parser);
 
-    const std::string input = "[b]bold[/b] [i]italics[/i] [s]strike throug[/s] [u]underlined[/u]";
-    const std::string expected = "<b>bold</b> <i>italics</i> <span style=\"text-decoration:line-through;\">strike throug</span> <u>underlined</u>";
+    const std::string input = "[b]bold[/b] [i]italics[/i] [s]strike through[/s] [u]underlined[/u]";
+    const std::string expected = "<b>bold</b> <i>italics</i> <span style=\"text-decoration:line-through;\">strike through</span> <u>underlined</u>";
     const auto parsed = parser.parse(input, forum_url, HTMLStandard::HTML4_01, true);
 
     REQUIRE( parsed == expected );
   }
 
-  SECTION("check that [sub] code gets applied")
+  SECTION("[sub] code gets applied")
   {
     BBCodeParser parser;
     bbcode_default::addDefaultCodes(parser);
@@ -52,7 +52,7 @@ TEST_CASE("default BB codes")
     REQUIRE( parsed == expected );
   }
 
-  SECTION("check that [sup] code gets applied")
+  SECTION("[sup] code gets applied")
   {
     BBCodeParser parser;
     bbcode_default::addDefaultCodes(parser);
@@ -64,7 +64,7 @@ TEST_CASE("default BB codes")
     REQUIRE( parsed == expected );
   }
 
-  SECTION("check that alignment codes get applied")
+  SECTION("alignment codes get applied")
   {
     BBCodeParser parser;
     bbcode_default::addDefaultCodes(parser);
@@ -76,7 +76,24 @@ TEST_CASE("default BB codes")
     REQUIRE( parsed == expected );
   }
 
-  SECTION("check that [tt] code gets applied")
+  SECTION("[code]")
+  {
+    BBCodeParser parser;
+    bbcode_default::addDefaultCodes(parser);
+
+    const std::string input = "[code]Hello, world![/code]";
+    const std::string expected = std::string("<div style=\"margin:20px; margin-top:5px\">\n")
+                               + "<div class=\"smallfont\" style=\"margin-bottom:2px; font: 10px verdana,"
+                               + " geneva, lucida, 'lucida grande', arial, helvetica, sans-serif;\n"
+                               + "font-size:7pt;\">Code:</div>\n"
+                               + "<pre dir=\"ltr\" style=\"margin: 0px; padding: 6px; border: 1px inset;"
+                               + " width: 620px; text-align: left; overflow: auto\">Hello, world!</pre></div>";
+    const auto parsed = parser.parse(input, forum_url, HTMLStandard::HTML4_01, true);
+
+    REQUIRE( parsed == expected );
+  }
+
+  SECTION("[tt] code gets applied")
   {
     BBCodeParser parser;
     bbcode_default::addDefaultCodes(parser);
@@ -88,7 +105,7 @@ TEST_CASE("default BB codes")
     REQUIRE( parsed == expected );
   }
 
-  SECTION("check that simple [url] code gets applied")
+  SECTION("simple [url] code gets applied")
   {
     BBCodeParser parser;
     bbcode_default::addDefaultCodes(parser);
@@ -100,5 +117,99 @@ TEST_CASE("default BB codes")
     REQUIRE( parsed == expected );
   }
 
-  // TODO: Add more checks for the other default codes.
+  SECTION("advanced [url] code")
+  {
+    BBCodeParser parser;
+    bbcode_default::addDefaultCodes(parser);
+
+    const std::string input = "some [url=https://example.com/?foo=bar&baz=1]link[/url] text";
+    const std::string expected = "some <a href=\"https://example.com/?foo=bar&amp;baz=1\" target=\"_blank\">link</a> text";
+    const auto parsed = parser.parse(input, forum_url, HTMLStandard::HTML4_01, true);
+
+    REQUIRE( parsed == expected );
+  }
+
+  SECTION("advanced [url] code with quoted URL")
+  {
+    BBCodeParser parser;
+    bbcode_default::addDefaultCodes(parser);
+
+    const std::string input = "some [url=\"https://example.com/?foo=bar&baz=1\"]link[/url] text";
+    const std::string expected = "some <a href=\"https://example.com/?foo=bar&amp;baz=1\" target=\"_blank\">link</a> text";
+    const auto parsed = parser.parse(input, forum_url, HTMLStandard::HTML4_01, true);
+
+    REQUIRE( parsed == expected );
+  }
+
+  SECTION("[color] code")
+  {
+    BBCodeParser parser;
+    bbcode_default::addDefaultCodes(parser);
+
+    const std::string input = "some [color=green]red[/color] and [color=#FFFFFF]yellow[/color] text";
+    const std::string expected = "some <font color=\"green\">red</font> and <font color=\"#FFFFFF\">yellow</font> text";
+    const auto parsed = parser.parse(input, forum_url, HTMLStandard::HTML4_01, true);
+
+    REQUIRE( parsed == expected );
+  }
+
+  SECTION("[color] code with quoted colour name")
+  {
+    BBCodeParser parser;
+    bbcode_default::addDefaultCodes(parser);
+
+    const std::string input = "some [color=\"blue\"]red[/color] and [color=#00FFFF]yellow[/color] text";
+    const std::string expected = "some <font color=\"blue\">red</font> and <font color=\"#00FFFF\">yellow</font> text";
+    const auto parsed = parser.parse(input, forum_url, HTMLStandard::HTML4_01, true);
+
+    REQUIRE( parsed == expected );
+  }
+
+  SECTION("[size] code")
+  {
+    BBCodeParser parser;
+    bbcode_default::addDefaultCodes(parser);
+
+    const std::string input = "some [size=5]big[/size] and [size=\"1\"]small[/size] text";
+    const std::string expected = "some <font size=\"5\">big</font> and <font size=\"1\">small</font> text";
+    const auto parsed = parser.parse(input, forum_url, HTMLStandard::HTML4_01, true);
+
+    REQUIRE( parsed == expected );
+  }
+
+  SECTION("[font] code")
+  {
+    BBCodeParser parser;
+    bbcode_default::addDefaultCodes(parser);
+
+    const std::string input = "some [font=Century Gothic]different[/font] text";
+    const std::string expected = "some <span style=\"font-family: Century Gothic\">different</span> text";
+    const auto parsed = parser.parse(input, forum_url, HTMLStandard::HTML4_01, true);
+
+    REQUIRE( parsed == expected );
+  }
+
+  SECTION("[font] code with quoted font name")
+  {
+    BBCodeParser parser;
+    bbcode_default::addDefaultCodes(parser);
+
+    const std::string input = "some [font=\"Century Gothic\"]different[/font] text";
+    const std::string expected = "some <span style=\"font-family: Century Gothic\">different</span> text";
+    const auto parsed = parser.parse(input, forum_url, HTMLStandard::HTML4_01, true);
+
+    REQUIRE( parsed == expected );
+  }
+
+  SECTION("[highlight] code")
+  {
+    BBCodeParser parser;
+    bbcode_default::addDefaultCodes(parser);
+
+    const std::string input = "some [highlight]important[/highlight] text";
+    const std::string expected = "some <span style=\"color: red; font-weight: bold;\">important</span> text";
+    const auto parsed = parser.parse(input, forum_url, HTMLStandard::HTML4_01, true);
+
+    REQUIRE( parsed == expected );
+  }
 }

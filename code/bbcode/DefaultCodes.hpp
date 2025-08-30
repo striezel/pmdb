@@ -45,7 +45,7 @@ namespace bbcode_default
   // indent
   const CustomizedSimpleBBCode indent("indent", "<blockquote>", "</blockquote>");
 
-  //alignment stuff
+  // alignment stuff
   const SimpleBBCode center("center");
   const CustomizedSimpleBBCode left("left", "<div align=\"left\">", "</div>");
   const CustomizedSimpleBBCode right("right", "<div align=\"right\">", "</div>");

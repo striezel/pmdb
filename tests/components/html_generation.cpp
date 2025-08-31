@@ -26,36 +26,55 @@ TEST_CASE("HTML generation")
 {
   SECTION("generateHtmlFiles")
   {
-    FolderMap fm;
-    MessageDatabase mdb;
+    SECTION("single private message")
+    {
+      FolderMap fm;
+      MessageDatabase mdb;
 
-    PrivateMessage pm;
-    pm.setDatestamp("2007-06-14 12:34");
-    pm.setTitle("This is the title");
-    pm.setFromUser("Hermes");
-    pm.setFromUserID(234);
-    pm.setToUser("Poseidon");
-    pm.setMessage("This is a [b]bold[/b] text.");
+      PrivateMessage pm;
+      pm.setDatestamp("2007-06-14 12:34");
+      pm.setTitle("This is the title");
+      pm.setFromUser("Hermes");
+      pm.setFromUserID(234);
+      pm.setToUser("Poseidon");
+      pm.setMessage("This is a [b]bold[/b] text.");
 
-    fm.add(pm.getHash(), "Inbox");
-    mdb.addMessage(pm);
+      fm.add(pm.getHash(), "Inbox");
+      mdb.addMessage(pm);
 
-    HTMLOptions options;
-    options.standard = HTMLStandard::HTML4_01;
+      HTMLOptions options;
+      options.standard = HTMLStandard::HTML4_01;
 
-    std::filesystem::path html_path = std::filesystem::temp_directory_path() / "pmdb_test_html_directory";
+      std::filesystem::path html_path = std::filesystem::temp_directory_path() / "pmdb_test_html_directory";
 
-    int exit_code = generateHtmlFiles(mdb, fm, options, html_path.string());
-    REQUIRE( exit_code == 0 );
+      int exit_code = generateHtmlFiles(mdb, fm, options, html_path.string());
+      REQUIRE( exit_code == 0 );
 
-    auto message_path = html_path / (pm.getHash().toHexString() + ".html");
-    REQUIRE( std::filesystem::is_regular_file(message_path) );
+      auto message_path = html_path / (pm.getHash().toHexString() + ".html");
+      REQUIRE( std::filesystem::is_regular_file(message_path) );
 
-    auto folder_path = html_path / "folder_94835ea2fcf775cd77cb9c9cee01b5cbd9bc515467aab1215f48a5ade9ca5274.html";
-    REQUIRE( std::filesystem::is_regular_file(message_path) );
+      auto folder_path = html_path / "folder_94835ea2fcf775cd77cb9c9cee01b5cbd9bc515467aab1215f48a5ade9ca5274.html";
+      REQUIRE( std::filesystem::is_regular_file(message_path) );
 
-    REQUIRE( std::filesystem::remove(message_path) );
-    REQUIRE( std::filesystem::remove(folder_path) );
-    REQUIRE( std::filesystem::remove(html_path) );
+      REQUIRE( std::filesystem::remove(message_path) );
+      REQUIRE( std::filesystem::remove(folder_path) );
+      REQUIRE( std::filesystem::remove(html_path) );
+    }
+
+    SECTION("no private message")
+    {
+      FolderMap fm;
+      MessageDatabase mdb;
+
+      HTMLOptions options;
+      options.standard = HTMLStandard::HTML4_01;
+
+      std::filesystem::path html_path = std::filesystem::temp_directory_path() / "pmdb_test_html_directory_none";
+
+      int exit_code = generateHtmlFiles(mdb, fm, options, html_path.string());
+      REQUIRE( exit_code == 0 );
+
+      REQUIRE_FALSE( std::filesystem::exists(html_path) );
+    }
   }
 }

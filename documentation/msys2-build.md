@@ -24,7 +24,7 @@ into the prompt, then press enter.
 ### Build tools
 
 To build pmdb from source you need a C++ compiler, CMake, the Ninja build
-system, the libxml2 library, and the zlib library.
+system, the Boost libraries, the libxml2 library, and the zlib library.
 pkg-config is required to make it easier to find compiler options for the
 installed libraries. Additionally, the program uses Catch (C++ Automated Test
 Cases in Headers) to perform some tests.
@@ -35,7 +35,7 @@ system to get the latest source code directly from the Git repository.
 All of that can usually be installed be typing
 
 ```bash
-pacman -S git mingw-w64-x86_64-catch mingw-w64-x86_64-cmake mingw-w64-x86_64-gcc mingw-w64-x86_64-libxml2 mingw-w64-x86_64-ninja mingw-w64-x86_64-pkg-config mingw-w64-x86_64-zlib
+pacman -S git mingw-w64-x86_64-boost mingw-w64-x86_64-catch mingw-w64-x86_64-cmake mingw-w64-x86_64-gcc mingw-w64-x86_64-libxml2 mingw-w64-x86_64-ninja mingw-w64-x86_64-pkg-config mingw-w64-x86_64-zlib
 ```
 
 into the MSYS2 command prompt.

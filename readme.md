@@ -84,19 +84,20 @@ options:
 ### Prerequisites
 
 To build pmdb from source you need a C++ compiler with support for C++17,
-CMake 3.8 or later, the libxml2 library and the zlib library. Additionally, the
-program uses Catch (C++ Automated Test Cases in Headers) to perform some tests.
+CMake 3.8 or later, the Boost libraries, the libxml2 library and the zlib
+library. Additionally, the program uses Catch (C++ Automated Test Cases in
+Headers) to perform some tests.
 
 It also helps to have Git, a distributed version control system, on your build
 system to get the latest source code directly from the Git repository.
 
 All that can usually be installed by typing
 
-    apt-get install catch cmake g++ git libxml2-dev zlib1g-dev
+    apt-get install catch cmake g++ git libboost-dev libxml2-dev zlib1g-dev
 
 or
 
-    yum install catch cmake gcc-c++ git libxml2-devel zlib-devel
+    yum install boost-devel catch cmake gcc-c++ git libxml2-devel zlib-devel
 
 into a root terminal.
 

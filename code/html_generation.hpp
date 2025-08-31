@@ -30,9 +30,10 @@
  * \param mdb          the database containing the messages
  * \param fm           folder mappings for the message database
  * \param htmlOptions  the options for HTML file generation
+ * \param htmlDir      directory where the HTML files reside
  * \return Returns zero, if all HTML files could be created.
  *         Returns non-zero exit code, if an error occurred.
  */
-int generateHtmlFiles(const MessageDatabase& mdb, const FolderMap& fm, const HTMLOptions htmlOptions);
+int generateHtmlFiles(const MessageDatabase& mdb, const FolderMap& fm, const HTMLOptions htmlOptions, std::string htmlDir = "");
 
 #endif // PMDB_HTML_GENERATION_HPP

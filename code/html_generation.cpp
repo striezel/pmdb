@@ -34,7 +34,7 @@
 #include "../libstriezel/filesystem/directory.hpp"
 #include "../libstriezel/filesystem/file.hpp"
 
-int generateHtmlFiles(const MessageDatabase& mdb, const FolderMap& fm, const HTMLOptions htmlOptions)
+int generateHtmlFiles(const MessageDatabase& mdb, const FolderMap& fm, const HTMLOptions htmlOptions, std::string htmlDir)
 {
   MessageDatabase::Iterator msgIter = mdb.getBegin();
   if (msgIter == mdb.getEnd())
@@ -44,7 +44,10 @@ int generateHtmlFiles(const MessageDatabase& mdb, const FolderMap& fm, const HTM
   }
 
   // directory creation
-  std::string htmlDir = pmdb::paths::html();
+  if (htmlDir.empty())
+  {
+    htmlDir = pmdb::paths::html();
+  }
   if (!libstriezel::filesystem::directory::exists(htmlDir))
   {
     std::cout << "Trying to create HTML directory \"" << htmlDir << "\" ...";

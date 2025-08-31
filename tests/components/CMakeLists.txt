@@ -32,6 +32,7 @@ set(component_tests_sources
     ../../code/bbcode/quotes.cpp
     ../../code/browser_detection.cpp
     ../../code/filters/FilterUser.cpp
+    ../../code/html_generation.cpp
     ../../code/paths.cpp
     ../../code/templates/defaults.hpp
     ../../code/templates/functions.cpp
@@ -71,6 +72,7 @@ set(component_tests_sources
     bbcode/quotes.cpp
     browser_detection.cpp
     filter/FilterUser.cpp
+    html_generation.cpp
     names_to_controlsequences.cpp
     paths.cpp
     templates/defaults.cpp

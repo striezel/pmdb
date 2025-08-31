@@ -59,7 +59,7 @@ int generateHtmlFiles(const MessageDatabase& mdb, const FolderMap& fm, const HTM
 
   BBCodeParser parser;
   Config conf;
-  conf.setForumURL("http://www.example.com/forum/");
+  conf.setForumURL("https://www.example.com/forum/");
   // try to load configuration file
   const std::string conf_path = pmdb::paths::conf();
   if (libstriezel::filesystem::file::exists(conf_path))
@@ -112,7 +112,7 @@ int generateHtmlFiles(const MessageDatabase& mdb, const FolderMap& fm, const HTM
   tpl.loadFromString("<a target=\"_blank\" href=\"" + conf.getForumURL() + "showthread.php?t={..attr..}\">{..inner..}</a>");
   AdvancedTemplateBBCode thread_advanced("thread", tpl, "inner", "attr");
   // wiki tag
-  tpl.loadFromString("<a href=\"http://de.wikipedia.org/wiki/{..inner..}\" target=\"_blank\" title=\"Wikipediareferenz zu '{..inner..}'\">{..inner..}</a>");
+  tpl.loadFromString("<a href=\"https://de.wikipedia.org/wiki/{..inner..}\" target=\"_blank\" title=\"Wikipediareferenz zu '{..inner..}'\">{..inner..}</a>");
   SimpleTemplateBBCode wiki("wiki", tpl, "inner");
   // tag for unordered lists
   ListBBCode list_unordered("list", true);

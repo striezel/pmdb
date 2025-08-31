@@ -33,6 +33,7 @@ set(pmdb_sources
     filters/FilterUser.cpp
     functions.cpp
     html_generation.cpp
+    open_file.cpp
     paths.cpp
     templates/defaults.hpp
     templates/functions.cpp

@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the Private Message Database.
-    Copyright (C) 2012, 2014, 2015, 2016, 2025  Dirk Stolle
+    Copyright (C) 2025  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,21 +18,16 @@
  -------------------------------------------------------------------------------
 */
 
-#ifndef PMDB_HTML_GENERATION_HPP
-#define PMDB_HTML_GENERATION_HPP
+#ifndef PMDB_OPEN_FILE_HPP
+#define PMDB_OPEN_FILE_HPP
 
 #include "FolderMap.hpp"
-#include "HTMLOptions.hpp"
-#include "MessageDatabase.hpp"
 
-/** \brief Generates HTML files for the private messages.
+/** \brief Attempts to open the first folder index HTML file in a browser.
  *
- * \param mdb          the database containing the messages
- * \param fm           folder mappings for the message database
- * \param htmlOptions  the options for HTML file generation
- * \return Returns zero, if all HTML files could be created.
- *         Returns non-zero exit code, if an error occurred.
+ * \param fm         folder mappings for the message database
+ * \param html_dir   directory where the HTML files reside
  */
-int generateHtmlFiles(const MessageDatabase& mdb, const FolderMap& fm, const HTMLOptions htmlOptions);
+void openFirstIndexFile(const FolderMap& fm, const std::string& html_dir);
 
-#endif // PMDB_HTML_GENERATION_HPP
+#endif // PMDB_OPEN_FILE_HPP

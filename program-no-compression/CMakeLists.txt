@@ -38,6 +38,7 @@ set(pmdb_no_comp_sources
     ../code/filters/FilterUser.cpp
     ../code/functions.cpp
     ../code/html_generation.cpp
+    ../code/open_file.cpp
     ../code/paths.cpp
     ../code/templates/defaults.hpp
     ../code/templates/functions.cpp

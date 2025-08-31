@@ -35,6 +35,7 @@
 #include "functions.hpp"
 #include "html_generation.hpp"
 #include "HTMLOptions.hpp"
+#include "open_file.hpp"
 #include "ReturnCodes.hpp"
 #include "../libstriezel/filesystem/directory.hpp"
 #include "../libstriezel/filesystem/file.hpp"

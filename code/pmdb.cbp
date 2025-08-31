@@ -156,6 +156,8 @@
 		<Unit filename="html_generation.cpp" />
 		<Unit filename="html_generation.hpp" />
 		<Unit filename="main.cpp" />
+		<Unit filename="open_file.cpp" />
+		<Unit filename="open_file.hpp" />
 		<Unit filename="paths.cpp" />
 		<Unit filename="paths.hpp" />
 		<Unit filename="templates/defaults.hpp" />

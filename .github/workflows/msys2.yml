@@ -75,7 +75,11 @@ jobs:
           cp code/templates/*.tpl artifacts/
           # documentation
           cp -R documentation artifacts/documentation
+          # remove unnecessary files
           unlink artifacts/documentation/msys2-build.md
+          unlink artifacts/documentation/SUMMARY.md
+          unlink artifacts/documentation/book.toml
+          unlink artifacts/documentation/.gitignore
           # determine version
           VERSION=$(git describe --always)
           mv artifacts pmdb_${VERSION}

@@ -87,6 +87,9 @@ jobs:
           # documentation
           cp -R documentation artifacts/documentation
           unlink artifacts/documentation/msys2-build.md
+          unlink artifacts/documentation/SUMMARY.md
+          unlink artifacts/documentation/book.toml
+          unlink artifacts/documentation/.gitignore
           # determine version
           VERSION=$(git describe --always)
           echo Version is $VERSION.

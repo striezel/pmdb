@@ -1,5 +1,7 @@
 # pmdb
 
+[Introduction](intro.md)
+
 [Location of pmdb's files](directories.md)
 
 [Templates](templates.md)

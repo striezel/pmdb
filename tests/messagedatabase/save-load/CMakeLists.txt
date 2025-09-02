@@ -5,6 +5,7 @@ project(MessageDatabase_saveload_test)
 
 set(MessageDatabase_saveload_test_src
     ../../../code/FolderMap.cpp
+    ../../../code/HTMLStandard.cpp
     ../../../code/MessageDatabase.cpp
     ../../../code/MsgTemplate.cpp
     ../../../code/PMSource.cpp

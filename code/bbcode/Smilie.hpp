@@ -22,7 +22,7 @@
 #define SMILIE_HPP
 
 #include <string>
-#include "HTMLStandard.hpp"
+#include "../HTMLStandard.hpp"
 
 enum class UrlType: bool
 {

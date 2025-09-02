@@ -396,7 +396,7 @@ std::string generateFolderList(MsgTemplate folderList, MsgTemplate folderEntry, 
   return folderList.show();
 }
 
-bool MessageDatabase::saveIndexFiles(const std::string& directory, MsgTemplate index, MsgTemplate entry, MsgTemplate folderList, MsgTemplate folderEntry, const FolderMap& fm) const
+bool MessageDatabase::saveIndexFiles(const std::string& directory, MsgTemplate index, MsgTemplate entry, MsgTemplate folderList, MsgTemplate folderEntry, const FolderMap& fm, const HTMLStandard standard) const
 {
   std::vector<SortType> sortedList;
   for (const auto& [digest, pm]: m_Messages)
@@ -432,6 +432,7 @@ bool MessageDatabase::saveIndexFiles(const std::string& directory, MsgTemplate i
     ++fcIter;
   }
 
+  index.addReplacement("doctype", doctype(standard), false);
   fcIter = folderContents.begin();
   while (fcIter != folderContents.end())
   {

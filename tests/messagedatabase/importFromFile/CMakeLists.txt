@@ -5,6 +5,7 @@ project(importFromFile_test)
 
 set(importFromFile_test_src
     ../../../code/FolderMap.cpp
+    ../../../code/HTMLStandard.cpp
     ../../../code/MessageDatabase.cpp
     ../../../code/MsgTemplate.cpp
     ../../../code/PMSource.cpp

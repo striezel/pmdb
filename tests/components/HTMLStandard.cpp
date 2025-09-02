@@ -18,27 +18,27 @@
  -------------------------------------------------------------------------------
 */
 
-#ifndef PMDB_HTMLOPTIONS_HPP
-#define PMDB_HTMLOPTIONS_HPP
+#include "../locate_catch.hpp"
+#include "../../code/HTMLStandard.hpp"
 
-#include <string>
-#include "HTMLStandard.hpp"
-#include "bbcode/TableClasses.hpp"
-
-struct HTMLOptions
+TEST_CASE("HTMLStandard")
 {
-  public:
-    /// The HTML standard version to use when creating HTML files.
-    HTMLStandard standard{HTMLStandard::HTML4_01};
+  SECTION("doctype")
+  {
+    SECTION("HTML 4.01")
+    {
+      const auto doc = doctype(HTMLStandard::HTML4_01);
+      REQUIRE( doc.find("<!DOCTYPE HTML") != std::string::npos );
+      REQUIRE( doc.find("-//W3C//DTD HTML 4.01 Transitional//EN") != std::string::npos );
+      REQUIRE( doc.find("http://www.w3.org/TR/html4/loose.dtd") != std::string::npos );
+    }
 
-    /// Whether to convert new line characters to line breaks in (X)HTML.
-    bool nl2br{true};
-
-    /// Whether NOT o parse [LIST] codes.
-    bool noList{false};
-
-    /// Whether table classes (table, row, cell) should be used, and which classes to use.
-    TableClasses tableClasses;
-};
-
-#endif // PMDB_HTMLOPTIONS_HPP
+    SECTION("XHTML")
+    {
+      const auto doc = doctype(HTMLStandard::XHTML);
+      REQUIRE( doc.find("<!DOCTYPE ") != std::string::npos );
+      REQUIRE( doc.find("-//W3C//DTD XHTML 1.0 Transitional//EN") != std::string::npos );
+      REQUIRE( doc.find("http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd") != std::string::npos );
+    }
+  }
+}

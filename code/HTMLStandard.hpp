@@ -21,6 +21,8 @@
 #ifndef BBCODE_HTMLSTANDARD_HPP
 #define BBCODE_HTMLSTANDARD_HPP
 
+#include <string>
+
 /** \brief Enumeration type to indicate an (X)HTML standard version.
  *
  * \brief Currently, it's only used to distinguish between HTML and XHTML.
@@ -33,5 +35,12 @@ enum class HTMLStandard: bool
   /// XHTML 1.0
   XHTML = true
 };
+
+/** \brief Gets the doctype for a given HTML standard.
+ *
+ * \param standard   the (X)HTML standard version
+ * \return Returns the corresponding doctype.
+ */
+std::string doctype(const HTMLStandard standard);
 
 #endif // BBCODE_HTMLSTANDARD_HPP

@@ -15,6 +15,7 @@ set(pmdb_no_comp_sources
     ../code/ConsoleColours.cpp
     ../code/CompressionDetection.cpp
     ../code/FolderMap.cpp
+    ../code/HTMLStandard.cpp
     ../code/MessageDatabase.cpp
     ../code/MsgTemplate.cpp
     ../code/PMSource.cpp

@@ -23,6 +23,7 @@
 
 #include <map>
 #include <vector>
+#include "HTMLStandard.hpp"
 #include "PrivateMessage.hpp"
 #include "MsgTemplate.hpp"
 #include "FolderMap.hpp"
@@ -127,7 +128,7 @@ class MessageDatabase
      * \param fm          the current folder map
      * \return Returns true, if file was created successfully.
      */
-    bool saveIndexFiles(const std::string& directory, MsgTemplate index, MsgTemplate entry, MsgTemplate folderList, MsgTemplate folderEntry, const FolderMap& fm) const;
+    bool saveIndexFiles(const std::string& directory, MsgTemplate index, MsgTemplate entry, MsgTemplate folderList, MsgTemplate folderEntry, const FolderMap& fm, const HTMLStandard standard) const;
 
 
     /** \brief finds messages whose texts "overlap"

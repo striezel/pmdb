@@ -9,6 +9,7 @@ set(pmdb_sources
     CompressionDetection.cpp
     ConsoleColours.cpp
     FolderMap.cpp
+    HTMLStandard.cpp
     MessageDatabase.cpp
     MsgTemplate.cpp
     PMSource.cpp

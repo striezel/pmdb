@@ -36,7 +36,7 @@
 #include <string>
 #include <vector>
 #include "BBCode.hpp"
-#include "HTMLStandard.hpp"
+#include "../HTMLStandard.hpp"
 #ifndef NO_SMILIES_IN_PARSER
   #include "Smilie.hpp"
 #endif

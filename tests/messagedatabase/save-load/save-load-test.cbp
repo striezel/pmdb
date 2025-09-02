@@ -35,6 +35,8 @@
 		</Linker>
 		<Unit filename="../../../code/FolderMap.cpp" />
 		<Unit filename="../../../code/FolderMap.hpp" />
+		<Unit filename="../../../code/HTMLStandard.cpp" />
+		<Unit filename="../../../code/HTMLStandard.hpp" />
 		<Unit filename="../../../code/MessageDatabase.cpp" />
 		<Unit filename="../../../code/MessageDatabase.hpp" />
 		<Unit filename="../../../code/MsgTemplate.cpp" />

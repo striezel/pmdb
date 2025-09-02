@@ -23,7 +23,7 @@
 
 #include <string>
 #include "BBCode.hpp"
-#include "HTMLStandard.hpp"
+#include "../HTMLStandard.hpp"
 
 /** \brief HorizontalRuleBBCode:
        struct for hr BB code

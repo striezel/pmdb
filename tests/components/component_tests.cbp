@@ -43,6 +43,8 @@
 		<Unit filename="../../code/ConsoleColours.hpp" />
 		<Unit filename="../../code/FolderMap.cpp" />
 		<Unit filename="../../code/FolderMap.hpp" />
+		<Unit filename="../../code/HTMLStandard.cpp" />
+		<Unit filename="../../code/HTMLStandard.hpp" />
 		<Unit filename="../../code/MessageDatabase.cpp" />
 		<Unit filename="../../code/MessageDatabase.hpp" />
 		<Unit filename="../../code/MsgTemplate.cpp" />
@@ -121,6 +123,7 @@
 		<Unit filename="CompressionDetections.cpp" />
 		<Unit filename="Config.cpp" />
 		<Unit filename="FolderMap.cpp" />
+		<Unit filename="HTMLStandard.cpp" />
 		<Unit filename="MessageDatabase.cpp" />
 		<Unit filename="PrivateMessage.cpp" />
 		<Unit filename="SortType.cpp" />

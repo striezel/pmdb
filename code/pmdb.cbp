@@ -99,6 +99,8 @@
 		<Unit filename="FolderMap.cpp" />
 		<Unit filename="FolderMap.hpp" />
 		<Unit filename="HTMLOptions.hpp" />
+		<Unit filename="HTMLStandard.cpp" />
+		<Unit filename="HTMLStandard.hpp" />
 		<Unit filename="MessageDatabase.cpp" />
 		<Unit filename="MessageDatabase.hpp" />
 		<Unit filename="MsgTemplate.cpp" />
@@ -125,7 +127,6 @@
 		<Unit filename="bbcode/CustomizedSimpleBBCode.cpp" />
 		<Unit filename="bbcode/CustomizedSimpleBBCode.hpp" />
 		<Unit filename="bbcode/DefaultCodes.hpp" />
-		<Unit filename="bbcode/HTMLStandard.hpp" />
 		<Unit filename="bbcode/HorizontalRuleBBCode.cpp" />
 		<Unit filename="bbcode/HorizontalRuleBBCode.hpp" />
 		<Unit filename="bbcode/ListBBCode.cpp" />

@@ -154,6 +154,7 @@ int generateHtmlFiles(const MessageDatabase& mdb, const FolderMap& fm, const HTM
 
   // create HTML files
   std::cout << "Creating HTML files for message texts. This may take a while...\n";
+  theTemplate.addReplacement("doctype", doctype(htmlOptions.standard), false);
   theTemplate.addReplacement("forum_url", conf.getForumURL(), false);
   while (msgIter != mdb.getEnd())
   {
@@ -206,7 +207,7 @@ int generateHtmlFiles(const MessageDatabase& mdb, const FolderMap& fm, const HTM
   }
   tplIndex.addReplacement("forum_url", conf.getForumURL(), true);
   tplEntry.addReplacement("forum_url", conf.getForumURL(), true);
-  if (!mdb.saveIndexFiles(htmlDir, tplIndex, tplEntry, tplFolderList, tplFolderEntry, fm))
+  if (!mdb.saveIndexFiles(htmlDir, tplIndex, tplEntry, tplFolderList, tplFolderEntry, fm, htmlOptions.standard))
   {
     std::cerr << "Could not write index.html!\n";
     return rcFileError;

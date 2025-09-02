@@ -18,27 +18,17 @@
  -------------------------------------------------------------------------------
 */
 
-#ifndef PMDB_HTMLOPTIONS_HPP
-#define PMDB_HTMLOPTIONS_HPP
-
-#include <string>
 #include "HTMLStandard.hpp"
-#include "bbcode/TableClasses.hpp"
 
-struct HTMLOptions
+std::string doctype(const HTMLStandard standard)
 {
-  public:
-    /// The HTML standard version to use when creating HTML files.
-    HTMLStandard standard{HTMLStandard::HTML4_01};
-
-    /// Whether to convert new line characters to line breaks in (X)HTML.
-    bool nl2br{true};
-
-    /// Whether NOT o parse [LIST] codes.
-    bool noList{false};
-
-    /// Whether table classes (table, row, cell) should be used, and which classes to use.
-    TableClasses tableClasses;
-};
-
-#endif // PMDB_HTMLOPTIONS_HPP
+  switch (standard)
+  {
+    case HTMLStandard::HTML4_01:
+         return R"(<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+   "http://www.w3.org/TR/html4/loose.dtd">)";
+    case HTMLStandard::XHTML:
+         return R"(<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">)";
+  }
+}

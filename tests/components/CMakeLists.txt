@@ -9,6 +9,7 @@ set(component_tests_sources
     ../../code/Config.cpp
     ../../code/ConsoleColours.cpp
     ../../code/FolderMap.cpp
+    ../../code/HTMLStandard.cpp
     ../../code/MessageDatabase.cpp
     ../../code/MsgTemplate.cpp
     ../../code/PMSource.cpp
@@ -50,6 +51,7 @@ set(component_tests_sources
     CompressionDetections.cpp
     Config.cpp
     FolderMap.cpp
+    HTMLStandard.cpp
     MessageDatabase.cpp
     PrivateMessage.cpp
     SortType.cpp

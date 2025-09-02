@@ -33,15 +33,61 @@ echo "Info: Commit hash is $COMMIT_HASH."
 # wget -O pmdb_${VERSION}.orig.tar.bz2 https://gitlab.com/striezel/pmdb/-/archive/${COMMIT_HASH}/pmdb-${COMMIT_HASH}.tar.bz2
 # tar -x --bzip2 -f pmdb_${VERSION}.orig.tar.bz2
 # GitHub download:
-wget -O pmdb_${VERSION}.orig.tar.gz https://github.com/striezel/pmdb/archive/${COMMIT_HASH}.tar.gz
-tar -x --gzip -f pmdb_${VERSION}.orig.tar.gz
+# wget -O pmdb_${VERSION}.orig.tar.gz https://github.com/striezel/pmdb/archive/${COMMIT_HASH}.tar.gz
+# tar -x --gzip -f pmdb_${VERSION}.orig.tar.gz
+
+# Downloads do not contain submodules, so we build an archive ourselves with
+# the help of git archive and tar.
+echo "Creating main archive ..."
+git archive --verbose --prefix "pmdb-archive/" --format tar --output "/tmp/pmdb-main-archive.tar" $COMMIT_HASH
+if [[ $? -ne 0 ]]
+then
+  echo "ERROR: Archive creation (main) failed!"
+  exit 1
+fi
+
+echo "Creating submodule archive(s) ..."
+git submodule foreach --recursive 'git archive --verbose --prefix=pmdb-archive/$path/ --format tar HEAD --output /tmp/pmdb-module-archive-$sha1.tar'
+if [[ $? -ne 0 ]]
+then
+  echo "ERROR: Archive creation (submodule) failed!"
+  exit 1
+fi
+
+# Delete empty directory.
+tar --delete -f /tmp/pmdb-main-archive.tar pmdb-archive/libstriezel
+if [[ $? -ne 0 ]]
+then
+  echo "ERROR: Directory could not be deleted from archive!"
+  exit 1
+fi
+
+tar --concatenate --ignore-zeros --file /tmp/pmdb-main-archive.tar /tmp/pmdb-module-archive*.tar
+if [[ $? -ne 0 ]]
+then
+  echo "ERROR: Archive concatenation failed!"
+  exit 1
+fi
+
+echo "Info: Archive contents (pmdb-main-archive.tar):"
+tar tf /tmp/pmdb-main-archive.tar
+
+bzip2 --keep /tmp/pmdb-main-archive.tar && cp /tmp/pmdb-main-archive.tar.bz2 ./pmdb_${VERSION}.orig.tar.bz2
+if [[ $? -ne 0 ]]
+then
+  echo "ERROR: Archive compression or copy failed!"
+  exit 1
+fi
+# Archive creation done.
+
+tar -x --bzip2 -f pmdb_${VERSION}.orig.tar.bz2
 if [[ $? -ne 0 ]]
 then
   echo "ERROR: Archive extraction failed!"
   exit 1
 fi
 
-mv pmdb-${COMMIT_HASH} pmdb-${VERSION}
+mv pmdb-archive pmdb-${VERSION}
 if [[ $? -ne 0 ]]
 then
   echo "ERROR: Could not move extracted files!"

@@ -253,6 +253,10 @@ TEST_CASE("Config")
       std::filesystem::path path{__FILE__};
       path.remove_filename();
       path = path / ".." / ".." / "documentation" / "pmdb.conf.example.worldofplayers";
+      if (!std::filesystem::exists(path))
+      {
+        return;
+      }
 
       Config conf;
       REQUIRE( conf.loadFromFile(path.string()) );

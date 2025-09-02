@@ -1,0 +1,24 @@
+Source: pmdb
+Section: unknown
+Priority: optional
+Maintainer: Dirk Stolle <striezell-dev@web.de>
+Rules-Requires-Root: no
+Build-Depends:
+ debhelper (>= 12),
+ catch | catch2 | libcatch2-dev,
+ cmake,
+ firefox-esr | firefox | firefox-devedition | chromium,
+ libboost-dev,
+ libxml2-dev,
+ zlib1g-dev
+Standards-Version: 4.6.2
+Homepage: https://github.com/striezel/pmdb
+Vcs-Git: https://github.com/striezel/pmdb.git
+
+Package: pmdb
+Architecture: any
+Multi-Arch: foreign
+Depends:
+ ${shlibs:Depends},
+ ${misc:Depends},
+Description: Command-line tool to manage private message from vBulletin.

@@ -2,6 +2,8 @@
 
 [Introduction](intro.md)
 
+[Installation](installation.md)
+
 [Location of pmdb's files](directories.md)
 
 [Templates](templates.md)

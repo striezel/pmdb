@@ -190,6 +190,11 @@ free to skip configuration entries for some lesser used smilie codes.</p>
 this directory. It already contains all smilie codes for the World of Players
 forum. Just rename it to <code>pmdb.conf</code> and place it in pmdb's
 <a href="directories.html">main directory</a>.</p>
+<p><strong>Question: In the generated HTML any forum links link to https://www.example.com/ instead of my forum. Why?</strong></p>
+<p>Answer: If no <a href="configuration.html">configuration file for pmdb</a> exists or it does
+not contain a forum URL, then <code>https://www.example.com/</code> is currently used as
+the default value for the forum URL. To change that, create or adjust the
+configuration file and enter the correct URL for your forum.</p>
 <p><strong>Question: The style of the generated HTML files is too simple / boring / ugly. Can I change it?</strong></p>
 <p>Answer: Yes. pmdb uses <a href="templates.html">templates</a> to generate the HTML files. If
 you know a bit of HTML and/or CSS, you can modify those templates according to

@@ -3,8 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title></title>
-        <meta name="robots" content="noindex">
+        <title>Installation</title>
 
 
         <!-- Custom HTML head -->
@@ -176,15 +175,7 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="pmdb"><a class="header" href="#pmdb">pmdb</a></h1>
-<p><code>pmdb</code> is a small command-line too that can be used to manage private messages
-that were imported from a vBulletin forum via an XML file. The main purpose is
-to keep private messages even if they have to be deleted in the vBulletin forum
-due to limits of the forum instance. <code>pmdb</code> also offers the possibility to
-generate HTML files for the messages from the XML files so that the messages can
-be viewed locally almost as if they were still available on the forum instance.</p>
-<p>Next, let's get to the <a href="installation.html">installation of pmdb</a>.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="installation"><a class="header" href="#installation">Installation</a></h1>
+                        <h1 id="installation"><a class="header" href="#installation">Installation</a></h1>
 <p>Currently, there is no easy way to install pmdb. It has to be
 <a href="https://github.com/striezel/pmdb?tab=readme-ov-file#building-from-source">compiled from the source code</a>,
 which is a bit tedious. In the future, pre-compiled versions will be available
@@ -239,173 +230,18 @@ architecture (aarch64-linux-gnu / aarch64-linux-musl)</li>
 to test this on.</p>
 <p>If you need ton run pmdb on macOS, you can either try to compile from source or
 you could try to run the Windows binaries with the <a href="https://www.winehq.org/">Wine compatibility layer</a>.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="location-of-pmdbs-files"><a class="header" href="#location-of-pmdbs-files">Location of pmdb's files</a></h1>
-<h2 id="main-directory"><a class="header" href="#main-directory">Main directory</a></h2>
-<p>pmdb's files are stored in a directory named <code>.pmdb</code> in the user's home
-directory. That's usually something like <code>/home/name/.pmdb</code> on Linux systems or
-<code>C:\Users\name\.pmdb</code> on Windows systems, where <code>name</code> stands for the actual
-user name. All relevant files are kept in that directory or one of its
-sub-directories.</p>
-<h2 id="generated-html-files"><a class="header" href="#generated-html-files">Generated HTML files</a></h2>
-<p>The HTML files generated via pmdb using the <code>--html</code> or <code>--xhtml</code> command-line
-parameters are stored in the <code>html</code> sub-directory of the main directory, e.g.
-<code>/home/name/.pmdb/html</code> on Linux systems or <code>C:\Users\name\.pmdb\html</code> on
-Windows systems.</p>
-<h2 id="html-templates"><a class="header" href="#html-templates">HTML templates</a></h2>
-<p>pmdb uses <a href="templates.html">templates</a> to generate HTML files. Those templates are
-stored within the <code>templates</code> sub-directory of the main directory, e.g.
-<code>/home/name/.pmdb/templates</code>  on Unix-like systems or
-<code>C:\Users\name\.pmdb\templates</code> on Windows systems.</p>
-<h2 id="configuration-file"><a class="header" href="#configuration-file">Configuration file</a></h2>
-<p>pmdb's configuration file is named <code>pmdb.conf</code> and located inside the main
-directory. This means its location could be <code>/home/name/.pmdb/pmdb.conf</code> on
-Unix-like systems or <code>C:\Users\name\.pmdb\pmdb.conf</code> on Windows systems, for
-example. For more information on the file and its contents
-see <a href="configuration.html">configuration.md</a>.</p>
-<h2 id="saved-messages"><a class="header" href="#saved-messages">Saved messages</a></h2>
-<p>The messages that are saved by pmdb are stored within the <code>messages</code>
-sub-directory of the main directory, e.g. <code>/home/name/.pmdb/messages</code>  on
-Unix-like systems or <code>C:\Users\name\.pmdb\messages</code> on Windows systems.
-The file names are <a href="https://en.wikipedia.org/wiki/SHA-2">SHA-256 hashes</a> of the
-message content.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="templates-in-pmdb"><a class="header" href="#templates-in-pmdb">Templates in pmdb</a></h1>
-<p>pmdb uses templates to generate HTML files. Those templates are stored within
-the <code>templates</code> sub-directory of the main directory,  e.g.
-<code>/home/name/.pmdb/templates</code>  on Unix-like systems or
-<code>C:\Users\name\.pmdb\templates</code> on Windows systems.</p>
-<p>Those templates contain HTML code and placeholders. A placeholder starts with
-<code>{..</code> and ends with <code>..}</code>. For example, in a template like</p>
-<pre><code>&lt;div class="folder_list"&gt;
-  Private Nachrichten
-  {..folder_entries..}
-&lt;/div&gt;
-</code></pre>
-<p>the placeholder is <code>{..folder_entries..}</code>. Placeholders get replaced by proper
-HTML code during HTML generation to represent the contents of the private
-messages. Template files use the file extension <code>.tpl</code>. Currently, pmdb uses the
-following template files:</p>
-<ul>
-<li>folder.tpl</li>
-<li>folder_entry.tpl</li>
-<li>folder_list.tpl</li>
-<li>index_entry.tpl</li>
-<li>message.tpl</li>
-</ul>
-<h2 id="modifying-templates"><a class="header" href="#modifying-templates">Modifying templates</a></h2>
-<p>Users are free to modify the templates, if they are knowledgable in HTML and
-CSS. Modifications in those template files take effect the next time the HTML
-files are (re-)generated by pmdb.</p>
-<h2 id="resetting-templates-to-defaults"><a class="header" href="#resetting-templates-to-defaults">Resetting templates to defaults</a></h2>
-<p>If you want to reset any modifications made to the template files, then you can
-just delete those files. The template files will get regenerated with their
-default contents the next time pmdb generates HTML files.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="pmdb-configuration-file"><a class="header" href="#pmdb-configuration-file">pmdb: configuration file</a></h1>
-<p>The configuration file of pmdb is the place where the settings like the forum's
-URL and smilie codes for HTML file generation are stored.</p>
-<h2 id="location-of-the-configuration-file"><a class="header" href="#location-of-the-configuration-file">Location of the configuration file</a></h2>
-<p>pmdb expects the configuration file to be named <code>pmdb.conf</code> and placed inside
-pmdb's main directory. (See <a href="directories.html">directories.md</a> for more details.)
-This means the configuration file should be placed at
-<code>/home/name/.pmdb/pmdb.conf</code> on Unix-like systems and at
-<code>C:\Users\name\.pmdb\pmdb.conf</code> on Windows systems, where <code>name</code> has to be
-replaced by the actual user name.</p>
-<p>Having no configuration file is not an error. pmdb will simply skip loading of
-it, if it cannot find a file in the mentioned locations.</p>
-<h2 id="configuration-elements"><a class="header" href="#configuration-elements">Configuration elements</a></h2>
-<h3 id="general-configuration-format"><a class="header" href="#general-configuration-format">General configuration format</a></h3>
-<p>Configuration settings are basically key-value pairs, where the key is specified
-first, followed by an equals sign (<code>=</code>), followed by the value of the setting.
-For example, the line</p>
-<pre><code>forum=https://forum.example.org/
-</code></pre>
-<p>sets the value of <code>forum</code> to <code>https://forum.example.org/</code>.</p>
-<h3 id="comments"><a class="header" href="#comments">Comments</a></h3>
-<p>The configuration file allows comment lines. Comment lines are lines where the
-first character is <code>#</code>. These lines are ignored by the application. A line has
-to be either a comment or configuration data, you cannot mix both on the same
-line.</p>
-<p>Completely empty lines are ignored, too.</p>
-<h3 id="settings"><a class="header" href="#settings">Settings</a></h3>
-<p>The following settings are allowed in the configuration file:</p>
-<ul>
-<li>
-<p><strong>forum</strong> - basic URL of the vB forum, e.g. <code>https://example.org/forum/</code>.
-This setting can only occur once per configuration file.</p>
-</li>
-<li>
-<p><strong>smilie</strong> - smilie code for HTML generation with absolute image URL. Some
-forums have smilie codes. For example, they might replace <code>:)</code> in text by the
-image of a smiling face. pmdb needs to know the URL of those files to generate
-HTML files with proper smilies. The <code>smilie</code> setting can occur multiple times,
-once for each smilie code. To give an example, the line</p>
-<pre><code>smilie=:)=https://example.org/happy_face.gif
-</code></pre>
-<p>would mean that the sequence <code>:)</code> in PM text gets replaced by the image
-<code>https://example.org/happy_face.gif</code>.</p>
-</li>
-<li>
-<p><strong>smilie_r</strong> - smilie code for HTML generation with relative image URL. This
-is basically the same as the <code>smilie</code> setting, with the difference that the
-image URL is interpreted relative to the forum URL. Note that this only works
-if the forum URL is set via the <code>forum</code> setting. The <code>smilie_r</code> setting can
-occur multiple times, once for each smilie code. To give an example, the line</p>
-<pre><code>smilie_r=:(=image/sad_face.gif
-</code></pre>
-<p>would mean that the sequence <code>:(</code> in PM text gets replaced by the image
-<code>https://example.org/forum/image/sad_face.gif</code>, if the forum URL was set to
-<code>https://example.org/forum/</code>.</p>
-</li>
-</ul>
-<h2 id="example-of-a-configuration-file"><a class="header" href="#example-of-a-configuration-file">Example of a configuration file</a></h2>
-<p>The following is a possible configuration file for pmdb:</p>
-<pre><code># This line is a comment and will be ignored.
-
-# forum base URL
-forum=https://example.org/forum/
-
-# smilies
-# -- happy face
-smilie=:)=https://example.org/forum/image/happy_face.gif
-# -- sad face
-smilie=:)=https://example.org/forum/image/sad_face.gif
-# -- surprised face
-smile_r=:o=image/surprise.png
-# -- sticking out tongue
-smilie_r=:p=image/tongue_out.png
-</code></pre>
-<p>Furthermore, the file <code>pmdb.conf.example.worldofplayers</code> contains a complete
-configuration file ready for use for private messages from the World of Players
-forum.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="frequently-asked-questions"><a class="header" href="#frequently-asked-questions">Frequently asked questions</a></h1>
-<h2 id="html-generation"><a class="header" href="#html-generation">HTML generation</a></h2>
-<p><strong>Question: Smilies in the generated HTML files do not show up as images but
-only as smilie codes, for example <code>:)</code>. Why is that?</strong></p>
-<p>Answer: Smilie codes and their corresponding images have to be added to the
-<a href="configuration.html">configuration file</a>, if they shall be replaced by images.
-Restart HTML generation once the smilie settings have been added.</p>
-<p><strong>Question: But there are a lot of smilies for the forum. Do I have to add all of them?</strong></p>
-<p>Answer: Only the ones you want to show up properly in the HTML files. You are
-free to skip configuration entries for some lesser used smilie codes.</p>
-<p>If the forum is World of Players, you can use the file
-<a href="pmdb.conf.example.worldofplayers">pmdb.conf.example.worldofplayers</a> provided in
-this directory. It already contains all smilie codes for the World of Players
-forum. Just rename it to <code>pmdb.conf</code> and place it in pmdb's
-<a href="directories.html">main directory</a>.</p>
-<p><strong>Question: In the generated HTML any forum links link to https://www.example.com/ instead of my forum. Why?</strong></p>
-<p>Answer: If no <a href="configuration.html">configuration file for pmdb</a> exists or it does
-not contain a forum URL, then <code>https://www.example.com/</code> is currently used as
-the default value for the forum URL. To change that, create or adjust the
-configuration file and enter the correct URL for your forum.</p>
-<p><strong>Question: The style of the generated HTML files is too simple / boring / ugly. Can I change it?</strong></p>
-<p>Answer: Yes. pmdb uses <a href="templates.html">templates</a> to generate the HTML files. If
-you know a bit of HTML and/or CSS, you can modify those templates according to
-your preference.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="intro.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
 
+                            <a rel="next prefetch" href="directories.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -413,7 +249,13 @@ your preference.</p>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="intro.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
 
+                    <a rel="next prefetch" href="directories.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
             </nav>
 
         </div>
@@ -436,11 +278,6 @@ your preference.</p>
 
         <!-- Custom JS scripts -->
 
-        <script>
-        window.addEventListener('load', function() {
-            window.setTimeout(window.print, 100);
-        });
-        </script>
 
 
     </div>

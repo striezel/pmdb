@@ -49,10 +49,10 @@ distributions.
 
 For other Linux distributions, there are generic packages:
 
-* __pmdb\_\<version\>_linux-amd64-generic.tar.gz__ - generic binaries for 64-bit
+* __pmdb\_\<version\>\_linux-amd64-generic.tar.gz__ - generic binaries for 64-bit
   Linux systems, should work on most recent Linux distributions using the amd64
   (64-bit AMD / Intel) architecture
-* __pmdb\_\<version\>_linux-arm64-generic.tar.gz__ - generic binaries for 64-bit
+* __pmdb\_\<version\>\_linux-arm64-generic.tar.gz__ - generic binaries for 64-bit
   Linux systems, should work on most recent Linux distributions using the arm64
   architecture (aarch64-linux-gnu / aarch64-linux-musl)
 

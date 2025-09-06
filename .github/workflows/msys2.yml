@@ -3,7 +3,15 @@ name: MSYS2
 on: push
 
 jobs:
-  msys2_mingw64:
+  msys2:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - msystem: mingw64
+            package: x86_64
+          - msystem: ucrt64
+            package: ucrt-x86_64
     runs-on: windows-2022
     defaults:
       run:
@@ -19,21 +27,21 @@ jobs:
       - name: Install MSYS2 + build dependencies
         uses: msys2/setup-msys2@v2
         with:
-          msystem: mingw64
+          msystem: ${{matrix.msystem}}
           update: true
           install: >-
             git
-            mingw-w64-x86_64-boost
-            mingw-w64-x86_64-catch
-            mingw-w64-x86_64-cmake
-            mingw-w64-x86_64-gcc
-            mingw-w64-x86_64-libxml2
-            mingw-w64-x86_64-ninja
-            mingw-w64-x86_64-pkg-config
-            mingw-w64-x86_64-zlib
+            mingw-w64-${{matrix.package}}-boost
+            mingw-w64-${{matrix.package}}-catch
+            mingw-w64-${{matrix.package}}-cmake
+            mingw-w64-${{matrix.package}}-gcc
+            mingw-w64-${{matrix.package}}-libxml2
+            mingw-w64-${{matrix.package}}-ninja
+            mingw-w64-${{matrix.package}}-pkg-config
+            mingw-w64-${{matrix.package}}-zlib
       - name: Build
         run: |
-          export MSYSTEM=MINGW64
+          export MSYSTEM=$(echo ${{matrix.msystem}} | tr '[:lower:]' '[:upper:]')
           export CXX=g++
           export CC=gcc
           cd "$GITHUB_WORKSPACE"
@@ -43,12 +51,12 @@ jobs:
           cmake --build . -j2
 #      - name: Tests
 #        run: |
-#          export MSYSTEM=MINGW64
+#          export MSYSTEM=$(echo ${{matrix.msystem}} | tr '[:lower:]' '[:upper:]')
 #          cd "$GITHUB_WORKSPACE"/build
 #          ctest -V
       - name: Build with statically linked standard libraries
         run: |
-          export MSYSTEM=MINGW64
+          export MSYSTEM=$(echo ${{matrix.msystem}} | tr '[:lower:]' '[:upper:]')
           export CXX=g++
           export CC=gcc
           cd "$GITHUB_WORKSPACE"
@@ -58,12 +66,12 @@ jobs:
           cmake --build . -j4
 #      - name: Tests of build with statically linked standard libraries
 #        run: |
-#          export MSYSTEM=MINGW64
+#          export MSYSTEM=$(echo ${{matrix.msystem}} | tr '[:lower:]' '[:upper:]')
 #          cd "$GITHUB_WORKSPACE"/build_static_std_libs
 #          ctest -V
       - name: Gather build artifacts
         run: |
-          export MSYSTEM=MINGW64
+          export MSYSTEM=$(echo ${{matrix.msystem}} | tr '[:lower:]' '[:upper:]')
           cd "$GITHUB_WORKSPACE"
           mkdir artifacts
           # binary files
@@ -87,7 +95,7 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: pmdb-windows-msys2
+          name: pmdb-windows-msys2-${{matrix.msystem}}
           if-no-files-found: error
           path: |
             pmdb*.zip

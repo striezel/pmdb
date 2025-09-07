@@ -54,17 +54,17 @@ jobs:
 #          export MSYSTEM=$(echo ${{matrix.msystem}} | tr '[:lower:]' '[:upper:]')
 #          cd "$GITHUB_WORKSPACE"/build
 #          ctest -V
-      - name: Build with statically linked standard libraries
+      - name: Build statically linked executable
         run: |
           export MSYSTEM=$(echo ${{matrix.msystem}} | tr '[:lower:]' '[:upper:]')
           export CXX=g++
           export CC=gcc
           cd "$GITHUB_WORKSPACE"
-          mkdir build_static_std_libs
-          cd build_static_std_libs
-          cmake ../ -DENABLE_LTO=ON -DENABLE_STATIC_STANDARD_LIBRARIES=ON
+          mkdir build-static
+          cd build-static
+          cmake ../ -DENABLE_LTO=ON -DENABLE_STATIC_LINKING=ON
           cmake --build . -j4
-#      - name: Tests of build with statically linked standard libraries
+#      - name: Tests of build with statically linked build
 #        run: |
 #          export MSYSTEM=$(echo ${{matrix.msystem}} | tr '[:lower:]' '[:upper:]')
 #          cd "$GITHUB_WORKSPACE"/build_static_std_libs
@@ -75,7 +75,7 @@ jobs:
           cd "$GITHUB_WORKSPACE"
           mkdir artifacts
           # binary files
-          ./ci/copy-dll-dependencies.sh build_static_std_libs/code/pmdb.exe artifacts/
+          ./ci/copy-dll-dependencies.sh build-static/code/pmdb.exe artifacts/
           # license + third-party notices
           cp LICENSE artifacts/
           cp third-party.md artifacts/

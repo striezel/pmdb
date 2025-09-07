@@ -12,9 +12,6 @@ For Windows, a ZIP file containing all the required files is provided.
 * __pmdb\_\<version\>.zip__ - binaries for 64-bit Windows systems, just extract
   to a location of your choice and run it from there
 
-Just make sure to keep the `*.exe` and `*.dll` files in the same directory.
-Otherwise the executable may not work.
-
 ## Linux
 
 ### Debian, Ubuntu and Debian-based systems

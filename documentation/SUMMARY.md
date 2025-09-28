@@ -4,6 +4,8 @@
 
 [Installation](installation.md)
 
+[Using pmdb](basic_usage.md)
+
 [Location of pmdb's files](directories.md)
 
 [Templates](templates.md)

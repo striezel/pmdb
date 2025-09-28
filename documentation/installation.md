@@ -60,3 +60,7 @@ to test this on.
 
 If you need ton run pmdb on macOS, you can either try to compile from source or
 you could try to run the Windows binaries with the [Wine compatibility layer](https://www.winehq.org/).
+
+---
+
+Let's move on to the [basics of how to use pmdb](basic_usage.md).

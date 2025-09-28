@@ -32,3 +32,8 @@ configuration file and enter the correct URL for your forum.
 Answer: Yes. pmdb uses [templates](templates.md) to generate the HTML files. If
 you know a bit of HTML and/or CSS, you can modify those templates according to
 your preference.
+
+**Question: I've changed the templates, but I want the default templates back. How can I do that?**
+
+Answer: Just delete the changed template files. Templates will then be
+regenerated the next time pmdb generates HTML files.

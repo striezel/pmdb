@@ -124,3 +124,8 @@ And `pmdb` will then open the generated HTML file in the browser.
 In general, `pmdb` will let you combine paramaters and tasks freely most of the
 time. (There are some exceptions like the `--help` or `--version` parameters
 which will just print the information and then exit.)
+
+## Further options
+
+`pmdb` provides more options, but those are usually not required that often. To
+see them, take a look at the [command-line option reference](extended_usage.md).

@@ -6,6 +6,8 @@
 
 [Using pmdb](basic_usage.md)
 
+[Command-line options](extended_usage.md)
+
 [Location of pmdb's files](directories.md)
 
 [Templates](templates.md)

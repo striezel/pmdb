@@ -6,7 +6,11 @@
 [![GitHub CI MSYS2 status](https://github.com/striezel/pmdb/workflows/MSYS2/badge.svg)](https://github.com/striezel/pmdb/actions)
 
 pmdb is a small command-line tool that can be used to handle private messages
-that were imported from vBulletin via an XML file.
+that were imported from vBulletin via an XML file. The main purpose is to keep
+private messages even if they have to be deleted in the vBulletin forum due to
+limits of the forum instance. pmdb also offers the possibility to generate HTML
+files for the messages from the XML files so that the messages can be viewed
+locally almost as if they were still available on the forum instance.
 
 TODO: Add more information.
 

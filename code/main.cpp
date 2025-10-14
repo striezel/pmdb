@@ -119,7 +119,7 @@ void showHelp(const std::string& name)
             << "                      files in a web browser for viewing. If this option is\n"
             << "                      given, no such attempt is made.\n"
             << "  --subset-check    - Search for messages with texts that are completely\n"
-            << "                      contained in other messages, too.\n"
+            << "                      contained in other messages.\n"
             << "  --list-from X     - List all messages that were sent by user X, where X stands\n"
             << "                      for the name of the user (not the numeric user id).\n"
             << "                      Can occur multiple times for more than one user.\n"

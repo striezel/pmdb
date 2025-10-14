@@ -5,8 +5,8 @@
 [![GitHub CI GCC status](https://github.com/striezel/pmdb/workflows/GCC/badge.svg)](https://github.com/striezel/pmdb/actions)
 [![GitHub CI MSYS2 status](https://github.com/striezel/pmdb/workflows/MSYS2/badge.svg)](https://github.com/striezel/pmdb/actions)
 
-pmdb is (or better: will be) a small command-line tool that can be used to
-"manage" private messages that were imported from vBulletin via an XML file.
+pmdb is a small command-line tool that can be used to handle private messages
+that were imported from vBulletin via an XML file.
 
 TODO: Add more information.
 
@@ -70,7 +70,7 @@ options:
                       files in a web browser for viewing. If this option is
                       given, no such attempt is made.
   --subset-check    - Search for messages with texts that are completely
-                      contained in other messages, too.
+                      contained in other messages.
   --list-from X     - List all messages that were sent by user X, where X stands
                       for the name of the user (not the numeric user id).
                       Can occur multiple times for more than one user.

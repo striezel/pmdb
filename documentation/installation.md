@@ -58,7 +58,7 @@ For other Linux distributions, there are generic packages:
 Currently, there are no packages for macOS, because I don't have a macOS system
 to test this on.
 
-If you need ton run pmdb on macOS, you can either try to compile from source or
+If you need to run pmdb on macOS, you can either try to compile from source or
 you could try to run the Windows binaries with the [Wine compatibility layer](https://www.winehq.org/).
 
 ---

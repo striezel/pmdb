@@ -45,13 +45,13 @@
 void showVersion()
 {
   #ifdef NO_PM_COMPRESSION
-  std::cout << "Private Message Database, version 0.24.1~no-compression, 2015-10-09\n";
+  std::cout << "Private Message Database, version 0.25.0~no-compression, 2025-10-22\n";
   #else
-  std::cout << "Private Message Database, version 0.24.1, 2015-10-09\n";
+  std::cout << "Private Message Database, version 0.25.0, 2015-10-22\n";
   #endif
   showLibraryVersions();
   std::cout << '\n'
-            << "Copyright (C) 2012, 2013, 2014, 2015  Dirk Stolle\n"
+            << "Copyright (C) 2012, 2013, 2014, 2015, 2025  Dirk Stolle\n"
             << "License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>\n"
             << "This is free software: you are free to change and redistribute it under the\n"
             << "terms of the GNU General Public License version 3 or any later version.\n"

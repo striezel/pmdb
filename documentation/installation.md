@@ -1,9 +1,10 @@
 # Installation
 
-Currently, there is no easy way to install pmdb. It has to be
+Pre-compiled versions of `pmdb` can be downloaded from the
+[release page of the pmdb project](https://github.com/striezel/pmdb/releases).
+(It can also be
 [compiled from the source code](https://github.com/striezel/pmdb?tab=readme-ov-file#building-from-source),
-which is a bit tedious. In the future, pre-compiled versions will be available
-on the [release page of the pmdb project](https://github.com/striezel/pmdb/releases).
+which is a bit tedious.)
 
 ## Windows
 

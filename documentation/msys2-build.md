@@ -3,7 +3,7 @@
 Currently, pmdb does not support native Windows builds with Microsoft Visual
 Studio. However, it can be built on Windows systems with
 [MSYS2](https://www.msys2.org/). MSYS2 provides some typical GNU / Linux tools
-on Windows operating systems. Those can be used to build botvinnik.
+on Windows operating systems. Those can be used to build pmdb.
 
 ## Prerequisites
 

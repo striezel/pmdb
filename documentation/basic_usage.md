@@ -34,7 +34,7 @@ imported messages to its [data directory](directories.md) for later use.
 
 You can add more messages at a later point by adding more XML files. Or you can
 also let `pmdb` process several XML files at once. Just repeat the `--xml`
-paramater and add another file name. For example,
+parameter and add another file name. For example,
 
 ```sh
 pmdb --xml privatemessages-Name-31.12.2024.xml --xml other/directory/privatemessages-Name-28.02.2025.xml
@@ -121,7 +121,7 @@ Opening /home/name/.pmdb/html/folder_94835ea2fcf775cd77cb9c9cee01b5cbd9bc515467a
 
 And `pmdb` will then open the generated HTML file in the browser.
 
-In general, `pmdb` will let you combine paramaters and tasks freely most of the
+In general, `pmdb` will let you combine parameters and tasks freely most of the
 time. (There are some exceptions like the `--help` or `--version` parameters
 which will just print the information and then exit.)
 

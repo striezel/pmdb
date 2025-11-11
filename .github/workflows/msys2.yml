@@ -93,7 +93,7 @@ jobs:
           mv artifacts pmdb_${VERSION}
           '/c/Program Files/7-Zip/7z.exe' a -r pmdb_${VERSION}.zip pmdb_${VERSION}
       - name: Upload artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: pmdb-windows-msys2-${{matrix.msystem}}
           if-no-files-found: error

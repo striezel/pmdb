@@ -43,7 +43,7 @@ jobs:
           lcov --remove coverage.info '/usr/*' '*tests/*' '*libstriezel/*' -o main_coverage.info
           genhtml main_coverage.info --output-directory ../public
       - name: Upload code coverage data
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: pmdb_coverage
           path: ${{ github.workspace }}/public

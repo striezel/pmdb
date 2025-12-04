@@ -25,7 +25,7 @@ then
 fi
 EXECUTABLE="$1"
 
-# 2nd paramater = path to test-messages.xml
+# 2nd parameter = path to test-messages.xml
 if [ -z "$2" ]
 then
   echo "Second parameter must be XML file!"

@@ -18,19 +18,19 @@ jobs:
           sudo apt-get install -y wget
       - name: Download mdbook
         run: |
-          wget https://github.com/rust-lang/mdBook/releases/download/v0.5.1/mdbook-v0.5.1-x86_64-unknown-linux-gnu.tar.gz
-          CHECKSUM=$(sha256sum mdbook-v0.5.1-x86_64-unknown-linux-gnu.tar.gz)
+          wget https://github.com/rust-lang/mdBook/releases/download/v0.5.2/mdbook-v0.5.2-x86_64-unknown-linux-gnu.tar.gz
+          CHECKSUM=$(sha256sum mdbook-v0.5.2-x86_64-unknown-linux-gnu.tar.gz)
           CHECKSUM_BITS=$(echo $CHECKSUM | cut -f 1 -d' ')
           echo Checksum calculation: $CHECKSUM
           CHECKSUM_BITS=$(echo $CHECKSUM | cut -f 1 -d' ')
-          if [[ "$CHECKSUM_BITS" != "5c746127707bd768ecfc2d7fb2374cc11d5ae653aea438e15eea3154a1a69f92" ]]
+          if [[ "$CHECKSUM_BITS" != "084e4342ba564db270108763e404a7d1f309d932651a22484e93c0dc1a071f6d" ]]
           then
             echo "Checksum of downloaded mdbook is wrong."
             exit 1
           fi
-          tar xf mdbook-v0.5.1-x86_64-unknown-linux-gnu.tar.gz
+          tar xf mdbook-v0.5.2-x86_64-unknown-linux-gnu.tar.gz
           mv ./mdbook /usr/local/bin/
-          unlink mdbook-v0.5.1-x86_64-unknown-linux-gnu.tar.gz
+          unlink mdbook-v0.5.2-x86_64-unknown-linux-gnu.tar.gz
       - name: Generate documentation
         run: |
           cd "$GITHUB_WORKSPACE"/documentation

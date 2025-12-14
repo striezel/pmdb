@@ -94,7 +94,7 @@ jobs:
           mv artifacts pmdb-$VERSION
           tar czf pmdb_${VERSION}_linux-arm64-generic.tar.gz pmdb-$VERSION
       - name: Archive build artifacts
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: pmdb_linux-arm64-generic
           path: pmdb_*_linux-arm64-generic.tar.gz

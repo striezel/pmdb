@@ -36,7 +36,7 @@ jobs:
           cd "$GITHUB_WORKSPACE"/documentation
           mdbook build
       - name: Collect documentation artifacts
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: pmdb-documentation
           if-no-files-found: error

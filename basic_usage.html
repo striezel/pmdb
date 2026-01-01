@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Frequently asked questions</title>
+        <title>Using pmdb</title>
 
 
         <!-- Custom HTML head -->
@@ -174,42 +174,114 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="frequently-asked-questions"><a class="header" href="#frequently-asked-questions">Frequently asked questions</a></h1>
-<h2 id="html-generation"><a class="header" href="#html-generation">HTML generation</a></h2>
-<p><strong>Question: Smilies in the generated HTML files do not show up as images but
-only as smilie codes, for example <code>:)</code>. Why is that?</strong></p>
-<p>Answer: Smilie codes and their corresponding images have to be added to the
-<a href="configuration.html">configuration file</a>, if they shall be replaced by images.
-Restart HTML generation once the smilie settings have been added.</p>
-<p><strong>Question: But there are a lot of smilies for the forum. Do I have to add all of them?</strong></p>
-<p>Answer: Only the ones you want to show up properly in the HTML files. You are
-free to skip configuration entries for some lesser used smilie codes.</p>
-<p>If the forum is World of Players, you can use the file
-<a href="pmdb.conf.example.worldofplayers">pmdb.conf.example.worldofplayers</a> provided in
-this directory. It already contains all smilie codes for the World of Players
-forum. Just rename it to <code>pmdb.conf</code> and place it in pmdb’s
-<a href="directories.html">main directory</a>.</p>
-<p><strong>Question: In the generated HTML any forum links link to https://www.example.com/ instead of my forum. Why?</strong></p>
-<p>Answer: If no <a href="configuration.html">configuration file for pmdb</a> exists or it does
-not contain a forum URL, then <code>https://www.example.com/</code> is currently used as
-the default value for the forum URL. To change that, create or adjust the
-configuration file and enter the correct URL for your forum.</p>
-<p><strong>Question: The style of the generated HTML files is too simple / boring / ugly. Can I change it?</strong></p>
-<p>Answer: Yes. pmdb uses <a href="templates.html">templates</a> to generate the HTML files. If
-you know a bit of HTML and/or CSS, you can modify those templates according to
-your preference.</p>
-<p><strong>Question: I’ve changed the templates, but I want the default templates back. How can I do that?</strong></p>
-<p>Answer: Just delete the changed template files. Templates will then be
-regenerated the next time pmdb generates HTML files.</p>
+                        <h1 id="using-pmdb"><a class="header" href="#using-pmdb">Using pmdb</a></h1>
+<p>After the <a href="installation.html">installation</a> is done, you can start using <code>pmdb</code>.
+For that you need private messages from a vBulletin forum, download in XML
+format. vBulletin offers options to download all private messages as XML, CSV or
+text, but <code>pmdb</code> can only use the XML format, not text or CSV. Use XML only.
+Usually all private messages can be downloaded via a link like
+<code>https://www.example.com/forum/private.php?do=downloadpm&amp;dowhat=xml</code>, adjust
+accordingly for your case.</p>
+<h2 id="importing-messages-from-xml"><a class="header" href="#importing-messages-from-xml">Importing messages from XML</a></h2>
+<p>Assuming the XML file was downloaded as <code>privatemessages-Name-31.12.2024.xml</code> to
+the current directory, you can let <code>pmdb</code> process the file by typing</p>
+<pre><code class="language-sh">pmdb --xml privatemessages-Name-31.12.2024.xml
+</code></pre>
+<p>Doing so will display something like</p>
+<pre><code>XML file "privatemessages-Name-31.12.2024.xml" was queued for loading.
+Import of private messages from privatemessages-Name-31.12.2024.xml was successful.
+  321 PMs read, new PMs: 321
+PMs in the database: 321
+Messages saved successfully.
+Folder map saved successfully.
+</code></pre>
+<p><code>pmdb</code> tells you that it imported the private messages (“PMs”) successfully, and
+how many messages were read - in that case 312 messages. It also saves the
+imported messages to its <a href="directories.html">data directory</a> for later use.</p>
+<p>You can add more messages at a later point by adding more XML files. Or you can
+also let <code>pmdb</code> process several XML files at once. Just repeat the <code>--xml</code>
+parameter and add another file name. For example,</p>
+<pre><code class="language-sh">pmdb --xml privatemessages-Name-31.12.2024.xml --xml other/directory/privatemessages-Name-28.02.2025.xml
+</code></pre>
+<p>will process both <code>privatemessages-Name-31.12.2024.xml</code> and
+<code>other/directory/privatemessages-Name-28.02.2025.xml</code> and import messages from
+those files. In that case the program’s output could look like</p>
+<pre><code>XML file "privatemessages-Name-31.12.2024.xml" was queued for loading.
+XML file "other/directory/privatemessages-Name-28.02.2025.xml" was queued for loading.
+Import of private messages from privatemessages-Name-31.12.2024.xml was successful.
+  321 PMs read, new PMs: 321
+Import of private messages from other/directory/privatemessages-Name-28.02.2025.xml was successful.
+  345 PMs read, new PMs: 24
+PMs in the database: 345
+Messages saved successfully.
+Folder map saved successfully.
+</code></pre>
+<p>If two files contain the same messages, <code>pmdb</code> will recognize this and not add
+the same message twice. It basically does automatic deduplication on import, so
+you don’t have to worry about overlapping messages in the XML files.</p>
+<h2 id="generate-html-files"><a class="header" href="#generate-html-files">Generate HTML files</a></h2>
+<p>OK, so now that we have imported those messages, how can we actually view them?
+That’s where HTML generation steps in. <code>pmdb</code> will generate HTML files for each
+message so that you can then view them in a browser. Just type</p>
+<pre><code class="language-sh">pmdb --html
+</code></pre>
+<p>and <code>pmdb</code> does the rest. It will print something like</p>
+<pre><code>Loading messages from /home/name/.pmdb/messages/ ...
+All messages from /home/name/.pmdb/messages/ loaded. Read: 345; new: 345
+Loaded folder map from /home/name/.pmdb/messages/, too.
+PMs in the database: 345
+Messages saved successfully.
+Folder map saved successfully.
+Loading pmdb.conf was successful.
+Creating HTML files for message texts. This may take a while...
+All HTML files were created successfully!
+Opening /home/name/.pmdb/html/folder_94835ea2fcf775cd77cb9c9cee01b5cbd9bc515467aab1215f48a5ade9ca5274.html in browser ...
+</code></pre>
+<p>It will then open the generated file in a browser, for example Firefox or
+Chromium. There you can browse through the messages as if they were in the
+forum.</p>
+<h2 id="doing-it-all-in-one-go"><a class="header" href="#doing-it-all-in-one-go">Doing it all in one go</a></h2>
+<p>Of course, you can import message data in one step and then generate the HTML
+files to view in a second step, but <code>pmdb</code> also can do that in one go. Staying
+with the file names from above, you could just type</p>
+<pre><code class="language-sh">pmdb --xml privatemessages-Name-31.12.2024.xml --xml other/directory/privatemessages-Name-28.02.2025.xml --html
+</code></pre>
+<p>to import both XML files and generate the corresponding HTML files in one step.
+In that case, assuming no messages have been imported so far, the output of
+<code>pmdb</code> could be:</p>
+<pre><code>XML file "privatemessages-Name-31.12.2024.xml" was queued for loading.
+XML file "other/directory/privatemessages-Name-28.02.2025.xml" was queued for loading.
+Import of private messages from privatemessages-Name-31.12.2024.xml was successful.
+  321 PMs read, new PMs: 321
+Import of private messages from other/directory/privatemessages-Name-28.02.2025.xml was successful.
+  345 PMs read, new PMs: 24
+PMs in the database: 345
+Messages saved successfully.
+Folder map saved successfully.
+Loading pmdb.conf was successful.
+Creating HTML files for message texts. This may take a while...
+All HTML files were created successfully!
+Opening /home/name/.pmdb/html/folder_94835ea2fcf775cd77cb9c9cee01b5cbd9bc515467aab1215f48a5ade9ca5274.html in browser ...
+</code></pre>
+<p>And <code>pmdb</code> will then open the generated HTML file in the browser.</p>
+<p>In general, <code>pmdb</code> will let you combine parameters and tasks freely most of the
+time. (There are some exceptions like the <code>--help</code> or <code>--version</code> parameters
+which will just print the information and then exit.)</p>
+<h2 id="further-options"><a class="header" href="#further-options">Further options</a></h2>
+<p><code>pmdb</code> provides more options, but those are usually not required that often. To
+see them, take a look at the <a href="extended_usage.html">command-line option reference</a>.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="configuration.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="installation.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
+                            <a rel="next prefetch" href="extended_usage.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -217,10 +289,13 @@ regenerated the next time pmdb generates HTML files.</p>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="configuration.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="installation.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
+                    <a rel="next prefetch" href="extended_usage.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
             </nav>
 
         </div>
